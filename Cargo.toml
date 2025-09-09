@@ -4,4 +4,5 @@ members = ["demo", "yakui-shadcn"]
 [workspace.dependencies]
 # yakui = { git = "https://github.com/SecondHalfGames/yakui", version = "0.3.0", rev = "797aeccbab1e269c88d0c39df8e6fe18ce21f97e" }
 yakui.path = "../yakui/crates/yakui"
+yakui-core.path = "../yakui/crates/yakui-core"
 yakui-widgets.path = "../yakui/crates/yakui-widgets"

@@ -960,6 +960,7 @@ name = "yakui-shadcn"
 version = "0.1.0"
 dependencies = [
  "yakui",
+ "yakui-core",
 ]
 
 [[package]]

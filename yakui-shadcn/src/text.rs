@@ -1,9 +1,7 @@
-use yakui::widgets::Pad;
-
 use crate::style::{self, PRIMARY_FONT_SIZE, SUBHEADER_FONT_SIZE};
 
 pub fn header(text: String) {
-    let mut label = yakui::widgets::Text::new(PRIMARY_FONT_SIZE, text);
+    let mut label = yakui::widgets::Text::new(18.0, text);
     label.style = style::text_header();
     label.show();
 }

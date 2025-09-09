@@ -1,12 +1,16 @@
 mod button;
 pub mod colours;
 pub mod icons;
+mod left_border;
+pub use left_border::LeftBorder;
 mod sidebar;
 mod style;
 pub mod text;
+mod wide_button;
 pub use button::button;
 pub use sidebar::{SidebarItem, sidebar};
 use std::sync::Arc;
+pub use wide_button::{WideButton, wide_button};
 use yakui::{cosmic_text::fontdb, font::Fonts};
 
 pub fn add_fonts(yak: &mut yakui::Yakui) {

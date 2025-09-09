@@ -21,3 +21,7 @@ pub fn chevron_down() -> String {
 pub fn chevron_up() -> String {
     String::from_utf16_lossy(&[0xf172])
 }
+
+pub fn hexagon() -> String {
+    String::from_utf16_lossy(&[0xf222])
+}
