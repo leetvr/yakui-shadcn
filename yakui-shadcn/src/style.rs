@@ -54,6 +54,7 @@ pub fn text_subheader() -> TextStyle {
     text_style
 }
 
+#[allow(unused)]
 pub fn icon_label() -> TextStyle {
     let mut text_style = TextStyle::label();
     text_style.attrs.family_owned = FamilyOwned::Name("Lucide".into());

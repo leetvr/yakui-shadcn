@@ -71,12 +71,12 @@
 use crate::{
     LeftBorder, WideButton,
     colours::{self, SIDEBAR_BACKGROUND, SIDEBAR_BORDER},
-    icons, style, text, wide_button,
+    icons, style, text,
 };
 use yakui::{
-    Alignment, Constraints, MainAxisAlignment, MainAxisSize, Response, Vec2, colored_box,
-    colored_box_container, column, constrained, expanded, pad,
-    widgets::{Button, ButtonResponse, DynamicButtonStyle, List, Pad},
+    Alignment, Constraints, MainAxisAlignment, MainAxisSize, Response, Vec2, colored_box_container,
+    column, constrained, expanded, pad,
+    widgets::{ButtonResponse, DynamicButtonStyle, List, Pad},
 };
 
 pub enum SidebarItem {
@@ -104,6 +104,20 @@ pub fn sidebar(title: String, items: &[SidebarItem]) {
                         draw_item(item);
                     }
                 });
+            });
+        });
+    });
+}
+
+pub fn sidebar_custom(title: impl Into<String>, children: impl FnOnce() -> ()) {
+    let mut column = List::column();
+    column.item_spacing = 4.0;
+    constrained(Constraints::tight(Vec2::new(256.0, f32::MAX)), || {
+        colored_box_container(SIDEBAR_BACKGROUND, || {
+            column.show(|| {
+                header(title.into());
+
+                children();
             });
         });
     });

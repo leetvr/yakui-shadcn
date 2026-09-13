@@ -8,7 +8,7 @@ mod style;
 pub mod text;
 mod wide_button;
 pub use button::button;
-pub use sidebar::{SidebarItem, sidebar};
+pub use sidebar::{SidebarItem, sidebar, sidebar_custom};
 use std::sync::Arc;
 pub use wide_button::{WideButton, wide_button};
 use yakui::{cosmic_text::fontdb, font::Fonts};
