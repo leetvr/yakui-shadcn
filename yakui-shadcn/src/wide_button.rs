@@ -19,7 +19,7 @@ Responds with [ButtonResponse].
 Shorthand:
 ```rust
 # let _handle = yakui_widgets::DocTest::start();
-if yakui::button("Hello").clicked {
+if yakui_shadcn::wide_button("Hello", "→").clicked {
     println!("The button was clicked");
 }
 ```
