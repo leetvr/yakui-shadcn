@@ -1,7 +1,7 @@
 use std::borrow::Cow;
 
 use yakui::{
-    Alignment, BorderRadius, Response,
+    Alignment, Response,
     widgets::{Button, ButtonResponse, DynamicButtonStyle, Pad},
 };
 
@@ -30,7 +30,7 @@ pub fn button(text: impl Into<Cow<'static, str>>) -> Response<ButtonResponse> {
         text: text.into(),
         alignment: Alignment::CENTER,
         padding: Pad::balanced(16.0, 8.0),
-        border_radius: BorderRadius::uniform(8.0),
+        border_radius: 8.0,
         style,
         hover_style,
         down_style,
