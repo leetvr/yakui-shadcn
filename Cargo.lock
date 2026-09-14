@@ -963,6 +963,7 @@ version = "0.1.0"
 dependencies = [
  "yakui",
  "yakui-core",
+ "yakui-widgets",
 ]
 
 [[package]]

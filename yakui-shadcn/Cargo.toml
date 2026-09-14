@@ -6,3 +6,6 @@ edition = "2024"
 [dependencies]
 yakui.workspace = true
 yakui-core.workspace = true
+
+[dev-dependencies]
+yakui-widgets.workspace = true
