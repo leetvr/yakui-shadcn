@@ -4,6 +4,7 @@ mod avatars;
 mod button_groups;
 mod dropdown;
 mod examples;
+mod input_groups;
 mod showcases;
 use serde::Deserialize;
 use std::{error::Error, path::PathBuf};

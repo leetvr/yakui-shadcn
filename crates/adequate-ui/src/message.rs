@@ -289,14 +289,6 @@ pub fn item(variant: Variant, children: impl FnOnce()) {
         children,
     )
 }
-/// A composable input group; keep validation and value state in the application.
-#[track_caller]
-pub fn input_group(children: impl FnOnce()) {
-    let t = theme();
-    surface(Color::CLEAR, Some(t.input), t.radius, 4., || {
-        row(6., children)
-    })
-}
 /// Form composition. Submit/validation work is expressed by ordinary action responses.
 #[track_caller]
 pub fn form(children: impl FnOnce()) {

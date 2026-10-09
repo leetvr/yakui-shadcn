@@ -121,6 +121,7 @@ pub struct Button {
     disabled: bool,
     icon: Option<Icon>,
     rounded: bool,
+    input_group_style: bool,
 }
 impl Button {
     pub fn new(text: impl Into<String>) -> Self {
@@ -131,7 +132,12 @@ impl Button {
             disabled: false,
             icon: None,
             rounded: false,
+            input_group_style: false,
         }
+    }
+    pub(crate) fn for_input_group(mut self) -> Self {
+        self.input_group_style = true;
+        self
     }
     pub fn variant(mut self, variant: Variant) -> Self {
         self.variant = variant;
@@ -172,6 +178,8 @@ impl Button {
         let t = theme();
         let radius = if self.rounded {
             999.
+        } else if self.input_group_style {
+            t.radius - 3.
         } else {
             if matches!(
                 self.size,
@@ -249,14 +257,21 @@ impl Button {
                         border.map(|c| crate::layout::composite(c.with_alpha(0.5), background));
                 }
                 let height = self.size.height();
-                let fs = self.size.font_size();
+                let fs = if self.input_group_style {
+                    14.
+                } else {
+                    self.size.font_size()
+                };
                 let line_height = if fs < 14. { 16. } else { 20. };
-                let horizontal = 1.0
-                    + if matches!(self.size, ButtonSize::Xs) {
+                let horizontal = if self.input_group_style {
+                    6.
+                } else {
+                    1.0 + if matches!(self.size, ButtonSize::Xs) {
                         8.
                     } else {
                         10.
-                    };
+                    }
+                };
                 let min_width = if self.size.icon() { height } else { 0. };
                 ConstrainedBox::new(Constraints {
                     min: Vec2::new(min_width, height),
@@ -294,7 +309,13 @@ impl Button {
                                         if let Some(icon) = self.icon {
                                             icon_colored(
                                                 icon,
-                                                if height == 24. { 12. } else { 16. },
+                                                if self.input_group_style && height == 24. {
+                                                    14.
+                                                } else if height == 24. {
+                                                    12.
+                                                } else {
+                                                    16.
+                                                },
                                                 fg,
                                             );
                                         }
@@ -731,27 +752,41 @@ impl<'a> Input<'a> {
     #[track_caller]
     pub fn show(self) -> InputResponse {
         let t = theme();
+        let group = yakui::util::read_scope::<crate::input_group::InputGroupContext>();
+        let disabled = self.disabled || group.as_ref().is_some_and(|g| g.disabled.get());
+        let invalid = self.invalid || group.as_ref().is_some_and(|g| g.invalid.get());
         let mut response = InputResponse::default();
-        let fill = if self.disabled {
+        let fill = if disabled {
             t.input.with_alpha(if t.dark { 0.8 } else { 0.5 })
         } else if t.dark {
             t.input.with_alpha(0.045)
         } else {
             Color::CLEAR
         };
-        crate::button_group::input_surface(
+        crate::input_group::editor_surface(
             fill,
-            if self.invalid { t.destructive } else { t.input },
+            if invalid { t.destructive } else { t.input },
             t.radius,
             || {
-                let foreground = if self.disabled {
+                let foreground = if disabled {
                     crate::layout::resolve_color(t.foreground.with_alpha(0.5))
                 } else {
                     t.foreground
                 };
                 let textbox = yakui::widgets::TextBox::new(self.value.clone())
                     .style(t.text_style(t.font_size, foreground, 400))
-                    .padding(Pad::balanced(10., 6.))
+                    .padding(Pad::balanced(
+                        if group.is_some() && !self.multiline {
+                            6.
+                        } else {
+                            10.
+                        },
+                        if self.multiline && group.is_some() {
+                            8.
+                        } else {
+                            6.
+                        },
+                    ))
                     .fill(None)
                     .radius(t.radius)
                     .placeholder(self.placeholder)
@@ -770,9 +805,9 @@ impl<'a> Input<'a> {
                 .show(|| {
                     let props = crate::editor::EditorProps {
                         textbox,
-                        disabled: self.disabled,
+                        disabled,
                         read_only: self.read_only,
-                        invalid: self.invalid,
+                        invalid,
                     };
                     let res = if self.password {
                         yakui::util::widget::<crate::password::Password>(props)
@@ -780,6 +815,11 @@ impl<'a> Input<'a> {
                         yakui::util::widget::<crate::editor::Editor>(props)
                     };
                     response.id = Some(res.id);
+                    if let Some(group) = &group {
+                        group.editor.set(response.id);
+                        group.disabled.set(disabled);
+                        group.invalid.set(invalid);
+                    }
                     let res = res.into_inner();
                     response.submitted = res.activated;
                     response.lost_focus = res.lost_focus;

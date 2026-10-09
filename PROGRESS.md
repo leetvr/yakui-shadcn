@@ -48,10 +48,10 @@ initial public APIs and native routes. Current behaviour includes:
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All four consuming examples compile.
-- 63 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
-- 135 native variant routes × two themes, plus six showcase captures and 62 actual-trigger overlay captures: **338 captures,
+- 65 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
+- 142 native variant routes × two themes, plus six showcase captures and 62 actual-trigger overlay captures: **352 captures,
   zero failures** in the latest full smoke run.
-- The configured upstream suite covers 59 actual previews: **262 comparison pairs**
+- The configured upstream suite covers 67 actual previews: **284 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
   used to find and correct concrete layout/painting defects, not to certify parity.
 - Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
@@ -65,7 +65,7 @@ focused layout tests cover the radio/progress/button regressions.
 ## Required work still outstanding
 
 `reference/components.json` records component-specific deviations and every upstream
-preview separately. 59 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
+preview separately. 67 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
 do not map an unported preview to a generic default rendition. Important incomplete areas include:
 
 - Complete documented slots, sizes, disabled/invalid states and compositions.
@@ -249,3 +249,24 @@ Nested input-group and select compositions remain pending. The pinned browser
 harness does not apply all upstream joining selectors; native groups implement
 the documented joining intent. Split uses Lucide Plus rather than Tabler Plus.
 Shadow/motion/cascade and exact mixed-size focus stacking are deferred polish.
+
+## Shared input-group increment
+
+Replaced the padded row wrapper with InputGroup and public editor/addon/text/button
+slots. Addons choose inline or block placement independently of declaration order.
+The layout measures addons first and gives the native editor the remaining width,
+with one child layout pass. The group owns its shared focus ring; embedded buttons
+retain their own targets. Prefix/icon clicks focus the editor, disabled editing is
+blocked, and multiline input uses native Enter/selection behaviour.
+
+Eight genuine previews cover search, icons, text prefixes/suffixes, shortcuts,
+loading indicators, leading/trailing fields (including password), and a comment
+composer with a Post action. The separate settings app consumes these APIs for
+its editable profile/Clear action. Both-theme default and focus comparisons exposed
+and corrected an excessive dark fill and a misplaced footer button. Per-example
+font/padding/block-height utilities and additional complex compositions are deferred.
+
+Two actual-system tests cover width budgeting, placement, typing, disabled editing,
+independent button activation and multiline block layout. All 65 tests and five
+doctests pass; all four consuming apps compile. The configured suite has 284 pairs
+across 67 upstream previews. No exhaustive-parity claim is made.

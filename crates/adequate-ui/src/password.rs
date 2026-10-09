@@ -24,6 +24,7 @@ pub(crate) struct Password {
     advance: Rc<Cell<f32>>,
     scroll: Rc<Cell<f32>>,
     ring: Color,
+    grouped: bool,
     dismiss: Option<Rc<crate::overlay::DismissContext>>,
 }
 impl Password {
@@ -78,10 +79,12 @@ impl Widget for Password {
             scroll: Rc::new(Cell::new(0.)),
             ring: Color::GRAY,
             dismiss: None,
+            grouped: false,
         }
     }
     fn update(&mut self, mut props: EditorProps) -> TextBoxResponse {
         self.dismiss = yakui::util::read_scope();
+        self.grouped = yakui::util::read_scope::<crate::input_group::InputGroupContext>().is_some();
         let pending = self.pending.take();
         if let Some(text) = &pending {
             props.textbox.text = text.clone();
@@ -145,7 +148,7 @@ impl Widget for Password {
     }
     fn paint(&self, mut ctx: PaintContext<'_>) {
         let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
-        if self.focused && !self.props.disabled {
+        if self.focused && !self.props.disabled && !self.grouped {
             crate::icons::outline(
                 &mut ctx,
                 Rect::from_pos_size(rect.pos() - Vec2::splat(3.), rect.size() + Vec2::splat(6.)),

@@ -21,6 +21,7 @@ pub(crate) struct Editor {
     radius: f32,
     ring: yakui::Color,
     disabled: bool,
+    grouped: bool,
     read_only: bool,
     menu: Option<std::rc::Rc<crate::menu::MenuContext>>,
     dismiss: Option<std::rc::Rc<crate::overlay::DismissContext>>,
@@ -35,6 +36,7 @@ impl Widget for Editor {
             radius: 10.,
             ring: yakui::Color::GRAY,
             disabled: false,
+            grouped: false,
             read_only: false,
             menu: None,
             dismiss: None,
@@ -44,6 +46,7 @@ impl Widget for Editor {
         self.dismiss = yakui::util::read_scope();
         self.menu = yakui::util::read_scope();
         self.disabled = props.disabled;
+        self.grouped = yakui::util::read_scope::<crate::input_group::InputGroupContext>().is_some();
         self.read_only = props.read_only;
         self.radius = props.textbox.radius;
         let t = crate::theme();
@@ -82,7 +85,7 @@ impl Widget for Editor {
         }
     }
     fn paint(&self, mut ctx: PaintContext<'_>) {
-        if self.focused && !self.disabled {
+        if self.focused && !self.disabled && !self.grouped {
             let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
             let outer = yakui::Rect::from_pos_size(
                 rect.pos() - Vec2::splat(3.),

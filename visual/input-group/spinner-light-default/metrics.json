@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00417375,
+  "content_bounds": [
+    308,
+    312,
+    692,
+    488
+  ],
+  "content_rgb_rmse": 19.84190183173451,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.33984625,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/input-group/spinner-light-default/native.png",
+  "pixels_differing_by_more_than_16": 3339,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/input-group/spinner-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 5.767136746254592,
+  "width": 1000
+}

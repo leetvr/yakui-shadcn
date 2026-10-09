@@ -41,7 +41,7 @@ overlay children. Keep overlays at the root and retain their state in your appli
 | Form | `form`, `field`, `Input` | Compose controls into an application-owned form. |
 | Hover Card | `hover_card` | For sighted users to preview content available behind a link. |
 | Input | `Input`, `InputResponse`, `input` | A text input component for forms and user data entry with built-in styling and accessibility features. |
-| Input Group | `input_group` | Add addons, buttons, and helper content to inputs. |
+| Input Group | `InputGroup`, `InputGroupAlign`, `input_group`, `input_group_addon`, `input_group_input`, `input_group_textarea`, `input_group_button`, `input_group_text` | Add addons, buttons, and helper content to inputs. |
 | Input OTP | `input_otp`, `OtpOptions`, `OtpPattern`, `OtpResponse` | Accessible one-time password component with copy-paste functionality. |
 | Item | `item` | A versatile component for displaying content with media, title, description, and actions. |
 | Kbd | `kbd` | Used to display textual user input from keyboard. |
@@ -251,3 +251,27 @@ ui::ButtonGroup::new().orientation(ui::Orientation::Vertical).show(|| {
 bordered prefix or suffix. Use `popover_header`, `popover_title` and
 `popover_description` for compact popup text. Inside columns, use `fill_width`
 around editors when they should occupy the popup's available width.
+
+Input groups share one surface and focus ring. Declare one editor and addons
+directly inside the group. Addons are placed by alignment, independently of their
+declaration order; clicking a non-action addon focuses the editor. Embedded buttons
+keep their own click and keyboard responses.
+
+```rust
+ui::width(320., || ui::input_group(|| {
+    ui::input_group_input(&mut query, "Search...");
+    ui::input_group_addon(ui::InputGroupAlign::InlineStart, || {
+        ui::icon(ui::Icon::Search, 16.);
+    });
+    ui::input_group_addon(ui::InputGroupAlign::InlineEnd, || {
+        if ui::input_group_button("Search").show().clicked { search(&query); }
+    });
+}));
+```
+
+Use `BlockStart`/`BlockEnd` for headers/footers around multiline editors.
+`ui::spacer()` before a footer button consumes the row's remaining width.
+`InputGroup::new().disabled(true)` disables the editor; action buttons can be
+independently disabled. `Input::new(...).password(true)` also shares the group
+surface. `input_group_button` returns an ordinary configurable Button: default
+Xs is 24px high, Default is 32px, and IconXs supplies a 24px icon action.

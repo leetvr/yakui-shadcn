@@ -20,7 +20,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             "These preferences belong to this profile.",
                             None,
                             || {
-                                ui::input(&mut name, "Name");
+                                let mut clear = false;
+                                ui::input_group(|| {
+                                    ui::input_group_input(&mut name, "Name");
+                                    ui::input_group_addon(ui::InputGroupAlign::InlineStart, || {
+                                        ui::icon(ui::Icon::User, 16.);
+                                    });
+                                    ui::input_group_addon(ui::InputGroupAlign::InlineEnd, || {
+                                        clear = ui::input_group_button("Clear").show().clicked;
+                                    });
+                                });
+                                if clear {
+                                    name.clear();
+                                }
                             },
                         );
                         ui::checkbox("VSync", &mut vsync);

@@ -9,6 +9,12 @@ use yakui::{
     widget::{LayoutContext, PaintContext, Widget},
     widgets::Scope,
 };
+#[derive(Debug)]
+struct Ungrouped;
+#[track_caller]
+pub(crate) fn ungrouped(children: impl FnOnce()) {
+    Scope::new(Ungrouped).show(children);
+}
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum MemberKind {
     Control,
@@ -216,7 +222,9 @@ pub(crate) fn button_surface(
     border: Option<Border>,
     children: impl FnOnce(),
 ) {
-    if yakui::util::read_scope::<GroupContext>().is_none() {
+    if yakui::util::read_scope::<GroupContext>().is_none()
+        || yakui::util::read_scope::<Ungrouped>().is_some()
+    {
         yakui::widgets::RoundRect::new(radius)
             .color(fill)
             .border(border)
@@ -234,7 +242,9 @@ pub(crate) fn button_surface(
 }
 #[track_caller]
 pub(crate) fn input_surface(fill: Color, border: Color, radius: f32, children: impl FnOnce()) {
-    if yakui::util::read_scope::<GroupContext>().is_none() {
+    if yakui::util::read_scope::<GroupContext>().is_none()
+        || yakui::util::read_scope::<Ungrouped>().is_some()
+    {
         crate::surface(fill, Some(border), radius, 0., children);
         return;
     }

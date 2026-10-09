@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00428375,
+  "content_bounds": [
+    308,
+    356,
+    692,
+    443
+  ],
+  "content_rgb_rmse": 25.12528354236607,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.26728,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/input-group/inline-start-light-default/native.png",
+  "pixels_differing_by_more_than_16": 3427,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/input-group/inline-start-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 5.134417931956844,
+  "width": 1000
+}

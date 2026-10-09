@@ -361,5 +361,32 @@
     "states": [
       "open"
     ]
+  },
+  {
+    "component": "input-group",
+    "variants": [
+      "default",
+      "icon",
+      "text",
+      "kbd",
+      "spinner",
+      "inline-start",
+      "inline-end",
+      "block-end"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "input-group",
+    "variants": [
+      "default",
+      "inline-end",
+      "text"
+    ],
+    "states": [
+      "focus"
+    ]
   }
 ]

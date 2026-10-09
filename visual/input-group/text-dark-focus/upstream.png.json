@@ -1,0 +1,16 @@
+{
+  "example": "input-group-text",
+  "theme": "dark",
+  "state": "focus",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 326.015625,
+    "y": 266,
+    "width": 328.4375,
+    "height": 32
+  }
+}

@@ -98,6 +98,7 @@ pub struct ExampleState {
     pub avatar_items: Vec<ui::MenuItem>,
     pub group_items: Vec<ui::MenuItem>,
     pub group_variant: String,
+    pub input_group_values: [String; 4],
     pub values: [f64; 2],
     pub ratio: f32,
     pub carousel: ui::CarouselState,
@@ -364,13 +365,7 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
                 }
             })
         }),
-        "input-group" => ui::input_group(|| {
-            ui::icon(ui::Icon::Search, 16.);
-            ui::width(240., || {
-                ui::input(&mut state.text, "Search...");
-            });
-            ui::kbd("⌘ K");
-        }),
+        "input-group" => crate::input_groups::render(variant, state, disabled),
         "input-otp" => {
             ui::input_otp(
                 &mut state.text,
@@ -904,6 +899,7 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "table",
         ],
         "button-group" => crate::button_groups::VARIANTS,
+        "input-group" => crate::input_groups::VARIANTS,
         "avatar" => crate::avatars::VARIANTS,
         "table" => &["default", "footer", "actions"],
         "dropdown-menu" => crate::dropdown::VARIANTS,
@@ -1118,7 +1114,7 @@ impl Default for ExampleState {
             dropdown: Default::default(),
             avatar_images:true,
             avatar_items:crate::avatars::items(),
-            group_items:vec![],group_variant:String::new(),
+            group_items:vec![],group_variant:String::new(),input_group_values:Default::default(),
             row_actions: Default::default(),
             last_table_action: None,
             menubar: Default::default(),

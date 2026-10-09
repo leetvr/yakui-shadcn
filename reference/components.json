@@ -7488,16 +7488,58 @@
         "input-group-rtl"
       ],
       "rust_api": [
-        "input_group"
+        "InputGroup",
+        "InputGroupAlign",
+        "input_group",
+        "input_group_addon",
+        "input_group_text",
+        "input_group_button",
+        "input_group_input",
+        "input_group_textarea"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "icon",
+        "text",
+        "kbd",
+        "spinner",
+        "inline-start",
+        "inline-end",
+        "block-end"
       ],
-      "behaviour_tests": [],
-      "visual_comparisons": [],
+      "behaviour_tests": [
+        "input_group_reorders_addons_budgets_editor_width_and_keeps_action_hits",
+        "input_group_block_addons_surround_a_full_width_multiline_editor"
+      ],
+      "visual_comparisons": [
+        "visual/input-group/default-light-default",
+        "visual/input-group/default-dark-default",
+        "visual/input-group/default-light-focus",
+        "visual/input-group/default-dark-focus",
+        "visual/input-group/inline-start-light-default",
+        "visual/input-group/inline-start-dark-default",
+        "visual/input-group/inline-end-light-default",
+        "visual/input-group/inline-end-dark-default",
+        "visual/input-group/inline-end-light-focus",
+        "visual/input-group/inline-end-dark-focus",
+        "visual/input-group/block-end-light-default",
+        "visual/input-group/block-end-dark-default",
+        "visual/input-group/icon-light-default",
+        "visual/input-group/icon-dark-default",
+        "visual/input-group/text-light-default",
+        "visual/input-group/text-dark-default",
+        "visual/input-group/text-light-focus",
+        "visual/input-group/text-dark-focus",
+        "visual/input-group/kbd-light-default",
+        "visual/input-group/kbd-dark-default",
+        "visual/input-group/spinner-light-default",
+        "visual/input-group/spinner-dark-default"
+      ],
       "status": "in_progress",
       "deviations": [
-        "Current row wraps an already bordered input; shared border/focus, block addons and button sizes pending."
+        "Eight common English compositions are ported. Button/dropdown/custom textarea and remaining source examples are pending.",
+        "Source utility overrides for per-example font sizes, padding, monospace text and block-input heights are not all reproduced. Shared group focus and actual native editing/actions work.",
+        "Declare one editor and addon slots directly under the group. Multiple editors and automatic association with external labels are outside the current API."
       ],
       "example_coverage": [
         {
@@ -7510,10 +7552,35 @@
             "lucide-react",
             "@/styles/base-nova/ui/input-group"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "default",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/input-group/default-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/input-group/default-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/input-group/default-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/input-group/default-dark-focus",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -7527,10 +7594,23 @@
             "@/styles/base-nova/ui/field",
             "@/styles/base-nova/ui/input-group"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "inline-start",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/input-group/inline-start-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/input-group/inline-start-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -7544,10 +7624,35 @@
             "@/styles/base-nova/ui/field",
             "@/styles/base-nova/ui/input-group"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "inline-end",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/input-group/inline-end-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/input-group/inline-end-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/input-group/inline-end-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/input-group/inline-end-dark-focus",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -7577,10 +7682,23 @@
             "@/styles/base-nova/ui/field",
             "@/styles/base-nova/ui/input-group"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "block-end",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/input-group/block-end-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/input-group/block-end-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -7593,10 +7711,23 @@
             "lucide-react",
             "@/styles/base-nova/ui/input-group"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "icon",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/input-group/icon-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/input-group/icon-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -7608,10 +7739,35 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/input-group"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "text",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/input-group/text-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/input-group/text-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/input-group/text-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/input-group/text-dark-focus",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -7644,10 +7800,23 @@
             "@/styles/base-nova/ui/input-group",
             "@/styles/base-nova/ui/kbd"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "kbd",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/input-group/kbd-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/input-group/kbd-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -7678,10 +7847,23 @@
             "@/styles/base-nova/ui/input-group",
             "@/styles/base-nova/ui/spinner"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "spinner",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/input-group/spinner-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/input-group/spinner-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {

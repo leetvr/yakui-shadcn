@@ -20,6 +20,11 @@ pub fn column(gap: f32, children: impl FnOnce()) {
         .item_spacing(gap)
         .show(children);
 }
+/// Consume remaining space in a row or column, for example before a trailing action.
+#[track_caller]
+pub fn spacer() {
+    yakui::widgets::Flexible::expanded().show(|| {});
+}
 /// A bounded content region. The parent can shrink it when space is constrained.
 #[track_caller]
 pub fn width(width: f32, children: impl FnOnce()) {

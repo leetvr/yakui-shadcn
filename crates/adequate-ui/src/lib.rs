@@ -6,7 +6,9 @@
 mod advanced_layout;
 mod avatar;
 mod button_group;
+mod input_group;
 pub use button_group::*;
+pub use input_group::*;
 mod basic;
 pub use avatar::*;
 mod checkbox;
