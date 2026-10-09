@@ -48,10 +48,10 @@ initial public APIs and native routes. Current behaviour includes:
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All four consuming examples compile.
-- 67 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
-- 142 native variant routes × two themes, plus six showcase captures and 64 actual-trigger overlay captures: **354 captures,
+- 72 focused tests and six doctests pass using actual Yakui input/layout cycles and pure algorithms.
+- 148 native variant routes × two themes, plus six showcase captures and 74 actual-trigger overlay captures: **376 captures,
   zero failures** in the latest full smoke run.
-- The configured upstream suite covers 68 actual previews: **292 comparison pairs**
+- The configured upstream suite covers 75 actual previews: **322 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
   used to find and correct concrete layout/painting defects, not to certify parity.
 - Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
@@ -65,7 +65,7 @@ focused layout tests cover the radio/progress/button regressions.
 ## Required work still outstanding
 
 `reference/components.json` records component-specific deviations and every upstream
-preview separately. 68 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
+preview separately. 75 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
 do not map an unported preview to a generic default rendition. Important incomplete areas include:
 
 - Complete documented slots, sizes, disabled/invalid states and compositions.
@@ -294,3 +294,28 @@ zero failures, and 292 paired source comparisons across 68 documented previews.
 The font database was inspected after a typography comparison: all four Geist
 weights are registered under the same family; remaining weight/rasterisation
 appearance differences were left alone.
+
+## Grouped Select increment
+
+Added Select/SelectItem/SelectSize and SelectContent, with stable application values,
+selectable empty values, group labels, separators, disabled choices, compact and
+invalid triggers, and optional trigger text overrides. The popup focuses the current
+choice and aligns its row with the trigger. Native menu navigation/typeahead and
+scrolling retain app-owned selection until activation. Tab dismisses and moves on.
+Field label/error slots provide the source's invalid field composition.
+
+Six genuine Select previews cover the default fruit list, alignment toggle, groups,
+scrollable timezones, disabled and invalid states. The button-group currency example
+uses these public APIs. Source comparisons corrected nowrap text, popup height
+budgeting, selected-row alignment and the invalid label/field width. Native scrolling
+replaces browser scroll arrows and dynamic growth; minor grouping spacing, clipping
+near viewport edges, typography and shadows are deferred prototype polish.
+
+Three library tests cover actual keyboard/focus/value/disabled paths; the real gallery
+example test navigates to and commits its final timezone. A pointer-tooltip test found
+that closing a hover popup could focus its trigger and reopen it. Focus scopes now
+restore focus only when they owned it or owned a root-menu backdrop; deep submenu
+activation still restores the root trigger. All 72 tests and six doctests pass, four
+consuming apps compile, and the full suite has 376 successful native captures with
+zero failures. The upstream suite now contains 322 pairs across 75 source previews.
+The reference capture waits for mounted-popup focus before scripted keyboard events.

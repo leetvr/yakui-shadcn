@@ -88,6 +88,7 @@ pub struct ExampleState {
     pub calendar: ui::CalendarState,
     pub data_table: ui::DataTableState,
     pub select: ui::SelectState,
+    pub select_variant: String,
     pub menu: ui::MenuState,
     pub row_actions: [ui::MenuState; 3],
     pub last_table_action: Option<(usize, u64)>,
@@ -201,7 +202,8 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             ];
             ui::data_table(&columns, &rows, &mut state.data_table);
         }
-        "select" | "native-select" => ui::select(
+        "select" => crate::selects::render(variant, state, disabled),
+        "native-select" => ui::select(
             &mut state.select,
             &["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"],
             "Select a fruit",
@@ -825,6 +827,9 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             if state.group_variant != variant {
                 state.group_items = crate::button_groups::items(variant);
                 state.group_variant = variant.into();
+                if variant == "select" {
+                    state.select.selected = Some(0);
+                }
             }
             crate::button_groups::render(variant, state, disabled);
         }
@@ -896,6 +901,7 @@ pub fn variants(component: &str) -> &'static [&'static str] {
         ],
         "button-group" => crate::button_groups::VARIANTS,
         "input-group" => crate::input_groups::VARIANTS,
+        "select" => crate::selects::VARIANTS,
         "avatar" => crate::avatars::VARIANTS,
         "table" => &["default", "footer", "actions"],
         "dropdown-menu" => crate::dropdown::VARIANTS,
@@ -1021,7 +1027,7 @@ pub fn overlays(component: &str, variant: &str, state: &mut ExampleState) {
             }
         }
         "date-picker" => ui::date_picker_content(&mut state.calendar, &mut state.overlay),
-        "select" | "native-select" => ui::select_content(
+        "native-select" => ui::select_content(
             &mut state.select,
             &["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"],
         ),
@@ -1031,6 +1037,7 @@ pub fn overlays(component: &str, variant: &str, state: &mut ExampleState) {
         ),
         "button-group" => crate::button_groups::content(variant, state),
         "navigation-menu" => crate::navigation_menus::content(state),
+        "select" => crate::selects::content(variant, state),
         "avatar" if variant == "dropdown" => crate::avatars::content(state),
         "dropdown-menu" => {
             if let Some(id) =
@@ -1076,7 +1083,7 @@ impl ExampleState {
     pub fn is_open(&self, component: &str) -> bool {
         match component {
             "select" | "native-select" | "combobox" => self.select.popup.open,
-            "button-group" => self.menu.popup.open || self.overlay.open,
+            "button-group" => self.menu.popup.open || self.overlay.open || self.select.popup.open,
             "navigation-menu" => self.navigation.active().is_some(),
             "avatar" | "dropdown-menu" | "context-menu" => self.menu.popup.open,
             "menubar" => self.menubar.menu.popup.open,
@@ -1108,6 +1115,7 @@ impl Default for ExampleState {
             calendar: ui::CalendarState::new(ui::Date::new(2026, 10, 9).unwrap()),
             data_table: Default::default(),
             select: Default::default(),
+            select_variant: String::new(),
             menu: Default::default(),
             dropdown: Default::default(),
             avatar_images:true,

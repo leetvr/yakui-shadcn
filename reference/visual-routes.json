@@ -418,5 +418,62 @@
       "open"
     ],
     "keys": "Escape,ArrowRight,ArrowRight,ArrowDown"
+  },
+  {
+    "component": "select",
+    "variants": [
+      "default",
+      "align-item",
+      "groups",
+      "scrollable",
+      "disabled",
+      "invalid"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "select",
+    "variants": [
+      "default",
+      "align-item",
+      "groups",
+      "scrollable",
+      "invalid"
+    ],
+    "states": [
+      "open"
+    ]
+  },
+  {
+    "component": "select",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,Enter"
+  },
+  {
+    "component": "select",
+    "variants": [
+      "scrollable"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "End"
+  },
+  {
+    "component": "button-group",
+    "variants": [
+      "select"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
   }
 ]

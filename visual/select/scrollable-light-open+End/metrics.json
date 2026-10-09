@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.02689,
+  "content_bounds": [
+    372,
+    357,
+    630,
+    737
+  ],
+  "content_rgb_rmse": 54.27672069958465,
+  "height": 800,
+  "mean_absolute_rgb_error": 2.4511891666666665,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/select/scrollable-light-open+End/native.png",
+  "pixels_differing_by_more_than_16": 21512,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/select/scrollable-light-open+End/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 19.002469072026756,
+  "width": 1000
+}

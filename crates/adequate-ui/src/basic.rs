@@ -26,6 +26,20 @@ pub fn label(text: impl Into<String>) {
     style.line_height_override = Some(t.font_size);
     RenderText::with_style(text, style).show();
 }
+/// A compact field label. External focus association is caller-owned.
+#[track_caller]
+pub fn field_label(text: impl Into<String>) {
+    let t = theme();
+    let mut style = t.text_style(t.font_size, t.foreground, 500);
+    style.line_height_override = Some(t.font_size * 1.375);
+    RenderText::with_style(text, style).show();
+}
+/// Validation feedback below a field's control.
+#[track_caller]
+pub fn field_error(text: impl Into<String>) {
+    let t = theme();
+    RenderText::with_style(text, t.text_style(t.font_size, t.destructive, 400)).show();
+}
 /// Typography used by the heading of a group of fields.
 #[derive(Debug, Clone, Copy, Default)]
 pub enum FieldLegendVariant {

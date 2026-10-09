@@ -78,6 +78,7 @@ struct FocusProps {
     open: bool,
     modal: bool,
     auto_focus: bool,
+    backdrop: bool,
     trigger: Option<WidgetId>,
     dismiss: Rc<Cell<bool>>,
 }
@@ -85,6 +86,19 @@ struct FocusProps {
 struct FocusScope {
     props: FocusProps,
     was_open: Cell<bool>,
+    owned_focus: Cell<bool>,
+}
+impl FocusScope {
+    fn contains_focus(&self, ctx: &LayoutContext<'_>) -> bool {
+        let mut current = ctx.input.focus();
+        while let Some(id) = current {
+            if id == ctx.dom.current() {
+                return true;
+            }
+            current = ctx.dom.get(id).and_then(|node| node.parent);
+        }
+        false
+    }
 }
 impl Widget for FocusScope {
     type Props<'a> = FocusProps;
@@ -95,10 +109,12 @@ impl Widget for FocusScope {
                 open: false,
                 modal: true,
                 auto_focus: true,
+                backdrop: true,
                 trigger: None,
                 dismiss: Rc::default(),
             },
             was_open: Cell::new(false),
+            owned_focus: Cell::new(false),
         }
     }
     fn update(&mut self, props: FocusProps) {
@@ -107,7 +123,18 @@ impl Widget for FocusScope {
     fn layout(&self, ctx: LayoutContext<'_>, constraints: Constraints) -> Vec2 {
         let was_open = self.was_open.replace(self.props.open);
         if !self.props.open {
-            if was_open {
+            // Pointer-only tooltips never own focus. Returning it on close would
+            // focus their trigger and reopen them. Preserve a new outside target
+            // too, while restoring focus when a focused popup child disappears.
+            let owned = self.owned_focus.replace(false);
+            let moved_outside = ctx
+                .input
+                .focus()
+                .is_some_and(|id| ctx.dom.get(id).is_some() && !self.contains_focus(&ctx));
+            // A root menu's backdrop also owns focus in its sibling submenus,
+            // which can disappear together when a deep action closes the tree.
+            if was_open && (self.props.modal || ((owned || self.props.backdrop) && !moved_outside))
+            {
                 ctx.input.set_focus(self.props.trigger, false);
             }
             return Vec2::ZERO;
@@ -132,6 +159,7 @@ impl Widget for FocusScope {
                 ctx.input.set_focus(Some(focus), true);
             }
         }
+        self.owned_focus.set(self.contains_focus(&ctx));
         size
     }
     fn navigate(&self, ctx: NavigateContext<'_>, dir: NavDirection) -> Option<WidgetId> {
@@ -366,6 +394,7 @@ fn modal(
         open: state.open,
         modal: true,
         auto_focus: true,
+        backdrop: true,
         trigger: state.trigger,
         dismiss: state.dismiss.clone(),
     };
@@ -490,6 +519,8 @@ struct PopupPlacement {
     options: PopoverOptions,
     rtl: bool,
     bounded_to_side: bool,
+    minimum_width: f32,
+    height_offset: Option<f32>,
 }
 #[derive(Debug)]
 struct PopupPlacementWidget {
@@ -508,6 +539,8 @@ impl Widget for PopupPlacementWidget {
                 options: PopoverOptions::default(),
                 rtl: false,
                 bounded_to_side: false,
+                minimum_width: 128.,
+                height_offset: None,
             },
         }
     }
@@ -533,31 +566,38 @@ impl Widget for PopupPlacementWidget {
         let requested_width = if self.props.options.width > 0. {
             self.props.options.width
         } else {
-            anchor.size().x.max(128.)
+            anchor.size().x.max(self.props.minimum_width)
         };
         let width = requested_width.min(viewport.x - 2. * margin).max(0.);
         for &child in &ctx.dom.get_current().children {
             let mut options = self.props.options;
             let vertical = matches!(options.side, Side::Top | Side::Bottom);
-            let above = (anchor.pos().y - options.side_offset - margin).max(0.);
-            let below = (viewport.y - anchor.max().y - options.side_offset - margin).max(0.);
+            // Select aligns a row by shifting the popup upward, while its list
+            // height still comes from ordinary space below the trigger. Keeping
+            // these offsets separate prevents alignment from enlarging the list.
+            let height_offset = self.props.height_offset.unwrap_or(options.side_offset);
+            let above = (anchor.pos().y - height_offset - margin).max(0.);
+            let below = (viewport.y - anchor.max().y - height_offset - margin).max(0.);
             let (preferred, opposite) = if matches!(options.side, Side::Bottom) {
                 (below, above)
             } else {
                 (above, below)
             };
             let bounded = self.props.bounded_to_side && vertical;
-            let available =
-                if bounded && self.last_height.get() >= preferred && opposite > preferred {
-                    options.side = if matches!(options.side, Side::Bottom) {
-                        Side::Top
-                    } else {
-                        Side::Bottom
-                    };
-                    opposite
+            let available = if bounded
+                && self.props.height_offset.is_none()
+                && self.last_height.get() >= preferred
+                && opposite > preferred
+            {
+                options.side = if matches!(options.side, Side::Bottom) {
+                    Side::Top
                 } else {
-                    preferred
+                    Side::Bottom
                 };
+                opposite
+            } else {
+                preferred
+            };
             // Use one layout per widget, as required by Yakui. The previous frame's
             // clipped height tells us whether the preferred side was full. Giving
             // scrolling content its real viewport on its first pass also preserves
@@ -648,6 +688,7 @@ fn popup(
         open: state.open,
         modal: false,
         auto_focus,
+        backdrop: interactive,
         trigger: state.trigger,
         dismiss: state.dismiss.clone(),
     };
@@ -657,6 +698,10 @@ fn popup(
         options,
         rtl: crate::advanced_layout::rtl(),
         bounded_to_side,
+        minimum_width: yakui::util::read_scope::<PopupSizing>()
+            .map_or(128., |sizing| sizing.minimum_width),
+        height_offset: yakui::util::read_scope::<PopupSizing>()
+            .and_then(|sizing| sizing.height_offset),
     };
     let t = theme();
     yakui::util::widget_children::<FocusScope, _>(
@@ -880,4 +925,23 @@ pub(crate) fn navigation_popup(
             yakui::util::widget_children::<OutsideDismiss, _>(children, dismiss);
         },
     );
+}
+
+#[derive(Debug)]
+struct PopupSizing {
+    minimum_width: f32,
+    height_offset: Option<f32>,
+}
+#[track_caller]
+pub(crate) fn select_popup(
+    state: &mut OverlayState,
+    options: PopoverOptions,
+    aligned: bool,
+    children: impl FnOnce(&mut OverlayState),
+) {
+    Scope::new(PopupSizing {
+        minimum_width: 144.,
+        height_offset: aligned.then_some(4.),
+    })
+    .show(|| popup(state, options, true, false, 4., 1., true, children));
 }

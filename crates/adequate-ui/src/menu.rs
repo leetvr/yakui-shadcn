@@ -139,6 +139,7 @@ enum MenuInitialFocus {
     Pointer,
     First,
     Last,
+    Item(usize),
 }
 #[derive(Debug, Clone, Copy)]
 enum MenuCommand {
@@ -374,7 +375,15 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
                     if matches!(item.kind, MenuKind::Label) {
                         yakui::util::widget_children::<MenuRow, _>(
                             || {
-                                let mut style = t.text_style(12., t.muted_foreground, 500);
+                                let mut style = t.text_style(
+                                    12.,
+                                    t.muted_foreground,
+                                    if yakui::util::read_scope::<SelectRows>().is_some() {
+                                        400
+                                    } else {
+                                        500
+                                    },
+                                );
                                 style.line_height_override = Some(16.);
                                 yakui::widgets::RenderText::with_style(&item.label, style).show();
                             },
@@ -462,11 +471,18 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
                                         if let Some(icon) = item.icon {
                                             crate::icon_colored(icon, 16., color);
                                         }
-                                        yakui::widgets::RenderText::with_style(
-                                            &item.label,
-                                            t.text_style(14., color, 400),
-                                        )
-                                        .show();
+                                        let text = || {
+                                            yakui::widgets::RenderText::with_style(
+                                                &item.label,
+                                                t.text_style(14., color, 400),
+                                            )
+                                            .show();
+                                        };
+                                        if yakui::util::read_scope::<SelectRows>().is_some() {
+                                            crate::select::single_line(text);
+                                        } else {
+                                            text();
+                                        }
                                     },
                                     item.icon.is_some(),
                                 );
@@ -739,9 +755,11 @@ pub fn dropdown_menu_with_options(
 /// Select state separates trigger visibility, highlighted navigation and the value.
 #[derive(Debug, Default, Clone)]
 pub struct SelectState {
+    /// Selected application value; positional shorthands use option indices.
     pub selected: Option<usize>,
     pub popup: OverlayState,
     pub query: String,
+    pub(crate) request_last: Option<bool>,
 }
 
 #[derive(Debug)]
@@ -970,6 +988,11 @@ impl Widget for MenuRoot {
                 MenuInitialFocus::Pointer => Some(ctx.dom.current()),
                 MenuInitialFocus::First => ids.first().map(|e| e.1),
                 MenuInitialFocus::Last => ids.last().map(|e| e.1),
+                MenuInitialFocus::Item(index) => ids
+                    .iter()
+                    .find(|e| e.0 == index)
+                    .or_else(|| ids.first())
+                    .map(|e| e.1),
             };
             ctx.input
                 .set_focus(target, !matches!(requested, MenuInitialFocus::Pointer));
@@ -1151,44 +1174,91 @@ pub fn dropdown_menu_trigger(
     }
     response
 }
+/// A single-line select using positional values. Render select_content at the root.
 #[track_caller]
 pub fn select(state: &mut SelectState, options: &[&str], placeholder: &str, disabled: bool) {
-    let label = state
-        .selected
-        .and_then(|i| options.get(i))
-        .copied()
-        .unwrap_or(placeholder);
-    let response = crate::Button::new(label)
-        .variant(crate::Variant::Outline)
-        .icon(crate::Icon::ChevronDown)
+    let items: Vec<_> = options
+        .iter()
+        .enumerate()
+        .map(|(value, label)| crate::SelectItem::new(value, *label))
+        .collect();
+    crate::Select::new(&items)
+        .placeholder(placeholder)
         .disabled(disabled)
-        .show();
+        .show(state);
+}
+/// Popup for the positional shorthand. New applications can use SelectContent directly.
+#[track_caller]
+pub fn select_content(state: &mut SelectState, options: &[&str]) {
+    let items: Vec<_> = options
+        .iter()
+        .enumerate()
+        .map(|(value, label)| crate::SelectItem::new(value, *label))
+        .collect();
+    crate::SelectContent::new(&items)
+        .align_item_with_trigger(false)
+        .width(224.)
+        .show(state);
+}
+#[derive(Debug)]
+struct SelectRows;
+#[track_caller]
+pub(crate) fn select_list(
+    items: &mut [MenuItem],
+    selected: Option<usize>,
+    last: bool,
+) -> Option<u64> {
+    let mut action = None;
+    Scope::new(SelectRows).show(|| {
+        action = menu_root(
+            items,
+            0.,
+            selected.map(MenuInitialFocus::Item).unwrap_or(if last {
+                MenuInitialFocus::Last
+            } else {
+                MenuInitialFocus::First
+            }),
+            None,
+            false,
+            None,
+        )
+        .action;
+    });
+    action
+}
+#[track_caller]
+pub(crate) fn select_trigger(
+    state: &mut SelectState,
+    children: impl FnOnce() -> ControlResponse,
+) -> ControlResponse {
+    let mut response = ControlResponse::default();
+    let command = crate::layout::with_state(
+        || Rc::new(Cell::new(None::<TriggerCommand>)),
+        |hook| {
+            let pending = hook.borrow().clone();
+            let command = pending.take();
+            Scope::new(MenuTriggerContext {
+                open: state.popup.open,
+                pending,
+            })
+            .show(|| response = children());
+            command
+        },
+    );
     state.popup.trigger = response.id;
     if response.clicked {
         state.popup.toggle_from(response);
+        state.request_last = Some(false);
     }
-}
-#[track_caller]
-pub fn select_content(state: &mut SelectState, options: &[&str]) {
-    let selected = &mut state.selected;
-    crate::popover(&mut state.popup, 224., |popup| {
-        let mut items: Vec<_> = options
-            .iter()
-            .enumerate()
-            .map(|(i, label)| MenuItem {
-                kind: MenuKind::Radio {
-                    group: 0,
-                    selected: *selected == Some(i),
-                },
-                ..MenuItem::action(i as u64, *label)
-            })
-            .collect();
-        let result = menu_list(&mut items, 208., None);
-        if let Some(id) = result.action {
-            *selected = Some(id as usize);
-            popup.close();
+    match command {
+        Some(TriggerCommand::First | TriggerCommand::Last) => {
+            state.popup.open_from(response);
+            state.request_last = Some(matches!(command, Some(TriggerCommand::Last)));
         }
-    });
+        Some(TriggerCommand::Close) => state.popup.close(),
+        None => {}
+    }
+    response
 }
 /// Searchable combobox trigger; render its popup separately at the root.
 #[track_caller]

@@ -37,6 +37,7 @@ for name,variants in routes.items():
 if args.open_overlays:
  for name in ['dialog','alert-dialog','drawer','sheet','popover','hover-card','tooltip','select','native-select','combobox','dropdown-menu','context-menu','menubar','navigation-menu']:
   for variant in routes[name]:
+   if name=="select" and variant=="disabled":continue
    for theme in args.themes:
     output=args.output/f'{name}-{variant}-{theme}-open.png'
     run=subprocess.run([str(root/'target/debug/gallery'),'--component',name,'--variant',variant,'--theme',theme,'--state','open','--isolated','--width','1000','--height','800','--screenshot',str(output)],capture_output=True,text=True,timeout=60)
@@ -44,7 +45,7 @@ if args.open_overlays:
     else:report['captures'].append({'component':name,'variant':variant,'theme':theme,'state':'open','path':str(output),'bytes':output.stat().st_size})
     (args.output/'report.json').write_text(json.dumps(report,indent=2)+'\n')
 if args.open_overlays:
- for name,variant in [('avatar','dropdown'),('button-group','default'),('button-group','dropdown'),('button-group','popover')]:
+ for name,variant in [('avatar','dropdown'),('button-group','default'),('button-group','dropdown'),('button-group','popover'),('button-group','select')]:
    for theme in args.themes:
     output=args.output/f'{name}-{variant}-{theme}-open.png'
     run=subprocess.run([str(root/'target/debug/gallery'),'--component',name,'--variant',variant,'--theme',theme,'--state','open','--isolated','--width','1000','--height','800','--screenshot',str(output)],capture_output=True,text=True,timeout=60)

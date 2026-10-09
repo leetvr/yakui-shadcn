@@ -6,6 +6,7 @@ mod dropdown;
 mod examples;
 mod input_groups;
 mod navigation_menus;
+mod selects;
 mod showcases;
 use serde::Deserialize;
 use std::{error::Error, path::PathBuf};
@@ -512,13 +513,16 @@ fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
             }
             node.children.iter().find_map(|id| first_control(yak, *id))
         }
-        let id =
-            if gallery.options.component == "button-group" && gallery.options.state == "open" {
-                gallery.state.trigger.id
-            } else {
-                first_control(&yak, yak.dom().root())
-            }
-            .ok_or("This example has no focusable control")?;
+        let id = if matches!(
+            gallery.options.component.as_str(),
+            "button-group" | "select"
+        ) && gallery.options.state == "open"
+        {
+            gallery.state.trigger.id
+        } else {
+            first_control(&yak, yak.dom().root())
+        }
+        .ok_or("This example has no focusable control")?;
         if gallery.options.state == "hover" || gallery.options.state == "open" {
             let rect = yak.layout_dom().get(id).unwrap().rect;
             yak.handle_event(yakui::event::Event::CursorMoved(Some(rect.center())));

@@ -2463,7 +2463,8 @@
         "split",
         "input",
         "dropdown",
-        "popover"
+        "popover",
+        "select"
       ],
       "behaviour_tests": [
         "joined_buttons_keep_their_own_targets_and_share_one_border_on_each_axis",
@@ -2488,6 +2489,10 @@
         "visual/button-group/dropdown-dark-default",
         "visual/button-group/dropdown-light-open",
         "visual/button-group/dropdown-dark-open",
+        "visual/button-group/select-light-default",
+        "visual/button-group/select-light-open",
+        "visual/button-group/select-dark-default",
+        "visual/button-group/select-dark-open",
         "visual/button-group/popover-light-default",
         "visual/button-group/popover-dark-default",
         "visual/button-group/popover-light-open",
@@ -2495,9 +2500,10 @@
       ],
       "status": "in_progress",
       "deviations": [
-        "Nested input-group and select compositions are still pending. English examples only.",
+        "Nested and input-group compositions are still pending. English examples only.",
         "Native controls join borders/corners as intended by upstream selectors; those selectors do not join all buttons in the current pinned browser harness.",
-        "Split uses the pinned Lucide Plus instead of Tabler Plus. Motion/shadows and exact mixed-size focus stacking are deferred prototype polish."
+        "Split uses the pinned Lucide Plus instead of Tabler Plus. Motion/shadows and exact mixed-size focus stacking are deferred prototype polish.",
+        "Currency choice labels use one foreground rather than a separate muted trailing currency name."
       ],
       "example_coverage": [
         {
@@ -2791,10 +2797,35 @@
             "@/styles/base-nova/ui/input",
             "@/styles/base-nova/ui/select"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "select",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/button-group/select-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/button-group/select-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/button-group/select-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/button-group/select-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -6749,7 +6780,9 @@
         "field",
         "field_legend",
         "field_description",
-        "FieldLegendVariant"
+        "FieldLegendVariant",
+        "field_label",
+        "field_error"
       ],
       "gallery_examples": [
         "default",
@@ -10717,20 +10750,62 @@
         "select-rtl"
       ],
       "rust_api": [
+        "Select",
+        "SelectItem",
+        "SelectSize",
+        "SelectContent",
+        "SelectState",
         "select",
-        "select_content",
-        "SelectState"
+        "select_content"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "align-item",
+        "groups",
+        "scrollable",
+        "disabled",
+        "invalid"
       ],
       "behaviour_tests": [
-        "selection::select_arrows_and_enter_update_the_callers_value"
+        "selection::select_arrows_and_enter_update_the_callers_value",
+        "select_aligns_the_current_choice_and_commits_stable_values_after_navigation",
+        "select_compact_and_disabled_triggers_keep_their_size_and_cannot_open_when_disabled",
+        "select_tab_dismissal_moves_to_the_next_editable_field",
+        "scrollable_select_example_reveals_and_selects_the_source_final_timezone"
       ],
-      "visual_comparisons": [],
+      "visual_comparisons": [
+        "visual/select/default-light-open",
+        "visual/select/default-dark-open",
+        "visual/select/default-light-default",
+        "visual/select/default-dark-default",
+        "visual/select/default-light-open+ArrowDown,Enter",
+        "visual/select/default-dark-open+ArrowDown,Enter",
+        "visual/select/align-item-light-open",
+        "visual/select/align-item-dark-open",
+        "visual/select/align-item-light-default",
+        "visual/select/align-item-dark-default",
+        "visual/select/groups-light-open",
+        "visual/select/groups-dark-open",
+        "visual/select/groups-light-default",
+        "visual/select/groups-dark-default",
+        "visual/select/scrollable-light-open",
+        "visual/select/scrollable-dark-open",
+        "visual/select/scrollable-light-default",
+        "visual/select/scrollable-dark-default",
+        "visual/select/scrollable-light-open+End",
+        "visual/select/scrollable-dark-open+End",
+        "visual/select/disabled-light-default",
+        "visual/select/disabled-dark-default",
+        "visual/select/invalid-light-open",
+        "visual/select/invalid-dark-open",
+        "visual/select/invalid-light-default",
+        "visual/select/invalid-dark-default"
+      ],
       "status": "in_progress",
       "deviations": [
-        "Native popup/keyboard selection exists; disabled item groups, scroll buttons, separators, sizes and selected-item autofocus pending."
+        "English-only previews; the translated RTL composition is outside the current target.",
+        "Native scrolling and keyboard reveal replace the browser scroll-arrow affordance and dynamic popup growth. Selected-row alignment clamps near viewport edges.",
+        "Group/separator spacing, compact alignment, rounded item corners, shadows and source-specific field typography have minor differences; deferred prototype polish."
       ],
       "example_coverage": [
         {
@@ -10742,10 +10817,49 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/select"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "default",
+          "behaviour_tests": [
+            "select_aligns_the_current_choice_and_commits_stable_values_after_navigation"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/select/default-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/select/default-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/select/default-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/select/default-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+ArrowDown,Enter",
+              "path": "visual/select/default-light-open+ArrowDown,Enter",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+ArrowDown,Enter",
+              "path": "visual/select/default-dark-open+ArrowDown,Enter",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -10761,10 +10875,37 @@
             "@/styles/base-nova/ui/select",
             "@/styles/base-nova/ui/switch"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "align-item",
+          "behaviour_tests": [
+            "select_aligns_the_current_choice_and_commits_stable_values_after_navigation"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/select/align-item-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/select/align-item-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/select/align-item-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/select/align-item-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -10776,10 +10917,37 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/select"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "groups",
+          "behaviour_tests": [
+            "select_aligns_the_current_choice_and_commits_stable_values_after_navigation"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/select/groups-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/select/groups-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/select/groups-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/select/groups-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -10791,10 +10959,49 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/select"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "scrollable",
+          "behaviour_tests": [
+            "scrollable_select_example_reveals_and_selects_the_source_final_timezone"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/select/scrollable-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/select/scrollable-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/select/scrollable-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/select/scrollable-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+End",
+              "path": "visual/select/scrollable-light-open+End",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+End",
+              "path": "visual/select/scrollable-dark-open+End",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -10806,10 +11013,25 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/select"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "disabled",
+          "behaviour_tests": [
+            "select_compact_and_disabled_triggers_keep_their_size_and_cannot_open_when_disabled"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/select/disabled-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/select/disabled-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -10822,10 +11044,35 @@
             "@/styles/base-nova/ui/field",
             "@/styles/base-nova/ui/select"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "invalid",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/select/invalid-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/select/invalid-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/select/invalid-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/select/invalid-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -13013,7 +13260,9 @@
       "gallery_examples": [
         "default"
       ],
-      "behaviour_tests": [],
+      "behaviour_tests": [
+        "pointer_tooltip_closing_does_not_focus_its_trigger_and_reopen_itself"
+      ],
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [

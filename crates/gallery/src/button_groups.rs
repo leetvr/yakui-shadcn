@@ -10,6 +10,7 @@ pub const VARIANTS: &[&str] = &[
     "input",
     "dropdown",
     "popover",
+    "select",
 ];
 fn action(label: &str, size: S, state: &mut crate::examples::ExampleState) {
     if B::new(label).variant(V::Outline).size(size).show().clicked {
@@ -135,6 +136,38 @@ pub fn render(variant: &str, state: &mut crate::examples::ExampleState, disabled
                     .show()
             });
         }),
+        "select" => ui::button_group(|| {
+            ui::button_group(|| {
+                let items = currency_items();
+                let symbol = match state.select.selected {
+                    Some(1) => "€",
+                    Some(2) => "£",
+                    _ => "$",
+                };
+                state.trigger = ui::Select::new(&items)
+                    .value_text(symbol)
+                    .disabled(disabled)
+                    .show(&mut state.select);
+                ui::width(240., || {
+                    ui::Input::new(&mut state.text)
+                        .placeholder("10.00")
+                        .disabled(disabled)
+                        .show();
+                });
+            });
+            ui::button_group(|| {
+                if B::new("")
+                    .variant(V::Outline)
+                    .size(S::Icon)
+                    .icon(I::ArrowRight)
+                    .disabled(disabled)
+                    .show()
+                    .clicked
+                {
+                    state.count += 1;
+                }
+            });
+        }),
         "popover" => ui::button_group(|| {
             B::new("Copilot")
                 .variant(V::Outline)
@@ -192,7 +225,11 @@ pub fn items(variant: &str) -> Vec<M> {
     }
 }
 pub fn content(variant: &str, state: &mut crate::examples::ExampleState) {
-    if variant == "popover" {
+    if variant == "select" {
+        ui::SelectContent::new(&currency_items())
+            .align_item_with_trigger(false)
+            .show(&mut state.select);
+    } else if variant == "popover" {
         ui::popover_with_options(
             &mut state.overlay,
             ui::PopoverOptions {
@@ -230,4 +267,11 @@ pub fn content(variant: &str, state: &mut crate::examples::ExampleState) {
             state.count = id as u32;
         }
     }
+}
+fn currency_items() -> Vec<ui::SelectItem> {
+    vec![
+        ui::SelectItem::new(0, "$ US Dollar"),
+        ui::SelectItem::new(1, "€ Euro"),
+        ui::SelectItem::new(2, "£ British Pound"),
+    ]
 }

@@ -37,7 +37,7 @@ overlay children. Keep overlays at the root and retain their state in your appli
 | Drawer | `drawer` | Show a bottom modal; dragging remains pending. |
 | Dropdown Menu | `dropdown_menu`, `MenuItem`, `MenuKind`, `MenuState` | Displays a menu to the user — such as a set of actions or functions — triggered by a button. |
 | Empty | `empty` | Use the Empty component to display an empty state. |
-| Field | `field` | Combine labels, controls, and help text to compose accessible form fields and grouped inputs. |
+| Field | `field`, `field_label`, `field_description`, `field_error` | Compose labels, controls, help text and validation errors. |
 | Form | `form`, `field`, `Input` | Compose controls into an application-owned form. |
 | Hover Card | `hover_card` | For sighted users to preview content available behind a link. |
 | Input | `Input`, `InputResponse`, `input` | A text input component for forms and user data entry with built-in styling and accessibility features. |
@@ -59,7 +59,7 @@ overlay children. Keep overlays at the root and retain their state in your appli
 | Radio Group | `radio_group` | A set of checkable buttons—known as radio buttons—where no more than one of the buttons can be checked at a time. |
 | Resizable | `resizable`, `Orientation` | Accessible resizable panel groups and layouts with keyboard support. |
 | Scroll Area | `scroll_area` | Augments native scroll functionality for custom, cross-browser styling. |
-| Select | `select`, `select_content`, `SelectState` | Displays a list of options for the user to pick from—triggered by a button. |
+| Select | `Select`, `SelectItem`, `SelectSize`, `SelectContent`, `SelectState` | Pick an application value from grouped, scrollable choices. |
 | Separator | `separator` | Visually or semantically separates content. |
 | Sheet | `sheet`, `Side` | Extends the Dialog component to display content that complements the main content of the screen. |
 | Sidebar | `SidebarLink`, `SidebarState`, `sidebar` | A composable, themeable and customizable sidebar component. |
@@ -110,10 +110,29 @@ ui::dialog(&mut popup, |popup| {
 ```
 
 ```rust
-ui::select(&mut selection, &["Apple", "Banana"], "Select a fruit", false);
+let choices = [
+    ui::SelectItem::label("Fruit"),
+    ui::SelectItem::empty("Select a fruit"),
+    ui::SelectItem::new(10, "Apple"),
+    ui::SelectItem::new(20, "Banana"),
+    ui::SelectItem::new(30, "Grapes").disabled(true),
+];
+ui::Select::new(&choices).placeholder("Select a fruit")
+    .width(192.).show(&mut selection);
 // At the root, after ordinary content:
-ui::select_content(&mut selection, &["Apple", "Banana"]);
+if ui::SelectContent::new(&choices).show(&mut selection) {
+    // Values are application IDs, not positions in the list.
+    save_fruit(selection.selected);
+}
 ```
+
+`SelectState` owns the selected value and popup visibility. `SelectItem::empty`
+clears the value; labels and separators cannot be selected. Arrow keys, Home/End
+and typeahead move focus, Enter commits, and Escape dismisses. Tab closes and
+moves to the next control. The popup aligns the current choice with its trigger;
+use `.align_item_with_trigger(false)` to place it below. `.size(SelectSize::Sm)`,
+`.disabled(true)` and `.invalid(true)` configure the trigger. For a currency
+symbol, `.value_text("$")` overrides its display while retaining the full choices.
 
 The standalone `settings`, `dashboard` and `checkout` examples under
 `crates/gallery/examples` compile as separate applications consuming this public API.
