@@ -1,0 +1,16 @@
+{
+  "example": "button-group-popover",
+  "theme": "light",
+  "state": "open",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 529.609375,
+    "y": 384,
+    "width": 32,
+    "height": 32
+  }
+}

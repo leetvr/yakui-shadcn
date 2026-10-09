@@ -24,7 +24,7 @@ try {
  }
  await page.goto(`${process.env.REFERENCE_URL||'http://127.0.0.1:4173'}/?example=${example}&theme=${theme}`)
  await page.waitForFunction(()=>window.referenceReady===true && document.getElementById('root').childElementCount>0)
- const target=page.locator('button, input, textarea, [tabindex]').filter({visible:true}).first()
+ const target=page.locator(example.startsWith('button-group-') && state==='open'?'button[aria-haspopup]':'button, input, textarea, [tabindex]').filter({visible:true}).first()
  if(await target.count()) await target.waitFor({state:'visible'})
  await page.evaluate(()=>document.fonts.ready)
  await page.locator('[data-slot="avatar-image"]').evaluateAll(images=>Promise.all(images.map(image=>image.decode().catch(()=>{}))))

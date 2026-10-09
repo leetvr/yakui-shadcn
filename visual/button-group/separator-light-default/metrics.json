@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00060875,
+  "content_bounds": [
+    444,
+    386,
+    556,
+    414
+  ],
+  "content_rgb_rmse": 51.86616595545083,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.07439125,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/button-group/separator-light-default/native.png",
+  "pixels_differing_by_more_than_16": 487,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/button-group/separator-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 3.247335638642855,
+  "width": 1000
+}

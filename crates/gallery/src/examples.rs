@@ -96,6 +96,8 @@ pub struct ExampleState {
     pub dropdown: crate::dropdown::DropdownExample,
     pub avatar_images: bool,
     pub avatar_items: Vec<ui::MenuItem>,
+    pub group_items: Vec<ui::MenuItem>,
+    pub group_variant: String,
     pub values: [f64; 2],
     pub ratio: f32,
     pub carousel: ui::CarouselState,
@@ -828,11 +830,13 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
                 ui::button("Create project");
             },
         ),
-        "button-group" => ui::button_group(|| {
-            for title in ["Archive", "Report", "Delete"] {
-                Button::new(title).variant(V::Outline).show();
+        "button-group" => {
+            if state.group_variant != variant {
+                state.group_items = crate::button_groups::items(variant);
+                state.group_variant = variant.into();
             }
-        }),
+            crate::button_groups::render(variant, state, disabled);
+        }
         "scroll-area" => ui::width(200., || {
             ui::scroll_area(280., || {
                 ui::column(12., || {
@@ -899,6 +903,7 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "group",
             "table",
         ],
+        "button-group" => crate::button_groups::VARIANTS,
         "avatar" => crate::avatars::VARIANTS,
         "table" => &["default", "footer", "actions"],
         "dropdown-menu" => crate::dropdown::VARIANTS,
@@ -1032,6 +1037,7 @@ pub fn overlays(component: &str, variant: &str, state: &mut ExampleState) {
             &mut state.select,
             &["Next.js", "SvelteKit", "Nuxt", "Remix", "Astro"],
         ),
+        "button-group" => crate::button_groups::content(variant, state),
         "avatar" if variant == "dropdown" => crate::avatars::content(state),
         "dropdown-menu" => {
             if let Some(id) =
@@ -1077,6 +1083,7 @@ impl ExampleState {
     pub fn is_open(&self, component: &str) -> bool {
         match component {
             "select" | "native-select" | "combobox" => self.select.popup.open,
+            "button-group" => self.menu.popup.open || self.overlay.open,
             "avatar" | "dropdown-menu" | "context-menu" => self.menu.popup.open,
             "menubar" => self.menubar.menu.popup.open,
             "table" => self.row_actions.iter().any(|menu| menu.popup.open),
@@ -1111,6 +1118,7 @@ impl Default for ExampleState {
             dropdown: Default::default(),
             avatar_images:true,
             avatar_items:crate::avatars::items(),
+            group_items:vec![],group_variant:String::new(),
             row_actions: Default::default(),
             last_table_action: None,
             menubar: Default::default(),

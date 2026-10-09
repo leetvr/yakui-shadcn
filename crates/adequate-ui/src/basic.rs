@@ -270,10 +270,11 @@ impl Button {
                     ),
                 })
                 .show(|| {
-                    RoundRect::new(radius)
-                        .color(fill)
-                        .border(border.map(|c| Border::new(c, t.border_width)))
-                        .show_children(|| {
+                    crate::button_group::button_surface(
+                        radius,
+                        fill,
+                        border.map(|c| Border::new(c, t.border_width)),
+                        || {
                             yakui::pad(
                                 Pad::balanced(
                                     if self.size.icon() { 0. } else { horizontal },
@@ -297,7 +298,7 @@ impl Button {
                                                 fg,
                                             );
                                         }
-                                        if !self.size.icon() {
+                                        if !self.size.icon() && !self.text.is_empty() {
                                             let mut style = t.text_style(fs, fg, 500);
                                             style.line_height_override = Some(line_height);
                                             yakui::util::widget_children::<Underline, _>(
@@ -318,7 +319,8 @@ impl Button {
                                     }
                                 },
                             );
-                        });
+                        },
+                    );
                 });
             },
         )
@@ -737,11 +739,10 @@ impl<'a> Input<'a> {
         } else {
             Color::CLEAR
         };
-        surface(
+        crate::button_group::input_surface(
             fill,
-            Some(if self.invalid { t.destructive } else { t.input }),
+            if self.invalid { t.destructive } else { t.input },
             t.radius,
-            0.,
             || {
                 let foreground = if self.disabled {
                     crate::layout::resolve_color(t.foreground.with_alpha(0.5))
@@ -873,11 +874,6 @@ pub fn radio_group(options: &[&str], selected: &mut usize) {
             });
         });
     });
-}
-/// A simple horizontal group of actions using normal component composition.
-#[track_caller]
-pub fn button_group(children: impl FnOnce()) {
-    row(0., children)
 }
 /// Draw a loading indicator at a deterministic phase (radians).
 #[track_caller]

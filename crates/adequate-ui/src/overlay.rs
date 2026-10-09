@@ -783,6 +783,23 @@ pub fn popover_with_options(
 ) {
     popup(state, options, true, true, 8., 1., false, children)
 }
+/// A compact heading and description inside a popover.
+#[track_caller]
+pub fn popover_header(children: impl FnOnce()) {
+    crate::column(2., children);
+}
+/// Medium-weight popover heading, using the body size and line height.
+#[track_caller]
+pub fn popover_title(text: impl Into<String>) {
+    let t = crate::theme();
+    yakui::widgets::RenderText::with_style(text, t.text_style(t.font_size, t.foreground, 500))
+        .show();
+}
+/// Secondary text describing the popover's purpose.
+#[track_caller]
+pub fn popover_description(text: impl Into<String>) {
+    crate::muted(text);
+}
 #[track_caller]
 pub(crate) fn menu_popup(
     state: &mut OverlayState,

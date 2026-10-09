@@ -48,10 +48,10 @@ initial public APIs and native routes. Current behaviour includes:
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All four consuming examples compile.
-- 61 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
-- 128 native variant routes × two themes, plus six showcase captures and 56 actual-trigger overlay captures: **318 captures,
+- 63 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
+- 135 native variant routes × two themes, plus six showcase captures and 62 actual-trigger overlay captures: **338 captures,
   zero failures** in the latest full smoke run.
-- The configured upstream suite covers 51 actual previews: **240 comparison pairs**
+- The configured upstream suite covers 59 actual previews: **262 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
   used to find and correct concrete layout/painting defects, not to certify parity.
 - Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
@@ -65,16 +65,16 @@ focused layout tests cover the radio/progress/button regressions.
 ## Required work still outstanding
 
 `reference/components.json` records component-specific deviations and every upstream
-preview separately. 51 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
+preview separately. 59 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
 do not map an unported preview to a generic default rendition. Important incomplete areas include:
 
 - Complete documented slots, sizes, disabled/invalid states and compositions.
-- Rich navigation flyouts, joined button/input groups, grouped/multiple autocomplete,
+- Rich navigation flyouts, richer input-group slots, grouped/multiple autocomplete,
   full forms/field association and advanced selector keyboard contracts.
 - Drawer drag physics, overlay motion/shadows/delays, tooltip/hover-card pointer transit.
 - Calendar caption dropdowns/locales/presets/week numbers; complete data table cells,
   row actions/reordering; complete chart interpolation/axes/tooltips and preview kinds.
-- Image/video/texture APIs, avatar groups/status and chat reactions.
+- Image/video presentation APIs and chat reactions.
 - Complete useful sidebar variants/layouts and common keyboard interactions.
 - Full screenshot/interaction coverage for every component and each upstream preview.
 - Final consuming-application, performance and normal-usage audit.
@@ -232,3 +232,20 @@ The full gallery has 318 successful native captures and no failures. Both-theme
 image/fallback/dropdown comparisons bring the component suite to 240 pairs across
 51 source previews. Border blending, grayscale rasterisation and badge cascade
 differences remain acceptable polish for the internal/prototype target.
+
+## Joined button-group increment
+
+Added horizontal/vertical ButtonGroup, nested group spacing, joined button/input
+surfaces, text prefixes and axis-aware separators. Controls retain their normal
+state, targets and callbacks. Eight genuine previews cover toolbar, orientation,
+sizes, separators, split actions, search input, dropdown and editable popover.
+Popup slots provide compact heading/description composition. The screenshot loop
+caught a narrow textarea; filling its available width corrected the common path.
+
+Two actual Yakui tests cover geometry, pointer activation, nested spacing and
+editing caller-owned text. All 63 tests and four doctests pass. Both-theme default
+and open popup pairs bring coverage to 262 pairs across 59 upstream previews.
+Nested input-group and select compositions remain pending. The pinned browser
+harness does not apply all upstream joining selectors; native groups implement
+the documented joining intent. Split uses Lucide Plus rather than Tabler Plus.
+Shadow/motion/cascade and exact mixed-size focus stacking are deferred polish.

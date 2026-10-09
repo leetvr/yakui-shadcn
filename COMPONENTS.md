@@ -20,7 +20,7 @@ overlay children. Keep overlays at the root and retain their state in your appli
 | Breadcrumb | `breadcrumb` | Displays the path to the current resource using a hierarchy of links. |
 | Bubble | `bubble`, `BubbleVariant` | Group conversational content on a themed surface. |
 | Button | `Button`, `button`, `Variant`, `ButtonSize`, `link` | Displays a button or a component that looks like a button. |
-| Button Group | `button_group` | A container that groups related buttons together with consistent styling. |
+| Button Group | `ButtonGroup`, `button_group`, `button_group_text`, `button_group_separator` | A container that groups related buttons together with consistent styling. |
 | Calendar | `Date`, `CalendarState`, `CalendarMode`, `calendar` | A calendar component that allows users to select a date or a range of dates. |
 | Card | `card`, `card_sized`, `card_header`, `card_header_with_action`, `card_title`, `card_description`, `card_content`, `card_footer` | Displays a card with header, content, and footer. |
 | Carousel | `CarouselState`, `CarouselOptions`, `carousel` | Navigate or swipe through composable slides. |
@@ -230,3 +230,24 @@ ui::Button::new("").variant(ui::Variant::Ghost)
 `AvatarImage::new(texture_id, pixel_dimensions)` crops the image to cover the
 circle. The library has no file/image decoder dependency. Run the independent
 `avatars` example for app-owned decoding, texture registration and fallback changes.
+
+Use button groups for adjoining actions or an input with a suffix button. Each
+control keeps its own focus and click response; groups only join surfaces and
+lay out their children. Nest groups for an 8px gap between sets of actions.
+
+```rust
+ui::button_group(|| {
+    ui::width(240., || { ui::input(&mut query, "Search..."); });
+    if ui::Button::new("").variant(ui::Variant::Outline)
+        .icon(ui::Icon::Search).show().clicked { search(&query); }
+});
+ui::ButtonGroup::new().orientation(ui::Orientation::Vertical).show(|| {
+    ui::Button::new("").size(ui::ButtonSize::Icon).icon(ui::Icon::Plus).show();
+    ui::Button::new("").size(ui::ButtonSize::Icon).icon(ui::Icon::Minus).show();
+});
+```
+
+`button_group_separator` follows the group's axis. `button_group_text` adds a
+bordered prefix or suffix. Use `popover_header`, `popover_title` and
+`popover_description` for compact popup text. Inside columns, use `fill_width`
+around editors when they should occupy the popup's available width.

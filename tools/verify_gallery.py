@@ -44,11 +44,12 @@ if args.open_overlays:
     else:report['captures'].append({'component':name,'variant':variant,'theme':theme,'state':'open','path':str(output),'bytes':output.stat().st_size})
     (args.output/'report.json').write_text(json.dumps(report,indent=2)+'\n')
 if args.open_overlays:
- for theme in args.themes:
-    output=args.output/f'avatar-dropdown-{theme}-open.png'
-    run=subprocess.run([str(root/'target/debug/gallery'),'--component','avatar','--variant','dropdown','--theme',theme,'--state','open','--isolated','--width','1000','--height','800','--screenshot',str(output)],capture_output=True,text=True,timeout=60)
-    if run.returncode:report['failures'].append({'component':'avatar','variant':'dropdown','theme':theme,'state':'open','error':run.stderr})
-    else:report['captures'].append({'component':'avatar','variant':'dropdown','theme':theme,'state':'open','path':str(output),'bytes':output.stat().st_size})
+ for name,variant in [('avatar','dropdown'),('button-group','default'),('button-group','dropdown'),('button-group','popover')]:
+   for theme in args.themes:
+    output=args.output/f'{name}-{variant}-{theme}-open.png'
+    run=subprocess.run([str(root/'target/debug/gallery'),'--component',name,'--variant',variant,'--theme',theme,'--state','open','--isolated','--width','1000','--height','800','--screenshot',str(output)],capture_output=True,text=True,timeout=60)
+    if run.returncode:report['failures'].append({'component':name,'variant':variant,'theme':theme,'state':'open','error':run.stderr})
+    else:report['captures'].append({'component':name,'variant':variant,'theme':theme,'state':'open','path':str(output),'bytes':output.stat().st_size})
     (args.output/'report.json').write_text(json.dumps(report,indent=2)+'\n')
 if args.showcases:
  for name in ['dashboard','settings','checkout']:

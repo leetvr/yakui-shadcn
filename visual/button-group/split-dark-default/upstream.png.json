@@ -1,0 +1,16 @@
+{
+  "example": "button-group-split",
+  "theme": "dark",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 451.140625,
+    "y": 384,
+    "width": 65.71875,
+    "height": 32
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "example": "button-group-orientation",
+  "theme": "dark",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 484,
+    "y": 368,
+    "width": 32,
+    "height": 32
+  }
+}

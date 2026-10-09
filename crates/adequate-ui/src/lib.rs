@@ -5,6 +5,8 @@
 //! The library emits Yakui paint commands and does not depend on a renderer.
 mod advanced_layout;
 mod avatar;
+mod button_group;
+pub use button_group::*;
 mod basic;
 pub use avatar::*;
 mod checkbox;

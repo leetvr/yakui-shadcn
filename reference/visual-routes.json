@@ -334,5 +334,32 @@
       "open",
       "focus"
     ]
+  },
+  {
+    "component": "button-group",
+    "variants": [
+      "default",
+      "orientation",
+      "size",
+      "separator",
+      "split",
+      "input",
+      "dropdown",
+      "popover"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "button-group",
+    "variants": [
+      "default",
+      "dropdown",
+      "popover"
+    ],
+    "states": [
+      "open"
+    ]
   }
 ]
