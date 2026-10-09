@@ -1,0 +1,16 @@
+{
+  "example": "tooltip-sides",
+  "theme": "light",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 377.765625,
+    "y": 384,
+    "width": 48.3125,
+    "height": 32
+  }
+}

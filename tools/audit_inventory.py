@@ -32,3 +32,14 @@ for c in components:
    assert {'light','dark'}<={v['theme'] for v in e['visual_comparisons']}
  if c['status']=='complete':assert c['rust_api'] and c['gallery_examples'] and not c['deviations']
 print(f'{len(components)} API entries; {sum(len(c["upstream_examples"]) for c in components)} preview records; {comparisons} paired captures; {sum(c["status"]=="complete" for c in components)} certified complete components')
+
+# Prototype readiness is a separate contract from exhaustive preview parity.
+# Retain both records rather than treating successful renders as full certification.
+if inventory.get('completion_scope',{}).get('status')=='ready':
+ verification=json.loads((root/'reference/verification.json').read_text())
+ report=verification['native_smoke']
+ assert report['failures']==0
+ for c in components:
+  assert c['rust_api'] and c['gallery_examples'],(c['name'],'missing prototype API/example')
+  assert c['name'] in report['captured_components'] and {'light','dark'}<=set(report['themes']),(c['name'],'missing native theme capture')
+ print('Prototype readiness: documented APIs/routes and native captures for all catalogue entries; detailed parity gaps retained.')

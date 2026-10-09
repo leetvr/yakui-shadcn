@@ -53,6 +53,8 @@ mod navigation;
 mod navigation_menu;
 pub use navigation_menu::*;
 mod overlay;
+mod tooltip;
+pub use tooltip::*;
 mod theme;
 pub use navigation::*;
 mod editor;

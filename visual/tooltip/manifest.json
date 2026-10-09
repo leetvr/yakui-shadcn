@@ -1,0 +1,509 @@
+{
+  "captures": [
+    {
+      "component": "tooltip",
+      "variant": "default",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "default-light-default",
+      "metrics": {
+        "changed_fraction": 0.0002375,
+        "content_bounds": [
+          470,
+          384,
+          530,
+          416
+        ],
+        "content_rgb_rmse": 29.262016762349106,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.0202175,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-light-default/native.png",
+        "pixels_differing_by_more_than_16": 190,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.4335401982504712,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "default",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "path": "default-light-open",
+      "metrics": {
+        "changed_fraction": 0.000595,
+        "content_bounds": [
+          451,
+          352,
+          549,
+          416
+        ],
+        "content_rgb_rmse": 21.413957070050344,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.04042625,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-light-open/native.png",
+        "pixels_differing_by_more_than_16": 476,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-light-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.896072585635898,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "default",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "default-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00023875,
+        "content_bounds": [
+          470,
+          384,
+          530,
+          416
+        ],
+        "content_rgb_rmse": 20.817673280972908,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.01469375,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 191,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.0198535434070914,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "default",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "path": "default-dark-open",
+      "metrics": {
+        "changed_fraction": 0.000765,
+        "content_bounds": [
+          451,
+          352,
+          549,
+          416
+        ],
+        "content_rgb_rmse": 24.18474502670646,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.0698375,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-dark-open/native.png",
+        "pixels_differing_by_more_than_16": 612,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-dark-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.14140860961502,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "sides",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "sides-light-default",
+      "metrics": {
+        "changed_fraction": 0.00101625,
+        "content_bounds": [
+          378,
+          384,
+          622,
+          416
+        ],
+        "content_rgb_rmse": 29.38546421569908,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.08267875,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/sides-light-default/native.png",
+        "pixels_differing_by_more_than_16": 813,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/sides-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.9030697115295045,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "sides",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "path": "sides-light-open",
+      "metrics": {
+        "changed_fraction": 0.00139125,
+        "content_bounds": [
+          276,
+          384,
+          622,
+          416
+        ],
+        "content_rgb_rmse": 28.340220211695584,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.10768625,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/sides-light-open/native.png",
+        "pixels_differing_by_more_than_16": 1113,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/sides-light-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.3340435285100884,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "sides",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "sides-dark-default",
+      "metrics": {
+        "changed_fraction": 0.000965,
+        "content_bounds": [
+          378,
+          384,
+          622,
+          416
+        ],
+        "content_rgb_rmse": 22.86782954444454,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.06453875,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/sides-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 772,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/sides-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.2591749046941896,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "sides",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "path": "sides-dark-open",
+      "metrics": {
+        "changed_fraction": 0.00152,
+        "content_bounds": [
+          276,
+          384,
+          622,
+          416
+        ],
+        "content_rgb_rmse": 26.393458917907147,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.12049625,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/sides-dark-open/native.png",
+        "pixels_differing_by_more_than_16": 1216,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/sides-dark-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.1050196590896704,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "keyboard",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "keyboard-light-default",
+      "metrics": {
+        "changed_fraction": 0.00013375,
+        "content_bounds": [
+          486,
+          386,
+          514,
+          414
+        ],
+        "content_rgb_rmse": 27.50415089266583,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.01020375,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-light-default/native.png",
+        "pixels_differing_by_more_than_16": 107,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.8610161148317724,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "keyboard",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "path": "keyboard-light-open",
+      "metrics": {
+        "changed_fraction": 0.0014275,
+        "content_bounds": [
+          436,
+          350,
+          564,
+          414
+        ],
+        "content_rgb_rmse": 56.363682864888716,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.1834375,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-light-open/native.png",
+        "pixels_differing_by_more_than_16": 1142,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-light-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 5.703603685390492,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "keyboard",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "keyboard-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00014125,
+        "content_bounds": [
+          486,
+          386,
+          514,
+          414
+        ],
+        "content_rgb_rmse": 26.0195177918894,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.0099125,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 113,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.814539747342019,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "keyboard",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "path": "keyboard-dark-open",
+      "metrics": {
+        "changed_fraction": 0.00139125,
+        "content_bounds": [
+          436,
+          350,
+          564,
+          414
+        ],
+        "content_rgb_rmse": 50.89846168296944,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.16354916666666666,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-dark-open/native.png",
+        "pixels_differing_by_more_than_16": 1113,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-dark-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 5.150562186143697,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "disabled",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "disabled-light-default",
+      "metrics": {
+        "changed_fraction": 0.00028625,
+        "content_bounds": [
+          460,
+          384,
+          540,
+          416
+        ],
+        "content_rgb_rmse": 13.437238369546028,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.01429,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/disabled-light-default/native.png",
+        "pixels_differing_by_more_than_16": 229,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/disabled-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.7601249897220851,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "disabled",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "path": "disabled-light-open",
+      "metrics": {
+        "changed_fraction": 0.00113625,
+        "content_bounds": [
+          391,
+          352,
+          609,
+          416
+        ],
+        "content_rgb_rmse": 15.450943381429719,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.06391,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/disabled-light-open/native.png",
+        "pixels_differing_by_more_than_16": 909,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/disabled-light-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.0404607322857258,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "disabled",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "disabled-dark-default",
+      "metrics": {
+        "changed_fraction": 0.0002925,
+        "content_bounds": [
+          460,
+          384,
+          540,
+          416
+        ],
+        "content_rgb_rmse": 12.26868791375019,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.01505125,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/disabled-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 234,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/disabled-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.6940217936059357,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "disabled",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "path": "disabled-dark-open",
+      "metrics": {
+        "changed_fraction": 0.00144125,
+        "content_bounds": [
+          391,
+          352,
+          609,
+          416
+        ],
+        "content_rgb_rmse": 21.752328054779614,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.09747875,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/disabled-dark-open/native.png",
+        "pixels_differing_by_more_than_16": 1153,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/disabled-dark-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.8726253236368993,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "default",
+      "theme": "light",
+      "state": "focus+Escape",
+      "keys": [
+        "Escape"
+      ],
+      "path": "default-light-focus+Escape",
+      "metrics": {
+        "changed_fraction": 0.00049375,
+        "content_bounds": [
+          467,
+          381,
+          533,
+          419
+        ],
+        "content_rgb_rmse": 30.75488965415993,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.03514875,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-light-focus+Escape/native.png",
+        "pixels_differing_by_more_than_16": 395,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-light-focus+Escape/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.721999201509687,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tooltip",
+      "variant": "default",
+      "theme": "dark",
+      "state": "focus+Escape",
+      "keys": [
+        "Escape"
+      ],
+      "path": "default-dark-focus+Escape",
+      "metrics": {
+        "changed_fraction": 0.00024875,
+        "content_bounds": [
+          467,
+          381,
+          533,
+          419
+        ],
+        "content_rgb_rmse": 18.56682186059827,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.01608125,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-dark-focus+Escape/native.png",
+        "pixels_differing_by_more_than_16": 199,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/default-dark-focus+Escape/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.0395762357807146,
+        "width": 1000
+      },
+      "review": "pending"
+    }
+  ],
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/SecondHalfGames/yakui",
+      "commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+    }
+  }
+}

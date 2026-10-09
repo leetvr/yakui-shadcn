@@ -1,0 +1,16 @@
+{
+  "example": "button-group-nested",
+  "theme": "dark",
+  "state": "open",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 601,
+    "y": 386,
+    "width": 24,
+    "height": 28
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00028625,
+  "content_bounds": [
+    460,
+    384,
+    540,
+    416
+  ],
+  "content_rgb_rmse": 13.437238369546028,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.01429,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/disabled-light-default/native.png",
+  "pixels_differing_by_more_than_16": 229,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/disabled-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.7601249897220851,
+  "width": 1000
+}

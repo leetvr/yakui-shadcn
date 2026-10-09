@@ -1,0 +1,16 @@
+{
+  "example": "button-group-input-group",
+  "theme": "dark",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 372.390625,
+    "y": 384,
+    "width": 32,
+    "height": 32
+  }
+}

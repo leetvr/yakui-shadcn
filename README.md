@@ -1,8 +1,10 @@
 # yakui-adequate-ui
 
-A native Rust port of shadcn/ui built directly on Yakui. **The full port is in
-progress; this is not a production-complete catalogue yet.** See PROGRESS.md and
-reference/components.json for verified coverage and outstanding work.
+A native Rust port of shadcn/ui built directly on Yakui, targeting English internal
+interfaces and prototypes. The agreed scope is a usable full catalogue with common
+examples and documented gaps; exhaustive reproduction of all upstream demos is
+outside that target. The prototype common-use audit is complete. See PROGRESS.md
+and reference/components.json for verified coverage and limitations.
 
 The design reference is pinned shadcn Base UI / Nova / Neutral. The library depends
 on no windowing or rendering backend. The gallery uses official Yakui Winit/WGPU
@@ -23,7 +25,7 @@ cargo check -p yakui-adequate-ui
 ```
 
 Capture states: `default`, `hover`, `focus`, `disabled`, `selected`, `open`.
-`open` clicks the actual isolated example trigger and checks popup state; use
+`open` activates the actual isolated example trigger (hover for tooltips) and checks popup state; use
 `--isolated` for reproducible trigger captures. Unknown/unported
 routes return errors. A normal gallery shows all 65 catalogue entries with their
 current native variants. The current target is internal work and prototypes, with English examples.

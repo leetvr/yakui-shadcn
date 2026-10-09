@@ -1,7 +1,7 @@
 # Components
 
-Every catalogue entry has an initial native API and gallery route. None is certified
-as a complete port. See `reference/components.json` for per-preview coverage, actual
+Every catalogue entry has a public native API and gallery route for the agreed
+internal/prototype scope. Exhaustive upstream parity is not certified. See `reference/components.json` for per-preview coverage, actual
 behaviour tests, comparisons and known deviations. `gallery --list` reports supported
 native routes; unported upstream preview names return an error.
 
@@ -73,7 +73,7 @@ overlay children. Keep overlays at the root and retain their state in your appli
 | Toast | `Toast`, `ToastKind`, `ToastManager`, `ToastResponse`, `toast_viewport` | A succinct message that is displayed temporarily. |
 | Toggle | `toggle` | A two-state button that can be either on or off. |
 | Toggle Group | `ToggleGroupState`, `toggle_group` | A set of two-state buttons that can be toggled on or off. |
-| Tooltip | `tooltip` | A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it. |
+| Tooltip | `Tooltip`, `TooltipState`, `tooltip_trigger`, `tooltip_trigger_area` | Compact informational hover/focus content beside a control. |
 | Typography | `text`, `muted`, `heading` | Styles for headings, paragraphs, lists, etc. |
 
 ## Common patterns
@@ -317,3 +317,25 @@ Handle the returned IDs in your router. `NavigationMenuState::active()` returns
 an open entry's ID; use it to choose content width. `description_lines(2)` clips
 long descriptions. `navigation_menu` remains a simple row of direct route actions.
 Hover delays, departure closing and animation are deferred for this prototype API.
+
+Keep a `TooltipState` per trigger. Content belongs at the root, outside scrolling:
+
+```rust
+let save = ui::tooltip_trigger(&mut save_hint, || {
+    ui::Button::new("").icon(ui::Icon::Save)
+        .variant(ui::Variant::Outline).size(ui::ButtonSize::IconSm).show()
+});
+if save.clicked { save_settings(); }
+// After ordinary content:
+ui::Tooltip::new().side(ui::Side::Top).show_children(&mut save_hint, || {
+    ui::text("Save Changes");
+    ui::kbd("S");
+});
+```
+
+For a disabled button or informational icon, use `tooltip_trigger_area` around
+its content. It adds hover detection without a tab stop or activation. Opening is
+immediate; Escape dismisses a focused `tooltip_trigger` until focus/hover leaves,
+and clicking a trigger dismisses its hint. Tooltips do not move focus. Use a
+popover when the content contains interactive controls. The compact `tooltip`
+response-only helper is available for hover/focus hints without Escape interception.

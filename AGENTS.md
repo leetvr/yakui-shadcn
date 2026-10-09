@@ -40,6 +40,8 @@ complex state ownership/order with narrative comments. Never run Clippy or add
 mocked/fixture integration tests. Do not interact with Kane's phone. Mobile visual
 validation belongs to Kane. The project brief authorizes desktop visual verification.
 
-Commit meaningful verified increments. Only mark a component complete when every
-required API, upstream example/variant, interaction and both-theme comparison is
-covered, with significant deviations resolved or explicitly recorded.
+The agreed completion target is a usable full catalogue, common examples and
+explicit gaps. All 461 documentation demos are reference material; do not expand
+work toward exhaustive preview parity. Fix material normal-use problems and keep
+minor polish/rare cases documented. Commit meaningful verified increments.
+Do not equate prototype readiness with exhaustive upstream parity certification.

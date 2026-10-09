@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-10-09T12:16:10.288368+00:00",
+  "recorded_at": "2026-10-09T12:36:54.640488+00:00",
   "upstream": {
     "shadcn": {
       "repository": "https://github.com/shadcn-ui/ui",
@@ -20,20 +20,92 @@
   "upstream_previews": 461,
   "certified_complete_components": 0,
   "automated_tests": {
-    "count": 72,
+    "count": 75,
     "result": "passed",
-    "command": "cargo test --workspace"
+    "command": "cargo test --workspace",
+    "doctests": 7
   },
   "native_smoke": {
-    "captures": 376,
+    "captures": 396,
     "failures": 0,
     "includes_actual_trigger_opening": true,
-    "command": "python3 tools/verify_gallery.py --all-variants --showcases --open-overlays"
+    "command": "python3 tools/verify_gallery.py --all-variants --showcases --open-overlays",
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "captured_components": [
+      "accordion",
+      "alert",
+      "alert-dialog",
+      "aspect-ratio",
+      "attachment",
+      "avatar",
+      "badge",
+      "breadcrumb",
+      "bubble",
+      "button",
+      "button-group",
+      "calendar",
+      "card",
+      "carousel",
+      "chart",
+      "checkbox",
+      "collapsible",
+      "combobox",
+      "command",
+      "context-menu",
+      "data-table",
+      "date-picker",
+      "dialog",
+      "direction",
+      "drawer",
+      "dropdown-menu",
+      "empty",
+      "field",
+      "form",
+      "hover-card",
+      "input",
+      "input-group",
+      "input-otp",
+      "item",
+      "kbd",
+      "label",
+      "marker",
+      "menubar",
+      "message",
+      "message-scroller",
+      "native-select",
+      "navigation-menu",
+      "pagination",
+      "popover",
+      "progress",
+      "questionnaire",
+      "radio-group",
+      "resizable",
+      "scroll-area",
+      "select",
+      "separator",
+      "sheet",
+      "sidebar",
+      "skeleton",
+      "slider",
+      "spinner",
+      "switch",
+      "table",
+      "tabs",
+      "textarea",
+      "toast",
+      "toggle",
+      "toggle-group",
+      "tooltip",
+      "typography"
+    ]
   },
   "upstream_comparisons": {
-    "pairs": 322,
-    "previews": 75,
-    "review": "pending",
+    "pairs": 352,
+    "previews": 82,
+    "review": "targeted comparisons inspected; exhaustive parity not certified",
     "command": "python3 tools/visual_catalogue.py"
   },
   "checks": [
@@ -53,16 +125,22 @@
     "path": "visual/icons",
     "review": "geometry inspected; single-sample edge differences remain"
   },
-  "target": "English internal interfaces and prototypes; targeted common-path verification",
+  "target": "Usable full catalogue, common examples and documented gaps; English internal interfaces and prototypes.",
   "targeted_native_smoke": {
-    "captures": 32,
+    "captures": 16,
     "failures": 0,
-    "command": "python3 tools/verify_gallery.py --components dropdown-menu context-menu menubar table --all-variants"
+    "command": "python3 tools/verify_gallery.py --components chart --all-variants --output visual/local/chart-readability"
   },
   "consuming_examples": [
     "settings",
     "dashboard",
     "checkout",
     "avatars"
-  ]
+  ],
+  "prototype_scope_complete": true,
+  "completion_scope": {
+    "approved_by_user": true,
+    "exhaustive_upstream_preview_parity_required": false,
+    "status": "ready"
+  }
 }

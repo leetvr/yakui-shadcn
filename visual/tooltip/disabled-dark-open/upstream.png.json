@@ -1,0 +1,16 @@
+{
+  "example": "tooltip-disabled",
+  "theme": "dark",
+  "state": "open",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 460.390625,
+    "y": 384,
+    "width": 79.21875,
+    "height": 32
+  }
+}

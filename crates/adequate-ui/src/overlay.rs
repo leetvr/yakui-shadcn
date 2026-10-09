@@ -521,6 +521,7 @@ struct PopupPlacement {
     bounded_to_side: bool,
     minimum_width: f32,
     height_offset: Option<f32>,
+    fit_width: bool,
 }
 #[derive(Debug)]
 struct PopupPlacementWidget {
@@ -541,6 +542,7 @@ impl Widget for PopupPlacementWidget {
                 bounded_to_side: false,
                 minimum_width: 128.,
                 height_offset: None,
+                fit_width: false,
             },
         }
     }
@@ -605,7 +607,7 @@ impl Widget for PopupPlacementWidget {
             let size = ctx.calculate_layout(
                 child,
                 Constraints {
-                    min: Vec2::new(width, 0.),
+                    min: Vec2::new(if self.props.fit_width { 0. } else { width }, 0.),
                     max: Vec2::new(
                         width,
                         if bounded {
@@ -702,6 +704,7 @@ fn popup(
             .map_or(128., |sizing| sizing.minimum_width),
         height_offset: yakui::util::read_scope::<PopupSizing>()
             .and_then(|sizing| sizing.height_offset),
+        fit_width: false,
     };
     let t = theme();
     yakui::util::widget_children::<FocusScope, _>(
@@ -759,27 +762,26 @@ pub fn popover(state: &mut OverlayState, width: f32, children: impl FnOnce(&mut 
         children,
     )
 }
-/// Tooltip content anchored to a trigger. The caller supplies the trigger response.
-/// This initial API displays on hover/focus; delayed opening is recorded as a deviation.
+/// Informational popup: content sizes naturally up to the supplied maximum.
+/// It neither moves keyboard focus nor installs an outside-click backdrop.
 #[track_caller]
-pub fn tooltip(trigger: ControlResponse, text: impl Into<String>) {
-    let mut state = OverlayState {
-        open: trigger.hovering || trigger.focused,
-        trigger: trigger.id,
-        ..OverlayState::default()
-    };
-    popup(
-        &mut state,
-        PopoverOptions {
-            width: 200.,
-            ..Default::default()
+pub(crate) fn tooltip_popup(
+    trigger: ControlResponse,
+    options: PopoverOptions,
+    children: impl FnOnce(),
+) {
+    yakui::util::widget_children::<PopupPlacementWidget, _>(
+        children,
+        PopupPlacement {
+            anchor: trigger.id,
+            point: None,
+            options,
+            rtl: crate::advanced_layout::rtl(),
+            bounded_to_side: false,
+            minimum_width: 0.,
+            height_offset: None,
+            fit_width: true,
         },
-        false,
-        false,
-        8.,
-        1.,
-        false,
-        |_| crate::text(text),
     );
 }
 /// A hover-card surface. Caller controls visibility so content can remain open when hovered.

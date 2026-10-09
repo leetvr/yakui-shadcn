@@ -41,6 +41,7 @@ pub(crate) struct ControlWidget {
     dismiss: Option<std::rc::Rc<crate::overlay::DismissContext>>,
     carousel: Option<std::rc::Rc<crate::carousel::CarouselContext>>,
     menu_trigger: Option<std::rc::Rc<crate::menu::MenuTriggerContext>>,
+    tooltip: Option<std::rc::Rc<crate::tooltip::TooltipTriggerContext>>,
     hovering: bool,
     pointer_down: bool,
     key_down: Option<KeyCode>,
@@ -66,6 +67,7 @@ impl Widget for ControlWidget {
         self.dismiss = yakui::util::read_scope::<crate::overlay::DismissContext>();
         self.carousel = yakui::util::read_scope();
         self.menu_trigger = yakui::util::read_scope();
+        self.tooltip = yakui::util::read_scope();
         if props.disabled {
             self.pointer_down = false;
             self.key_down = None;
@@ -116,6 +118,11 @@ impl Widget for ControlWidget {
         }
     }
     fn event(&mut self, ctx: EventContext<'_>, event: &WidgetEvent) -> EventResponse {
+        if let Some(tooltip) = &self.tooltip {
+            if tooltip.escape(event) {
+                return EventResponse::Sink;
+            }
+        }
         if self.props.disabled {
             return EventResponse::Bubble;
         }

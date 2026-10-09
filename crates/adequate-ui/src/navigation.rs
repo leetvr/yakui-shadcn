@@ -22,12 +22,14 @@ struct ChoiceProps {
     index: usize,
     selected: usize,
     radio: bool,
+    line: bool,
 }
 #[derive(Debug)]
 struct ChoiceWidget {
     props: ChoiceProps,
     control: ControlWidget,
     context: Option<Rc<ChoiceContext>>,
+    line_color: Color,
 }
 impl Widget for ChoiceWidget {
     type Props<'a> = ChoiceProps;
@@ -38,15 +40,18 @@ impl Widget for ChoiceWidget {
                 index: 0,
                 selected: 0,
                 radio: false,
+                line: false,
             },
             control: ControlWidget::new(),
             context: None,
+            line_color: Color::CLEAR,
         }
     }
     fn update(&mut self, props: ChoiceProps) -> ControlResponse {
         self.props = props;
         self.context = yakui::util::read_scope::<ChoiceContext>();
         let t = theme();
+        self.line_color = t.foreground;
         self.control.update(Control {
             disabled: false,
             radius: if props.radio { 999. } else { t.radius },
@@ -58,8 +63,22 @@ impl Widget for ChoiceWidget {
             },
         })
     }
-    fn paint(&self, ctx: PaintContext<'_>) {
-        self.control.paint(ctx)
+    fn paint(&self, mut ctx: PaintContext<'_>) {
+        self.control.paint(PaintContext {
+            dom: ctx.dom,
+            layout: ctx.layout,
+            paint: ctx.paint,
+        });
+        if self.props.line && self.props.index == self.props.selected {
+            let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
+            crate::icons::line(
+                &mut ctx,
+                crate::Vec2::new(rect.pos().x, rect.max().y + 3.),
+                crate::Vec2::new(rect.max().x, rect.max().y + 3.),
+                2.,
+                self.line_color,
+            );
+        }
     }
     fn event_interest(&self) -> EventInterest {
         self.control.event_interest()
@@ -132,6 +151,7 @@ pub(crate) fn choice_group(
                             index,
                             selected: *selected,
                             radio: true,
+                            line: false,
                         });
                         let id = response.id;
                         ids.borrow_mut().push(id);
@@ -195,6 +215,7 @@ pub fn tabs(
                                         index,
                                         selected: *selected,
                                         radio: false,
+                                        line: matches!(variant, TabsVariant::Line),
                                     });
                                     let id = response.id;
                                     ids.borrow_mut().push(id);
@@ -209,8 +230,22 @@ pub fn tabs(
                                     } else {
                                         Color::CLEAR
                                     };
-                                    surface(fill, None, t.radius - 2., 5., || {
-                                        crate::label((*option).to_owned())
+                                    surface(fill, None, t.radius - 2., 0., || {
+                                        yakui::pad(yakui::widgets::Pad::balanced(7., 3.), || {
+                                            yakui::widgets::RenderText::with_style(
+                                                (*option).to_owned(),
+                                                t.text_style(
+                                                    14.,
+                                                    if *selected == index {
+                                                        t.foreground
+                                                    } else {
+                                                        t.muted_foreground
+                                                    },
+                                                    500,
+                                                ),
+                                            )
+                                            .show();
+                                        });
                                     });
                                     dom.end_widget::<ChoiceWidget>(id);
                                 }

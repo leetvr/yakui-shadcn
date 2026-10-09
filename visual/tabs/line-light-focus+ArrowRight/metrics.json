@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00204875,
+  "content_bounds": [
+    395,
+    384,
+    605,
+    417
+  ],
+  "content_rgb_rmse": 58.68231048803007,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.2087525,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-light-focus+ArrowRight/native.png",
+  "pixels_differing_by_more_than_16": 1639,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-light-focus+ArrowRight/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 5.461712414618697,
+  "width": 1000
+}

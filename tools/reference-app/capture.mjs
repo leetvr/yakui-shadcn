@@ -24,14 +24,16 @@ try {
  }
  await page.goto(`${process.env.REFERENCE_URL||'http://127.0.0.1:4173'}/?example=${example}&theme=${theme}`)
  await page.waitForFunction(()=>window.referenceReady===true && document.getElementById('root').childElementCount>0)
- const target=page.locator(example.startsWith('select-') && state==='open'?'[data-slot=select-trigger]':example.startsWith('button-group-') && state==='open'?'button[aria-haspopup]':'button, input, textarea, [tabindex]').filter({visible:true}).first()
+ const tooltipArea=example==='tooltip-disabled' || ['button-group-nested','button-group-input-group'].includes(example)
+ const target=page.locator(tooltipArea && state==='open'?'[data-slot=tooltip-trigger]':example.startsWith('select-') && state==='open'?'[data-slot=select-trigger]':example.startsWith('button-group-') && state==='open'?'button[aria-haspopup]':'button, input, textarea, [tabindex]').filter({visible:true}).first()
  if(await target.count()) await target.waitFor({state:'visible'})
  await page.evaluate(()=>document.fonts.ready)
  await page.locator('[data-slot="avatar-image"]').evaluateAll(images=>Promise.all(images.map(image=>image.decode().catch(()=>{}))))
  if(state==='hover' && await target.count()) await target.hover()
  if(state==='focus') await page.keyboard.press('Tab')
  if(state==='disabled' && await target.count()) await target.evaluate(el=>{el.disabled=true})
- if((state==='selected'||state==='open') && await target.count()) await target.click()
+ if(state==='open' && (example.startsWith('tooltip-') || tooltipArea) && await target.count()) await target.hover()
+ else if((state==='selected'||state==='open') && await target.count()) await target.click()
  // Base UI transfers focus into newly mounted popups after their first layout.
  // Let that transfer settle before sending the first navigation key; otherwise
  // it can land on the trigger and be consumed by opening rather than navigation.

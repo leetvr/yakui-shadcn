@@ -1,6 +1,12 @@
 {
   "schema_version": 2,
   "upstream_commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+  "completion_scope": {
+    "target": "internal_prototypes",
+    "status": "ready",
+    "exhaustive_upstream_preview_parity_required": false,
+    "component_status_tracks": "Detailed upstream parity; in_progress does not imply prototype use is blocked."
+  },
   "components": [
     {
       "name": "accordion",
@@ -2464,11 +2470,14 @@
         "input",
         "dropdown",
         "popover",
-        "select"
+        "select",
+        "nested",
+        "input-group"
       ],
       "behaviour_tests": [
         "joined_buttons_keep_their_own_targets_and_share_one_border_on_each_axis",
-        "nested_groups_keep_an_eight_pixel_gap_and_editable_inputs_keep_caller_state"
+        "nested_groups_keep_an_eight_pixel_gap_and_editable_inputs_keep_caller_state",
+        "voice_mode_disables_the_actual_editor_and_can_be_toggled_back"
       ],
       "visual_comparisons": [
         "visual/button-group/default-light-default",
@@ -2479,12 +2488,20 @@
         "visual/button-group/orientation-dark-default",
         "visual/button-group/size-light-default",
         "visual/button-group/size-dark-default",
+        "visual/button-group/nested-light-default",
+        "visual/button-group/nested-light-open",
+        "visual/button-group/nested-dark-default",
+        "visual/button-group/nested-dark-open",
         "visual/button-group/separator-light-default",
         "visual/button-group/separator-dark-default",
         "visual/button-group/split-light-default",
         "visual/button-group/split-dark-default",
         "visual/button-group/input-light-default",
         "visual/button-group/input-dark-default",
+        "visual/button-group/input-group-light-default",
+        "visual/button-group/input-group-light-open",
+        "visual/button-group/input-group-dark-default",
+        "visual/button-group/input-group-dark-open",
         "visual/button-group/dropdown-light-default",
         "visual/button-group/dropdown-dark-default",
         "visual/button-group/dropdown-light-open",
@@ -2500,10 +2517,10 @@
       ],
       "status": "in_progress",
       "deviations": [
-        "Nested and input-group compositions are still pending. English examples only.",
         "Native controls join borders/corners as intended by upstream selectors; those selectors do not join all buttons in the current pinned browser harness.",
         "Split uses the pinned Lucide Plus instead of Tabler Plus. Motion/shadows and exact mixed-size focus stacking are deferred prototype polish.",
-        "Currency choice labels use one foreground rather than a separate muted trailing currency name."
+        "Currency choice labels use one foreground rather than a separate muted trailing currency name.",
+        "Native voice-mode styling uses a scoped theme; source-specific wrapper radius/padding can differ slightly."
       ],
       "example_coverage": [
         {
@@ -2624,10 +2641,35 @@
             "@/styles/base-nova/ui/input-group",
             "@/styles/base-nova/ui/tooltip"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "nested",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/button-group/nested-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/button-group/nested-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/button-group/nested-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/button-group/nested-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -2734,10 +2776,37 @@
             "@/styles/base-nova/ui/input-group",
             "@/styles/base-nova/ui/tooltip"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "input-group",
+          "behaviour_tests": [
+            "voice_mode_disables_the_actual_editor_and_can_be_toggled_back"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/button-group/input-group-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/button-group/input-group-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/button-group/input-group-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/button-group/input-group-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -12558,10 +12627,16 @@
       "behaviour_tests": [
         "overlay::arrow_keys_select_tabs_and_wrap"
       ],
-      "visual_comparisons": [],
+      "visual_comparisons": [
+        "visual/tabs/line-light-default",
+        "visual/tabs/line-dark-default",
+        "visual/tabs/line-light-focus+ArrowRight",
+        "visual/tabs/line-dark-focus+ArrowRight"
+      ],
       "status": "in_progress",
       "deviations": [
-        "Roving default/line selection exists; line underline, orientation, disabled and complete content examples pending."
+        "Default and line styles support native roving arrow/Home/End selection. Vertical orientation, per-item disabled slots and additional source compositions are outside this prototype API.",
+        "Soft shadows, exact border alpha and motion differ from the source."
       ],
       "example_coverage": [
         {
@@ -12589,10 +12664,35 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/tabs"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "line",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/tabs/line-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/tabs/line-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus+ArrowRight",
+              "path": "visual/tabs/line-light-focus+ArrowRight",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus+ArrowRight",
+              "path": "visual/tabs/line-dark-focus+ArrowRight",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -13255,18 +13355,48 @@
         "tooltip-rtl"
       ],
       "rust_api": [
+        "Tooltip",
+        "TooltipState",
+        "tooltip_trigger",
+        "tooltip_trigger_area",
         "tooltip"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "sides",
+        "keyboard",
+        "disabled"
       ],
       "behaviour_tests": [
-        "pointer_tooltip_closing_does_not_focus_its_trigger_and_reopen_itself"
+        "pointer_tooltip_closing_does_not_focus_its_trigger_and_reopen_itself",
+        "tooltip_places_natural_content_on_each_side_without_moving_focus",
+        "focused_tooltip_escape_suppresses_reopening_and_disabled_area_is_hover_only"
       ],
-      "visual_comparisons": [],
+      "visual_comparisons": [
+        "visual/tooltip/default-light-default",
+        "visual/tooltip/default-light-open",
+        "visual/tooltip/default-dark-default",
+        "visual/tooltip/default-dark-open",
+        "visual/tooltip/default-light-focus+Escape",
+        "visual/tooltip/default-dark-focus+Escape",
+        "visual/tooltip/sides-light-default",
+        "visual/tooltip/sides-light-open",
+        "visual/tooltip/sides-dark-default",
+        "visual/tooltip/sides-dark-open",
+        "visual/tooltip/keyboard-light-default",
+        "visual/tooltip/keyboard-light-open",
+        "visual/tooltip/keyboard-dark-default",
+        "visual/tooltip/keyboard-dark-open",
+        "visual/tooltip/disabled-light-default",
+        "visual/tooltip/disabled-light-open",
+        "visual/tooltip/disabled-dark-default",
+        "visual/tooltip/disabled-dark-open"
+      ],
       "status": "in_progress",
       "deviations": [
-        "Native popup exists; delay, pointer positioning, exact compact sizing and full previews pending."
+        "Immediate hover/focus opening matches the site zero-delay provider. Soft shadows, animated entry/exit, rounded arrow rasterisation and pointer transit are deferred polish.",
+        "Use tooltip_trigger with caller-owned TooltipState for Escape dismissal. The response-only tooltip shorthand has hover/focus display without trigger Escape interception.",
+        "English-only compositions; translated RTL demonstration is excluded from the agreed prototype target."
       ],
       "example_coverage": [
         {
@@ -13279,10 +13409,49 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/tooltip"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "default",
+          "behaviour_tests": [
+            "focused_tooltip_escape_suppresses_reopening_and_disabled_area_is_hover_only"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/tooltip/default-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/tooltip/default-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/tooltip/default-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/tooltip/default-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus+Escape",
+              "path": "visual/tooltip/default-light-focus+Escape",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus+Escape",
+              "path": "visual/tooltip/default-dark-focus+Escape",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -13295,10 +13464,37 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/tooltip"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "sides",
+          "behaviour_tests": [
+            "tooltip_places_natural_content_on_each_side_without_moving_focus"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/tooltip/sides-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/tooltip/sides-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/tooltip/sides-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/tooltip/sides-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -13313,10 +13509,37 @@
             "@/styles/base-nova/ui/kbd",
             "@/styles/base-nova/ui/tooltip"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "keyboard",
+          "behaviour_tests": [
+            "focused_tooltip_escape_suppresses_reopening_and_disabled_area_is_hover_only"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/tooltip/keyboard-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/tooltip/keyboard-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/tooltip/keyboard-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/tooltip/keyboard-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -13329,10 +13552,37 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/tooltip"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "disabled",
+          "behaviour_tests": [
+            "focused_tooltip_escape_suppresses_reopening_and_disabled_area_is_hover_only"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/tooltip/disabled-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/tooltip/disabled-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/tooltip/disabled-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/tooltip/disabled-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {

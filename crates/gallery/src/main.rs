@@ -8,6 +8,7 @@ mod input_groups;
 mod navigation_menus;
 mod selects;
 mod showcases;
+mod tooltips;
 use serde::Deserialize;
 use std::{error::Error, path::PathBuf};
 use winit::{
@@ -425,7 +426,16 @@ impl Gallery {
                                                     }
                                                     ui::muted(format!(
                                                         "Actions: {}",
-                                                        self.state.count
+                                                        self.states
+                                                            .iter()
+                                                            .filter(|(key, _)| key.starts_with(
+                                                                &format!(
+                                                                    "{}:",
+                                                                    self.options.component
+                                                                )
+                                                            ))
+                                                            .map(|(_, state)| state.count as u64)
+                                                            .sum::<u64>()
                                                     ));
                                                 } else {
                                                     examples::render(
@@ -515,7 +525,7 @@ fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
         }
         let id = if matches!(
             gallery.options.component.as_str(),
-            "button-group" | "select"
+            "button-group" | "select" | "tooltip"
         ) && gallery.options.state == "open"
         {
             gallery.state.trigger.id
@@ -526,7 +536,10 @@ fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
         if gallery.options.state == "hover" || gallery.options.state == "open" {
             let rect = yak.layout_dom().get(id).unwrap().rect;
             yak.handle_event(yakui::event::Event::CursorMoved(Some(rect.center())));
-            if gallery.options.state == "open" {
+            let hover_popup = gallery.options.component == "tooltip"
+                || (gallery.options.component == "button-group"
+                    && matches!(gallery.options.variant.as_str(), "nested" | "input-group"));
+            if gallery.options.state == "open" && !hover_popup {
                 let button = if gallery.options.component == "context-menu" {
                     yakui::input::MouseButton::Two
                 } else {

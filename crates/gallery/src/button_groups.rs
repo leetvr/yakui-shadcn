@@ -11,6 +11,8 @@ pub const VARIANTS: &[&str] = &[
     "dropdown",
     "popover",
     "select",
+    "nested",
+    "input-group",
 ];
 fn action(label: &str, size: S, state: &mut crate::examples::ExampleState) {
     if B::new(label).variant(V::Outline).size(size).show().clicked {
@@ -19,6 +21,90 @@ fn action(label: &str, size: S, state: &mut crate::examples::ExampleState) {
 }
 pub fn render(variant: &str, state: &mut crate::examples::ExampleState, disabled: bool) {
     match variant {
+        "nested" | "input-group" => {
+            let voice = variant == "input-group";
+            let mut theme = (*ui::theme()).clone();
+            if voice {
+                theme.radius = 999.;
+            }
+            ui::with_theme(theme, || {
+                ui::button_group(|| {
+                    ui::button_group(|| {
+                        if B::new("")
+                            .variant(V::Outline)
+                            .size(S::Icon)
+                            .icon(I::Plus)
+                            .disabled(disabled)
+                            .show()
+                            .clicked
+                        {
+                            state.count += 1;
+                        }
+                    });
+                    ui::button_group(|| {
+                        ui::width(212., || {
+                            ui::InputGroup::new()
+                                .disabled(disabled || (voice && state.voice_mode))
+                                .show(|| {
+                                    ui::input_group_input(
+                                        &mut state.text,
+                                        if voice && state.voice_mode {
+                                            "Record and send audio..."
+                                        } else {
+                                            "Send a message..."
+                                        },
+                                    );
+                                    ui::input_group_addon(ui::InputGroupAlign::InlineEnd, || {
+                                        state.trigger = if voice {
+                                            ui::tooltip_trigger(&mut state.tooltips[0], || {
+                                                let mut theme = (*ui::theme()).clone();
+                                                let active = state.voice_mode;
+                                                if active {
+                                                    theme.secondary = if theme.dark {
+                                                        ui::Color::rgb(154, 52, 18)
+                                                    } else {
+                                                        ui::Color::rgb(255, 237, 213)
+                                                    };
+                                                    theme.secondary_foreground = if theme.dark {
+                                                        ui::Color::rgb(255, 237, 213)
+                                                    } else {
+                                                        ui::Color::rgb(194, 65, 12)
+                                                    };
+                                                }
+                                                let mut response = ui::ControlResponse::default();
+                                                ui::with_theme(theme, || {
+                                                    response = ui::input_group_button("")
+                                                        .size(S::IconXs)
+                                                        .icon(I::AudioLines)
+                                                        .variant(if active {
+                                                            V::Secondary
+                                                        } else {
+                                                            V::Ghost
+                                                        })
+                                                        .disabled(disabled)
+                                                        .show()
+                                                });
+                                                response
+                                            })
+                                        } else {
+                                            ui::tooltip_trigger_area(&mut state.tooltips[0], || {
+                                                ui::icon_colored(
+                                                    I::AudioLines,
+                                                    16.,
+                                                    ui::theme().muted_foreground,
+                                                )
+                                            })
+                                        };
+                                        if voice && state.trigger.clicked {
+                                            state.voice_mode = !state.voice_mode;
+                                        }
+                                    });
+                                });
+                        })
+                    });
+                })
+            });
+        }
         "default" => ui::button_group(|| {
             ui::button_group(|| {
                 if B::new("")
@@ -225,6 +311,10 @@ pub fn items(variant: &str) -> Vec<M> {
     }
 }
 pub fn content(variant: &str, state: &mut crate::examples::ExampleState) {
+    if matches!(variant, "nested" | "input-group") {
+        ui::Tooltip::new().show(&mut state.tooltips[0], "Voice Mode");
+        return;
+    }
     if variant == "select" {
         ui::SelectContent::new(&currency_items())
             .align_item_with_trigger(false)
@@ -274,4 +364,92 @@ fn currency_items() -> Vec<ui::SelectItem> {
         ui::SelectItem::new(1, "€ Euro"),
         ui::SelectItem::new(2, "£ British Pound"),
     ]
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use yakui::{
+        Rect, Vec2, Yakui,
+        event::Event,
+        input::{KeyCode, MouseButton},
+    };
+    fn frame(y: &mut Yakui, state: &mut crate::examples::ExampleState) {
+        y.start();
+        yakui::align(yakui::Alignment::TOP_LEFT, || {
+            render("input-group", state, false)
+        });
+        content("input-group", state);
+        y.finish();
+    }
+    fn key(y: &mut Yakui, key: KeyCode) {
+        for down in [true, false] {
+            y.handle_event(Event::KeyChanged {
+                key,
+                down,
+                modifiers: None,
+            });
+        }
+    }
+    fn click_voice(y: &mut Yakui, state: &crate::examples::ExampleState) {
+        let rect = y.layout_dom().get(state.trigger.id.unwrap()).unwrap().rect;
+        y.handle_event(Event::CursorMoved(Some(rect.center())));
+        for down in [true, false] {
+            y.handle_event(Event::MouseButtonChanged {
+                button: MouseButton::One,
+                down,
+            });
+        }
+    }
+    #[test]
+    fn voice_mode_disables_the_actual_editor_and_can_be_toggled_back() {
+        let mut y = Yakui::new();
+        let size = Vec2::new(600., 400.);
+        y.set_surface_size(size);
+        y.set_unscaled_viewport(Rect::from_pos_size(Vec2::ZERO, size));
+        ui::add_fonts(&mut y);
+        let mut state = crate::examples::ExampleState::default();
+        frame(&mut y, &mut state);
+        key(&mut y, KeyCode::Tab);
+        frame(&mut y, &mut state);
+        key(&mut y, KeyCode::Tab);
+        frame(&mut y, &mut state);
+        y.handle_event(Event::TextInput('x'));
+        frame(&mut y, &mut state);
+        assert_eq!(state.text, "x");
+        click_voice(&mut y, &state);
+        frame(&mut y, &mut state);
+        frame(&mut y, &mut state);
+        assert!(state.voice_mode);
+        key(&mut y, KeyCode::Tab);
+        frame(&mut y, &mut state);
+        key(&mut y, KeyCode::Tab);
+        frame(&mut y, &mut state);
+        y.handle_event(Event::TextInput('y'));
+        frame(&mut y, &mut state);
+        assert_eq!(state.text, "x");
+        click_voice(&mut y, &state);
+        frame(&mut y, &mut state);
+        frame(&mut y, &mut state);
+        assert!(!state.voice_mode);
+        fn editor(y: &Yakui, id: yakui::WidgetId) -> Option<yakui::WidgetId> {
+            let node = y.dom().get(id)?;
+            if node.widget.type_name().ends_with("editor::Editor") {
+                return Some(id);
+            }
+            node.children.iter().find_map(|id| editor(y, *id))
+        }
+        let target = editor(&y, y.dom().root()).unwrap();
+        let rect = y.layout_dom().get(target).unwrap().rect;
+        y.handle_event(Event::CursorMoved(Some(rect.center())));
+        for down in [true, false] {
+            y.handle_event(Event::MouseButtonChanged {
+                button: MouseButton::One,
+                down,
+            });
+        }
+        frame(&mut y, &mut state);
+        y.handle_event(Event::TextInput('z'));
+        frame(&mut y, &mut state);
+        assert_eq!(state.text, "xz");
+    }
 }

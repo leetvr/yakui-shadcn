@@ -100,6 +100,8 @@ pub struct ExampleState {
     pub avatar_items: Vec<ui::MenuItem>,
     pub group_items: Vec<ui::MenuItem>,
     pub group_variant: String,
+    pub tooltips: [ui::TooltipState; 4],
+    pub voice_mode: bool,
     pub input_group_values: [String; 4],
     pub values: [f64; 2],
     pub ratio: f32,
@@ -116,7 +118,7 @@ pub struct ExampleState {
 /// Render the actual example. Unknown variants are rejected at the CLI boundary.
 pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled: bool) {
     match component {
-        "dialog" | "alert-dialog" | "drawer" | "sheet" | "popover" | "hover-card" | "tooltip" => {
+        "dialog" | "alert-dialog" | "drawer" | "sheet" | "popover" | "hover-card" => {
             state.trigger = Button::new(match component {
                 "dialog" => "Edit Profile",
                 "alert-dialog" => "Show Dialog",
@@ -135,6 +137,13 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
                 state.overlay.trigger = state.trigger.id;
             }
         }
+        "tooltip" => crate::tooltips::render(variant, state, disabled),
+        "tabs" if variant == "line" => ui::tabs(
+            &["Overview", "Analytics", "Reports"],
+            &mut state.selected,
+            ui::TabsVariant::Line,
+            |_| {},
+        ),
         "tabs" => ui::width(400., || {
             ui::tabs(
                 &["Account", "Password"],
@@ -286,7 +295,18 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
                     .iter()
                     .map(|p| {
                         ui::ChartPoint::new(
-                            p["date"].as_str().unwrap(),
+                            {
+                                let date = p["date"].as_str().unwrap();
+                                let month = date[5..7].parse::<usize>().unwrap();
+                                let day = date[8..].parse::<usize>().unwrap();
+                                format!(
+                                    "{} {day}",
+                                    [
+                                        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+                                        "Sep", "Oct", "Nov", "Dec"
+                                    ][month - 1]
+                                )
+                            },
                             vec![
                                 p[if state.selected == 0 {
                                     "desktop"
@@ -900,6 +920,7 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "table",
         ],
         "button-group" => crate::button_groups::VARIANTS,
+        "tooltip" => crate::tooltips::VARIANTS,
         "input-group" => crate::input_groups::VARIANTS,
         "select" => crate::selects::VARIANTS,
         "avatar" => crate::avatars::VARIANTS,
@@ -1074,7 +1095,7 @@ pub fn overlays(component: &str, variant: &str, state: &mut ExampleState) {
             ui::label("@nextjs");
             ui::text("The React Framework – created and maintained by @vercel.");
         }),
-        "tooltip" => ui::tooltip(state.trigger, "Add to library"),
+        "tooltip" => crate::tooltips::content(variant, state),
         _ => {}
     }
 }
@@ -1083,12 +1104,17 @@ impl ExampleState {
     pub fn is_open(&self, component: &str) -> bool {
         match component {
             "select" | "native-select" | "combobox" => self.select.popup.open,
-            "button-group" => self.menu.popup.open || self.overlay.open || self.select.popup.open,
+            "button-group" => {
+                self.menu.popup.open
+                    || self.overlay.open
+                    || self.select.popup.open
+                    || self.tooltips.iter().any(ui::TooltipState::is_open)
+            }
             "navigation-menu" => self.navigation.active().is_some(),
             "avatar" | "dropdown-menu" | "context-menu" => self.menu.popup.open,
             "menubar" => self.menubar.menu.popup.open,
             "table" => self.row_actions.iter().any(|menu| menu.popup.open),
-            "tooltip" => self.trigger.hovering || self.trigger.focused,
+            "tooltip" => self.tooltips.iter().any(ui::TooltipState::is_open),
             _ => self.overlay.open,
         }
     }
@@ -1120,7 +1146,7 @@ impl Default for ExampleState {
             dropdown: Default::default(),
             avatar_images:true,
             avatar_items:crate::avatars::items(),
-            group_items:vec![],group_variant:String::new(),input_group_values:Default::default(),
+            tooltips:Default::default(),voice_mode:false,group_items:vec![],group_variant:String::new(),input_group_values:Default::default(),
             row_actions: Default::default(),
             last_table_action: None,
             menubar: Default::default(),

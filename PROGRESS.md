@@ -1,12 +1,15 @@
 # Adequate UI port progress
 
-The target is a native port suitable for Kane's internal work and prototypes.
+The agreed completion target is a usable full catalogue with common examples and
+documented gaps, suitable for Kane's internal work and prototypes. Kane explicitly
+selected this target on 2026-10-09; reproducing every one of the 461 upstream demos
+is no longer a completion requirement.
 Prioritize usable catalogue coverage, common interactions, simple public APIs and
 real screen compositions. Visual checks should catch obvious layout/style defects;
 exhaustive browser parity, rare edge cases and production certification are not
 required. Gallery/example text is English. Do not pursue translated demonstrations.
 
-The repository contains a broad working first pass. The inventory separately tracks
+The agreed internal/prototype scope is complete, with documented limitations. The inventory separately tracks
 upstream example coverage; API presence does not imply every source preview has
 been ported. No component is certified as having exhaustive upstream parity.
 
@@ -48,10 +51,10 @@ initial public APIs and native routes. Current behaviour includes:
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All four consuming examples compile.
-- 72 focused tests and six doctests pass using actual Yakui input/layout cycles and pure algorithms.
-- 148 native variant routes × two themes, plus six showcase captures and 74 actual-trigger overlay captures: **376 captures,
+- 75 focused tests and seven doctests pass using actual Yakui input/layout cycles and pure algorithms.
+- 153 native variant routes × two themes, plus six showcase captures and 84 actual-trigger overlay captures: **396 captures,
   zero failures** in the latest full smoke run.
-- The configured upstream suite covers 75 actual previews: **322 comparison pairs**
+- The configured upstream suite covers 82 actual previews: **352 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
   used to find and correct concrete layout/painting defects, not to certify parity.
 - Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
@@ -62,27 +65,33 @@ state-hook siblings consuming List spacing, overlaid radio rows, stretched progr
 fills/thumbs, and Align expanding natural-width buttons. These were corrected;
 focused layout tests cover the radio/progress/button regressions.
 
-## Required work still outstanding
+## Prototype readiness and remaining limitations
 
-`reference/components.json` records component-specific deviations and every upstream
-preview separately. 75 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
-do not map an unported preview to a generic default rendition. Important incomplete areas include:
+`reference/components.json` retains every upstream preview and component-specific
+deviations as reference material. Pending preview records are documented gaps,
+not a mandatory 461-demo implementation queue. The common-use audit is complete:
 
-- Complete documented slots, sizes, disabled/invalid states and compositions.
-- Additional input-group compositions, grouped/multiple autocomplete,
-  full forms/field association and advanced selector keyboard contracts.
-- Drawer drag physics, overlay motion/shadows/delays, tooltip/hover-card pointer transit.
-- Calendar caption dropdowns/locales/presets/week numbers; complete data table cells,
-  row actions/reordering; complete chart interpolation/axes/tooltips and preview kinds.
-- Image/video presentation APIs and chat reactions.
-- Complete useful sidebar variants/layouts and common keyboard interactions.
-- Full screenshot/interaction coverage for every component and each upstream preview.
-- Final consuming-application, performance and normal-usage audit.
+- All 65 catalogue entries have documented public APIs and useful native routes.
+- Actual Yakui tests exercise ordinary control activation, editing, keyboard/focus,
+  scrolling, selection, popup dismissal and caller-owned state updates.
+- Both-theme native captures cover all routes, opened overlays and three showcases.
+  Representative source comparisons, normal desktop navigation and a 720px gallery
+  were inspected. The narrow gallery uses previous/next component navigation.
+- Material defects found in this audit were corrected: missing line-tab indicators,
+  misleading gallery action counts, and wrapped chart date labels.
+- The renderer-independent library, four consuming applications, rustdoc, inventory
+  audit and reproducible screenshot/comparison commands pass their checks.
+
+Known gaps remain: advanced combobox/field/item composition, drawer drag physics,
+calendar presets/caption dropdowns, full chart axes/interpolation, nested sidebar
+patterns, custom draggable scrollbars, native platform accessibility, and rich chat
+media/reactions. Applications own business validation, routing, image loading and
+renderer integration. These are explicitly documented prototype limitations.
 
 Current notable visual differences include typography/rasterisation, card slot
 alignment, textarea inset/resize affordance, and several complex component layouts.
 The native capture suite can pass while these differences remain. Do not advertise
-this checkpoint as a finished shadcn port.
+this checkpoint as an exhaustive or production-certified shadcn port.
 
 ## Continue development
 
@@ -319,3 +328,27 @@ activation still restores the root trigger. All 72 tests and six doctests pass, 
 consuming apps compile, and the full suite has 376 successful native captures with
 zero failures. The upstream suite now contains 322 pairs across 75 source previews.
 The reference capture waits for mounted-popup focus before scripted keyboard events.
+
+## Tooltip compositions and prototype completion audit
+
+Added Tooltip/TooltipState, scoped tooltip_trigger and hover-only tooltip_trigger_area.
+Content fits naturally within a 320px maximum, uses the inverted 12px source theme,
+and anchors on all four sides with collision flipping and a native arrow. Composed
+text/Kbd content inherits the tooltip palette. Escape suppresses reopening while
+focus/hover remains; activation dismisses a hint. Tooltips do not move focus.
+The response-only shorthand remains available without trigger Escape interception.
+
+Ported the four common tooltip previews and the remaining nested/voice button-group
+compositions. Voice mode toggles an actual disabled editor and remains reversible.
+Two native tooltip tests and a real gallery voice-mode test pass. Source captures
+now use the site's pinned zero-delay TooltipProvider and hover informational popups.
+Minor arrow shape, keyboard-hint padding and addon anchor spacing remain recorded.
+
+The final common-use audit corrected line-style tab selection visibility, made the
+line gallery use its actual Overview/Analytics/Reports source composition, summed
+normal gallery action counters, and formatted source chart dates as English month/day
+labels. All 75 tests and seven doctests pass; all four consuming applications and
+the independent library compile. The final native suite has 396 captures without
+failures; the paired source suite has 352 comparisons across 82 genuine previews.
+The remaining 379 preview records stay documented and are outside the agreed
+completion requirement. No exhaustive parity certification is claimed.

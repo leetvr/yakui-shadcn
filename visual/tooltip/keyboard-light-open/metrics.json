@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0014275,
+  "content_bounds": [
+    436,
+    350,
+    564,
+    414
+  ],
+  "content_rgb_rmse": 56.363682864888716,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.1834375,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-light-open/native.png",
+  "pixels_differing_by_more_than_16": 1142,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-light-open/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 5.703603685390492,
+  "width": 1000
+}

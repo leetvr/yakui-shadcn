@@ -13,7 +13,8 @@ if actual != pin['commit']:
 docs = args.upstream / pin['docs']
 source = args.upstream / pin['source']
 old_path = ROOT / 'reference/components.json'
-old = {c['name']: c for c in json.loads(old_path.read_text())['components']} if old_path.exists() else {}
+prior_inventory = json.loads(old_path.read_text()) if old_path.exists() else {}
+old = {c['name']: c for c in prior_inventory.get('components', [])}
 entries = []
 visual_routes = json.loads((ROOT / 'reference/visual-routes.json').read_text())
 
@@ -71,5 +72,5 @@ for name in json.loads((docs / 'meta.json').read_text())['pages']:
     entry['example_coverage']=coverage
     entry['visual_comparisons']=[capture['path'] for e in coverage for capture in e['visual_comparisons']]
     entries.append(entry)
-old_path.write_text(json.dumps({'schema_version':2,'upstream_commit': actual, 'components': entries}, indent=2) + '\n')
+old_path.write_text(json.dumps({'schema_version':2,'upstream_commit': actual, 'completion_scope': prior_inventory.get('completion_scope', {'target':'internal_prototypes','status':'in_progress','exhaustive_upstream_preview_parity_required':False}), 'components': entries}, indent=2) + '\n')
 print(f'{len(entries)} catalogue entries, {sum(len(c["upstream_examples"]) for c in entries)} documented previews')

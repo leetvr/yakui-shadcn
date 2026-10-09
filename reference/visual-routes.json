@@ -475,5 +475,58 @@
       "default",
       "open"
     ]
+  },
+  {
+    "component": "tooltip",
+    "variants": [
+      "default",
+      "sides",
+      "keyboard",
+      "disabled"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
+  },
+  {
+    "component": "tooltip",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "focus"
+    ],
+    "keys": "Escape"
+  },
+  {
+    "component": "button-group",
+    "variants": [
+      "nested",
+      "input-group"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
+  },
+  {
+    "component": "tabs",
+    "variants": [
+      "line"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "tabs",
+    "variants": [
+      "line"
+    ],
+    "states": [
+      "focus"
+    ],
+    "keys": "ArrowRight"
   }
 ]

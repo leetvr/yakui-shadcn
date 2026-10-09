@@ -701,6 +701,222 @@
         "width": 1000
       },
       "review": "pending"
+    },
+    {
+      "component": "button-group",
+      "variant": "nested",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "nested-light-default",
+      "metrics": {
+        "changed_fraction": 0.0011225,
+        "content_bounds": [
+          374,
+          384,
+          626,
+          416
+        ],
+        "content_rgb_rmse": 30.174582952365828,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.09454,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/button-group/nested-light-default/native.png",
+        "pixels_differing_by_more_than_16": 898,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/button-group/nested-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.0295040848297266,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "button-group",
+      "variant": "nested",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "path": "nested-light-open",
+      "metrics": {
+        "changed_fraction": 0.00337125,
+        "content_bounds": [
+          374,
+          354,
+          657,
+          416
+        ],
+        "content_rgb_rmse": 73.88319606884447,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.5770925,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/button-group/nested-light-open/native.png",
+        "pixels_differing_by_more_than_16": 2697,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/button-group/nested-light-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 10.94182445938519,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "button-group",
+      "variant": "nested",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "nested-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00123625,
+        "content_bounds": [
+          374,
+          384,
+          626,
+          416
+        ],
+        "content_rgb_rmse": 31.724809560762797,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.102725,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/button-group/nested-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 989,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/button-group/nested-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.1851456010675556,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "button-group",
+      "variant": "nested",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "path": "nested-dark-open",
+      "metrics": {
+        "changed_fraction": 0.00339625,
+        "content_bounds": [
+          374,
+          354,
+          657,
+          416
+        ],
+        "content_rgb_rmse": 68.53714003788838,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.52769,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/button-group/nested-dark-open/native.png",
+        "pixels_differing_by_more_than_16": 2717,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/button-group/nested-dark-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 10.15009359562758,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "button-group",
+      "variant": "input-group",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "input-group-light-default",
+      "metrics": {
+        "changed_fraction": 0.00146375,
+        "content_bounds": [
+          372,
+          384,
+          628,
+          416
+        ],
+        "content_rgb_rmse": 34.180199103314,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.11114625,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/button-group/input-group-light-default/native.png",
+        "pixels_differing_by_more_than_16": 1171,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/button-group/input-group-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.4587929614245487,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "button-group",
+      "variant": "input-group",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "path": "input-group-light-open",
+      "metrics": {
+        "changed_fraction": 0.002475,
+        "content_bounds": [
+          372,
+          356,
+          655,
+          416
+        ],
+        "content_rgb_rmse": 49.0026344812327,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.297865,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/button-group/input-group-light-open/native.png",
+        "pixels_differing_by_more_than_16": 1980,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/button-group/input-group-light-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 7.139096931685407,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "button-group",
+      "variant": "input-group",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "input-group-dark-default",
+      "metrics": {
+        "changed_fraction": 0.0016175,
+        "content_bounds": [
+          372,
+          384,
+          628,
+          416
+        ],
+        "content_rgb_rmse": 34.88381711645936,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.12014416666666666,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/button-group/input-group-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 1294,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/button-group/input-group-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.529994098200921,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "button-group",
+      "variant": "input-group",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "path": "input-group-dark-open",
+      "metrics": {
+        "changed_fraction": 0.00274375,
+        "content_bounds": [
+          372,
+          356,
+          655,
+          416
+        ],
+        "content_rgb_rmse": 45.61849832124243,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.2847091666666667,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/button-group/input-group-dark-open/native.png",
+        "pixels_differing_by_more_than_16": 2195,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/button-group/input-group-dark-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 6.64606882550379,
+        "width": 1000
+      },
+      "review": "pending"
     }
   ],
   "upstream": {

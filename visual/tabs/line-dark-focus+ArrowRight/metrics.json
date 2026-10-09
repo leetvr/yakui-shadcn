@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.002195,
+  "content_bounds": [
+    395,
+    384,
+    605,
+    417
+  ],
+  "content_rgb_rmse": 61.46150850261509,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.23072125,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-dark-focus+ArrowRight/native.png",
+  "pixels_differing_by_more_than_16": 1756,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-dark-focus+ArrowRight/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 5.720379467308091,
+  "width": 1000
+}

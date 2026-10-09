@@ -614,8 +614,18 @@ pub fn progress(value: f32, width: f32) {
 #[track_caller]
 pub fn kbd(value: impl Into<String>) {
     let t = theme();
-    surface(t.muted, None, 4., 2., || {
-        RenderText::with_style(value, t.text_style(12., t.muted_foreground, 500)).show();
+    if !crate::tooltip::in_tooltip() {
+        surface(t.muted, None, 4., 2., || {
+            RenderText::with_style(value, t.text_style(12., t.muted_foreground, 500)).show();
+        });
+        return;
+    }
+    surface(t.muted, None, 4., 0., || {
+        crate::min_size(Vec2::new(20., 20.), || {
+            yakui::pad(Pad::horizontal(4.), || {
+                RenderText::with_style(value, t.text_style(12., t.muted_foreground, 500)).show();
+            });
+        });
     });
 }
 /// Alert surface with title and description.
