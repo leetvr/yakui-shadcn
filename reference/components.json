@@ -5229,13 +5229,21 @@
         "dropdown_menu",
         "MenuItem",
         "MenuKind",
-        "MenuState"
+        "MenuState",
+        "MenuOptions",
+        "dropdown_menu_trigger",
+        "dropdown_menu_with_options"
       ],
       "gallery_examples": [
         "default"
       ],
       "behaviour_tests": [
-        "selection::menu_skips_disabled_and_toggles_caller_owned_checks"
+        "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+        "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+        "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+        "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+        "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+        "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view"
       ],
       "visual_comparisons": [],
       "status": "in_progress",
@@ -10803,21 +10811,27 @@
       ],
       "gallery_examples": [
         "default",
-        "footer"
+        "footer",
+        "actions"
       ],
       "behaviour_tests": [
         "table_slots_align_columns_spans_and_footer_without_stretching_row_content",
-        "table_scrolls_horizontally_and_reveals_controls_when_focus_changes"
+        "table_scrolls_horizontally_and_reveals_controls_when_focus_changes",
+        "table_action_example_returns_action_for_the_opened_row"
       ],
       "visual_comparisons": [
         "visual/table/default-light-default",
         "visual/table/default-dark-default",
         "visual/table/footer-light-default",
-        "visual/table/footer-dark-default"
+        "visual/table/footer-dark-default",
+        "visual/table/actions-light-default",
+        "visual/table/actions-light-open",
+        "visual/table/actions-dark-default",
+        "visual/table/actions-dark-open"
       ],
       "status": "in_progress",
       "deviations": [
-        "The documented action-menu and multilingual RTL previews remain unported.",
+        "The documented multilingual RTL preview remains unported.",
         "Columns use explicit logical widths instead of the HTML intrinsic table width algorithm.",
         "Text rasterisation and collapsed half-pixel border sharing differ from browser output.",
         "Horizontal scrolling supports wheel/trackpad and focused-control reveal; draggable scrollbar presentation and native platform accessibility remain outstanding."
@@ -10897,10 +10911,39 @@
             "@/styles/base-nova/ui/dropdown-menu",
             "@/styles/base-nova/ui/table"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "actions",
+          "behaviour_tests": [
+            "table_action_example_returns_action_for_the_opened_row",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/table/actions-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/table/actions-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/table/actions-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/table/actions-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {

@@ -175,3 +175,22 @@ ui::width(384., || {
 });
 ui::Switch::new().size(ui::SwitchSize::Sm).show(&mut compact_setting);
 ```
+
+Compose dropdown triggers around ordinary buttons. Render their menus later at the
+application root, outside table/scroll clipping. Pointer opening focuses the popup;
+ArrowDown/Up enters its first/last enabled row. Checkbox and radio items stay open
+by default, while ordinary action items close and return focus to their trigger.
+
+```rust
+ui::dropdown_menu_trigger(&mut menu, || {
+    ui::Button::new("").variant(ui::Variant::Ghost)
+        .size(ui::ButtonSize::Icon).icon(ui::Icon::MoreHorizontal).show()
+});
+// At the root, after content:
+let action = ui::dropdown_menu_with_options(&mut menu, &mut items, ui::MenuOptions {
+    width: 128., align: ui::PopoverAlign::End, ..Default::default()
+});
+```
+
+`PopoverOptions` and `popover_with_options` expose the same side, alignment and
+offset vocabulary for ordinary popovers.

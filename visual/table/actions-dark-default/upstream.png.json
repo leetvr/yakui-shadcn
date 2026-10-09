@@ -1,0 +1,14 @@
+{
+  "example": "table-actions",
+  "theme": "dark",
+  "state": "default",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 860,
+    "y": 355.25,
+    "width": 32,
+    "height": 32
+  }
+}

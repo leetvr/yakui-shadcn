@@ -14,7 +14,7 @@ try {
  if(state==='hover' && await target.count()) await target.hover()
  if(state==='focus') await page.keyboard.press('Tab')
  if(state==='disabled' && await target.count()) await target.evaluate(el=>{el.disabled=true})
- if(state==='selected' && await target.count()) await target.click()
+ if((state==='selected'||state==='open') && await target.count()) await target.click()
  await page.waitForTimeout(example==='progress-demo'?650:150)
  if(errors.length) throw new Error(errors.join('\n'))
  await mkdir(dirname(output),{recursive:true})

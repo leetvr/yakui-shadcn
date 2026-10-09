@@ -10,7 +10,7 @@ use yakui::{
     WidgetId, context,
     event::{EventInterest, EventResponse, WidgetEvent},
     input::KeyCode,
-    widget::{EventContext, FocusPolicy, PaintContext, Widget},
+    widget::{EventContext, FocusPolicy, LayoutContext, PaintContext, Widget},
     widgets::Scope,
 };
 /// Stateful menu item kinds; nested items are ordinary owned Rust values.
@@ -28,8 +28,12 @@ pub struct MenuItem {
     pub id: u64,
     pub label: String,
     pub shortcut: Option<String>,
+    pub icon: Option<crate::Icon>,
+    pub inset: bool,
     pub disabled: bool,
     pub destructive: bool,
+    /// Action items close by default; checkbox/radio items stay open.
+    pub close_on_select: bool,
     pub kind: MenuKind,
 }
 impl MenuItem {
@@ -38,14 +42,18 @@ impl MenuItem {
             id,
             label: label.into(),
             shortcut: None,
+            icon: None,
+            inset: false,
             disabled: false,
             destructive: false,
+            close_on_select: true,
             kind: MenuKind::Action,
         }
     }
     pub fn checkbox(id: u64, label: impl Into<String>, checked: bool) -> Self {
         Self {
             kind: MenuKind::Checkbox(checked),
+            close_on_select: false,
             ..Self::action(id, label)
         }
     }
@@ -61,6 +69,39 @@ impl MenuItem {
             ..Self::action(id, label)
         }
     }
+    pub fn icon(mut self, icon: crate::Icon) -> Self {
+        self.icon = Some(icon);
+        self
+    }
+    pub fn inset(mut self, inset: bool) -> Self {
+        self.inset = inset;
+        self
+    }
+    pub fn shortcut(mut self, shortcut: impl Into<String>) -> Self {
+        self.shortcut = Some(shortcut.into());
+        self
+    }
+    pub fn destructive(mut self, destructive: bool) -> Self {
+        self.destructive = destructive;
+        self
+    }
+    pub fn close_on_select(mut self, close: bool) -> Self {
+        self.close_on_select = close;
+        self
+    }
+    pub fn label(text: impl Into<String>) -> Self {
+        Self {
+            kind: MenuKind::Label,
+            ..Self::action(0, text)
+        }
+    }
+    pub fn radio(id: u64, label: impl Into<String>, group: u64, selected: bool) -> Self {
+        Self {
+            kind: MenuKind::Radio { group, selected },
+            close_on_select: false,
+            ..Self::action(id, label)
+        }
+    }
     pub fn disabled(mut self, value: bool) -> Self {
         self.disabled = value;
         self
@@ -72,23 +113,38 @@ pub struct MenuState {
     pub popup: OverlayState,
     path: Vec<usize>,
     submenus: Vec<OverlayState>,
+    sub_pointer: Vec<bool>,
+    pointer_open: bool,
+    pending_focus: Option<MenuInitialFocus>,
 }
 impl MenuState {
     pub fn open_from(&mut self, response: ControlResponse) {
         self.path.clear();
         self.submenus.clear();
+        self.sub_pointer.clear();
+        self.pointer_open = false;
+        self.pending_focus = None;
         self.popup.open_from(response);
     }
     pub fn close(&mut self) {
         self.popup.close();
         self.path.clear();
         self.submenus.clear();
+        self.sub_pointer.clear();
+        self.pending_focus = None;
     }
+}
+#[derive(Debug, Clone, Copy)]
+enum MenuInitialFocus {
+    Pointer,
+    First,
+    Last,
 }
 #[derive(Debug, Clone, Copy)]
 enum MenuCommand {
     Activate(usize),
     Open(usize),
+    CloseSubmenus,
 }
 #[derive(Debug, Clone)]
 pub(crate) struct MenuContext {
@@ -125,6 +181,7 @@ struct EntryProps {
     index: usize,
     disabled: bool,
     submenu: bool,
+    submenu_level: bool,
 }
 #[derive(Debug)]
 struct EntryWidget {
@@ -142,6 +199,7 @@ impl Widget for EntryWidget {
                 index: 0,
                 disabled: false,
                 submenu: false,
+                submenu_level: false,
             },
             control: ControlWidget::new(),
             context: None,
@@ -156,7 +214,7 @@ impl Widget for EntryWidget {
         self.control.update(Control {
             disabled: props.disabled,
             radius: t.radius * 0.6,
-            ring: t.ring,
+            ring: Color::CLEAR,
             focus_size: None,
         })
     }
@@ -172,6 +230,16 @@ impl Widget for EntryWidget {
     fn event(&mut self, ctx: EventContext<'_>, event: &WidgetEvent) -> EventResponse {
         if self.props.disabled {
             return EventResponse::Bubble;
+        }
+        if matches!(event, WidgetEvent::MouseEnter) {
+            ctx.input.set_focus(Some(ctx.dom.current()), false);
+            if let Some(group) = &self.context {
+                group.pending.set(Some(if self.props.submenu {
+                    MenuCommand::Open(self.props.index)
+                } else {
+                    MenuCommand::CloseSubmenus
+                }));
+            }
         }
         if let Some(group) = &self.context {
             let ids = group.ids.borrow();
@@ -201,7 +269,8 @@ impl Widget for EntryWidget {
                     group.pending.set(Some(MenuCommand::Open(self.props.index)));
                     return EventResponse::Sink;
                 }
-                if matches!(key, KeyCode::ArrowLeft | KeyCode::Tab) {
+                if *key == KeyCode::Tab || (*key == KeyCode::ArrowLeft && self.props.submenu_level)
+                {
                     if let Some(dismiss) = &self.dismiss {
                         dismiss.dismiss.set(true);
                         ctx.input.set_focus(dismiss.trigger, false);
@@ -212,6 +281,15 @@ impl Widget for EntryWidget {
                         EventResponse::Sink
                     };
                 }
+            }
+            if matches!(
+                event,
+                WidgetEvent::KeyChanged {
+                    key: KeyCode::ArrowLeft | KeyCode::ArrowRight,
+                    ..
+                }
+            ) {
+                return EventResponse::Sink;
             }
             if let WidgetEvent::TextInput(c, _) = event {
                 if !c.is_control() && count > 0 {
@@ -268,6 +346,10 @@ fn with_menu_context<R>(
 struct LevelResponse {
     action: Option<u64>,
     submenu: Option<(usize, ControlResponse)>,
+    close_submenus: bool,
+    close_on_select: bool,
+    first: Option<WidgetId>,
+    last: Option<WidgetId>,
 }
 #[track_caller]
 fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) -> LevelResponse {
@@ -275,18 +357,34 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
         let command = context.pending.take();
         let ids = context.ids.clone();
         ids.borrow_mut().clear();
-        let mut output = LevelResponse::default();
+        let mut output = LevelResponse {
+            close_submenus: matches!(command, Some(MenuCommand::CloseSubmenus)),
+            ..Default::default()
+        };
         let mut radio = None;
         let t = theme();
+        let translucent = yakui::util::read_scope::<MenuTranslucent>().is_some();
         Scope::new(context).show(|| {
-            crate::column(2., || {
+            crate::column(0., || {
                 for (index, item) in items.iter_mut().enumerate() {
                     if matches!(item.kind, MenuKind::Separator) {
-                        crate::separator(width - 16.);
+                        menu_separator(width);
                         continue;
                     }
                     if matches!(item.kind, MenuKind::Label) {
-                        crate::surface(Color::CLEAR, None, 0., 6., || crate::label(&item.label));
+                        yakui::util::widget_children::<MenuRow, _>(
+                            || {
+                                let mut style = t.text_style(12., t.muted_foreground, 500);
+                                style.line_height_override = Some(16.);
+                                yakui::widgets::RenderText::with_style(&item.label, style).show();
+                            },
+                            MenuRowProps {
+                                width,
+                                inset: item.inset,
+                                indicator: false,
+                                minimum_height: 16.,
+                            },
+                        );
                         continue;
                     }
                     let dom = context::dom();
@@ -294,6 +392,8 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
                         index,
                         disabled: item.disabled,
                         submenu: matches!(item.kind, MenuKind::Submenu(_)),
+                        submenu_level: yakui::util::read_scope::<MenuRootLevel>()
+                            .is_some_and(|level| level.0),
                     });
                     let id = response.id;
                     let res = ControlResponse {
@@ -306,6 +406,7 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
                     let activate =
                         res.clicked || matches!(command,Some(MenuCommand::Activate(i)) if i==index);
                     if activate && !item.disabled {
+                        output.close_on_select = item.close_on_select;
                         match &mut item.kind {
                             MenuKind::Action => output.action = Some(item.id),
                             MenuKind::Checkbox(checked) => {
@@ -324,49 +425,74 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
                     if matches!(command,Some(MenuCommand::Open(i)) if i==index) {
                         output.submenu = Some((index, res));
                     }
-                    crate::width(width - 16., || {
-                        crate::surface(
-                            if res.focused || res.hovering {
-                                t.accent
-                            } else {
-                                Color::CLEAR
-                            },
-                            None,
-                            t.radius * 0.6,
-                            6.,
+                    let active = res.focused || res.hovering;
+                    let fill = if active && translucent {
+                        t.foreground.with_alpha(0.1)
+                    } else if active && item.destructive {
+                        t.destructive.with_alpha(if t.dark { 0.2 } else { 0.1 })
+                    } else if active {
+                        t.accent
+                    } else {
+                        Color::CLEAR
+                    };
+                    let color = if item.destructive && translucent {
+                        t.accent_foreground
+                    } else if item.destructive {
+                        t.destructive
+                    } else if active {
+                        t.accent_foreground
+                    } else {
+                        t.popover_foreground
+                    };
+                    let color = crate::layout::resolve_color(color.with_alpha(if item.disabled {
+                        0.5
+                    } else {
+                        1.
+                    }));
+                    let indicator =
+                        matches!(item.kind, MenuKind::Checkbox(_) | MenuKind::Radio { .. });
+                    crate::surface(fill, None, t.radius * 0.6, 0., || {
+                        yakui::util::widget_children::<MenuRow, _>(
                             || {
-                                crate::row(8., || {
-                                    let checked = matches!(
-                                        item.kind,
-                                        MenuKind::Checkbox(true)
-                                            | MenuKind::Radio { selected: true, .. }
-                                    );
-                                    crate::size(crate::Vec2::splat(14.), || {
-                                        if checked {
-                                            crate::icon(crate::Icon::Check, 14.);
-                                        }
-                                    });
-                                    let color = if item.disabled {
-                                        t.muted_foreground
-                                    } else if item.destructive {
-                                        t.destructive
-                                    } else {
-                                        t.popover_foreground
-                                    };
+                                crate::row(6., || {
+                                    if let Some(icon) = item.icon {
+                                        crate::icon_colored(icon, 16., color);
+                                    }
                                     yakui::widgets::RenderText::with_style(
                                         &item.label,
                                         t.text_style(14., color, 400),
                                     )
                                     .show();
-                                    if let Some(shortcut) = &item.shortcut {
-                                        crate::muted(shortcut);
-                                    }
-                                    if matches!(item.kind, MenuKind::Submenu(_)) {
-                                        crate::icon(crate::Icon::ChevronRight, 14.);
-                                    }
-                                })
+                                });
+                                if indicator {
+                                    crate::size(crate::Vec2::splat(16.), || {
+                                        if matches!(
+                                            item.kind,
+                                            MenuKind::Checkbox(true)
+                                                | MenuKind::Radio { selected: true, .. }
+                                        ) {
+                                            crate::icon_colored(crate::Icon::Check, 16., color);
+                                        }
+                                    });
+                                } else if let Some(shortcut) = &item.shortcut {
+                                    let mut style = t.text_style(
+                                        12.,
+                                        if active { color } else { t.muted_foreground },
+                                        400,
+                                    );
+                                    style.line_height_override = Some(16.);
+                                    yakui::widgets::RenderText::with_style(shortcut, style).show();
+                                } else if matches!(item.kind, MenuKind::Submenu(_)) {
+                                    crate::icon_colored(crate::Icon::ChevronRight, 16., color);
+                                }
                             },
-                        )
+                            MenuRowProps {
+                                width,
+                                inset: item.inset,
+                                indicator,
+                                minimum_height: 20.,
+                            },
+                        );
                     });
                     dom.end_widget::<EntryWidget>(id);
                 }
@@ -381,6 +507,8 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
                 }
             }
         }
+        output.first = ids.borrow().first().map(|entry| entry.1);
+        output.last = ids.borrow().last().map(|entry| entry.1);
         output
     })
 }
@@ -388,19 +516,76 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
 /// Open the state from an ordinary button response, then render this at the root.
 #[track_caller]
 pub fn dropdown_menu(state: &mut MenuState, items: &mut [MenuItem]) -> Option<u64> {
-    let mut result = LevelResponse::default();
-    crate::popover(&mut state.popup, 224., |overlay| {
-        result = menu_list(items, 224., None);
-        if result.action.is_some() {
-            overlay.close();
+    dropdown_menu_with_options(state, items, MenuOptions::default())
+}
+/// Menu placement and width; item geometry follows the scoped Nova tokens.
+#[derive(Debug, Clone, Copy)]
+pub struct MenuOptions {
+    pub width: f32,
+    pub side: crate::Side,
+    pub align: crate::PopoverAlign,
+    pub side_offset: f32,
+    pub align_offset: f32,
+}
+impl Default for MenuOptions {
+    fn default() -> Self {
+        Self {
+            width: 224.,
+            side: crate::Side::Bottom,
+            align: crate::PopoverAlign::Start,
+            side_offset: 4.,
+            align_offset: 0.,
         }
-    });
+    }
+}
+#[track_caller]
+pub fn dropdown_menu_with_options(
+    state: &mut MenuState,
+    items: &mut [MenuItem],
+    options: MenuOptions,
+) -> Option<u64> {
+    let pending_focus = state.pending_focus.take();
+    let mut result = LevelResponse::default();
+    crate::overlay::menu_popup(
+        &mut state.popup,
+        crate::PopoverOptions {
+            width: options.width,
+            side: options.side,
+            align: options.align,
+            side_offset: options.side_offset,
+            align_offset: options.align_offset,
+        },
+        false,
+        |overlay| {
+            result = menu_root(
+                items,
+                (options.width - 8.).max(0.),
+                if state.pointer_open {
+                    MenuInitialFocus::Pointer
+                } else {
+                    MenuInitialFocus::First
+                },
+                pending_focus,
+                false,
+            );
+            if result.action.is_some() && result.close_on_select {
+                overlay.close();
+            }
+        },
+    );
+    if result.close_submenus {
+        state.path.clear();
+        state.submenus.clear();
+        state.sub_pointer.clear();
+    }
     if let Some((index, response)) = result.submenu {
         state.path = vec![index];
         state.submenus = vec![OverlayState::default()];
+        state.sub_pointer = vec![!response.focus_visible];
         state.submenus[0].open_from(response);
     }
     let mut action = result.action;
+    let mut close = result.close_on_select;
     for depth in 0..state.path.len() {
         let mut nested = &mut *items;
         for &index in state.path.iter().take(depth + 1) {
@@ -416,24 +601,55 @@ pub fn dropdown_menu(state: &mut MenuState, items: &mut [MenuItem]) -> Option<u6
             break;
         };
         let mut result = LevelResponse::default();
-        crate::popover_on_side(overlay, 224., crate::Side::Right, |overlay| {
-            result = menu_list(nested, 224., None);
-            if result.action.is_some() {
-                overlay.close();
-            }
-        });
+        crate::overlay::menu_popup(
+            overlay,
+            crate::PopoverOptions {
+                width: options.width,
+                side: crate::Side::Right,
+                align_offset: -3.,
+                side_offset: 0.,
+                ..Default::default()
+            },
+            false,
+            |overlay| {
+                result = menu_root(
+                    nested,
+                    (options.width - 8.).max(0.),
+                    if state.sub_pointer.get(depth).copied().unwrap_or(false) {
+                        MenuInitialFocus::Pointer
+                    } else {
+                        MenuInitialFocus::First
+                    },
+                    None,
+                    true,
+                );
+                if result.action.is_some() && result.close_on_select {
+                    overlay.close();
+                }
+            },
+        );
+        if result.close_submenus {
+            state.path.truncate(depth + 1);
+            state.submenus.truncate(depth + 1);
+            state.sub_pointer.truncate(depth + 1);
+        }
+        if result.action.is_some() {
+            close = result.close_on_select;
+        }
         action = action.or(result.action);
         if let Some((index, response)) = result.submenu {
             state.path.truncate(depth + 1);
             state.submenus.truncate(depth + 1);
+            state.sub_pointer.truncate(depth + 1);
             state.path.push(index);
             let mut popup = OverlayState::default();
             popup.open_from(response);
             state.submenus.push(popup);
+            state.sub_pointer.push(!response.focus_visible);
             break;
         }
     }
-    if action.is_some() {
+    if action.is_some() && close {
         state.close();
     }
     action
@@ -444,6 +660,339 @@ pub struct SelectState {
     pub selected: Option<usize>,
     pub popup: OverlayState,
     pub query: String,
+}
+
+#[derive(Debug, Clone, Copy)]
+struct MenuRowProps {
+    width: f32,
+    inset: bool,
+    indicator: bool,
+    minimum_height: f32,
+}
+#[derive(Debug)]
+struct MenuRow(MenuRowProps);
+impl Widget for MenuRow {
+    type Props<'a> = MenuRowProps;
+    type Response = ();
+    fn new() -> Self {
+        Self(MenuRowProps {
+            width: 0.,
+            inset: false,
+            indicator: false,
+            minimum_height: 20.,
+        })
+    }
+    fn update(&mut self, props: MenuRowProps) {
+        self.0 = props;
+    }
+    fn layout(&self, mut ctx: LayoutContext<'_>, input: yakui::Constraints) -> crate::Vec2 {
+        let width = self.0.width.min(input.max.x);
+        let left_padding = if self.0.inset { 28. } else { 6. };
+        let right_padding = if self.0.indicator { 8. } else { 6. };
+        let children = &ctx.dom.get_current().children;
+        let mut suffix = crate::Vec2::ZERO;
+        if let Some(&child) = children.get(1) {
+            suffix = ctx.calculate_layout(
+                child,
+                yakui::Constraints::loose(crate::Vec2::new(
+                    (width - left_padding - right_padding).max(0.),
+                    input.max.y,
+                )),
+            );
+        }
+        let reserved = if self.0.indicator {
+            32.
+        } else {
+            right_padding
+                + if children.len() > 1 {
+                    suffix.x + 6.
+                } else {
+                    0.
+                }
+        };
+        let leading = ctx.calculate_layout(
+            children[0],
+            yakui::Constraints::loose(crate::Vec2::new(
+                (width - left_padding - reserved).max(0.),
+                input.max.y,
+            )),
+        );
+        let size = input.constrain(crate::Vec2::new(
+            width,
+            leading.y.max(suffix.y).max(self.0.minimum_height) + 8.,
+        ));
+        ctx.layout.set_pos(
+            children[0],
+            crate::Vec2::new(left_padding, (size.y - leading.y) / 2.),
+        );
+        if let Some(&child) = children.get(1) {
+            ctx.layout.set_pos(
+                child,
+                crate::Vec2::new(width - right_padding - suffix.x, (size.y - suffix.y) / 2.),
+            );
+        }
+        size
+    }
+}
+#[track_caller]
+fn menu_separator(width: f32) {
+    let t = theme();
+    let color =
+        crate::layout::resolve_color(if yakui::util::read_scope::<MenuTranslucent>().is_some() {
+            t.foreground.with_alpha(0.05)
+        } else {
+            t.border
+        });
+    crate::size(crate::Vec2::new(width, 9.), || {
+        yakui::widgets::Canvas::new(move |ctx| {
+            let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
+            let mut line = yakui::paint::PaintRect::new(yakui::Rect::from_pos_size(
+                rect.pos() + crate::Vec2::new(-4., 4.),
+                crate::Vec2::new(rect.size().x + 8., 1.),
+            ));
+            line.color = color;
+            line.add(ctx.paint);
+        })
+        .show();
+    });
+}
+#[derive(Debug)]
+struct MenuRootLevel(bool);
+#[derive(Debug)]
+struct MenuTranslucent;
+#[derive(Debug)]
+struct MenuRootProps {
+    context: MenuContext,
+    initial: MenuInitialFocus,
+    requested: Option<MenuInitialFocus>,
+    submenu: bool,
+}
+#[derive(Debug)]
+struct MenuRoot {
+    props: Option<MenuRootProps>,
+    focused_once: Cell<bool>,
+    requested: Cell<Option<MenuInitialFocus>>,
+    dismiss: Option<Rc<crate::overlay::DismissContext>>,
+}
+impl Widget for MenuRoot {
+    type Props<'a> = MenuRootProps;
+    type Response = ();
+    fn new() -> Self {
+        Self {
+            props: None,
+            focused_once: Cell::new(false),
+            requested: Cell::new(None),
+            dismiss: None,
+        }
+    }
+    fn update(&mut self, props: MenuRootProps) {
+        self.requested.set(props.requested);
+        self.dismiss = yakui::util::read_scope();
+        self.props = Some(props);
+    }
+    fn layout(&self, ctx: LayoutContext<'_>, constraints: yakui::Constraints) -> crate::Vec2 {
+        let size = self.default_layout(
+            LayoutContext {
+                dom: ctx.dom,
+                input: ctx.input,
+                layout: ctx.layout,
+                paint: ctx.paint,
+            },
+            constraints,
+        );
+        let props = self.props.as_ref().unwrap();
+        let first_layout = !self.focused_once.replace(true);
+        let requested = self.requested.take().or_else(|| {
+            if first_layout {
+                Some(props.initial)
+            } else {
+                None
+            }
+        });
+        if let Some(requested) = requested {
+            let ids = props.context.ids.borrow();
+            let target = match requested {
+                MenuInitialFocus::Pointer => Some(ctx.dom.current()),
+                MenuInitialFocus::First => ids.first().map(|e| e.1),
+                MenuInitialFocus::Last => ids.last().map(|e| e.1),
+            };
+            ctx.input
+                .set_focus(target, !matches!(requested, MenuInitialFocus::Pointer));
+        }
+        size
+    }
+    fn focus_policy(&self) -> FocusPolicy {
+        FocusPolicy::POINTER
+    }
+    fn event_interest(&self) -> EventInterest {
+        EventInterest::FOCUSED_KEYBOARD
+    }
+    fn event(&mut self, ctx: EventContext<'_>, event: &WidgetEvent) -> EventResponse {
+        let props = self.props.as_ref().unwrap();
+        if crate::overlay::escape(&ctx, event, self.dismiss.as_deref()) {
+            return EventResponse::Sink;
+        }
+        if let WidgetEvent::KeyChanged {
+            key, down: true, ..
+        } = event
+        {
+            let ids = props.context.ids.borrow();
+            let target = match key {
+                KeyCode::ArrowDown | KeyCode::Home => ids.first(),
+                KeyCode::ArrowUp | KeyCode::End => ids.last(),
+                _ => None,
+            };
+            if let Some((_, target, _)) = target {
+                ctx.input.set_focus(Some(*target), true);
+                return EventResponse::Sink;
+            }
+            if *key == KeyCode::Tab || (*key == KeyCode::ArrowLeft && props.submenu) {
+                if let Some(dismiss) = &self.dismiss {
+                    dismiss.dismiss.set(true);
+                    ctx.input.set_focus(dismiss.trigger, false);
+                }
+                return if *key == KeyCode::Tab {
+                    EventResponse::Bubble
+                } else {
+                    EventResponse::Sink
+                };
+            }
+            if matches!(key, KeyCode::Enter | KeyCode::Space) {
+                return EventResponse::Sink;
+            }
+        }
+        if matches!(
+            event,
+            WidgetEvent::KeyChanged {
+                key: KeyCode::ArrowLeft | KeyCode::ArrowRight,
+                ..
+            }
+        ) {
+            return EventResponse::Sink;
+        }
+        if let WidgetEvent::TextInput(c, _) = event {
+            if !c.is_control() {
+                if let Some((_, target, _)) =
+                    props.context.ids.borrow().iter().find(|(_, _, text)| {
+                        text.to_lowercase()
+                            .starts_with(&c.to_lowercase().to_string())
+                    })
+                {
+                    ctx.input.set_focus(Some(*target), true);
+                }
+                return EventResponse::Sink;
+            }
+        }
+        EventResponse::Bubble
+    }
+}
+#[track_caller]
+fn menu_root(
+    items: &mut [MenuItem],
+    width: f32,
+    initial: MenuInitialFocus,
+    requested: Option<MenuInitialFocus>,
+    submenu: bool,
+) -> LevelResponse {
+    with_menu_context(None, |group| {
+        let mut result = LevelResponse::default();
+        yakui::util::widget_children::<MenuRoot, _>(
+            || {
+                yakui::widgets::Scrollable::vertical().show(|| {
+                    Scope::new(MenuTranslucent).show(|| {
+                        Scope::new(MenuRootLevel(submenu)).show(|| {
+                            result = menu_list(items, width, Some(group.clone()));
+                        });
+                    });
+                });
+            },
+            MenuRootProps {
+                context: group.clone(),
+                initial,
+                requested,
+                submenu,
+            },
+        );
+        result
+    })
+}
+#[derive(Debug, Clone, Copy)]
+enum TriggerCommand {
+    First,
+    Last,
+    Close,
+}
+#[derive(Debug)]
+pub(crate) struct MenuTriggerContext {
+    open: bool,
+    pending: Rc<Cell<Option<TriggerCommand>>>,
+}
+impl MenuTriggerContext {
+    pub(crate) fn key(&self, event: &WidgetEvent) -> Option<EventResponse> {
+        if let WidgetEvent::KeyChanged { key, down, .. } = event {
+            let command = match key {
+                KeyCode::ArrowDown => TriggerCommand::First,
+                KeyCode::ArrowUp => TriggerCommand::Last,
+                KeyCode::Escape | KeyCode::Tab if self.open => TriggerCommand::Close,
+                _ => return None,
+            };
+            if *down {
+                self.pending.set(Some(command));
+            }
+            return Some(if *key == KeyCode::Tab {
+                EventResponse::Bubble
+            } else {
+                EventResponse::Sink
+            });
+        }
+        None
+    }
+}
+/// Compose an ordinary Button as a dropdown trigger. Pointer opening leaves the
+/// rows unhighlighted; ArrowDown/Up opens and focuses the first/last enabled row.
+#[track_caller]
+pub fn dropdown_menu_trigger(
+    state: &mut MenuState,
+    children: impl FnOnce() -> ControlResponse,
+) -> ControlResponse {
+    let mut response = ControlResponse::default();
+    let command = crate::layout::with_state(
+        || Rc::new(Cell::new(None::<TriggerCommand>)),
+        |hook| {
+            let pending = hook.borrow().clone();
+            let command = pending.take();
+            Scope::new(MenuTriggerContext {
+                open: state.popup.open,
+                pending,
+            })
+            .show(|| {
+                response = children();
+            });
+            command
+        },
+    );
+    state.popup.trigger = response.id;
+    if response.clicked {
+        if state.popup.open {
+            state.close();
+        } else {
+            state.open_from(response);
+            state.pointer_open = !response.focus_visible;
+        }
+    }
+    match command {
+        Some(TriggerCommand::First | TriggerCommand::Last) => {
+            state.open_from(response);
+            state.pending_focus = Some(if matches!(command, Some(TriggerCommand::Last)) {
+                MenuInitialFocus::Last
+            } else {
+                MenuInitialFocus::First
+            });
+        }
+        Some(TriggerCommand::Close) => state.close(),
+        None => {}
+    }
+    response
 }
 #[track_caller]
 pub fn select(state: &mut SelectState, options: &[&str], placeholder: &str, disabled: bool) {
@@ -477,7 +1026,7 @@ pub fn select_content(state: &mut SelectState, options: &[&str]) {
                 ..MenuItem::action(i as u64, *label)
             })
             .collect();
-        let result = menu_list(&mut items, 224., None);
+        let result = menu_list(&mut items, 208., None);
         if let Some(id) = result.action {
             *selected = Some(id as usize);
             popup.close();
@@ -513,7 +1062,7 @@ pub fn combobox_content(state: &mut SelectState, options: &[&str]) {
                     if items.is_empty() {
                         crate::muted("No results found.");
                     }
-                    let result = menu_list(&mut items, 260., Some(group.clone()));
+                    let result = menu_list(&mut items, 244., Some(group.clone()));
                     if let Some(id) = result.action {
                         *selected = Some(id as usize);
                         popup.close();
@@ -541,7 +1090,7 @@ pub fn command(query: &mut String, items: &[MenuItem]) -> Option<u64> {
                     if filtered.is_empty() {
                         crate::muted("No results found.");
                     }
-                    result = menu_list(&mut filtered, 300., Some(group.clone())).action;
+                    result = menu_list(&mut filtered, 284., Some(group.clone())).action;
                 })
             });
         });

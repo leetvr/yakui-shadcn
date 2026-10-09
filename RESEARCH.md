@@ -129,3 +129,26 @@ Field layout keeps the indicator at the first helper line; bare compact labels
 centre against the taller track. Card focus decorates the card, while ordinary
 field focus decorates only the track. Both patterns use one native activation and
 focus target and write the application boolean from the consumed response.
+
+## Dropdown trigger and action table mechanisms
+
+Pinned Base UI moves focus to the menu popup after a pointer opening, without
+highlighting a row. ArrowDown/Up enters first/last enabled items. Checkbox/radio
+items default to closeOnClick=false, whereas ordinary items close. Native menus
+now preserve these distinctions and restore the recorded trigger on dismissal.
+The table action preview uses three independent MenuState values and returns row
+and action IDs to gallery state, verified through actual key/pointer cycles.
+
+Yakui dispatches keys only to the focused widget; EventResponse::Bubble allows
+global navigation, not parent key dispatch. Dropdown trigger commands therefore
+live in a scoped Rc<Cell> captured by ControlWidget during update. Reading scopes
+inside events remains forbidden by the DOM borrow mechanism. Menu roots themselves
+own pointer-opening keyboard input; enabled entries own subsequent navigation.
+
+Nova's final cn-menu-translucent rule overrides destructive text to the accent
+foreground and highlighted rows to foreground/10; separators become foreground/5.
+These measured cascade results are reproduced. Popup blur/saturation and soft
+shadow are still absent: the pinned renderer-independent Yakui paint interface
+has no framebuffer backdrop-filter operation. Menus currently use an opaque
+semantic popup surface. Placement exposes side/align/offset, logical RTL alignment
+and all four side flips/clamping. Native vertical scrolling reveals focused rows.

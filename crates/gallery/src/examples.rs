@@ -89,6 +89,8 @@ pub struct ExampleState {
     pub data_table: ui::DataTableState,
     pub select: ui::SelectState,
     pub menu: ui::MenuState,
+    pub row_actions: [ui::MenuState; 3],
+    pub last_table_action: Option<(usize, u64)>,
     pub menubar: ui::MenubarState,
     pub menu_items: Vec<ui::MenuItem>,
     pub values: [f64; 2],
@@ -170,7 +172,13 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             ui::calendar(&mut state.calendar);
         }
         "date-picker" => ui::date_picker(&mut state.calendar, &mut state.overlay),
-        "table" => invoice_table(variant == "footer"),
+        "table" => {
+            if variant == "actions" {
+                table_actions(&mut state.row_actions, disabled)
+            } else {
+                invoice_table(variant == "footer")
+            }
+        }
         "data-table" => {
             let columns = [
                 ui::TableColumn::new("Status", 100.),
@@ -879,7 +887,7 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "group",
             "table",
         ],
-        "table" => &["default", "footer"],
+        "table" => &["default", "footer", "actions"],
         "switch" => &[
             "default",
             "description",
@@ -944,6 +952,27 @@ pub fn overlays(component: &str, variant: &str, state: &mut ExampleState) {
         });
     };
     match component {
+        "table" if variant == "actions" => {
+            for (row, menu) in state.row_actions.iter_mut().enumerate() {
+                let mut items = vec![
+                    ui::MenuItem::action(1, "Edit"),
+                    ui::MenuItem::action(2, "Duplicate"),
+                    ui::MenuItem::separator(),
+                    ui::MenuItem::action(3, "Delete").destructive(true),
+                ];
+                if let Some(action) = ui::dropdown_menu_with_options(
+                    menu,
+                    &mut items,
+                    ui::MenuOptions {
+                        width: 128.,
+                        align: ui::PopoverAlign::End,
+                        ..Default::default()
+                    },
+                ) {
+                    state.last_table_action = Some((row, action));
+                }
+            }
+        }
         "toast" => {
             let response = ui::toast_viewport(&mut state.toasts);
             if let Some(id) = response.action {
@@ -1027,6 +1056,7 @@ impl ExampleState {
             "select" | "native-select" | "combobox" => self.select.popup.open,
             "dropdown-menu" | "context-menu" => self.menu.popup.open,
             "menubar" => self.menubar.menu.popup.open,
+            "table" => self.row_actions.iter().any(|menu| menu.popup.open),
             "tooltip" => self.trigger.hovering || self.trigger.focused,
             _ => self.overlay.open,
         }
@@ -1055,6 +1085,8 @@ impl Default for ExampleState {
             data_table: Default::default(),
             select: Default::default(),
             menu: Default::default(),
+            row_actions: Default::default(),
+            last_table_action: None,
             menubar: Default::default(),
             values:[75.,90.],ratio:0.5,carousel:Default::default(),sidebar:Default::default(),questionnaire:Default::default(),scroller:Default::default(),
             chat:vec!["I'm building a chat for our app and the scroll behavior is driving me nuts.".into(),"Wrap your message list in MessageScroller and turn on auto-follow. The viewport pins to the bottom as text arrives.".into(),"And if they've scrolled up to re-read an older answer?".into(),"Auto-follow stops when the reader scrolls up. Their position is preserved as new messages arrive.".into()],
@@ -1298,4 +1330,78 @@ mod tests {
         frame(&mut y, &mut state);
         assert_eq!(state.table_selected, [false; 4]);
     }
+
+    #[test]
+    fn table_action_example_returns_action_for_the_opened_row() {
+        fn frame(y: &mut Yakui, state: &mut ExampleState) {
+            y.start();
+            yakui::align(Alignment::TOP_LEFT, || {
+                render("table", "actions", state, false)
+            });
+            overlays("table", "actions", state);
+            y.finish();
+        }
+        let mut y = Yakui::new();
+        y.set_surface_size(Vec2::new(1000., 800.));
+        y.set_unscaled_viewport(Rect::from_pos_size(Vec2::ZERO, Vec2::new(1000., 800.)));
+        ui::add_fonts(&mut y);
+        let mut state = ExampleState::default();
+        frame(&mut y, &mut state);
+        let triggers = controls(&y);
+        assert_eq!(triggers.len(), 3);
+        click(&mut y, triggers[1]);
+        frame(&mut y, &mut state);
+        frame(&mut y, &mut state);
+        assert!(state.row_actions[1].popup.open);
+        assert!(!state.row_actions[0].popup.open);
+        for key in [KeyCode::ArrowDown, KeyCode::End, KeyCode::Enter] {
+            for down in [true, false] {
+                y.handle_event(Event::KeyChanged {
+                    key,
+                    down,
+                    modifiers: None,
+                });
+            }
+        }
+        frame(&mut y, &mut state);
+        assert_eq!(state.last_table_action, Some((1, 3)));
+        assert!(!state.row_actions[1].popup.open);
+    }
+}
+
+fn table_actions(menus: &mut [ui::MenuState; 3], disabled: bool) {
+    let rows = [
+        ("Wireless Mouse", "$29.99"),
+        ("Mechanical Keyboard", "$129.99"),
+        ("USB-C Hub", "$49.99"),
+    ];
+    ui::Table::new(&[432.02, 186.4, 181.58]).show(|| {
+        ui::table_header(|| {
+            ui::table_row(false, || {
+                for heading in ["Product", "Price", "Actions"] {
+                    ui::table_head(heading);
+                }
+            })
+        });
+        ui::table_body(|| {
+            for ((product, price), menu) in rows.into_iter().zip(menus) {
+                ui::table_row(false, || {
+                    ui::table_cell(|| ui::table_cell_text(product, true));
+                    ui::table_cell(|| ui::table_cell_text(price, false));
+                    ui::TableCell::new()
+                        .align(ui::TableCellAlign::End)
+                        .show(|| {
+                            ui::dropdown_menu_trigger(menu, || {
+                                Button::new("")
+                                    .variant(V::Ghost)
+                                    .size(S::Icon)
+                                    .icon(ui::Icon::MoreHorizontal)
+                                    .disabled(disabled)
+                                    .show()
+                            });
+                        });
+                });
+            }
+        });
+    });
 }

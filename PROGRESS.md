@@ -43,10 +43,10 @@ initial public APIs and native routes. Current behaviour includes:
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All three consuming examples compile.
-- 44 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
-- 107 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **252 captures,
+- 50 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
+- 108 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **254 captures,
   zero failures** in the latest full smoke run.
-- The configured upstream suite covers 29 actual previews: **144 comparison pairs**
+- The configured upstream suite covers 30 actual previews: **148 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
   used to find and correct concrete layout/painting defects, not to certify parity.
 - Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
@@ -60,7 +60,7 @@ focused layout tests cover the radio/progress/button regressions.
 ## Required work still outstanding
 
 `reference/components.json` records component-specific deviations and every upstream
-preview separately. Only 29 of 461 previews currently have paired captures. The
+preview separately. Only 30 of 461 previews currently have paired captures. The
 remaining previews must be studied, implemented and compared, not mapped to a
 generic default rendition. Important incomplete areas include:
 
@@ -146,3 +146,20 @@ stop, disabled skipping and exact track sizes. Thirty-two switch pairs replace
 the previous four default pairs; checkbox comparisons were rerun after the shared
 layout change. Multilingual RTL previews, motion, expanded touch targets and native
 platform accessibility remain outstanding. No component is certified complete.
+
+## Action menus and popup placement increment
+
+Ported table-actions through public dropdown triggers and menus. Three row menus
+return a row/action tuple; default/open screenshots exist for both themes. Added
+public popup/menu alignment and offsets, neutral Nova menu highlighting, flush
+action rows, labels/icons/shortcuts/inset slots, end-positioned selection indicators,
+hover submenu opening and native vertical overflow scrolling. Keyboard opening
+chooses first/last enabled items; pointer opening focuses the popup without a
+highlight. Checkbox/radio items stay open by default.
+
+Six additional actual native tests cover pointer/key opening, end alignment,
+Escape/typeahead, retained checkbox/radio selection, overflow focus reveal and the
+actual gallery row callback. Yakui keyboard events do not bubble to parents; a
+cached trigger context owns these commands on the focused button. Popup blur,
+saturation, soft shadows, exact hover delays/transit and multilingual RTL remain
+outstanding. No component was certified complete.

@@ -8,6 +8,7 @@ use yakui::{
 #[derive(Debug, Clone, Copy)]
 pub enum Icon {
     Check,
+    MoreHorizontal,
     ChevronDown,
     ChevronRight,
     ChevronLeft,
@@ -92,6 +93,19 @@ pub fn icon_colored(icon: Icon, size: f32, color: Color) {
                 }
             }
             match icon {
+                Icon::MoreHorizontal => {
+                    for x in [5., 12., 19.] {
+                        circle(
+                            ctx,
+                            rect.pos() + Vec2::new(x, 12.) * scale,
+                            scale,
+                            2. * scale,
+                            color,
+                            0.,
+                            std::f32::consts::TAU,
+                        );
+                    }
+                }
                 Icon::Search => {
                     circle(
                         ctx,

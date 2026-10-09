@@ -40,6 +40,7 @@ pub(crate) struct ControlWidget {
     props: Control,
     dismiss: Option<std::rc::Rc<crate::overlay::DismissContext>>,
     carousel: Option<std::rc::Rc<crate::carousel::CarouselContext>>,
+    menu_trigger: Option<std::rc::Rc<crate::menu::MenuTriggerContext>>,
     hovering: bool,
     pointer_down: bool,
     key_down: Option<KeyCode>,
@@ -64,6 +65,7 @@ impl Widget for ControlWidget {
         // rather than trying to borrow the current node again inside an event.
         self.dismiss = yakui::util::read_scope::<crate::overlay::DismissContext>();
         self.carousel = yakui::util::read_scope();
+        self.menu_trigger = yakui::util::read_scope();
         if props.disabled {
             self.pointer_down = false;
             self.key_down = None;
@@ -119,6 +121,11 @@ impl Widget for ControlWidget {
         }
         if crate::overlay::escape(&ctx, event, self.dismiss.as_deref()) {
             return EventResponse::Sink;
+        }
+        if let Some(trigger) = &self.menu_trigger {
+            if let Some(response) = trigger.key(event) {
+                return response;
+            }
         }
         if let Some(carousel) = &self.carousel {
             if carousel.key(event) {

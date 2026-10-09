@@ -451,12 +451,40 @@ pub fn drawer(state: &mut OverlayState, children: impl FnOnce(&mut OverlayState)
     sheet(state, Side::Bottom, children)
 }
 
+/// Cross-axis alignment of a popup relative to its trigger.
+#[derive(Debug, Default, Clone, Copy)]
+pub enum PopoverAlign {
+    #[default]
+    Start,
+    Center,
+    End,
+}
+/// Native popup placement, matching the upstream side/align/offset vocabulary.
+#[derive(Debug, Clone, Copy)]
+pub struct PopoverOptions {
+    pub width: f32,
+    pub side: Side,
+    pub align: PopoverAlign,
+    pub side_offset: f32,
+    pub align_offset: f32,
+}
+impl Default for PopoverOptions {
+    fn default() -> Self {
+        Self {
+            width: 240.,
+            side: Side::Bottom,
+            align: PopoverAlign::Start,
+            side_offset: 4.,
+            align_offset: 0.,
+        }
+    }
+}
 #[derive(Debug, Clone, Copy)]
 struct PopupPlacement {
     anchor: Option<WidgetId>,
     point: Option<Vec2>,
-    side: Side,
-    width: f32,
+    options: PopoverOptions,
+    rtl: bool,
 }
 #[derive(Debug)]
 struct PopupPlacementWidget {
@@ -470,8 +498,8 @@ impl Widget for PopupPlacementWidget {
             props: PopupPlacement {
                 anchor: None,
                 point: None,
-                side: Side::Bottom,
-                width: 240.,
+                options: PopoverOptions::default(),
+                rtl: false,
             },
         }
     }
@@ -480,7 +508,7 @@ impl Widget for PopupPlacementWidget {
     }
     fn layout(&self, mut ctx: LayoutContext<'_>, input: Constraints) -> Vec2 {
         let viewport = input.max;
-        let width = self.props.width.min(viewport.x - 16.).max(0.);
+        let width = self.props.options.width.min(viewport.x - 16.).max(0.);
         let anchor = self
             .props
             .anchor
@@ -498,18 +526,47 @@ impl Widget for PopupPlacementWidget {
                     max: Vec2::new(width, (viewport.y - 16.).max(0.)),
                 },
             );
-            let preferred = match self.props.side {
-                Side::Right => Vec2::new(anchor.max().x + 4., anchor.pos().y),
-                Side::Left => Vec2::new(anchor.pos().x - size.x - 4., anchor.pos().y),
-                Side::Top => Vec2::new(anchor.pos().x, anchor.pos().y - size.y - 4.),
-                Side::Bottom => Vec2::new(anchor.pos().x, anchor.max().y + 4.),
+            let options = self.props.options;
+            let vertical = matches!(options.side, Side::Top | Side::Bottom);
+            let (start, end, extent) = if vertical {
+                (anchor.pos().x, anchor.max().x, size.x)
+            } else {
+                (anchor.pos().y, anchor.max().y, size.y)
             };
-            let mut pos = preferred;
-            if matches!(self.props.side, Side::Right) && pos.x + size.x > viewport.x - 8. {
-                pos.x = anchor.pos().x - size.x - 4.;
-            }
-            if matches!(self.props.side, Side::Bottom) && pos.y + size.y > viewport.y - 8. {
-                pos.y = anchor.pos().y - size.y - 4.;
+            let reversed = vertical && self.props.rtl;
+            let cross = match options.align {
+                PopoverAlign::Start => {
+                    if reversed {
+                        end - extent - options.align_offset
+                    } else {
+                        start + options.align_offset
+                    }
+                }
+                PopoverAlign::Center => (start + end - extent) / 2. + options.align_offset,
+                PopoverAlign::End => {
+                    if reversed {
+                        start + options.align_offset
+                    } else {
+                        end - extent - options.align_offset
+                    }
+                }
+            };
+            let mut pos = match options.side {
+                Side::Right => Vec2::new(anchor.max().x + options.side_offset, cross),
+                Side::Left => Vec2::new(anchor.pos().x - size.x - options.side_offset, cross),
+                Side::Top => Vec2::new(cross, anchor.pos().y - size.y - options.side_offset),
+                Side::Bottom => Vec2::new(cross, anchor.max().y + options.side_offset),
+            };
+            match options.side {
+                Side::Right if pos.x + size.x > viewport.x - 8. => {
+                    pos.x = anchor.pos().x - size.x - options.side_offset
+                }
+                Side::Left if pos.x < 8. => pos.x = anchor.max().x + options.side_offset,
+                Side::Bottom if pos.y + size.y > viewport.y - 8. => {
+                    pos.y = anchor.pos().y - size.y - options.side_offset
+                }
+                Side::Top if pos.y < 8. => pos.y = anchor.max().y + options.side_offset,
+                _ => {}
             }
             pos = pos.clamp(
                 Vec2::splat(8.),
@@ -523,9 +580,11 @@ impl Widget for PopupPlacementWidget {
 #[track_caller]
 fn popup(
     state: &mut OverlayState,
-    width: f32,
+    options: PopoverOptions,
     interactive: bool,
-    side: Side,
+    auto_focus: bool,
+    padding: f32,
+    radius_scale: f32,
     children: impl FnOnce(&mut OverlayState),
 ) {
     if state.dismiss.take() {
@@ -534,15 +593,15 @@ fn popup(
     let props = FocusProps {
         open: state.open,
         modal: false,
-        auto_focus: interactive,
+        auto_focus,
         trigger: state.trigger,
         dismiss: state.dismiss.clone(),
     };
     let placement = PopupPlacement {
         anchor: state.trigger,
         point: state.anchor_position,
-        side,
-        width,
+        options,
+        rtl: crate::advanced_layout::rtl(),
     };
     let t = theme();
     yakui::util::widget_children::<FocusScope, _>(
@@ -572,8 +631,8 @@ fn popup(
                                 surface(
                                     t.popover,
                                     Some(t.foreground.with_alpha(0.1)),
-                                    t.radius,
-                                    8.,
+                                    t.radius * radius_scale,
+                                    padding,
                                     || children(state),
                                 )
                             },
@@ -591,7 +650,14 @@ fn popup(
 /// Render at the application root after the trigger; the state retains its WidgetId.
 #[track_caller]
 pub fn popover(state: &mut OverlayState, width: f32, children: impl FnOnce(&mut OverlayState)) {
-    popup(state, width, true, Side::Bottom, children)
+    popover_with_options(
+        state,
+        PopoverOptions {
+            width,
+            ..Default::default()
+        },
+        children,
+    )
 }
 /// Tooltip content anchored to a trigger. The caller supplies the trigger response.
 /// This initial API displays on hover/focus; delayed opening is recorded as a deviation.
@@ -602,12 +668,34 @@ pub fn tooltip(trigger: ControlResponse, text: impl Into<String>) {
         trigger: trigger.id,
         ..OverlayState::default()
     };
-    popup(&mut state, 200., false, Side::Bottom, |_| crate::text(text));
+    popup(
+        &mut state,
+        PopoverOptions {
+            width: 200.,
+            ..Default::default()
+        },
+        false,
+        false,
+        8.,
+        1.,
+        |_| crate::text(text),
+    );
 }
 /// A hover-card surface. Caller controls visibility so content can remain open when hovered.
 #[track_caller]
 pub fn hover_card(state: &mut OverlayState, width: f32, children: impl FnOnce(&mut OverlayState)) {
-    popup(state, width, false, Side::Bottom, children)
+    popup(
+        state,
+        PopoverOptions {
+            width,
+            ..Default::default()
+        },
+        false,
+        false,
+        8.,
+        1.,
+        children,
+    )
 }
 
 /// Popup with a preferred side. Placement flips/clamps against the viewport.
@@ -618,5 +706,32 @@ pub fn popover_on_side(
     side: Side,
     children: impl FnOnce(&mut OverlayState),
 ) {
-    popup(state, width, true, side, children)
+    popover_with_options(
+        state,
+        PopoverOptions {
+            width,
+            side,
+            ..Default::default()
+        },
+        children,
+    )
+}
+
+/// Popup with explicit side, alignment and offsets; render after its trigger.
+#[track_caller]
+pub fn popover_with_options(
+    state: &mut OverlayState,
+    options: PopoverOptions,
+    children: impl FnOnce(&mut OverlayState),
+) {
+    popup(state, options, true, true, 8., 1., children)
+}
+#[track_caller]
+pub(crate) fn menu_popup(
+    state: &mut OverlayState,
+    options: PopoverOptions,
+    auto_focus: bool,
+    children: impl FnOnce(&mut OverlayState),
+) {
+    popup(state, options, true, auto_focus, 4., 0.8, children)
 }

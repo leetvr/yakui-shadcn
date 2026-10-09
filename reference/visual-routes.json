@@ -167,5 +167,15 @@
     "states": [
       "default"
     ]
+  },
+  {
+    "component": "table",
+    "variants": [
+      "actions"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
   }
 ]
