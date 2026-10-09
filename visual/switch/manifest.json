@@ -1,0 +1,123 @@
+{
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/SecondHalfGames/yakui",
+      "commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+    }
+  },
+  "captures": [
+    {
+      "component": "switch",
+      "variant": "default",
+      "theme": "light",
+      "state": "default",
+      "path": "default-light-default",
+      "metrics": {
+        "changed_fraction": 0.0006275,
+        "content_bounds": [
+          433,
+          391,
+          567,
+          409
+        ],
+        "content_rgb_rmse": 41.42525587382982,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.05130125,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/switch/default-light-default/native.png",
+        "pixels_differing_by_more_than_16": 502,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/switch/default-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.2746200232126683,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "switch",
+      "variant": "default",
+      "theme": "light",
+      "state": "focus",
+      "path": "default-light-focus",
+      "metrics": {
+        "changed_fraction": 0.00078,
+        "content_bounds": [
+          430,
+          388,
+          567,
+          412
+        ],
+        "content_rgb_rmse": 36.71574905555465,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.058285,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/switch/default-light-focus/native.png",
+        "pixels_differing_by_more_than_16": 624,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/switch/default-light-focus/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.3538202990033033,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "switch",
+      "variant": "default",
+      "theme": "dark",
+      "state": "default",
+      "path": "default-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00066625,
+        "content_bounds": [
+          433,
+          391,
+          567,
+          409
+        ],
+        "content_rgb_rmse": 35.5330586736699,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.04738875,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/switch/default-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 533,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/switch/default-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.9510852749175265,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "switch",
+      "variant": "default",
+      "theme": "dark",
+      "state": "focus",
+      "path": "default-dark-focus",
+      "metrics": {
+        "changed_fraction": 0.00077625,
+        "content_bounds": [
+          430,
+          388,
+          567,
+          412
+        ],
+        "content_rgb_rmse": 31.581822245563426,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.05263125,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/switch/default-dark-focus/native.png",
+        "pixels_differing_by_more_than_16": 621,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/switch/default-dark-focus/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.0246879389179955,
+        "width": 1000
+      },
+      "review": "pending"
+    }
+  ]
+}

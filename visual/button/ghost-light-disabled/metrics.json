@@ -1,5 +1,12 @@
 {
   "changed_fraction": 0.0008166666666666667,
+  "content_bounds": [
+    280,
+    194,
+    320,
+    206
+  ],
+  "content_rgb_rmse": 32.623195990991846,
   "height": 400,
   "mean_absolute_rgb_error": 0.0406375,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-light-disabled/native.png",

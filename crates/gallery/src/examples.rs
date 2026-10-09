@@ -564,21 +564,17 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
         }
         "card" => ui::width(384., || {
             ui::card(|| {
-                ui::card_header(|| {
-                    ui::row(12., || {
-                        ui::column(4., || {
-                            ui::card_title("Login to your account");
-                            ui::width(270., || {
-                                ui::card_description(
-                                    "Enter your email below to login to your account",
-                                )
-                            });
-                        });
+                ui::card_header_with_action(
+                    || {
+                        ui::card_title("Login to your account");
+                        ui::card_description("Enter your email below to login to your account");
+                    },
+                    || {
                         if Button::new("Sign Up").variant(V::Link).show().clicked {
                             state.count += 1;
                         }
-                    });
-                });
+                    },
+                );
                 ui::card_content(|| {
                     ui::column(24., || {
                         ui::field("Email", "", None, || {
@@ -888,6 +884,18 @@ pub fn overlays(component: &str, variant: &str, state: &mut ExampleState) {
         }),
         "tooltip" => ui::tooltip(state.trigger, "Add to library"),
         _ => {}
+    }
+}
+
+impl ExampleState {
+    pub fn is_open(&self, component: &str) -> bool {
+        match component {
+            "select" | "native-select" | "combobox" => self.select.popup.open,
+            "dropdown-menu" | "context-menu" => self.menu.popup.open,
+            "menubar" => self.menubar.menu.popup.open,
+            "tooltip" => self.trigger.hovering || self.trigger.focused,
+            _ => self.overlay.open,
+        }
     }
 }
 

@@ -207,20 +207,31 @@ fn nested_themes_are_scoped_and_restore_the_parent() {
 
 #[test]
 fn buttons_keep_natural_width_and_center_when_explicitly_stretched() {
-    let mut y=yak();
-    let mut buttons=Vec::new();
-    frame(&mut y,|| ui::column(8.,|| {
-        buttons.push(ui::button("Apply"));
-        ui::width(300.,|| ui::fill_width(|| {buttons.push(ui::button("Apply"));}));
-    }));
-    let rects:Vec<_>=buttons.iter().map(|r|y.layout_dom().get(r.id.unwrap()).unwrap().rect).collect();
-    assert!(rects[0].size().x<100.);
-    assert_eq!(rects[1].size().x,300.);
-    fn text_rect(y:&Yakui,id:yakui::WidgetId)->Option<yakui::Rect> {
-        let node=y.dom().get(id).unwrap();
-        if node.widget.type_name().ends_with("::RenderTextWidget"){return Some(y.layout_dom().get(id).unwrap().rect);}
-        node.children.iter().find_map(|id|text_rect(y,*id))
+    let mut y = yak();
+    let mut buttons = Vec::new();
+    frame(&mut y, || {
+        ui::column(8., || {
+            buttons.push(ui::button("Apply"));
+            ui::width(300., || {
+                ui::fill_width(|| {
+                    buttons.push(ui::button("Apply"));
+                })
+            });
+        })
+    });
+    let rects: Vec<_> = buttons
+        .iter()
+        .map(|r| y.layout_dom().get(r.id.unwrap()).unwrap().rect)
+        .collect();
+    assert!(rects[0].size().x < 100.);
+    assert_eq!(rects[1].size().x, 300.);
+    fn text_rect(y: &Yakui, id: yakui::WidgetId) -> Option<yakui::Rect> {
+        let node = y.dom().get(id).unwrap();
+        if node.widget.type_name().ends_with("::RenderTextWidget") {
+            return Some(y.layout_dom().get(id).unwrap().rect);
+        }
+        node.children.iter().find_map(|id| text_rect(y, *id))
     }
-    let text=text_rect(&y,buttons[1].id.unwrap()).unwrap();
-    assert!((text.center().x-rects[1].center().x).abs()<0.01);
+    let text = text_rect(&y, buttons[1].id.unwrap()).unwrap();
+    assert!((text.center().x - rects[1].center().x).abs() < 0.01);
 }

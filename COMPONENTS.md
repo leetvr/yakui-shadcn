@@ -1,73 +1,121 @@
 # Components
 
-Current public APIs are below. None has been certified as a complete port yet.
-Use `cargo run --bin gallery -- --list` for currently supported capture routes.
-The full upstream inventory and example coverage live in reference/components.json.
+Every catalogue entry has an initial native API and gallery route. None is certified
+as a complete port. See `reference/components.json` for per-preview coverage, actual
+behaviour tests, comparisons and known deviations. `gallery --list` reports supported
+native routes; unported upstream preview names return an error.
 
-| Component | Public Rust API | Use |
+Use `ui::column` or `ui::row` for multiple sequential children. Generic Yakui containers
+overlay children. Keep overlays at the root and retain their state in your application.
+
+| Component | Public API | Use |
 |---|---|---|
 | Accordion | `accordion_item` | A vertically stacked set of interactive headings that each reveal a section of content. |
 | Alert | `alert` | Displays a callout for user attention. |
 | Alert Dialog | `alert_dialog`, `OverlayState` | A modal dialog that interrupts the user with important content and expects a response. |
-| Aspect Ratio | Pending | Displays content within a desired ratio. |
-| Attachment | Pending | Displays a file or image attachment with media, metadata, upload state, and actions. |
-| Avatar | `avatar` | An image element with a fallback for representing the user. |
+| Aspect Ratio | `aspect_ratio` | Displays content within a desired ratio. |
+| Attachment | `Attachment`, `AttachmentState`, `AttachmentSize`, `attachment` | Show file metadata, upload state and actions. |
+| Avatar | `avatar` | Display an initials fallback. |
 | Badge | `badge` | Displays a badge or a component that looks like a badge. |
 | Breadcrumb | `breadcrumb` | Displays the path to the current resource using a hierarchy of links. |
-| Bubble | Pending | Displays conversational content in a message bubble. Supports variants, alignment, grouping, reactions, and collapsible content. |
-| Button | `Button`, `button`, `Variant`, `ButtonSize` | Displays a button or a component that looks like a button. |
+| Bubble | `bubble`, `BubbleVariant` | Group conversational content on a themed surface. |
+| Button | `Button`, `button`, `Variant`, `ButtonSize`, `link` | Displays a button or a component that looks like a button. |
 | Button Group | `button_group` | A container that groups related buttons together with consistent styling. |
-| Calendar | Pending | A calendar component that allows users to select a date or a range of dates. |
-| Card | `card`, `card_sized`, `card_header`, `card_title`, `card_description`, `card_content`, `card_footer` | Displays a card with header, content, and footer. |
-| Carousel | Pending | A carousel with motion and swipe built using Embla. |
-| Chart | Pending | Beautiful charts. Built using Recharts. Copy and paste into your apps. |
+| Calendar | `Date`, `CalendarState`, `CalendarMode`, `calendar` | A calendar component that allows users to select a date or a range of dates. |
+| Card | `card`, `card_sized`, `card_header`, `card_header_with_action`, `card_title`, `card_description`, `card_content`, `card_footer` | Displays a card with header, content, and footer. |
+| Carousel | `CarouselState`, `CarouselOptions`, `carousel` | Navigate or swipe through composable slides. |
+| Chart | `Chart`, `ChartKind`, `ChartPoint`, `ChartSeries`, `ChartResponse` | Plot series with native meshes and inspect points. |
 | Checkbox | `checkbox`, `checkbox_disabled` | A control that allows the user to toggle between checked and not checked. |
 | Collapsible | `collapsible` | An interactive component which expands/collapses a panel. |
-| Combobox | Pending | Autocomplete input with a list of suggestions. |
-| Command | Pending | Command menu for search and quick actions. |
-| Context Menu | Pending | Displays a menu of actions triggered by a right click. |
-| Data Table | Pending | Powerful table and datagrids built using TanStack Table. |
-| Date Picker | Pending | A date picker component with range and presets. |
+| Combobox | `SelectState`, `combobox`, `combobox_content` | Autocomplete input with a list of suggestions. |
+| Command | `command`, `MenuItem` | Command menu for search and quick actions. |
+| Context Menu | `context_menu_target`, `context_menu`, `MenuState` | Displays a menu of actions triggered by a right click. |
+| Data Table | `DataTableState`, `TableColumn`, `TableRow`, `data_table` | Filter, sort, select and page application rows. |
+| Date Picker | `date_picker`, `date_picker_content`, `CalendarState`, `OverlayState` | A date picker component with range and presets. |
 | Dialog | `dialog`, `OverlayState` | A window overlaid on either the primary window or another dialog window, rendering the content underneath inert. |
-| Direction | Pending | A provider component that sets the text direction for your application. |
-| Drawer | `drawer` | A drawer component for React. |
-| Dropdown Menu | Pending | Displays a menu to the user — such as a set of actions or functions — triggered by a button. |
+| Direction | `direction`, `ReadingDirection` | Mirror inline row layout within a subtree. |
+| Drawer | `drawer` | Show a bottom modal; dragging remains pending. |
+| Dropdown Menu | `dropdown_menu`, `MenuItem`, `MenuKind`, `MenuState` | Displays a menu to the user — such as a set of actions or functions — triggered by a button. |
 | Empty | `empty` | Use the Empty component to display an empty state. |
 | Field | `field` | Combine labels, controls, and help text to compose accessible form fields and grouped inputs. |
-| Form | Pending |  |
+| Form | `form`, `field`, `Input` | Compose controls into an application-owned form. |
 | Hover Card | `hover_card` | For sighted users to preview content available behind a link. |
-| Input | `input` | A text input component for forms and user data entry with built-in styling and accessibility features. |
-| Input Group | Pending | Add addons, buttons, and helper content to inputs. |
-| Input OTP | Pending | Accessible one-time password component with copy-paste functionality. |
-| Item | Pending | A versatile component for displaying content with media, title, description, and actions. |
+| Input | `Input`, `InputResponse`, `input` | A text input component for forms and user data entry with built-in styling and accessibility features. |
+| Input Group | `input_group` | Add addons, buttons, and helper content to inputs. |
+| Input OTP | `input_otp`, `OtpOptions`, `OtpPattern`, `OtpResponse` | Accessible one-time password component with copy-paste functionality. |
+| Item | `item` | A versatile component for displaying content with media, title, description, and actions. |
 | Kbd | `kbd` | Used to display textual user input from keyboard. |
-| Label | `label` | Renders an accessible label associated with controls. |
-| Marker | Pending | Displays an inline status, system note, bordered row, or labeled separator in a conversation. |
-| Menubar | Pending | A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands. |
-| Message | Pending | Displays a message in a conversation, with optional avatar, header, footer, and alignment. |
-| Message Scroller | Pending | A chat scroll container that anchors turns, opens saved transcripts, follows streamed responses, loads history without jumping, and jumps to any message. |
-| Native Select | Pending | A styled native HTML select element with consistent design system integration. |
-| Navigation Menu | Pending | A collection of links for navigating websites. |
+| Label | `label` | Draw a medium-weight label; association APIs remain pending. |
+| Marker | `marker`, `MarkerVariant` | Displays an inline status, system note, bordered row, or labeled separator in a conversation. |
+| Menubar | `menubar`, `MenubarState` | A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands. |
+| Message | `message`, `MessageAlign` | Displays a message in a conversation, with optional avatar, header, footer, and alignment. |
+| Message Scroller | `MessageScrollerState`, `message_scroller`, `message_scroller_item` | A chat scroll container that anchors turns, opens saved transcripts, follows streamed responses, loads history without jumping, and jumps to any message. |
+| Native Select | `native_select`, `select_content`, `SelectState` | Select a value through a native Yakui popup. |
+| Navigation Menu | `navigation_menu` | Choose a route; rich flyouts remain pending. |
 | Pagination | `pagination` | Pagination with page navigation, next and previous links. |
 | Popover | `popover` | Displays rich content in a portal, triggered by a button. |
 | Progress | `progress` | Displays an indicator showing the completion progress of a task, typically displayed as a progress bar. |
-| Questionnaire | Pending | A multi-step questionnaire with single-choice, multiple-choice, freeform, and skippable questions. |
+| Questionnaire | `Question`, `QuestionChoice`, `Answer`, `QuestionnaireState`, `QuestionnaireResponse`, `questionnaire` | A multi-step questionnaire with single-choice, multiple-choice, freeform, and skippable questions. |
 | Radio Group | `radio_group` | A set of checkable buttons—known as radio buttons—where no more than one of the buttons can be checked at a time. |
-| Resizable | Pending | Accessible resizable panel groups and layouts with keyboard support. |
+| Resizable | `resizable`, `Orientation` | Accessible resizable panel groups and layouts with keyboard support. |
 | Scroll Area | `scroll_area` | Augments native scroll functionality for custom, cross-browser styling. |
-| Select | Pending | Displays a list of options for the user to pick from—triggered by a button. |
+| Select | `select`, `select_content`, `SelectState` | Displays a list of options for the user to pick from—triggered by a button. |
 | Separator | `separator` | Visually or semantically separates content. |
 | Sheet | `sheet`, `Side` | Extends the Dialog component to display content that complements the main content of the screen. |
-| Sidebar | Pending | A composable, themeable and customizable sidebar component. |
-| Skeleton | `skeleton` | Use to show a placeholder while content is loading. |
-| Slider | Pending | An input where the user selects a value from within a given range. |
+| Sidebar | `SidebarLink`, `SidebarState`, `sidebar` | A composable, themeable and customizable sidebar component. |
+| Skeleton | `skeleton`, `skeleton_at` | Use to show a placeholder while content is loading. |
+| Slider | `slider`, `range_slider`, `SliderOptions`, `SliderResponse`, `Orientation` | An input where the user selects a value from within a given range. |
 | Spinner | `spinner` | An indicator that can be used to show a loading state. |
 | Switch | `switch` | A control that allows the user to toggle between checked and not checked. |
-| Table | Pending | A responsive table component. |
+| Table | `table`, `TableColumn`, `TableRow` | A responsive table component. |
 | Tabs | `tabs`, `TabsVariant` | A set of layered sections of content—known as tab panels—that are displayed one at a time. |
 | Textarea | `textarea` | Displays a form textarea or a component that looks like a textarea. |
-| Toast | Pending | A succinct message that is displayed temporarily. |
+| Toast | `Toast`, `ToastKind`, `ToastManager`, `ToastResponse`, `toast_viewport` | A succinct message that is displayed temporarily. |
 | Toggle | `toggle` | A two-state button that can be either on or off. |
-| Toggle Group | Pending | A set of two-state buttons that can be toggled on or off. |
+| Toggle Group | `ToggleGroupState`, `toggle_group` | A set of two-state buttons that can be toggled on or off. |
 | Tooltip | `tooltip` | A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it. |
 | Typography | `text`, `muted`, `heading` | Styles for headings, paragraphs, lists, etc. |
+
+## Common patterns
+
+```rust
+use yakui_adequate_ui as ui;
+ui::width(420., || ui::card(|| {
+    ui::card_header(|| {
+        ui::card_title("Profile");
+        ui::card_description("Your public identity");
+    });
+    ui::card_content(|| ui::form(|| {
+        ui::field("Name", "Shown to other users.", None, || {
+            ui::input(&mut profile.name, "Name");
+        });
+        ui::checkbox("Email updates", &mut profile.updates);
+    }));
+    ui::card_footer(|| {
+        if ui::button("Save").clicked { save(&profile); }
+    });
+}));
+```
+
+Declare triggers in ordinary content and popup content afterwards at the root:
+
+```rust
+let trigger = ui::Button::new("Edit profile").variant(ui::Variant::Outline).show();
+if trigger.clicked { popup.open_from(trigger); }
+ui::dialog(&mut popup, |popup| {
+    ui::card_title("Edit profile");
+    ui::input(&mut profile.name, "Name");
+    if ui::button("Done").clicked { popup.close(); }
+});
+```
+
+```rust
+ui::select(&mut selection, &["Apple", "Banana"], "Select a fruit", false);
+// At the root, after ordinary content:
+ui::select_content(&mut selection, &["Apple", "Banana"]);
+```
+
+The standalone `settings`, `dashboard` and `checkout` examples under
+`crates/gallery/examples` compile as separate applications consuming this public API.
+Run `cargo run -p adequate-gallery --example settings`.
+The gallery includes larger `--showcase dashboard|settings|checkout` compositions.

@@ -1,0 +1,14 @@
+{
+  "example": "separator-demo",
+  "theme": "light",
+  "state": "default",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 1000,
+    "height": 800
+  }
+}

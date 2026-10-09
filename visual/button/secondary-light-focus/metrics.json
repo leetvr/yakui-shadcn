@@ -1,11 +1,18 @@
 {
-  "changed_fraction": 0.0024208333333333334,
+  "changed_fraction": 0.0024541666666666666,
+  "content_bounds": [
+    251,
+    181,
+    349,
+    219
+  ],
+  "content_rgb_rmse": 29.17396614709559,
   "height": 400,
-  "mean_absolute_rgb_error": 0.17065833333333333,
+  "mean_absolute_rgb_error": 0.17226666666666668,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-light-focus/native.png",
-  "pixels_differing_by_more_than_16": 581,
+  "pixels_differing_by_more_than_16": 589,
   "reference": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-light-focus/upstream.png",
   "review_required": true,
-  "rgb_rmse": 3.619719141959313,
+  "rgb_rmse": 3.6340817272042742,
   "width": 600
 }

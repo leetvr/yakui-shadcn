@@ -1,5 +1,12 @@
 {
   "changed_fraction": 0.0025416666666666665,
+  "content_bounds": [
+    251,
+    184,
+    349,
+    216
+  ],
+  "content_rgb_rmse": 21.098020952099702,
   "height": 400,
   "mean_absolute_rgb_error": 0.08984444444444445,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-light-default/native.png",

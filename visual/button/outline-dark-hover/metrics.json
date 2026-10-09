@@ -1,5 +1,12 @@
 {
   "changed_fraction": 0.0007875,
+  "content_bounds": [
+    265,
+    184,
+    335,
+    216
+  ],
+  "content_rgb_rmse": 14.517364397424867,
   "height": 400,
   "mean_absolute_rgb_error": 0.1071,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/outline-dark-hover/native.png",

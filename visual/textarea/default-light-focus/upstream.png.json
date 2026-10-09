@@ -1,0 +1,14 @@
+{
+  "example": "textarea-demo",
+  "theme": "light",
+  "state": "focus",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 308,
+    "y": 368,
+    "width": 384,
+    "height": 64
+  }
+}

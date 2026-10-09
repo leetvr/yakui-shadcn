@@ -1,5 +1,12 @@
 {
   "changed_fraction": 0.0005833333333333334,
+  "content_bounds": [
+    265,
+    184,
+    335,
+    216
+  ],
+  "content_rgb_rmse": 8.969890109216978,
   "height": 400,
   "mean_absolute_rgb_error": 0.024866666666666665,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/outline-light-disabled/native.png",

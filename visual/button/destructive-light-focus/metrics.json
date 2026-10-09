@@ -1,11 +1,18 @@
 {
   "changed_fraction": 0.005820833333333333,
+  "content_bounds": [
+    248,
+    181,
+    352,
+    219
+  ],
+  "content_rgb_rmse": 25.605227963354096,
   "height": 400,
-  "mean_absolute_rgb_error": 0.17620555555555556,
+  "mean_absolute_rgb_error": 0.1770611111111111,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-light-focus/native.png",
   "pixels_differing_by_more_than_16": 1397,
   "reference": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-light-focus/upstream.png",
   "review_required": true,
-  "rgb_rmse": 3.276157132305402,
+  "rgb_rmse": 3.2857271307547404,
   "width": 600
 }

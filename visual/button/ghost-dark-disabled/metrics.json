@@ -1,5 +1,12 @@
 {
   "changed_fraction": 0.0007791666666666666,
+  "content_bounds": [
+    280,
+    194,
+    320,
+    206
+  ],
+  "content_rgb_rmse": 28.167837746858265,
   "height": 400,
   "mean_absolute_rgb_error": 0.0350125,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-dark-disabled/native.png",

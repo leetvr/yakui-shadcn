@@ -396,6 +396,46 @@ fn card_spacing() -> f32 {
 pub fn card_header(children: impl FnOnce()) {
     yakui::pad(Pad::horizontal(card_spacing()), || column(4., children));
 }
+#[derive(Debug)]
+struct CardHeaderSlots;
+impl yakui::widget::Widget for CardHeaderSlots {
+    type Props<'a> = ();
+    type Response = ();
+    fn new() -> Self {
+        Self
+    }
+    fn update(&mut self, _: ()) {}
+    fn layout(&self, mut ctx: yakui::widget::LayoutContext<'_>, constraints: Constraints) -> Vec2 {
+        let children = ctx.dom.get_current().children.clone();
+        let action = ctx.calculate_layout(children[1], Constraints::loose(constraints.max));
+        let available = Vec2::new(
+            (constraints.max.x - action.x - 12.).max(0.),
+            constraints.max.y,
+        );
+        let content = ctx.calculate_layout(children[0], Constraints::loose(available));
+        let size = constraints.constrain(Vec2::new(
+            content.x + action.x + 12.,
+            content.y.max(action.y),
+        ));
+        ctx.layout
+            .set_pos(children[1], Vec2::new((size.x - action.x).max(0.), 0.));
+        size
+    }
+}
+/// Card header with a top-aligned trailing action. Content receives the remaining
+/// width, so description wrapping cannot push the action outside the card.
+#[track_caller]
+pub fn card_header_with_action(content: impl FnOnce(), action: impl FnOnce()) {
+    yakui::pad(Pad::horizontal(card_spacing()), || {
+        yakui::util::widget_children::<CardHeaderSlots, _>(
+            || {
+                column(4., content);
+                column(0., action);
+            },
+            (),
+        );
+    });
+}
 #[track_caller]
 pub fn card_title(text: impl Into<String>) {
     let t = theme();

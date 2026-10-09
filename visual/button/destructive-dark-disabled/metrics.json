@@ -1,5 +1,12 @@
 {
   "changed_fraction": 0.0016916666666666666,
+  "content_bounds": [
+    251,
+    184,
+    349,
+    216
+  ],
+  "content_rgb_rmse": 6.283439455788352,
   "height": 400,
   "mean_absolute_rgb_error": 0.037318055555555556,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-dark-disabled/native.png",

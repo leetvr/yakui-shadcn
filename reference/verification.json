@@ -1,0 +1,47 @@
+{
+  "recorded_at": "2026-10-09T07:52:49.095245+00:00",
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/SecondHalfGames/yakui",
+      "commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+    }
+  },
+  "complete_port": false,
+  "catalogue_entries": 65,
+  "upstream_previews": 461,
+  "certified_complete_components": 0,
+  "automated_tests": {
+    "count": 36,
+    "result": "passed",
+    "command": "cargo test --workspace"
+  },
+  "native_smoke": {
+    "captures": 228,
+    "failures": 0,
+    "includes_actual_trigger_opening": true,
+    "command": "python3 tools/verify_gallery.py --all-variants --showcases --open-overlays"
+  },
+  "upstream_comparisons": {
+    "pairs": 74,
+    "previews": 15,
+    "review": "pending",
+    "command": "python3 tools/visual_catalogue.py"
+  },
+  "checks": [
+    "cargo fmt --all -- --check",
+    "cargo check -p yakui-adequate-ui",
+    "cargo check --workspace --examples",
+    "cargo doc -p yakui-adequate-ui --no-deps",
+    "python3 tools/audit_inventory.py"
+  ],
+  "library_normal_dependencies_exclude_windowing_and_rendering_backends": true
+}

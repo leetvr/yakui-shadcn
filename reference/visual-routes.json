@@ -1,0 +1,113 @@
+[
+  {
+    "component": "button",
+    "variants": [
+      "default",
+      "outline",
+      "secondary",
+      "ghost",
+      "destructive",
+      "link"
+    ],
+    "states": [
+      "default",
+      "hover",
+      "focus",
+      "disabled"
+    ]
+  },
+  {
+    "component": "badge",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "badge-demo",
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "input",
+    "variants": [
+      "basic"
+    ],
+    "reference_example": "input-basic",
+    "states": [
+      "default",
+      "focus"
+    ]
+  },
+  {
+    "component": "textarea",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "textarea-demo",
+    "states": [
+      "default",
+      "focus"
+    ]
+  },
+  {
+    "component": "radio-group",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "radio-group-demo",
+    "states": [
+      "default",
+      "focus"
+    ]
+  },
+  {
+    "component": "switch",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "switch-demo",
+    "states": [
+      "default",
+      "focus"
+    ]
+  },
+  {
+    "component": "progress",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "progress-demo",
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "separator",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "separator-demo",
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "skeleton",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "skeleton-demo",
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "card",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "card-demo",
+    "states": [
+      "default"
+    ]
+  }
+]

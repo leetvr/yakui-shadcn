@@ -2,7 +2,8 @@
 
 Use `yakui-adequate-ui as ui`. Prefer existing components before custom widgets.
 Read COMPONENTS.md and THEMING.md. State belongs to your application: pass mutable
-values into controls and act on `ControlResponse.clicked`. Use scoped theme tokens.
+values into controls and act on `ControlResponse.clicked`. Use scoped theme tokens. Put multiple sequential children in `ui::row` or
+`ui::column`; a generic Yakui container overlays its children.
 
 ```rust
 use yakui_adequate_ui as ui;

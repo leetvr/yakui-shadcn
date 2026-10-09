@@ -1,5 +1,12 @@
 {
   "changed_fraction": 0.000725,
+  "content_bounds": [
+    254,
+    184,
+    346,
+    216
+  ],
+  "content_rgb_rmse": 9.280447099658788,
   "height": 400,
   "mean_absolute_rgb_error": 0.0437125,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-dark-disabled/native.png",

@@ -1,0 +1,71 @@
+{
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/SecondHalfGames/yakui",
+      "commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+    }
+  },
+  "captures": [
+    {
+      "component": "progress",
+      "variant": "default",
+      "theme": "light",
+      "state": "default",
+      "path": "default-light-default",
+      "metrics": {
+        "changed_fraction": 1.25e-05,
+        "content_bounds": [
+          320,
+          398,
+          680,
+          402
+        ],
+        "content_rgb_rmse": 12.216336966901695,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.001495,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/progress/default-light-default/native.png",
+        "pixels_differing_by_more_than_16": 10,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/progress/default-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.5182952826333652,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "progress",
+      "variant": "default",
+      "theme": "dark",
+      "state": "default",
+      "path": "default-dark-default",
+      "metrics": {
+        "changed_fraction": 1.25e-05,
+        "content_bounds": [
+          320,
+          398,
+          680,
+          402
+        ],
+        "content_rgb_rmse": 10.603982480391243,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.001345,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/progress/default-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 10,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/progress/default-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.4498888751680797,
+        "width": 1000
+      },
+      "review": "pending"
+    }
+  ]
+}

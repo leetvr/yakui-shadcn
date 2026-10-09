@@ -13,16 +13,21 @@ cargo run --bin gallery
 cargo run --bin gallery -- --list
 cargo run --bin gallery -- --component button --variant outline --theme dark \
   --isolated --width 600 --height 400 --screenshot /tmp/button.png
-cargo run --bin gallery -- --component dialog --theme dark --state selected \
+cargo run --bin gallery -- --component dialog --theme dark --state open \
   --isolated --screenshot /tmp/dialog.png
+cargo run --bin gallery -- --showcase dashboard --theme dark
+cargo run -p adequate-gallery --example settings
 cargo test --workspace
 cargo fmt --all -- --check
 cargo check -p yakui-adequate-ui
 ```
 
-Capture states: `default`, `hover`, `focus`, `disabled`, `selected`. Unknown/unported
-routes return errors. A normal gallery shows the entire catalogue, explicitly
-labelling pending implementations. `--isolated` matches the upstream preview
+Capture states: `default`, `hover`, `focus`, `disabled`, `selected`, `open`.
+`open` clicks the actual isolated example trigger and checks popup state; use
+`--isolated` for reproducible trigger captures. Unknown/unported
+routes return errors. A normal gallery shows all 65 catalogue entries with their
+current native variants. Every implementation remains subject to the full upstream
+example and behavioural audit. `--isolated` matches the upstream preview
 viewport without gallery navigation. On macOS the screenshot process needs access
 to Metal; a sandbox without GPU access cannot capture.
 
@@ -50,15 +55,18 @@ python3 tools/visual.py
 
 The local reference harness uses unmodified pinned component/example files, the
 upstream Nova stylesheet and semantic tokens, and the exact same Geist files as
-the native library. It currently configures button references; expand its explicit
-loader list and installed dependencies as each component is ported. It is a
+the native library. Its explicit reference routes are configured in `reference/visual-routes.json`;
+expand those routes and the harness loader list as each actual example is ported. It is a
 reproducible substitute for the upstream Next website's much larger registry/CLI
 build, not a handwritten recreation of shadcn styles.
 
-`compare` writes `side-by-side.png`, `difference.png` and `metrics.json`. Captures
+`compare` writes `side-by-side.png`, `content-side-by-side.png`, `difference.png`
+and `metrics.json`. Captures
 are matched by dimensions, scale 1, theme and actual interaction state. Metrics
-require visual review and do not automatically certify fidelity. `visual/button`
-retains the current paired reference/native captures in both themes.
+require visual review and do not automatically certify fidelity. `visual/` retains configured paired reference/native captures in both themes.
+Run `python3 tools/visual_catalogue.py` for all configured upstream pairs and
+`python3 tools/verify_gallery.py --all-variants --showcases --open-overlays` for native smoke captures.
+These are separate forms of evidence; neither automatically certifies a component.
 
 Read COMPONENTS.md for API selection, THEMING.md for overrides, and AGENTS.md for
 agent usage and development rules. `ui::add_fonts` loads bundled Geist under OFL;

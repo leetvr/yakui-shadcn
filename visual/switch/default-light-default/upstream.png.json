@@ -1,0 +1,14 @@
+{
+  "example": "switch-demo",
+  "theme": "light",
+  "state": "default",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 432.625,
+    "y": 390.796875,
+    "width": 32,
+    "height": 18.390625
+  }
+}

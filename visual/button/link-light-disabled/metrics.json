@@ -1,5 +1,12 @@
 {
   "changed_fraction": 0.0002666666666666667,
+  "content_bounds": [
+    287,
+    194,
+    314,
+    205
+  ],
+  "content_rgb_rmse": 13.970146139714615,
   "height": 400,
   "mean_absolute_rgb_error": 0.009858333333333334,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/link-light-disabled/native.png",

@@ -1,0 +1,14 @@
+{
+  "example": "input-basic",
+  "theme": "light",
+  "state": "default",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 308,
+    "y": 384,
+    "width": 384,
+    "height": 32
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "example": "radio-group-demo",
+  "theme": "light",
+  "state": "default",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 445.0625,
+    "y": 368,
+    "width": 16,
+    "height": 16
+  }
+}

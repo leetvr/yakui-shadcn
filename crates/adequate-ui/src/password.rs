@@ -273,7 +273,9 @@ impl Widget for Password {
                             .dom
                             .get_global_or_init(yakui_widgets::clipboard::ClipboardHolder::default);
                         if let Some(text) = clipboard.paste() {
-                            self.replace(&text.chars().filter(|c| !c.is_control()).collect::<String>());
+                            self.replace(
+                                &text.chars().filter(|c| !c.is_control()).collect::<String>(),
+                            );
                         }
                     }
                     KeyCode::ArrowLeft => {

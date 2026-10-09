@@ -1,5 +1,12 @@
 {
   "changed_fraction": 0.0016041666666666667,
+  "content_bounds": [
+    269,
+    184,
+    331,
+    216
+  ],
+  "content_rgb_rmse": 28.89514553491418,
   "height": 400,
   "mean_absolute_rgb_error": 0.16374166666666667,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-dark-hover/native.png",

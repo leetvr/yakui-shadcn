@@ -1,0 +1,71 @@
+{
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/SecondHalfGames/yakui",
+      "commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+    }
+  },
+  "captures": [
+    {
+      "component": "badge",
+      "variant": "default",
+      "theme": "light",
+      "state": "default",
+      "path": "default-light-default",
+      "metrics": {
+        "changed_fraction": 0.00132625,
+        "content_bounds": [
+          351,
+          390,
+          649,
+          410
+        ],
+        "content_rgb_rmse": 35.53652688051136,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.095835,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/badge/default-light-default/native.png",
+        "pixels_differing_by_more_than_16": 1061,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/badge/default-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.0672778376490992,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "badge",
+      "variant": "default",
+      "theme": "dark",
+      "state": "default",
+      "path": "default-dark-default",
+      "metrics": {
+        "changed_fraction": 0.0014525,
+        "content_bounds": [
+          351,
+          390,
+          649,
+          410
+        ],
+        "content_rgb_rmse": 32.460137315504184,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.09319583333333334,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/badge/default-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 1162,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/badge/default-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.8017442483805217,
+        "width": 1000
+      },
+      "review": "pending"
+    }
+  ]
+}

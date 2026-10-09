@@ -1,5 +1,12 @@
 {
   "changed_fraction": 0.0013791666666666666,
+  "content_bounds": [
+    254,
+    184,
+    346,
+    216
+  ],
+  "content_rgb_rmse": 25.456658072445236,
   "height": 400,
   "mean_absolute_rgb_error": 0.18489166666666668,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-light-hover/native.png",

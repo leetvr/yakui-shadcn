@@ -15,6 +15,8 @@ source = args.upstream / pin['source']
 old_path = ROOT / 'reference/components.json'
 old = {c['name']: c for c in json.loads(old_path.read_text())['components']} if old_path.exists() else {}
 entries = []
+visual_routes = json.loads((ROOT / 'reference/visual-routes.json').read_text())
+
 for name in json.loads((docs / 'meta.json').read_text())['pages']:
     path = docs / f'{name}.mdx'
     text = path.read_text() if path.exists() else ''
@@ -38,6 +40,36 @@ for name in json.loads((docs / 'meta.json').read_text())['pages']:
     for key in ('rust_api', 'gallery_examples', 'behaviour_tests', 'visual_comparisons', 'status', 'deviations'):
         if name in old:
             entry[key] = old[name][key]
+    prior_examples = {e['name']:e for e in old.get(name,{}).get('example_coverage',[])}
+    coverage = []
+    for preview in examples:
+        example_path = args.upstream / 'apps/v4/examples/base' / f'{preview}.tsx'
+        example_text = example_path.read_text() if example_path.exists() else ''
+        imports = re.findall(r'from "([^\"]+)"',example_text)
+        item = {
+            'name':preview,
+            'upstream_source':str(example_path.relative_to(args.upstream)) if example_path.exists() else None,
+            'upstream_styles':sorted(set(re.findall(r'@/styles/([^/]+)/',example_text))),
+            'upstream_imports':imports,
+            'gallery_variant':None, 'behaviour_tests':[], 'visual_comparisons':[],
+            'status':'pending', 'review':'pending',
+        }
+        for key in ('gallery_variant','behaviour_tests','visual_comparisons','status','review'):
+            if key in prior_examples.get(preview,{}):item[key]=prior_examples[preview][key]
+        for route in visual_routes:
+            if route['component']!=name:continue
+            for variant in route['variants']:
+                reference = route.get('reference_example') or f'{name}-{variant if name=="button" or variant!="default" else "demo"}'
+                if reference!=preview:continue
+                item['gallery_variant']=variant
+                manifest_path=ROOT/'visual'/name/'manifest.json'
+                if manifest_path.exists():
+                    manifest=json.loads(manifest_path.read_text())
+                    item['visual_comparisons']=[{'theme':capture['theme'],'state':capture['state'],'path':f'visual/{name}/{capture["path"]}','review':capture['review']} for capture in manifest['captures'] if capture['variant']==variant]
+                    item['status']='in_progress'
+        coverage.append(item)
+    entry['example_coverage']=coverage
+    entry['visual_comparisons']=[capture['path'] for e in coverage for capture in e['visual_comparisons']]
     entries.append(entry)
-old_path.write_text(json.dumps({'upstream_commit': actual, 'components': entries}, indent=2) + '\n')
+old_path.write_text(json.dumps({'schema_version':2,'upstream_commit': actual, 'components': entries}, indent=2) + '\n')
 print(f'{len(entries)} catalogue entries, {sum(len(c["upstream_examples"]) for c in entries)} documented previews')

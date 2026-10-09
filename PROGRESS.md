@@ -1,56 +1,98 @@
 # Adequate UI port progress
 
-The objective remains the **complete** native port. This document records evidence,
-not a reduced definition of done. No component is currently declared complete.
+The objective remains the **complete** native port. The repository now contains a
+broad working first pass, not a production-complete port. No component is declared
+complete. Public API presence and successful rendering do not establish example,
+variant or behavioural parity.
 
 ## Pinned specification
 
 - shadcn/ui `6ea090075cd537d3b792c6c1a625e2448b6ede26`
-- Base UI, Nova style, Neutral tokens, Geist font family
+- Primary reference: Base UI / Nova / Neutral / Geist
 - Yakui `7c2bd75cd00ee83a1d33b8af360788cb322a3df8`
-- `reference/components.json`: 65 navigation entries, 461 documented preview references
-- Upstream lists `form` in Base navigation, but has no matching documentation file.
-  Preserve this entry until its intended scope is resolved from upstream history.
+- 65 navigation entries, 64 MDX pages, 461 documented previews
+- Form is listed without a Base MDX file. Some newer previews import Base Rhea;
+  chart-demo imports new-york-v4. Per-preview imports/styles are in the inventory.
+- See RESEARCH.md for source locations, findings and Yakui ownership constraints.
 
-## Implemented foundation
+## Implemented
 
-- Replaced the legacy crates; the public crate is `yakui-adequate-ui`.
-- Renderer-independent library, direct Yakui layout/paint/input.
-- Scoped light/dark themes, semantic tokens, OKLCH conversion, bundled OFL Geist.
-- Native Winit/WGPU gallery with catalogue navigation and window resizing.
-- Headless native PNG capture, with real hover/focus input and explicit viewport.
-- Pinned upstream source harness (Vite/Base UI), Playwright capture.
-- Rust side-by-side/difference generator with JSON measurements.
-- Real Yakui event-cycle tests for pointer, Enter/Space, cancellation, disabled,
-  focus traversal, caller-owned checkbox/text state, Unicode editing, tokens/sizes.
+The old implementation was replaced by a renderer-independent `yakui-adequate-ui`
+library and a standalone native Winit/WGPU gallery. All 65 catalogue entries have
+initial public APIs and native routes. Current behaviour includes:
 
-## Work in progress
+- Scoped light/dark semantic themes, native typography and small Lucide-style icons.
+- Buttons/content/form controls, native Cosmic text editing and masked password
+  editing, OTP filtering/paste, sliders and single/multiple toggles.
+- Caller-owned overlay state, root placement/collision handling, modal focus trapping,
+  autofocus, Escape/backdrop dismissal and return focus.
+- Roving tabs/radios, native menu keyboard/typeahead/check/radio/submenu selection,
+  searchable command/select/combobox, right-click context anchors.
+- Gregorian date arithmetic and calendar single/multiple/range selection/navigation.
+- Native table filtering/sorting/visibility/selection/pagination with stable row IDs.
+- Native chart meshes/data inspection, carousel drag/arrows/autoplay, resizable
+  panels and collapsible sidebar navigation.
+- Chat parts, attachment action/state presentation, questionnaires, toast manager,
+  transcript auto-follow/prepend preservation and jump-to-message.
+- Dashboard, settings and checkout showcases built with public library components.
+- Three standalone consuming applications: settings, dashboard and checkout.
+- CLI PNG capture, pinned upstream source harness, Playwright captures, Rust
+  side-by-side/difference/content-region comparison tooling.
 
-Basic component APIs/examples, keyboard groups, and overlay focus/dismissal.
-Their existence is **not** full parity: examples and variants are tracked separately
-in the inventory. Current card example still differs from the pinned login example.
+## Verification checkpoint
 
-## Remaining required work
+- Formatting, workspace compilation, independent library compilation and rustdoc pass.
+- All three consuming examples compile.
+- 36 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
+- 95 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **228 captures,
+  zero failures** in the latest full smoke run.
+- The configured upstream suite covers 15 actual previews: **74 comparison pairs**
+  across light/dark and applicable states. Review remains pending; screenshots were
+  used to find and correct concrete layout/painting defects, not to certify parity.
+- Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
+  `reference/verification.json` retains the checkpoint summary and reproduction commands.
 
-- All 461 upstream previews mapped to native, independent gallery examples.
-- Complete variant/state APIs and focused behavioural checks per component.
-- Complete menus, selects, comboboxes, OTP and advanced form controls.
-- Data tables, calendar/date picker, charts, carousel, sidebar/resizable layouts.
-- New message/attachment/bubble/marker/questionnaire/scroller catalogue.
-- Light/dark capture pairs, review and correction for the entire catalogue.
-- Dashboard, settings and form-heavy showcase compositions.
-- Rust API documentation and separate consuming examples.
-- Final integration/visual audit: **do not publish as production-complete yet**.
+The screenshot loop found solid border silhouettes behind transparent controls,
+state-hook siblings consuming List spacing, overlaid radio rows, stretched progress
+fills/thumbs, and Align expanding natural-width buttons. These were corrected;
+focused layout tests cover the radio/progress/button regressions.
+
+## Required work still outstanding
+
+`reference/components.json` records component-specific deviations and every upstream
+preview separately. Only 15 of 461 previews currently have paired captures. The
+remaining previews must be studied, implemented and compared, not mapped to a
+generic default rendition. Important incomplete areas include:
+
+- Complete documented slots, sizes, disabled/invalid states and compositions.
+- Rich navigation flyouts, joined button/input groups, grouped/multiple autocomplete,
+  full forms/field association and advanced selector keyboard contracts.
+- Drawer drag physics, overlay motion/shadows/delays, tooltip/hover-card pointer transit.
+- Calendar caption dropdowns/locales/presets/week numbers; complete data table cells,
+  row actions/reordering; complete chart interpolation/axes/tooltips and preview kinds.
+- Image/video/texture APIs, full icon fidelity, avatar groups/status and chat reactions.
+- Complete sidebar variants, layouts, native accessibility audit and bidi/RTL audit.
+- Full screenshot/interaction coverage for every component and each upstream preview.
+- Final consuming-application, performance and normal-usage audit.
+
+Current notable visual differences include typography/rasterisation, card slot
+alignment, textarea inset/resize affordance, and several complex component layouts.
+The native capture suite can pass while these differences remain. Do not advertise
+this checkpoint as a finished shadcn port.
 
 ## Continue development
 
-1. Read this document, `reference/upstream.json` and `reference/components.json`.
-2. Clone the upstream repositories at the recorded revisions; regenerate inventory
-   with `python3 tools/inventory.py /path/to/shadcn-ui` (preserves coverage fields).
-3. `cargo run --bin gallery -- --list` reports implemented capture routes.
-4. `cargo test --workspace` and `cargo fmt --all -- --check`.
-5. Follow the capture/comparison instructions in README.md.
-6. Port the actual upstream example; update coverage only after tests and inspection.
+1. Read this document, RESEARCH.md and `reference/components.json`.
+2. Clone both upstreams at `reference/upstream.json` pins. Regenerate the inventory
+   with `python3 tools/inventory.py /path/to/shadcn-ui`; recorded evidence is preserved.
+3. `cargo run --bin gallery -- --list` lists native routes. Upstream preview names are
+   accepted only when the corresponding variant actually exists.
+4. `cargo test --workspace`, `cargo check --workspace --examples`, `cargo fmt --all -- --check`.
+5. Follow README.md to prepare and start the pinned reference harness.
+6. `python3 tools/visual_catalogue.py` reruns configured upstream/native pairs.
+7. `python3 tools/verify_gallery.py --all-variants --showcases --open-overlays` reruns native smoke captures.
+8. Port the actual next upstream preview; add route, behaviour checks and two-theme
+   comparisons, inspect and correct them, then update its explicit coverage record.
 
-Do not run Clippy. Do not add mocked integration tests. Preserve Kane's architecture
-ownership; the project brief explicitly authorizes autonomous implementation here.
+Do not run Clippy or add mocked integration tests. Mobile visual validation belongs
+to Kane. The project brief authorizes autonomous desktop implementation/verification.

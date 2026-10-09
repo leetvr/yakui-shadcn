@@ -55,7 +55,7 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
     while let Some(arg) = args.next() {
         if arg == "--help" {
             println!(
-                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected] [--width 1200] [--height 800] [--isolated] [--screenshot PATH]\ngallery --list\ngallery --showcase dashboard|settings|checkout [--theme dark] [--screenshot PATH]"
+                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected|open] [--width 1200] [--height 800] [--isolated] [--screenshot PATH]\ngallery --list\ngallery --showcase dashboard|settings|checkout [--theme dark] [--screenshot PATH]"
             );
             return Ok(None);
         }
@@ -118,7 +118,9 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
         )
         .into());
     }
-    if !["default", "hover", "focus", "disabled", "selected"].contains(&options.state.as_str()) {
+    if !["default", "hover", "focus", "disabled", "selected", "open"]
+        .contains(&options.state.as_str())
+    {
         return Err("Unsupported capture state".into());
     }
     if options.width == 0 || options.height == 0 {
@@ -432,9 +434,12 @@ fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
         gallery.render();
         yak.finish();
     }
-    if gallery.options.state == "hover" || gallery.options.state == "focus" {
+    if matches!(gallery.options.state.as_str(), "hover" | "focus" | "open") {
         fn first_control(yak: &yakui::Yakui, id: yakui::WidgetId) -> Option<yakui::WidgetId> {
             let node = yak.dom().get(id)?;
+            if node.widget.type_name().ends_with("::ContextTarget") {
+                return Some(id);
+            }
             if node
                 .widget
                 .focus_policy()
@@ -446,9 +451,19 @@ fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
         }
         let id =
             first_control(&yak, yak.dom().root()).ok_or("This example has no focusable control")?;
-        if gallery.options.state == "hover" {
+        if gallery.options.state == "hover" || gallery.options.state == "open" {
             let rect = yak.layout_dom().get(id).unwrap().rect;
             yak.handle_event(yakui::event::Event::CursorMoved(Some(rect.center())));
+            if gallery.options.state == "open" {
+                let button = if gallery.options.component == "context-menu" {
+                    yakui::input::MouseButton::Two
+                } else {
+                    yakui::input::MouseButton::One
+                };
+                for down in [true, false] {
+                    yak.handle_event(yakui::event::Event::MouseButtonChanged { button, down });
+                }
+            }
         } else {
             yak.handle_event(yakui::event::Event::KeyChanged {
                 key: yakui::input::KeyCode::Tab,
@@ -456,11 +471,14 @@ fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
                 modifiers: None,
             });
         }
-        for _ in 0..2 {
+        for _ in 0..3 {
             yak.start();
             gallery.render();
             yak.finish();
         }
+    }
+    if gallery.options.state == "open" && !gallery.state.is_open(&gallery.options.component) {
+        return Err("The actual trigger interaction did not open this overlay".into());
     }
     if let Some(parent) = path.parent().filter(|p| !p.as_os_str().is_empty()) {
         std::fs::create_dir_all(parent)?;

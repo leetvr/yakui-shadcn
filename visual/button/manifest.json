@@ -23,6 +23,13 @@
       "path": "default-light-default",
       "metrics": {
         "changed_fraction": 0.0015,
+        "content_bounds": [
+          267,
+          184,
+          333,
+          216
+        ],
+        "content_rgb_rmse": 65.32211488601558,
         "height": 400,
         "mean_absolute_rgb_error": 0.19672083333333334,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/default-light-default/native.png",
@@ -42,6 +49,13 @@
       "path": "default-light-hover",
       "metrics": {
         "changed_fraction": 0.0015125,
+        "content_bounds": [
+          267,
+          184,
+          333,
+          216
+        ],
+        "content_rgb_rmse": 52.683369342735006,
         "height": 400,
         "mean_absolute_rgb_error": 0.1611125,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/default-light-hover/native.png",
@@ -60,14 +74,21 @@
       "state": "focus",
       "path": "default-light-focus",
       "metrics": {
-        "changed_fraction": 0.0016416666666666667,
+        "changed_fraction": 0.0016166666666666666,
+        "content_bounds": [
+          264,
+          181,
+          336,
+          219
+        ],
+        "content_rgb_rmse": 37.61498453280964,
         "height": 400,
-        "mean_absolute_rgb_error": 0.14534583333333334,
+        "mean_absolute_rgb_error": 0.1463125,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/default-light-focus/native.png",
-        "pixels_differing_by_more_than_16": 394,
+        "pixels_differing_by_more_than_16": 388,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/default-light-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 4.000743160130794,
+        "rgb_rmse": 4.01618133305756,
         "width": 600
       },
       "review": "pending"
@@ -80,6 +101,13 @@
       "path": "default-light-disabled",
       "metrics": {
         "changed_fraction": 0.0013125,
+        "content_bounds": [
+          267,
+          184,
+          333,
+          216
+        ],
+        "content_rgb_rmse": 33.19494473651984,
         "height": 400,
         "mean_absolute_rgb_error": 0.10958333333333334,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/default-light-disabled/native.png",
@@ -99,6 +127,13 @@
       "path": "default-dark-default",
       "metrics": {
         "changed_fraction": 0.0016208333333333333,
+        "content_bounds": [
+          267,
+          184,
+          333,
+          216
+        ],
+        "content_rgb_rmse": 63.86630062920982,
         "height": 400,
         "mean_absolute_rgb_error": 0.20576666666666665,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/default-dark-default/native.png",
@@ -118,6 +153,13 @@
       "path": "default-dark-hover",
       "metrics": {
         "changed_fraction": 0.0015,
+        "content_bounds": [
+          267,
+          184,
+          333,
+          216
+        ],
+        "content_rgb_rmse": 50.828807858667446,
         "height": 400,
         "mean_absolute_rgb_error": 0.16274583333333334,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/default-dark-hover/native.png",
@@ -136,14 +178,21 @@
       "state": "focus",
       "path": "default-dark-focus",
       "metrics": {
-        "changed_fraction": 0.0017583333333333333,
+        "changed_fraction": 0.0017333333333333333,
+        "content_bounds": [
+          264,
+          181,
+          336,
+          219
+        ],
+        "content_rgb_rmse": 35.36284868688412,
         "height": 400,
-        "mean_absolute_rgb_error": 0.14745416666666666,
+        "mean_absolute_rgb_error": 0.14857916666666668,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/default-dark-focus/native.png",
-        "pixels_differing_by_more_than_16": 422,
+        "pixels_differing_by_more_than_16": 416,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/default-dark-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 3.7551337082275333,
+        "rgb_rmse": 3.7757190264460445,
         "width": 600
       },
       "review": "pending"
@@ -156,6 +205,13 @@
       "path": "default-dark-disabled",
       "metrics": {
         "changed_fraction": 0.0013583333333333334,
+        "content_bounds": [
+          267,
+          184,
+          333,
+          216
+        ],
+        "content_rgb_rmse": 31.946192036079363,
         "height": 400,
         "mean_absolute_rgb_error": 0.10222083333333333,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/default-dark-disabled/native.png",
@@ -175,6 +231,13 @@
       "path": "outline-light-default",
       "metrics": {
         "changed_fraction": 0.0009,
+        "content_bounds": [
+          265,
+          184,
+          335,
+          216
+        ],
+        "content_rgb_rmse": 24.642071674852573,
         "height": 400,
         "mean_absolute_rgb_error": 0.06822916666666666,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/outline-light-default/native.png",
@@ -194,13 +257,20 @@
       "path": "outline-light-hover",
       "metrics": {
         "changed_fraction": 0.0009,
+        "content_bounds": [
+          265,
+          184,
+          335,
+          216
+        ],
+        "content_rgb_rmse": 23.50995229988477,
         "height": 400,
-        "mean_absolute_rgb_error": 0.06486666666666667,
+        "mean_absolute_rgb_error": 0.06481666666666666,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/outline-light-hover/native.png",
         "pixels_differing_by_more_than_16": 216,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/outline-light-hover/upstream.png",
         "review_required": true,
-        "rgb_rmse": 2.2713083601014343,
+        "rgb_rmse": 2.271277173750487,
         "width": 600
       },
       "review": "pending"
@@ -213,13 +283,20 @@
       "path": "outline-light-focus",
       "metrics": {
         "changed_fraction": 0.0018,
+        "content_bounds": [
+          262,
+          181,
+          338,
+          219
+        ],
+        "content_rgb_rmse": 27.28001282483188,
         "height": 400,
-        "mean_absolute_rgb_error": 0.1194875,
+        "mean_absolute_rgb_error": 0.12105416666666667,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/outline-light-focus/native.png",
         "pixels_differing_by_more_than_16": 432,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/outline-light-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 2.967023620847442,
+        "rgb_rmse": 2.992523322103494,
         "width": 600
       },
       "review": "pending"
@@ -232,6 +309,13 @@
       "path": "outline-light-disabled",
       "metrics": {
         "changed_fraction": 0.0005833333333333334,
+        "content_bounds": [
+          265,
+          184,
+          335,
+          216
+        ],
+        "content_rgb_rmse": 8.969890109216978,
         "height": 400,
         "mean_absolute_rgb_error": 0.024866666666666665,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/outline-light-disabled/native.png",
@@ -251,6 +335,13 @@
       "path": "outline-dark-default",
       "metrics": {
         "changed_fraction": 0.00065,
+        "content_bounds": [
+          265,
+          184,
+          335,
+          216
+        ],
+        "content_rgb_rmse": 11.405884289636267,
         "height": 400,
         "mean_absolute_rgb_error": 0.032620833333333335,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/outline-dark-default/native.png",
@@ -270,6 +361,13 @@
       "path": "outline-dark-hover",
       "metrics": {
         "changed_fraction": 0.0007875,
+        "content_bounds": [
+          265,
+          184,
+          335,
+          216
+        ],
+        "content_rgb_rmse": 14.517364397424867,
         "height": 400,
         "mean_absolute_rgb_error": 0.1071,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/outline-dark-hover/native.png",
@@ -288,14 +386,21 @@
       "state": "focus",
       "path": "outline-dark-focus",
       "metrics": {
-        "changed_fraction": 0.0006916666666666667,
+        "changed_fraction": 0.000725,
+        "content_bounds": [
+          262,
+          181,
+          338,
+          219
+        ],
+        "content_rgb_rmse": 10.512589734993377,
         "height": 400,
-        "mean_absolute_rgb_error": 0.03609166666666667,
+        "mean_absolute_rgb_error": 0.037125,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/outline-dark-focus/native.png",
-        "pixels_differing_by_more_than_16": 166,
+        "pixels_differing_by_more_than_16": 174,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/outline-dark-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 1.1291995690163306,
+        "rgb_rmse": 1.1531948375419192,
         "width": 600
       },
       "review": "pending"
@@ -308,6 +413,13 @@
       "path": "outline-dark-disabled",
       "metrics": {
         "changed_fraction": 0.00034583333333333335,
+        "content_bounds": [
+          265,
+          184,
+          335,
+          216
+        ],
+        "content_rgb_rmse": 6.201562303162002,
         "height": 400,
         "mean_absolute_rgb_error": 0.023729166666666666,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/outline-dark-disabled/native.png",
@@ -327,6 +439,13 @@
       "path": "secondary-light-default",
       "metrics": {
         "changed_fraction": 0.0013166666666666667,
+        "content_bounds": [
+          254,
+          184,
+          346,
+          216
+        ],
+        "content_rgb_rmse": 23.741038068857826,
         "height": 400,
         "mean_absolute_rgb_error": 0.0971875,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-light-default/native.png",
@@ -346,6 +465,13 @@
       "path": "secondary-light-hover",
       "metrics": {
         "changed_fraction": 0.0013791666666666666,
+        "content_bounds": [
+          254,
+          184,
+          346,
+          216
+        ],
+        "content_rgb_rmse": 25.456658072445236,
         "height": 400,
         "mean_absolute_rgb_error": 0.18489166666666668,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-light-hover/native.png",
@@ -364,14 +490,21 @@
       "state": "focus",
       "path": "secondary-light-focus",
       "metrics": {
-        "changed_fraction": 0.0024208333333333334,
+        "changed_fraction": 0.0024541666666666666,
+        "content_bounds": [
+          251,
+          181,
+          349,
+          219
+        ],
+        "content_rgb_rmse": 29.17396614709559,
         "height": 400,
-        "mean_absolute_rgb_error": 0.17065833333333333,
+        "mean_absolute_rgb_error": 0.17226666666666668,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-light-focus/native.png",
-        "pixels_differing_by_more_than_16": 581,
+        "pixels_differing_by_more_than_16": 589,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-light-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 3.619719141959313,
+        "rgb_rmse": 3.6340817272042742,
         "width": 600
       },
       "review": "pending"
@@ -384,6 +517,13 @@
       "path": "secondary-light-disabled",
       "metrics": {
         "changed_fraction": 0.0007083333333333334,
+        "content_bounds": [
+          265,
+          194,
+          335,
+          208
+        ],
+        "content_rgb_rmse": 16.137767845040038,
         "height": 400,
         "mean_absolute_rgb_error": 0.047154166666666664,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-light-disabled/native.png",
@@ -403,6 +543,13 @@
       "path": "secondary-dark-default",
       "metrics": {
         "changed_fraction": 0.0020791666666666667,
+        "content_bounds": [
+          254,
+          184,
+          346,
+          216
+        ],
+        "content_rgb_rmse": 17.929113893330033,
         "height": 400,
         "mean_absolute_rgb_error": 0.08483333333333333,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-dark-default/native.png",
@@ -422,6 +569,13 @@
       "path": "secondary-dark-hover",
       "metrics": {
         "changed_fraction": 0.01095,
+        "content_bounds": [
+          254,
+          184,
+          346,
+          216
+        ],
+        "content_rgb_rmse": 31.901262624937235,
         "height": 400,
         "mean_absolute_rgb_error": 0.3454125,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-dark-hover/native.png",
@@ -440,14 +594,21 @@
       "state": "focus",
       "path": "secondary-dark-focus",
       "metrics": {
-        "changed_fraction": 0.0022416666666666665,
+        "changed_fraction": 0.002275,
+        "content_bounds": [
+          251,
+          181,
+          349,
+          219
+        ],
+        "content_rgb_rmse": 23.379952533123927,
         "height": 400,
-        "mean_absolute_rgb_error": 0.13262916666666666,
+        "mean_absolute_rgb_error": 0.13449583333333334,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-dark-focus/native.png",
-        "pixels_differing_by_more_than_16": 538,
+        "pixels_differing_by_more_than_16": 546,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-dark-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 2.8900425314056077,
+        "rgb_rmse": 2.912345131790988,
         "width": 600
       },
       "review": "pending"
@@ -460,6 +621,13 @@
       "path": "secondary-dark-disabled",
       "metrics": {
         "changed_fraction": 0.000725,
+        "content_bounds": [
+          254,
+          184,
+          346,
+          216
+        ],
+        "content_rgb_rmse": 9.280447099658788,
         "height": 400,
         "mean_absolute_rgb_error": 0.0437125,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-dark-disabled/native.png",
@@ -479,6 +647,13 @@
       "path": "ghost-light-default",
       "metrics": {
         "changed_fraction": 0.0009833333333333332,
+        "content_bounds": [
+          280,
+          194,
+          320,
+          206
+        ],
+        "content_rgb_rmse": 70.5380364295274,
         "height": 400,
         "mean_absolute_rgb_error": 0.08425416666666667,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-light-default/native.png",
@@ -498,6 +673,13 @@
       "path": "ghost-light-hover",
       "metrics": {
         "changed_fraction": 0.000975,
+        "content_bounds": [
+          269,
+          184,
+          331,
+          216
+        ],
+        "content_rgb_rmse": 33.35033672509798,
         "height": 400,
         "mean_absolute_rgb_error": 0.08695,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-light-hover/native.png",
@@ -516,14 +698,21 @@
       "state": "focus",
       "path": "ghost-light-focus",
       "metrics": {
-        "changed_fraction": 0.0019,
+        "changed_fraction": 0.0018833333333333334,
+        "content_bounds": [
+          266,
+          181,
+          334,
+          219
+        ],
+        "content_rgb_rmse": 37.55197636333632,
         "height": 400,
-        "mean_absolute_rgb_error": 0.149025,
+        "mean_absolute_rgb_error": 0.150275,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-light-focus/native.png",
-        "pixels_differing_by_more_than_16": 456,
+        "pixels_differing_by_more_than_16": 452,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-light-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 3.8729467678586373,
+        "rgb_rmse": 3.896488804038836,
         "width": 600
       },
       "review": "pending"
@@ -536,6 +725,13 @@
       "path": "ghost-light-disabled",
       "metrics": {
         "changed_fraction": 0.0008166666666666667,
+        "content_bounds": [
+          280,
+          194,
+          320,
+          206
+        ],
+        "content_rgb_rmse": 32.623195990991846,
         "height": 400,
         "mean_absolute_rgb_error": 0.0406375,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-light-disabled/native.png",
@@ -555,6 +751,13 @@
       "path": "ghost-dark-default",
       "metrics": {
         "changed_fraction": 0.0009416666666666667,
+        "content_bounds": [
+          280,
+          194,
+          320,
+          206
+        ],
+        "content_rgb_rmse": 55.409648678426635,
         "height": 400,
         "mean_absolute_rgb_error": 0.069225,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-dark-default/native.png",
@@ -574,6 +777,13 @@
       "path": "ghost-dark-hover",
       "metrics": {
         "changed_fraction": 0.0016041666666666667,
+        "content_bounds": [
+          269,
+          184,
+          331,
+          216
+        ],
+        "content_rgb_rmse": 28.89514553491418,
         "height": 400,
         "mean_absolute_rgb_error": 0.16374166666666667,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-dark-hover/native.png",
@@ -592,14 +802,21 @@
       "state": "focus",
       "path": "ghost-dark-focus",
       "metrics": {
-        "changed_fraction": 0.0018583333333333334,
+        "changed_fraction": 0.0018416666666666666,
+        "content_bounds": [
+          266,
+          181,
+          334,
+          219
+        ],
+        "content_rgb_rmse": 34.22043140722505,
         "height": 400,
-        "mean_absolute_rgb_error": 0.14091666666666666,
+        "mean_absolute_rgb_error": 0.1424,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-dark-focus/native.png",
-        "pixels_differing_by_more_than_16": 446,
+        "pixels_differing_by_more_than_16": 442,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-dark-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 3.518938050037255,
+        "rgb_rmse": 3.5507992058126856,
         "width": 600
       },
       "review": "pending"
@@ -612,6 +829,13 @@
       "path": "ghost-dark-disabled",
       "metrics": {
         "changed_fraction": 0.0007791666666666666,
+        "content_bounds": [
+          280,
+          194,
+          320,
+          206
+        ],
+        "content_rgb_rmse": 28.167837746858265,
         "height": 400,
         "mean_absolute_rgb_error": 0.0350125,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-dark-disabled/native.png",
@@ -631,6 +855,13 @@
       "path": "destructive-light-default",
       "metrics": {
         "changed_fraction": 0.0025416666666666665,
+        "content_bounds": [
+          251,
+          184,
+          349,
+          216
+        ],
+        "content_rgb_rmse": 21.098020952099702,
         "height": 400,
         "mean_absolute_rgb_error": 0.08984444444444445,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-light-default/native.png",
@@ -650,6 +881,13 @@
       "path": "destructive-light-hover",
       "metrics": {
         "changed_fraction": 0.0025458333333333335,
+        "content_bounds": [
+          251,
+          184,
+          349,
+          216
+        ],
+        "content_rgb_rmse": 21.228307755684813,
         "height": 400,
         "mean_absolute_rgb_error": 0.09672916666666667,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-light-hover/native.png",
@@ -669,13 +907,20 @@
       "path": "destructive-light-focus",
       "metrics": {
         "changed_fraction": 0.005820833333333333,
+        "content_bounds": [
+          248,
+          181,
+          352,
+          219
+        ],
+        "content_rgb_rmse": 25.605227963354096,
         "height": 400,
-        "mean_absolute_rgb_error": 0.17620555555555556,
+        "mean_absolute_rgb_error": 0.1770611111111111,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-light-focus/native.png",
         "pixels_differing_by_more_than_16": 1397,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-light-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 3.276157132305402,
+        "rgb_rmse": 3.2857271307547404,
         "width": 600
       },
       "review": "pending"
@@ -688,6 +933,13 @@
       "path": "destructive-light-disabled",
       "metrics": {
         "changed_fraction": 0.0008208333333333334,
+        "content_bounds": [
+          251,
+          184,
+          349,
+          216
+        ],
+        "content_rgb_rmse": 8.222944452943269,
         "height": 400,
         "mean_absolute_rgb_error": 0.03858472222222222,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-light-disabled/native.png",
@@ -707,6 +959,13 @@
       "path": "destructive-dark-default",
       "metrics": {
         "changed_fraction": 0.0022916666666666667,
+        "content_bounds": [
+          251,
+          184,
+          349,
+          216
+        ],
+        "content_rgb_rmse": 12.271318046511526,
         "height": 400,
         "mean_absolute_rgb_error": 0.060983333333333334,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-dark-default/native.png",
@@ -726,6 +985,13 @@
       "path": "destructive-dark-hover",
       "metrics": {
         "changed_fraction": 0.0022541666666666665,
+        "content_bounds": [
+          251,
+          184,
+          349,
+          216
+        ],
+        "content_rgb_rmse": 15.334572977470241,
         "height": 400,
         "mean_absolute_rgb_error": 0.07225416666666666,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-dark-hover/native.png",
@@ -745,13 +1011,20 @@
       "path": "destructive-dark-focus",
       "metrics": {
         "changed_fraction": 0.005508333333333333,
+        "content_bounds": [
+          248,
+          181,
+          352,
+          219
+        ],
+        "content_rgb_rmse": 17.060066938339393,
         "height": 400,
-        "mean_absolute_rgb_error": 0.14410555555555554,
+        "mean_absolute_rgb_error": 0.14497222222222222,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-dark-focus/native.png",
         "pixels_differing_by_more_than_16": 1322,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-dark-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 2.1680393087867307,
+        "rgb_rmse": 2.189190616542003,
         "width": 600
       },
       "review": "pending"
@@ -764,6 +1037,13 @@
       "path": "destructive-dark-disabled",
       "metrics": {
         "changed_fraction": 0.0016916666666666666,
+        "content_bounds": [
+          251,
+          184,
+          349,
+          216
+        ],
+        "content_rgb_rmse": 6.283439455788352,
         "height": 400,
         "mean_absolute_rgb_error": 0.037318055555555556,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-dark-disabled/native.png",
@@ -783,6 +1063,13 @@
       "path": "link-light-default",
       "metrics": {
         "changed_fraction": 0.000525,
+        "content_bounds": [
+          287,
+          194,
+          314,
+          205
+        ],
+        "content_rgb_rmse": 41.812915054081856,
         "height": 400,
         "mean_absolute_rgb_error": 0.0305375,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/link-light-default/native.png",
@@ -801,14 +1088,21 @@
       "state": "hover",
       "path": "link-light-hover",
       "metrics": {
-        "changed_fraction": 0.0006416666666666667,
+        "changed_fraction": 0.0007583333333333333,
+        "content_bounds": [
+          286,
+          194,
+          314,
+          211
+        ],
+        "content_rgb_rmse": 86.06300213294011,
         "height": 400,
-        "mean_absolute_rgb_error": 0.05753333333333333,
+        "mean_absolute_rgb_error": 0.0846,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/link-light-hover/native.png",
-        "pixels_differing_by_more_than_16": 154,
+        "pixels_differing_by_more_than_16": 182,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/link-light-hover/upstream.png",
         "review_required": true,
-        "rgb_rmse": 2.900132180895669,
+        "rgb_rmse": 3.832784018612754,
         "width": 600
       },
       "review": "pending"
@@ -820,14 +1114,21 @@
       "state": "focus",
       "path": "link-light-focus",
       "metrics": {
-        "changed_fraction": 0.0012083333333333334,
+        "changed_fraction": 0.001275,
+        "content_bounds": [
+          272,
+          181,
+          328,
+          219
+        ],
+        "content_rgb_rmse": 27.409051589257086,
         "height": 400,
-        "mean_absolute_rgb_error": 0.08519583333333333,
+        "mean_absolute_rgb_error": 0.0882125,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/link-light-focus/native.png",
-        "pixels_differing_by_more_than_16": 290,
+        "pixels_differing_by_more_than_16": 306,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/link-light-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 2.5441591603776157,
+        "rgb_rmse": 2.5809179568517866,
         "width": 600
       },
       "review": "pending"
@@ -840,6 +1141,13 @@
       "path": "link-light-disabled",
       "metrics": {
         "changed_fraction": 0.0002666666666666667,
+        "content_bounds": [
+          287,
+          194,
+          314,
+          205
+        ],
+        "content_rgb_rmse": 13.970146139714615,
         "height": 400,
         "mean_absolute_rgb_error": 0.009858333333333334,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/link-light-disabled/native.png",
@@ -859,6 +1167,13 @@
       "path": "link-dark-default",
       "metrics": {
         "changed_fraction": 0.00025,
+        "content_bounds": [
+          287,
+          194,
+          314,
+          205
+        ],
+        "content_rgb_rmse": 17.09066730970178,
         "height": 400,
         "mean_absolute_rgb_error": 0.011120833333333333,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/link-dark-default/native.png",
@@ -877,14 +1192,21 @@
       "state": "hover",
       "path": "link-dark-hover",
       "metrics": {
-        "changed_fraction": 0.00036666666666666667,
+        "changed_fraction": 0.00048333333333333334,
+        "content_bounds": [
+          286,
+          194,
+          314,
+          211
+        ],
+        "content_rgb_rmse": 76.20778208569101,
         "height": 400,
-        "mean_absolute_rgb_error": 0.03659166666666667,
+        "mean_absolute_rgb_error": 0.062141666666666664,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/link-dark-hover/native.png",
-        "pixels_differing_by_more_than_16": 88,
+        "pixels_differing_by_more_than_16": 116,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/link-dark-hover/upstream.png",
         "review_required": true,
-        "rgb_rmse": 2.4337231422931684,
+        "rgb_rmse": 3.393885433147874,
         "width": 600
       },
       "review": "pending"
@@ -896,14 +1218,21 @@
       "state": "focus",
       "path": "link-dark-focus",
       "metrics": {
-        "changed_fraction": 0.0009416666666666667,
+        "changed_fraction": 0.0010083333333333333,
+        "content_bounds": [
+          272,
+          181,
+          328,
+          219
+        ],
+        "content_rgb_rmse": 25.817880817852036,
         "height": 400,
-        "mean_absolute_rgb_error": 0.07183333333333333,
+        "mean_absolute_rgb_error": 0.07508333333333334,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/link-dark-focus/native.png",
-        "pixels_differing_by_more_than_16": 226,
+        "pixels_differing_by_more_than_16": 242,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/button/link-dark-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 2.3844968022624817,
+        "rgb_rmse": 2.431088576474882,
         "width": 600
       },
       "review": "pending"
@@ -916,6 +1245,13 @@
       "path": "link-dark-disabled",
       "metrics": {
         "changed_fraction": 0.0001,
+        "content_bounds": [
+          287,
+          194,
+          314,
+          205
+        ],
+        "content_rgb_rmse": 9.756116962286695,
         "height": 400,
         "mean_absolute_rgb_error": 0.0066375,
         "native": "/Users/kane/Development/yakui-shadcn/visual/button/link-dark-disabled/native.png",

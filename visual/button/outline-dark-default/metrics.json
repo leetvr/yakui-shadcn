@@ -1,5 +1,12 @@
 {
   "changed_fraction": 0.00065,
+  "content_bounds": [
+    265,
+    184,
+    335,
+    216
+  ],
+  "content_rgb_rmse": 11.405884289636267,
   "height": 400,
   "mean_absolute_rgb_error": 0.032620833333333335,
   "native": "/Users/kane/Development/yakui-shadcn/visual/button/outline-dark-default/native.png",
