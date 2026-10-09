@@ -20,12 +20,12 @@
   "upstream_previews": 461,
   "certified_complete_components": 0,
   "automated_tests": {
-    "count": 50,
+    "count": 51,
     "result": "passed",
     "command": "cargo test --workspace"
   },
   "native_smoke": {
-    "captures": 254,
+    "captures": 256,
     "failures": 0,
     "includes_actual_trigger_opening": true,
     "command": "python3 tools/verify_gallery.py --all-variants --showcases --open-overlays"
@@ -43,5 +43,14 @@
     "cargo doc -p yakui-adequate-ui --no-deps",
     "python3 tools/audit_inventory.py"
   ],
-  "library_normal_dependencies_exclude_windowing_and_rendering_backends": true
+  "library_normal_dependencies_exclude_windowing_and_rendering_backends": true,
+  "icon_diagnostic": {
+    "icons": 137,
+    "paired_themes": [
+      "light",
+      "dark"
+    ],
+    "path": "visual/icons",
+    "review": "geometry inspected; single-sample edge differences remain"
+  }
 }

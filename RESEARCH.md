@@ -152,3 +152,20 @@ shadow are still absent: the pinned renderer-independent Yakui paint interface
 has no framebuffer backdrop-filter operation. Menus currently use an opaque
 semantic popup surface. Placement exposes side/align/offset, logical RTL alignment
 and all four side flips/clamping. Native vertical scrolling reveals focused rows.
+
+## Pinned icon assets
+
+The pinned apps/v4/package.json uses lucide-react 0.474.0. Every Lucide import and
+IconPlaceholder in first-party Base previews and primitives is extracted from that
+package. Source nodes, hashes and source paths are preserved in
+crates/adequate-ui/icons/provenance.json; original ISC/Feather MIT notices are in
+icons/LICENSE. Regenerate with node tools/reference-app/generate-icons.mjs followed
+by the path to the pinned shadcn checkout. The development-only SVG normalization
+uses [svgpath 2.6.0](https://github.com/fontello/svgpath). Native runtime code contains
+only sampled paths and Yakui meshes, with round stroke caps and joins.
+
+The diagnostic compares all 137 SVGs against native geometry in both themes at
+24 logical pixels. It is not an additional documented shadcn preview. The native
+single-sample renderer produces visibly different curve edges; all paths and
+alignment match. Dense geometry needs separate clipped bounds because pinned
+Yakui PaintDom merges consecutive compatible meshes without checking u16 overflow.

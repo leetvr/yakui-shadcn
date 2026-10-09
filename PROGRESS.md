@@ -43,8 +43,8 @@ initial public APIs and native routes. Current behaviour includes:
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All three consuming examples compile.
-- 50 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
-- 108 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **254 captures,
+- 51 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
+- 109 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **256 captures,
   zero failures** in the latest full smoke run.
 - The configured upstream suite covers 30 actual previews: **148 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
@@ -163,3 +163,20 @@ actual gallery row callback. Yakui keyboard events do not bubble to parents; a
 cached trigger context owns these commands on the focused button. Popup blur,
 saturation, soft shadows, exact hover delays/transit and multilingual RTL remain
 outstanding. No component was certified complete.
+
+## Pinned Lucide geometry increment
+
+Replaced approximate icons with 137 exact Lucide 0.474.0 vector assets used by
+the pinned Base UI examples and primitives. A development-only generator verifies
+the shadcn and Lucide pins, normalizes SVG arcs/curves and emits plain Rust paths.
+The runtime paints round-capped native strokes; no SVG parser or JavaScript runtime
+is part of the library. ISC and Feather MIT notices and source hashes are retained.
+
+The public Icon catalogue and native gallery typography/icons diagnostic render
+every asset. Both-theme SVG/native comparisons live in visual/icons separately
+from documented preview coverage. The dense grid exposed Yakui's shared u16 mesh
+index overflow; clipped icon bounds keep batches bounded without new paint layers.
+A real Yakui paint test checks the full grid's indices and finite geometry.
+Single-sample capture edges remain visibly less smooth than browser SVG edges.
+All 51 tests pass, and 256 native captures have zero failures. No component was
+certified complete.

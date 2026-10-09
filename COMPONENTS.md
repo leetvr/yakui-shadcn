@@ -194,3 +194,8 @@ let action = ui::dropdown_menu_with_options(&mut menu, &mut items, ui::MenuOptio
 
 `PopoverOptions` and `popover_with_options` expose the same side, alignment and
 offset vocabulary for ordinary popovers.
+
+Use `ui::icon(ui::Icon::Settings, 16.)` for the pinned Lucide vocabulary.
+`Icon::ALL` lists the 137 assets used by upstream examples; `Icon::name()` returns
+the source name. `icon_colored` takes an application colour. The library paints
+vectors directly; it has no runtime SVG or browser dependency.

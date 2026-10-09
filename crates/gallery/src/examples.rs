@@ -843,6 +843,17 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
                 })
             })
         }),
+        "typography" if variant == "icons" => ui::column(8., || {
+            for icons in ui::Icon::ALL.chunks(16) {
+                ui::row(8., || {
+                    for &icon in icons {
+                        ui::size(ui::Vec2::splat(48.), || {
+                            ui::min_size(ui::Vec2::ZERO, || ui::icon(icon, 24.))
+                        });
+                    }
+                });
+            }
+        }),
         "typography" => ui::width(450., || {
             ui::column(16., || {
                 ui::heading(1, "The Joke Tax Chronicles");
@@ -888,6 +899,7 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "table",
         ],
         "table" => &["default", "footer", "actions"],
+        "typography" => &["default", "icons"],
         "switch" => &[
             "default",
             "description",

@@ -1,164 +1,98 @@
 //! Small Lucide stroke icons in native geometry; 24-unit view box, 2-unit stroke.
+pub use crate::lucide_icons::Icon;
 use yakui::{
-    Color, Vec2,
+    Color, Constraints, Vec2,
     paint::{PaintMesh, Vertex},
     widget::PaintContext,
 };
-/// Icons used by the first-party examples.
-#[derive(Debug, Clone, Copy)]
-pub enum Icon {
-    Check,
-    MoreHorizontal,
-    ChevronDown,
-    ChevronRight,
-    ChevronLeft,
-    Plus,
-    X,
-    Search,
-    ArrowRight,
-    Loader,
-    Menu,
-    Sun,
-    Moon,
-    Mail,
-    Settings,
+#[derive(Debug)]
+struct IconBounds;
+impl yakui::widget::Widget for IconBounds {
+    type Props<'a> = ();
+    type Response = ();
+    fn new() -> Self {
+        Self
+    }
+    fn update(&mut self, _: ()) {}
+    fn layout(&self, ctx: yakui::widget::LayoutContext<'_>, constraints: Constraints) -> Vec2 {
+        // Yakui merges meshes with the same clip into a u16-indexed draw call.
+        // Keep icon geometry within its own bounds: a dense catalogue can then
+        // render without overflowing that shared call, and normal paint order holds.
+        ctx.layout.enable_clipping(ctx.dom);
+        self.default_layout(ctx, constraints)
+    }
 }
-/// Paint an icon at the requested logical size using the current foreground token.
+/// Paint a pinned Lucide icon with the scoped foreground token.
 #[track_caller]
 pub fn icon(icon: Icon, size: f32) {
     icon_colored(icon, size, crate::theme().foreground);
 }
-/// Paint a Lucide icon with an explicit colour.
+/// Paint actual Lucide vector paths using native Yakui geometry.
 #[track_caller]
 pub fn icon_colored(icon: Icon, size: f32, color: Color) {
+    let size = if size.is_finite() { size.max(0.) } else { 0. };
+    let color = crate::layout::resolve_color(color);
     crate::size(Vec2::splat(size), || {
-        yakui::widgets::Canvas::new(move |ctx| {
-            let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
-            let scale = size / 24.0;
-            let paths: &[&[(f32, f32)]] = match icon {
-                Icon::Check => &[&[(20., 6.), (9., 17.), (4., 12.)]],
-                Icon::ChevronDown => &[&[(6., 9.), (12., 15.), (18., 9.)]],
-                Icon::ChevronRight => &[&[(9., 6.), (15., 12.), (9., 18.)]],
-                Icon::ChevronLeft => &[&[(15., 6.), (9., 12.), (15., 18.)]],
-                Icon::Plus => &[&[(12., 5.), (12., 19.)], &[(5., 12.), (19., 12.)]],
-                Icon::X => &[&[(18., 6.), (6., 18.)], &[(6., 6.), (18., 18.)]],
-                Icon::ArrowRight => &[
-                    &[(5., 12.), (19., 12.)],
-                    &[(12., 5.), (19., 12.), (12., 19.)],
-                ],
-                Icon::Menu => &[
-                    &[(4., 6.), (20., 6.)],
-                    &[(4., 12.), (20., 12.)],
-                    &[(4., 18.), (20., 18.)],
-                ],
-                Icon::Mail => &[
-                    &[
-                        (4., 4.),
-                        (20., 4.),
-                        (22., 6.),
-                        (22., 18.),
-                        (20., 20.),
-                        (4., 20.),
-                        (2., 18.),
-                        (2., 6.),
-                        (4., 4.),
-                    ],
-                    &[(22., 6.), (12., 13.), (2., 6.)],
-                ],
-                Icon::Moon => &[&[
-                    (20.9, 13.),
-                    (18., 17.),
-                    (13., 20.),
-                    (8., 19.),
-                    (4., 15.),
-                    (3., 10.),
-                    (6., 5.),
-                    (11., 3.),
-                    (10., 8.),
-                    (12., 12.),
-                    (16., 14.),
-                    (20.9, 13.),
-                ]],
-                _ => &[],
-            };
-            for path in paths {
-                for pair in path.windows(2) {
-                    line(
-                        ctx,
-                        rect.pos() + Vec2::from(pair[0]) * scale,
-                        rect.pos() + Vec2::from(pair[1]) * scale,
-                        2.0 * scale,
-                        color,
-                    );
-                }
-            }
-            match icon {
-                Icon::MoreHorizontal => {
-                    for x in [5., 12., 19.] {
-                        circle(
-                            ctx,
-                            rect.pos() + Vec2::new(x, 12.) * scale,
-                            scale,
-                            2. * scale,
-                            color,
-                            0.,
-                            std::f32::consts::TAU,
-                        );
+        yakui::util::widget_children::<IconBounds, _>(
+            || {
+                yakui::widgets::Canvas::new(move |ctx| {
+                    if color.a == 0 {
+                        return;
                     }
-                }
-                Icon::Search => {
-                    circle(
-                        ctx,
-                        rect.pos() + Vec2::new(11., 11.) * scale,
-                        8. * scale,
-                        2. * scale,
-                        color,
-                        0.,
-                        std::f32::consts::TAU,
-                    );
-                    line(
-                        ctx,
-                        rect.pos() + Vec2::new(16.65, 16.65) * scale,
-                        rect.pos() + Vec2::new(21., 21.) * scale,
-                        2. * scale,
-                        color,
-                    );
-                }
-                Icon::Loader => circle(
-                    ctx,
-                    rect.pos() + Vec2::splat(12.) * scale,
-                    9. * scale,
-                    2. * scale,
-                    color,
-                    0.,
-                    5.1,
-                ),
-                Icon::Sun | Icon::Settings => {
-                    circle(
-                        ctx,
-                        rect.center(),
-                        4. * scale,
-                        2. * scale,
-                        color,
-                        0.,
-                        std::f32::consts::TAU,
-                    );
-                    for i in 0..8 {
-                        let a = i as f32 * std::f32::consts::TAU / 8.;
-                        let v = Vec2::new(a.cos(), a.sin());
-                        line(
-                            ctx,
-                            rect.center() + v * 8. * scale,
-                            rect.center() + v * 10. * scale,
-                            2. * scale,
-                            color,
-                        );
+                    let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
+                    let scale = rect.size().min_element() / 24.;
+                    if scale <= 0. {
+                        return;
                     }
-                }
-                _ => {}
-            }
-        })
-        .show();
+                    let stroke = 2. * scale;
+                    let color = color.to_linear();
+                    let mut vertices = Vec::new();
+                    let mut indices = Vec::new();
+                    for path in icon.paths() {
+                        for pair in path.windows(2) {
+                            let a = rect.pos() + Vec2::from(pair[0]) * scale;
+                            let b = rect.pos() + Vec2::from(pair[1]) * scale;
+                            let delta = b - a;
+                            if delta.length_squared() <= 1e-12 {
+                                continue;
+                            }
+                            let normal = Vec2::new(-delta.y, delta.x).normalize() * stroke / 2.;
+                            let base = vertices.len() as u16;
+                            vertices.extend(
+                                [a - normal, a + normal, b + normal, b - normal]
+                                    .map(|p| Vertex::new(p, Vec2::ZERO, color)),
+                            );
+                            indices.extend([base, base + 1, base + 2, base + 2, base + 3, base]);
+                        }
+                        // Lucide's strokes have round caps and joins. Disks at the sampled
+                        // vertices join those native quads without inventing a runtime SVG
+                        // interpreter. Semantic colour alpha is resolved against the scoped
+                        // surface before drawing, so overlaps retain a uniform tint.
+                        for &point in *path {
+                            let center = rect.pos() + Vec2::from(point) * scale;
+                            let base = vertices.len() as u16;
+                            vertices.push(Vertex::new(center, Vec2::ZERO, color));
+                            for i in 0..12 {
+                                let angle = std::f32::consts::TAU * i as f32 / 12.;
+                                vertices.push(Vertex::new(
+                                    center + Vec2::new(angle.cos(), angle.sin()) * stroke / 2.,
+                                    Vec2::ZERO,
+                                    color,
+                                ));
+                            }
+                            for i in 0..12 {
+                                indices.extend([base, base + 1 + i, base + 1 + (i + 1) % 12]);
+                            }
+                        }
+                    }
+                    if !vertices.is_empty() {
+                        ctx.paint.add_mesh(PaintMesh::new(vertices, indices));
+                    }
+                })
+                .show();
+            },
+            (),
+        );
     });
 }
 pub(crate) fn line(ctx: &mut PaintContext<'_>, a: Vec2, b: Vec2, stroke: f32, color: Color) {

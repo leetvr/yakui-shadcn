@@ -11842,9 +11842,12 @@
         "heading"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "icons"
       ],
-      "behaviour_tests": [],
+      "behaviour_tests": [
+        "dense_lucide_catalogue_has_finite_geometry_and_valid_batched_indices"
+      ],
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [

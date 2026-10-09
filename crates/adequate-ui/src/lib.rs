@@ -40,6 +40,7 @@ pub use table_slots::*;
 mod icons;
 mod interaction;
 mod layout;
+mod lucide_icons;
 mod navigation;
 mod overlay;
 mod theme;

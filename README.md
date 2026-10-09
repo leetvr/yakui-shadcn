@@ -68,6 +68,12 @@ Run `python3 tools/visual_catalogue.py` for all configured upstream pairs and
 `python3 tools/verify_gallery.py --all-variants --showcases --open-overlays` for native smoke captures.
 These are separate forms of evidence; neither automatically certifies a component.
 
+Regenerate the native Lucide assets from the installed, pinned package with
+`node tools/reference-app/generate-icons.mjs .upstream/shadcn`. The generator
+retains source nodes, hashes and licences. Run the separate icon diagnostic with
+`python3 tools/visual.py --component typography --variants icons --reference-example
+lucide-catalogue --states default --width 1000 --height 800 --output visual/icons`.
+
 Read COMPONENTS.md for API selection, THEMING.md for overrides, and AGENTS.md for
 agent usage and development rules. `ui::add_fonts` loads bundled Geist under OFL;
 font and Lucide licence notices are retained. Shadcn's MIT notice is preserved in

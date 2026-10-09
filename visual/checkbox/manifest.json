@@ -29,14 +29,14 @@
           692,
           497
         ],
-        "content_rgb_rmse": 19.415074327617372,
+        "content_rgb_rmse": 19.416094458258783,
         "height": 800,
-        "mean_absolute_rgb_error": 0.40984625,
+        "mean_absolute_rgb_error": 0.4098625,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-light-default/native.png",
         "pixels_differing_by_more_than_16": 5404,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-light-default/upstream.png",
         "review_required": true,
-        "rgb_rmse": 5.924620557470327,
+        "rgb_rmse": 5.924931856148221,
         "width": 1000
       },
       "review": "pending"
@@ -55,14 +55,14 @@
           692,
           497
         ],
-        "content_rgb_rmse": 19.206126627805123,
+        "content_rgb_rmse": 19.20713428043398,
         "height": 800,
-        "mean_absolute_rgb_error": 0.4114225,
+        "mean_absolute_rgb_error": 0.41143875,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-light-focus/native.png",
         "pixels_differing_by_more_than_16": 5432,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-light-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 5.929026479954361,
+        "rgb_rmse": 5.929337547315045,
         "width": 1000
       },
       "review": "pending"
@@ -81,14 +81,14 @@
           692,
           497
         ],
-        "content_rgb_rmse": 19.48398361431301,
+        "content_rgb_rmse": 19.486016607122618,
         "height": 800,
-        "mean_absolute_rgb_error": 0.4129175,
+        "mean_absolute_rgb_error": 0.41295,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-light-selected/native.png",
         "pixels_differing_by_more_than_16": 5455,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-light-selected/upstream.png",
         "review_required": true,
-        "rgb_rmse": 5.945648618948146,
+        "rgb_rmse": 5.946268998287918,
         "width": 1000
       },
       "review": "pending"
@@ -107,14 +107,14 @@
           692,
           497
         ],
-        "content_rgb_rmse": 15.58248712488274,
+        "content_rgb_rmse": 15.583374393517767,
         "height": 800,
-        "mean_absolute_rgb_error": 0.25651083333333335,
+        "mean_absolute_rgb_error": 0.2565233333333333,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-dark-default/native.png",
         "pixels_differing_by_more_than_16": 3317,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-dark-default/upstream.png",
         "review_required": true,
-        "rgb_rmse": 4.755084734611291,
+        "rgb_rmse": 4.755355489690896,
         "width": 1000
       },
       "review": "pending"
@@ -133,14 +133,14 @@
           692,
           497
         ],
-        "content_rgb_rmse": 15.423251048949918,
+        "content_rgb_rmse": 15.424126983735146,
         "height": 800,
-        "mean_absolute_rgb_error": 0.25798208333333333,
+        "mean_absolute_rgb_error": 0.25799458333333336,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-dark-focus/native.png",
         "pixels_differing_by_more_than_16": 3355,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-dark-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 4.761234039966249,
+        "rgb_rmse": 4.761504445375782,
         "width": 1000
       },
       "review": "pending"
@@ -159,14 +159,14 @@
           692,
           497
         ],
-        "content_rgb_rmse": 15.656024039919753,
+        "content_rgb_rmse": 15.657790192787841,
         "height": 800,
-        "mean_absolute_rgb_error": 0.25903208333333333,
+        "mean_absolute_rgb_error": 0.2590570833333333,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-dark-selected/native.png",
         "pixels_differing_by_more_than_16": 3368,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-dark-selected/upstream.png",
         "review_required": true,
-        "rgb_rmse": 4.7775249432455436,
+        "rgb_rmse": 4.778063894856716,
         "width": 1000
       },
       "review": "pending"
@@ -237,14 +237,14 @@
           600,
           408
         ],
-        "content_rgb_rmse": 37.776082767344775,
+        "content_rgb_rmse": 37.78759607930663,
         "height": 800,
-        "mean_absolute_rgb_error": 0.0764525,
+        "mean_absolute_rgb_error": 0.07646875,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/basic-light-selected/native.png",
         "pixels_differing_by_more_than_16": 956,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/basic-light-selected/upstream.png",
         "review_required": true,
-        "rgb_rmse": 2.4598002967720776,
+        "rgb_rmse": 2.4605499893316534,
         "width": 1000
       },
       "review": "pending"
@@ -315,14 +315,14 @@
           600,
           408
         ],
-        "content_rgb_rmse": 18.332972409254605,
+        "content_rgb_rmse": 18.34952829582399,
         "height": 800,
-        "mean_absolute_rgb_error": 0.033255,
+        "mean_absolute_rgb_error": 0.0332675,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/basic-dark-selected/native.png",
         "pixels_differing_by_more_than_16": 576,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/basic-dark-selected/upstream.png",
         "review_required": true,
-        "rgb_rmse": 1.193756675374006,
+        "rgb_rmse": 1.1948347166030957,
         "width": 1000
       },
       "review": "pending"
@@ -341,14 +341,14 @@
           628,
           424
         ],
-        "content_rgb_rmse": 23.115118042672783,
+        "content_rgb_rmse": 23.119630659519178,
         "height": 800,
-        "mean_absolute_rgb_error": 0.1559375,
+        "mean_absolute_rgb_error": 0.15595375,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/description-light-default/native.png",
         "pixels_differing_by_more_than_16": 2434,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/description-light-default/upstream.png",
         "review_required": true,
-        "rgb_rmse": 3.0735285097099716,
+        "rgb_rmse": 3.0741285350485916,
         "width": 1000
       },
       "review": "pending"
@@ -367,14 +367,14 @@
           628,
           424
         ],
-        "content_rgb_rmse": 23.448175315359503,
+        "content_rgb_rmse": 23.452335343369352,
         "height": 800,
-        "mean_absolute_rgb_error": 0.16332375,
+        "mean_absolute_rgb_error": 0.16334,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/description-light-focus/native.png",
         "pixels_differing_by_more_than_16": 2476,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/description-light-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 3.2241241058619314,
+        "rgb_rmse": 3.224696109713286,
         "width": 1000
       },
       "review": "pending"
@@ -419,14 +419,14 @@
           628,
           424
         ],
-        "content_rgb_rmse": 11.768539215701038,
+        "content_rgb_rmse": 11.774725477388987,
         "height": 800,
-        "mean_absolute_rgb_error": 0.07547125,
+        "mean_absolute_rgb_error": 0.07548375,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/description-dark-default/native.png",
         "pixels_differing_by_more_than_16": 1378,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/description-dark-default/upstream.png",
         "review_required": true,
-        "rgb_rmse": 1.5648174813696325,
+        "rgb_rmse": 1.565640044837893,
         "width": 1000
       },
       "review": "pending"
@@ -445,14 +445,14 @@
           628,
           424
         ],
-        "content_rgb_rmse": 12.733847652342078,
+        "content_rgb_rmse": 12.739194416452136,
         "height": 800,
-        "mean_absolute_rgb_error": 0.08148,
+        "mean_absolute_rgb_error": 0.0814925,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/description-dark-focus/native.png",
         "pixels_differing_by_more_than_16": 1414,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/description-dark-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 1.7509040521970358,
+        "rgb_rmse": 1.7516392322621688,
         "width": 1000
       },
       "review": "pending"
@@ -549,14 +549,14 @@
           600,
           411
         ],
-        "content_rgb_rmse": 27.099829800089122,
+        "content_rgb_rmse": 27.11133831549493,
         "height": 800,
-        "mean_absolute_rgb_error": 0.05498875,
+        "mean_absolute_rgb_error": 0.055005,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/invalid-light-selected/native.png",
         "pixels_differing_by_more_than_16": 971,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/invalid-light-selected/upstream.png",
         "review_required": true,
-        "rgb_rmse": 2.083781318500896,
+        "rgb_rmse": 2.084666240272848,
         "width": 1000
       },
       "review": "pending"
@@ -627,14 +627,14 @@
           600,
           411
         ],
-        "content_rgb_rmse": 12.461902478743406,
+        "content_rgb_rmse": 12.479364220989495,
         "height": 800,
-        "mean_absolute_rgb_error": 0.025152083333333332,
+        "mean_absolute_rgb_error": 0.025164583333333334,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/invalid-dark-selected/native.png",
         "pixels_differing_by_more_than_16": 747,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/invalid-dark-selected/upstream.png",
         "review_required": true,
-        "rgb_rmse": 0.9582303567862306,
+        "rgb_rmse": 0.9595730387347629,
         "width": 1000
       },
       "review": "pending"
@@ -854,21 +854,21 @@
       "state": "default",
       "path": "table-light-default",
       "metrics": {
-        "changed_fraction": 0.01586125,
+        "changed_fraction": 0.0158625,
         "content_bounds": [
           100,
           318,
           900,
           484
         ],
-        "content_rgb_rmse": 27.587320702710816,
+        "content_rgb_rmse": 27.594352377479893,
         "height": 800,
-        "mean_absolute_rgb_error": 1.12885125,
+        "mean_absolute_rgb_error": 1.129135,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-default/native.png",
-        "pixels_differing_by_more_than_16": 12689,
+        "pixels_differing_by_more_than_16": 12690,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-default/upstream.png",
         "review_required": true,
-        "rgb_rmse": 11.23992899221343,
+        "rgb_rmse": 11.242793914325745,
         "width": 1000
       },
       "review": "pending"
@@ -880,21 +880,21 @@
       "state": "focus",
       "path": "table-light-focus",
       "metrics": {
-        "changed_fraction": 0.01589625,
+        "changed_fraction": 0.0158975,
         "content_bounds": [
           100,
           315,
           900,
           484
         ],
-        "content_rgb_rmse": 27.347017188578832,
+        "content_rgb_rmse": 27.3539847329275,
         "height": 800,
-        "mean_absolute_rgb_error": 1.1304275,
+        "mean_absolute_rgb_error": 1.13071125,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-focus/native.png",
-        "pixels_differing_by_more_than_16": 12717,
+        "pixels_differing_by_more_than_16": 12718,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 11.242251998598856,
+        "rgb_rmse": 11.24511632887806,
         "width": 1000
       },
       "review": "pending"
@@ -906,21 +906,21 @@
       "state": "selected",
       "path": "table-light-selected",
       "metrics": {
-        "changed_fraction": 0.0110225,
+        "changed_fraction": 0.0110275,
         "content_bounds": [
           100,
           318,
           900,
           494
         ],
-        "content_rgb_rmse": 26.467552363696193,
+        "content_rgb_rmse": 26.49558791529776,
         "height": 800,
-        "mean_absolute_rgb_error": 1.27618125,
+        "mean_absolute_rgb_error": 1.2773325,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-selected/native.png",
-        "pixels_differing_by_more_than_16": 8818,
+        "pixels_differing_by_more_than_16": 8822,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-selected/upstream.png",
         "review_required": true,
-        "rgb_rmse": 11.117261971816621,
+        "rgb_rmse": 11.129009277559257,
         "width": 1000
       },
       "review": "pending"
@@ -932,21 +932,21 @@
       "state": "default",
       "path": "table-dark-default",
       "metrics": {
-        "changed_fraction": 0.01655625,
+        "changed_fraction": 0.0165575,
         "content_bounds": [
           100,
           318,
           900,
           484
         ],
-        "content_rgb_rmse": 27.674933881789958,
+        "content_rgb_rmse": 27.68070652194804,
         "height": 800,
-        "mean_absolute_rgb_error": 1.10776625,
+        "mean_absolute_rgb_error": 1.10802375,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-default/native.png",
-        "pixels_differing_by_more_than_16": 13245,
+        "pixels_differing_by_more_than_16": 13246,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-default/upstream.png",
         "review_required": true,
-        "rgb_rmse": 11.275625315254139,
+        "rgb_rmse": 11.277977267666397,
         "width": 1000
       },
       "review": "pending"
@@ -958,21 +958,21 @@
       "state": "focus",
       "path": "table-dark-focus",
       "metrics": {
-        "changed_fraction": 0.01660375,
+        "changed_fraction": 0.016605,
         "content_bounds": [
           100,
           315,
           900,
           484
         ],
-        "content_rgb_rmse": 27.4345099697098,
+        "content_rgb_rmse": 27.44022982807818,
         "height": 800,
-        "mean_absolute_rgb_error": 1.1092375,
+        "mean_absolute_rgb_error": 1.109495,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-focus/native.png",
-        "pixels_differing_by_more_than_16": 13283,
+        "pixels_differing_by_more_than_16": 13284,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-focus/upstream.png",
         "review_required": true,
-        "rgb_rmse": 11.278219939334399,
+        "rgb_rmse": 11.280571350778294,
         "width": 1000
       },
       "review": "pending"
@@ -984,21 +984,21 @@
       "state": "selected",
       "path": "table-dark-selected",
       "metrics": {
-        "changed_fraction": 0.0146425,
+        "changed_fraction": 0.0146475,
         "content_bounds": [
           100,
           306,
           900,
           494
         ],
-        "content_rgb_rmse": 24.91501098948951,
+        "content_rgb_rmse": 24.93792466177108,
         "height": 800,
-        "mean_absolute_rgb_error": 1.54143625,
+        "mean_absolute_rgb_error": 1.54247875,
         "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-selected/native.png",
-        "pixels_differing_by_more_than_16": 11714,
+        "pixels_differing_by_more_than_16": 11718,
         "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-selected/upstream.png",
         "review_required": true,
-        "rgb_rmse": 10.80289133750775,
+        "rgb_rmse": 10.81282646905979,
         "width": 1000
       },
       "review": "pending"

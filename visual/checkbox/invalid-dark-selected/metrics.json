@@ -6,13 +6,13 @@
     600,
     411
   ],
-  "content_rgb_rmse": 12.461902478743406,
+  "content_rgb_rmse": 12.479364220989495,
   "height": 800,
-  "mean_absolute_rgb_error": 0.025152083333333332,
+  "mean_absolute_rgb_error": 0.025164583333333334,
   "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/invalid-dark-selected/native.png",
   "pixels_differing_by_more_than_16": 747,
   "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/invalid-dark-selected/upstream.png",
   "review_required": true,
-  "rgb_rmse": 0.9582303567862306,
+  "rgb_rmse": 0.9595730387347629,
   "width": 1000
 }

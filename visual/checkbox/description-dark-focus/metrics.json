@@ -6,13 +6,13 @@
     628,
     424
   ],
-  "content_rgb_rmse": 12.733847652342078,
+  "content_rgb_rmse": 12.739194416452136,
   "height": 800,
-  "mean_absolute_rgb_error": 0.08148,
+  "mean_absolute_rgb_error": 0.0814925,
   "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/description-dark-focus/native.png",
   "pixels_differing_by_more_than_16": 1414,
   "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/description-dark-focus/upstream.png",
   "review_required": true,
-  "rgb_rmse": 1.7509040521970358,
+  "rgb_rmse": 1.7516392322621688,
   "width": 1000
 }
