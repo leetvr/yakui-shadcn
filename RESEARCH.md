@@ -100,3 +100,18 @@ Both browser and native use the identical Geist files. Cosmic shaping was checke
 to select Geist-Medium at weight 500 and the same 187.698px label advance as the
 browser's 187.703125px. Remaining perceived weight differences arise after shaping
 and require a rendering audit. Do not substitute heavier font weights to mask them.
+
+## Native table slots
+
+Pinned TableHeader is 40px high; ordinary rows contain 8px cell padding, 20px text
+and a bottom border. TableBody omits the last border; TableFooter adds a top border
+and muted/50 fill. Browser collapsed borders split fractional geometry, so native
+rows differ by up to half a pixel. The rendered Nova heading text-left overrides
+the demo Amount heading's text-right class; numeric body cells still align right.
+Gallery columns were measured at an 800px table width. Native applications specify
+column widths directly and retain arbitrary component content in cells.
+
+Yakui's pinned Scrollable supports only vertical scrolling. The table viewport
+therefore clips a full-width native canvas, clamps horizontal offset, bubbles wheel
+input at boundaries and reveals focused descendants. Before measuring a new focus
+rectangle, its previous frame's scroll translation must be reset to zero.

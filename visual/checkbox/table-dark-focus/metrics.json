@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.01660375,
+  "content_bounds": [
+    100,
+    315,
+    900,
+    484
+  ],
+  "content_rgb_rmse": 27.4345099697098,
+  "height": 800,
+  "mean_absolute_rgb_error": 1.1092375,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-focus/native.png",
+  "pixels_differing_by_more_than_16": 13283,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 11.278219939334399,
+  "width": 1000
+}

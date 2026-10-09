@@ -87,6 +87,10 @@ pub(crate) fn surface_background() -> Color {
     yakui::util::read_scope::<SurfaceBackground>()
         .map_or_else(|| crate::theme().background, |s| s.0)
 }
+#[track_caller]
+pub(crate) fn with_surface_background(color: Color, children: impl FnOnce()) {
+    yakui::widgets::Scope::new(SurfaceBackground(color)).show(children);
+}
 pub(crate) fn composite(front: Color, back: Color) -> Color {
     let a = front.a as f32 / 255.;
     Color::rgb(

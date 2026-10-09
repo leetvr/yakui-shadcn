@@ -147,6 +147,7 @@ impl Gallery {
                 match options.variant.as_str() {
                     "description" => state.checkbox_fields[1] = false,
                     "group" => state.checkbox_group[0] = false,
+                    "table" => state.table_selected.fill(true),
                     "disabled" => {}
                     _ => state.checkbox_fields[0] = true,
                 }

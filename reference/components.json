@@ -3289,13 +3289,15 @@
         "description",
         "disabled",
         "invalid",
-        "group"
+        "group",
+        "table"
       ],
       "behaviour_tests": [
         "checkbox_updates_caller_owned_state",
         "checkbox_helper_text_activates_once_and_keeps_one_focus_stop",
         "checkbox_card_focus_activation_and_disabled_field_contract",
-        "checkbox_bare_and_rtl_indicator_layout"
+        "checkbox_bare_and_rtl_indicator_layout",
+        "checkbox_table_example_selects_all_and_updates_individual_rows"
       ],
       "visual_comparisons": [
         "visual/checkbox/default-light-default",
@@ -3329,11 +3331,17 @@
         "visual/checkbox/group-light-selected",
         "visual/checkbox/group-dark-default",
         "visual/checkbox/group-dark-focus",
-        "visual/checkbox/group-dark-selected"
+        "visual/checkbox/group-dark-selected",
+        "visual/checkbox/table-light-default",
+        "visual/checkbox/table-light-focus",
+        "visual/checkbox/table-light-selected",
+        "visual/checkbox/table-dark-default",
+        "visual/checkbox/table-dark-focus",
+        "visual/checkbox/table-dark-selected"
       ],
       "status": "in_progress",
       "deviations": [
-        "The documented table and multilingual RTL previews have not yet been ported.",
+        "The multilingual RTL preview has not yet been ported.",
         "Native glyph rasterisation visibly differs despite matching Geist font files, selected faces and weights.",
         "Yakui text layout rounds line metrics to physical pixels; card title leading differs by less than one logical pixel.",
         "Native platform accessibility semantics and touch target expansion still require implementation and verification."
@@ -3675,10 +3683,50 @@
             "@/styles/base-nova/ui/checkbox",
             "@/styles/base-nova/ui/table"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "table",
+          "behaviour_tests": [
+            "checkbox_table_example_selects_all_and_updates_individual_rows",
+            "table_scrolls_horizontally_and_reveals_controls_when_focus_changes"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/checkbox/table-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/checkbox/table-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "selected",
+              "path": "visual/checkbox/table-light-selected",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/checkbox/table-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/checkbox/table-dark-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "selected",
+              "path": "visual/checkbox/table-dark-selected",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -10510,16 +10558,38 @@
       "rust_api": [
         "table",
         "TableColumn",
-        "TableRow"
+        "TableRow",
+        "Table",
+        "TableCell",
+        "TableCellAlign",
+        "table_header",
+        "table_body",
+        "table_footer",
+        "table_row",
+        "table_cell",
+        "table_head",
+        "table_cell_text"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "footer"
       ],
-      "behaviour_tests": [],
-      "visual_comparisons": [],
+      "behaviour_tests": [
+        "table_slots_align_columns_spans_and_footer_without_stretching_row_content",
+        "table_scrolls_horizontally_and_reveals_controls_when_focus_changes"
+      ],
+      "visual_comparisons": [
+        "visual/table/default-light-default",
+        "visual/table/default-dark-default",
+        "visual/table/footer-light-default",
+        "visual/table/footer-dark-default"
+      ],
       "status": "in_progress",
       "deviations": [
-        "Native rows/columns exist; custom cell/header/footer layout, row hover and full invoice example pending."
+        "The documented action-menu and multilingual RTL previews remain unported.",
+        "Columns use explicit logical widths instead of the HTML intrinsic table width algorithm.",
+        "Text rasterisation and collapsed half-pixel border sharing differ from browser output.",
+        "Horizontal scrolling supports wheel/trackpad and focused-control reveal; draggable scrollbar presentation and native platform accessibility remain outstanding."
       ],
       "example_coverage": [
         {
@@ -10531,10 +10601,26 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/table"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "default",
+          "behaviour_tests": [
+            "table_slots_align_columns_spans_and_footer_without_stretching_row_content",
+            "table_scrolls_horizontally_and_reveals_controls_when_focus_changes"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/table/default-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/table/default-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -10546,10 +10632,26 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/table"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "footer",
+          "behaviour_tests": [
+            "table_slots_align_columns_spans_and_footer_without_stretching_row_content",
+            "table_scrolls_horizontally_and_reveals_controls_when_focus_changes"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/table/footer-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/table/footer-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {

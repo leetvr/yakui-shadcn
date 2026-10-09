@@ -67,7 +67,7 @@ overlay children. Keep overlays at the root and retain their state in your appli
 | Slider | `slider`, `range_slider`, `SliderOptions`, `SliderResponse`, `Orientation` | An input where the user selects a value from within a given range. |
 | Spinner | `spinner` | An indicator that can be used to show a loading state. |
 | Switch | `switch` | A control that allows the user to toggle between checked and not checked. |
-| Table | `table`, `TableColumn`, `TableRow` | A responsive table component. |
+| Table | `Table`, `TableCell`, `table`, `TableColumn`, `TableRow` | A responsive table component. |
 | Tabs | `tabs`, `TabsVariant` | A set of layered sections of content—known as tab panels—that are displayed one at a time. |
 | Textarea | `textarea` | Displays a form textarea or a component that looks like a textarea. |
 | Toast | `Toast`, `ToastKind`, `ToastManager`, `ToastResponse`, `toast_viewport` | A succinct message that is displayed temporarily. |
@@ -138,3 +138,24 @@ ui::width(288., || {
 Use `Checkbox::new().show(&mut selected)` for a bare table selection control.
 `field_legend(title, FieldLegendVariant::Label)` and `field_description(text)`
 provide the field-set typography used by checkbox groups.
+
+Compose tables with public slots when cells contain controls. Column widths include
+8px padding on each side; the table scrolls horizontally when its parent is narrower.
+Captions render below the table. `table(columns, rows, caption)` and `data_table` use
+these same slots internally.
+
+```rust
+ui::Table::new(&[32., 240.]).show(|| {
+    ui::table_header(|| ui::table_row(false, || {
+        ui::table_head("");
+        ui::table_head("Name");
+    }));
+    ui::table_body(|| ui::table_row(selected, || {
+        ui::table_cell(|| { ui::Checkbox::new().show(&mut selected); });
+        ui::table_cell(|| ui::table_cell_text("Sarah Chen", true));
+    }));
+});
+```
+
+Use `TableCell::new().span(3)` for footer totals and
+`.align(TableCellAlign::End)` for right-aligned values or action buttons.

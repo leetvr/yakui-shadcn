@@ -8,7 +8,8 @@ public=set();tests=set()
 for path in (root/'crates/adequate-ui').rglob('*.rs'):
  text=path.read_text()
  if '/src/' in str(path):public.update(re.findall(r'\bpub\s+(?:fn|struct|enum|type)\s+(\w+)',text))
- tests.update(re.findall(r'#\[test\]\s*fn\s+(\w+)',text))
+for path in (root/'crates').rglob('*.rs'):
+ tests.update(re.findall(r'#\[test\]\s*fn\s+(\w+)',path.read_text()))
 listing=subprocess.check_output([str(root/'target/debug/gallery'),'--list'],text=True)
 routes={line.split(': ',1)[0]:set(line.split(': ',1)[1].split(', ')) for line in listing.splitlines()}
 components=inventory['components']

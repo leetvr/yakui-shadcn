@@ -846,6 +846,162 @@
         "width": 1000
       },
       "review": "pending"
+    },
+    {
+      "component": "checkbox",
+      "variant": "table",
+      "theme": "light",
+      "state": "default",
+      "path": "table-light-default",
+      "metrics": {
+        "changed_fraction": 0.01586125,
+        "content_bounds": [
+          100,
+          318,
+          900,
+          484
+        ],
+        "content_rgb_rmse": 27.587320702710816,
+        "height": 800,
+        "mean_absolute_rgb_error": 1.12885125,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-default/native.png",
+        "pixels_differing_by_more_than_16": 12689,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 11.23992899221343,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "checkbox",
+      "variant": "table",
+      "theme": "light",
+      "state": "focus",
+      "path": "table-light-focus",
+      "metrics": {
+        "changed_fraction": 0.01589625,
+        "content_bounds": [
+          100,
+          315,
+          900,
+          484
+        ],
+        "content_rgb_rmse": 27.347017188578832,
+        "height": 800,
+        "mean_absolute_rgb_error": 1.1304275,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-focus/native.png",
+        "pixels_differing_by_more_than_16": 12717,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-focus/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 11.242251998598856,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "checkbox",
+      "variant": "table",
+      "theme": "light",
+      "state": "selected",
+      "path": "table-light-selected",
+      "metrics": {
+        "changed_fraction": 0.0110225,
+        "content_bounds": [
+          100,
+          318,
+          900,
+          494
+        ],
+        "content_rgb_rmse": 26.467552363696193,
+        "height": 800,
+        "mean_absolute_rgb_error": 1.27618125,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-selected/native.png",
+        "pixels_differing_by_more_than_16": 8818,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-selected/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 11.117261971816621,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "checkbox",
+      "variant": "table",
+      "theme": "dark",
+      "state": "default",
+      "path": "table-dark-default",
+      "metrics": {
+        "changed_fraction": 0.01655625,
+        "content_bounds": [
+          100,
+          318,
+          900,
+          484
+        ],
+        "content_rgb_rmse": 27.674933881789958,
+        "height": 800,
+        "mean_absolute_rgb_error": 1.10776625,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 13245,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 11.275625315254139,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "checkbox",
+      "variant": "table",
+      "theme": "dark",
+      "state": "focus",
+      "path": "table-dark-focus",
+      "metrics": {
+        "changed_fraction": 0.01660375,
+        "content_bounds": [
+          100,
+          315,
+          900,
+          484
+        ],
+        "content_rgb_rmse": 27.4345099697098,
+        "height": 800,
+        "mean_absolute_rgb_error": 1.1092375,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-focus/native.png",
+        "pixels_differing_by_more_than_16": 13283,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-focus/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 11.278219939334399,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "checkbox",
+      "variant": "table",
+      "theme": "dark",
+      "state": "selected",
+      "path": "table-dark-selected",
+      "metrics": {
+        "changed_fraction": 0.0146425,
+        "content_bounds": [
+          100,
+          306,
+          900,
+          494
+        ],
+        "content_rgb_rmse": 24.91501098948951,
+        "height": 800,
+        "mean_absolute_rgb_error": 1.54143625,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-selected/native.png",
+        "pixels_differing_by_more_than_16": 11714,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-dark-selected/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 10.80289133750775,
+        "width": 1000
+      },
+      "review": "pending"
     }
   ]
 }

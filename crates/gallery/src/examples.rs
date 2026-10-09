@@ -74,6 +74,7 @@ pub struct ExampleState {
     pub checked: bool,
     pub checkbox_fields: [bool; 4],
     pub checkbox_group: [bool; 4],
+    pub table_selected: [bool; 4],
     pub selected: usize,
     pub radio: usize,
     pub toggle: bool,
@@ -167,7 +168,8 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             ui::calendar(&mut state.calendar);
         }
         "date-picker" => ui::date_picker(&mut state.calendar, &mut state.overlay),
-        "table" | "data-table" => {
+        "table" => invoice_table(variant == "footer"),
+        "data-table" => {
             let columns = [
                 ui::TableColumn::new("Status", 100.),
                 ui::TableColumn::new("Email", 240.),
@@ -180,11 +182,7 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
                 ui::TableRow::new(4, ["success", "abe45@example.com", "$874.00"]),
                 ui::TableRow::new(5, ["failed", "carmella@example.com", "$721.00"]),
             ];
-            if component == "table" {
-                ui::table(&columns, &rows, Some("A list of your recent invoices."));
-            } else {
-                ui::data_table(&columns, &rows, &mut state.data_table);
-            }
+            ui::data_table(&columns, &rows, &mut state.data_table);
         }
         "select" | "native-select" => ui::select(
             &mut state.select,
@@ -628,6 +626,7 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             ui::textarea(&mut state.text, "Type your message here.");
         }),
         "checkbox" => match variant {
+            "table" => checkbox_table(&mut state.table_selected, disabled),
             "default" => ui::width(384., || {
                 ui::column(20., || {
                     ui::Checkbox::new()
@@ -830,7 +829,9 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "disabled",
             "invalid",
             "group",
+            "table",
         ],
+        "table" => &["default", "footer"],
         "alert" => &["default", "destructive"],
         "tabs" => &["default", "line"],
         "chart" => &[
@@ -984,6 +985,7 @@ impl Default for ExampleState {
             checked: false,
             checkbox_fields: [false, true, false, false],
             checkbox_group: [true, true, false, false],
+            table_selected: [true, false, false, false],
             selected: 0,
             radio: 1,
             toggle: false,
@@ -1078,4 +1080,164 @@ fn questions() -> Vec<ui::Question> {
             allow_other: false,
         },
     ]
+}
+
+fn invoice_table(short: bool) {
+    let invoices = [
+        ["INV001", "Paid", "Credit Card", "$250.00"],
+        ["INV002", "Pending", "PayPal", "$150.00"],
+        ["INV003", "Unpaid", "Bank Transfer", "$350.00"],
+        ["INV004", "Paid", "Credit Card", "$450.00"],
+        ["INV005", "Paid", "PayPal", "$550.00"],
+        ["INV006", "Pending", "Bank Transfer", "$200.00"],
+        ["INV007", "Unpaid", "Credit Card", "$300.00"],
+    ];
+    ui::Table::new(&[100., 184.28, 283.59, 232.13])
+        .caption("A list of your recent invoices.")
+        .show(|| {
+            ui::table_header(|| {
+                ui::table_row(false, || {
+                    for heading in ["Invoice", "Status", "Method"] {
+                        ui::table_head(heading);
+                    }
+                    ui::table_head("Amount");
+                })
+            });
+            ui::table_body(|| {
+                for invoice in &invoices[..if short { 3 } else { 7 }] {
+                    ui::table_row(false, || {
+                        for (i, cell) in invoice.iter().enumerate() {
+                            ui::TableCell::new()
+                                .align(if i == 3 {
+                                    ui::TableCellAlign::End
+                                } else {
+                                    ui::TableCellAlign::Start
+                                })
+                                .show(|| ui::table_cell_text(*cell, i == 0));
+                        }
+                    });
+                }
+            });
+            ui::table_footer(|| {
+                ui::table_row(false, || {
+                    ui::TableCell::new()
+                        .span(3)
+                        .show(|| ui::table_cell_text("Total", false));
+                    ui::TableCell::new()
+                        .align(ui::TableCellAlign::End)
+                        .show(|| ui::table_cell_text("$2,500.00", false));
+                })
+            });
+        });
+}
+fn checkbox_table(selected: &mut [bool; 4], disabled: bool) {
+    let rows = [
+        ["Sarah Chen", "sarah.chen@example.com", "Admin"],
+        ["Marcus Rodriguez", "marcus.rodriguez@example.com", "User"],
+        ["Priya Patel", "priya.patel@example.com", "User"],
+        ["David Kim", "david.kim@example.com", "Editor"],
+    ];
+    ui::Table::new(&[32., 248.58, 413.5, 105.92]).show(|| {
+        ui::table_header(|| {
+            ui::table_row(false, || {
+                ui::table_cell(|| {
+                    let mut all = selected.iter().all(|value| *value);
+                    if ui::Checkbox::new()
+                        .disabled(disabled)
+                        .show(&mut all)
+                        .clicked
+                    {
+                        selected.fill(all);
+                    }
+                });
+                for heading in ["Name", "Email", "Role"] {
+                    ui::table_head(heading);
+                }
+            })
+        });
+        ui::table_body(|| {
+            for (row, checked) in rows.iter().zip(selected) {
+                ui::table_row(*checked, || {
+                    ui::table_cell(|| {
+                        ui::Checkbox::new().disabled(disabled).show(checked);
+                    });
+                    for (i, cell) in row.iter().enumerate() {
+                        ui::table_cell(|| ui::table_cell_text(*cell, i == 0));
+                    }
+                });
+            }
+        });
+    });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use yakui::{
+        Alignment, Rect, Vec2, WidgetId, Yakui,
+        event::Event,
+        input::{KeyCode, MouseButton},
+    };
+    fn frame(y: &mut Yakui, state: &mut ExampleState) {
+        y.start();
+        yakui::align(Alignment::TOP_LEFT, || {
+            render("checkbox", "table", state, false)
+        });
+        y.finish();
+    }
+    fn controls(y: &Yakui) -> Vec<WidgetId> {
+        fn visit(y: &Yakui, id: WidgetId, controls: &mut Vec<WidgetId>) {
+            let node = y.dom().get(id).unwrap();
+            if node.widget.type_name().ends_with("::ControlWidget") {
+                controls.push(id);
+            }
+            for &child in &node.children {
+                visit(y, child, controls);
+            }
+        }
+        let mut controls = Vec::new();
+        visit(y, y.dom().root(), &mut controls);
+        controls
+    }
+    fn click(y: &mut Yakui, id: WidgetId) {
+        let rect = y.layout_dom().get(id).unwrap().rect;
+        y.handle_event(Event::CursorMoved(Some(rect.center())));
+        for down in [true, false] {
+            y.handle_event(Event::MouseButtonChanged {
+                button: MouseButton::One,
+                down,
+            });
+        }
+    }
+    #[test]
+    fn checkbox_table_example_selects_all_and_updates_individual_rows() {
+        let mut y = Yakui::new();
+        y.set_surface_size(Vec2::new(1000., 800.));
+        y.set_unscaled_viewport(Rect::from_pos_size(Vec2::ZERO, Vec2::new(1000., 800.)));
+        ui::add_fonts(&mut y);
+        let mut state = ExampleState::default();
+        frame(&mut y, &mut state);
+        let controls = controls(&y);
+        assert_eq!(controls.len(), 5);
+        assert_eq!(state.table_selected, [true, false, false, false]);
+        click(&mut y, controls[0]);
+        frame(&mut y, &mut state);
+        assert_eq!(state.table_selected, [true; 4]);
+        y.request_focus(Some(controls[2]));
+        for down in [true, false] {
+            y.handle_event(Event::KeyChanged {
+                key: KeyCode::Space,
+                down,
+                modifiers: None,
+            });
+        }
+        frame(&mut y, &mut state);
+        assert_eq!(state.table_selected, [true, false, true, true]);
+        click(&mut y, controls[0]);
+        frame(&mut y, &mut state);
+        assert_eq!(state.table_selected, [true; 4]);
+        click(&mut y, controls[0]);
+        frame(&mut y, &mut state);
+        assert_eq!(state.table_selected, [false; 4]);
+    }
 }

@@ -1,5 +1,5 @@
 //! Tables keep row identity separate from sorting, filtering and pagination.
-use crate::{Button, Color, Variant, column, row, surface, theme, width};
+use crate::{Button, Variant, column, row, width};
 use std::collections::BTreeSet;
 /// A column's heading, fixed logical width and sort contract.
 #[derive(Debug, Clone)]
@@ -116,116 +116,140 @@ fn records(
     view: &[usize],
     state: Option<&mut DataTableState>,
 ) {
-    let t = theme();
-    let total_width: f32 = columns
+    let visible: Vec<_> = columns
         .iter()
         .enumerate()
         .filter(|(i, _)| state.as_ref().is_none_or(|s| !s.hidden_columns.contains(i)))
-        .map(|(_, c)| c.width)
-        .sum();
+        .collect();
+    let mut widths = Vec::new();
+    if state.is_some() {
+        widths.push(32.);
+    }
+    widths.extend(visible.iter().map(|(_, column)| column.width));
     let mut state = state;
-    width(total_width + if state.is_some() { 32. } else { 0. }, || {
-        column(0., || {
-            row(0., || {
-                if let Some(state) = state.as_deref_mut() {
-                    let all = !view.is_empty()
-                        && view.iter().all(|i| state.selected.contains(&rows[*i].id));
-                    let mut select_all = all;
-                    width(32., || {
-                        if crate::checkbox("", &mut select_all).clicked {
+    crate::Table::new(&widths).show(|| {
+        crate::table_header(|| {
+            crate::table_row(false, || {
+                if let Some(s) = state.as_deref_mut() {
+                    crate::table_cell(|| {
+                        let mut all = !view.is_empty()
+                            && view.iter().all(|i| s.selected.contains(&rows[*i].id));
+                        if crate::Checkbox::new().show(&mut all).clicked {
                             for i in view {
-                                if select_all {
-                                    state.selected.insert(rows[*i].id);
+                                if all {
+                                    s.selected.insert(rows[*i].id);
                                 } else {
-                                    state.selected.remove(&rows[*i].id);
+                                    s.selected.remove(&rows[*i].id);
                                 }
                             }
                         }
                     });
                 }
-                for (i, col) in columns.iter().enumerate() {
-                    if state
-                        .as_ref()
-                        .is_some_and(|s| s.hidden_columns.contains(&i))
-                    {
-                        continue;
-                    }
-                    width(col.width, || {
-                        surface(Color::CLEAR, None, 0., 8., || {
-                            if let Some(s) = state.as_deref_mut() {
-                                if Button::new(col.title.clone())
-                                    .variant(Variant::Ghost)
-                                    .show()
-                                    .clicked
-                                {
-                                    s.sort_by(i);
-                                }
-                            } else {
-                                crate::label(col.title.clone());
+                for (i, column) in &visible {
+                    crate::table_cell(|| {
+                        if let Some(s) = state.as_deref_mut() {
+                            if Button::new(&column.title)
+                                .variant(Variant::Ghost)
+                                .show()
+                                .clicked
+                            {
+                                s.sort_by(*i);
                             }
-                        })
+                        } else {
+                            crate::table_cell_text(&column.title, true);
+                        }
                     });
                 }
-            });
-            crate::separator(total_width + if state.is_some() { 32. } else { 0. });
+            })
+        });
+        crate::table_body(|| {
             for &index in view {
                 let record = &rows[index];
-                let is_selected = state
+                let selected = state
                     .as_ref()
                     .is_some_and(|s| s.selected.contains(&record.id));
-                surface(
-                    if is_selected { t.muted } else { Color::CLEAR },
-                    None,
-                    0.,
-                    0.,
-                    || {
-                        row(0., || {
-                            if let Some(s) = state.as_deref_mut() {
-                                let mut selected = s.selected.contains(&record.id);
-                                width(32., || {
-                                    if crate::checkbox("", &mut selected).clicked {
-                                        if selected {
-                                            s.selected.insert(record.id);
-                                        } else {
-                                            s.selected.remove(&record.id);
-                                        }
-                                    }
-                                });
-                            }
-                            for (i, col) in columns.iter().enumerate() {
-                                if state
-                                    .as_ref()
-                                    .is_some_and(|s| s.hidden_columns.contains(&i))
-                                {
-                                    continue;
+                crate::table_row(selected, || {
+                    if let Some(s) = state.as_deref_mut() {
+                        crate::table_cell(|| {
+                            let mut selected = s.selected.contains(&record.id);
+                            if crate::Checkbox::new().show(&mut selected).clicked {
+                                if selected {
+                                    s.selected.insert(record.id);
+                                } else {
+                                    s.selected.remove(&record.id);
                                 }
-                                width(col.width, || {
-                                    surface(Color::CLEAR, None, 0., 8., || {
-                                        crate::text(
-                                            record.cells.get(i).cloned().unwrap_or_default(),
-                                        )
-                                    })
-                                });
                             }
+                        });
+                    }
+                    for (i, column) in &visible {
+                        crate::TableCell::new()
+                            .align(if column.numeric {
+                                crate::TableCellAlign::End
+                            } else {
+                                crate::TableCellAlign::Start
+                            })
+                            .show(|| {
+                                crate::table_cell_text(
+                                    record.cells.get(*i).cloned().unwrap_or_default(),
+                                    false,
+                                )
+                            });
+                    }
+                });
+            }
+            if view.is_empty() && !widths.is_empty() {
+                crate::table_row(false, || {
+                    crate::TableCell::new()
+                        .span(widths.len())
+                        .align(crate::TableCellAlign::Center)
+                        .show(|| {
+                            crate::min_size(crate::Vec2::new(0., 52.), || {
+                                crate::muted("No results.")
+                            })
                         })
-                    },
-                );
-                crate::separator(total_width + if state.is_some() { 32. } else { 0. });
+                });
             }
-            if view.is_empty() {
-                surface(Color::CLEAR, None, 0., 24., || crate::muted("No results."));
-            }
-        })
+        });
     });
 }
 /// A presentation table. The application supplies headers and stable row records.
 #[track_caller]
 pub fn table(columns: &[TableColumn], rows: &[TableRow], caption: Option<&str>) {
-    column(16., || {
-        records(columns, rows, &(0..rows.len()).collect::<Vec<_>>(), None);
-        if let Some(caption) = caption {
-            crate::muted(caption);
-        }
+    let widths: Vec<_> = columns.iter().map(|column| column.width).collect();
+    let table = crate::Table::new(&widths);
+    let table = if let Some(caption) = caption {
+        table.caption(caption)
+    } else {
+        table
+    };
+    table.show(|| {
+        crate::table_header(|| {
+            crate::table_row(false, || {
+                for column in columns {
+                    crate::table_head(&column.title);
+                }
+            })
+        });
+        crate::table_body(|| {
+            for record in rows {
+                crate::table_row(false, || {
+                    for (i, column) in columns.iter().enumerate() {
+                        crate::TableCell::new()
+                            .align(if column.numeric {
+                                crate::TableCellAlign::End
+                            } else {
+                                crate::TableCellAlign::Start
+                            })
+                            .show(|| {
+                                crate::table_cell_text(
+                                    record.cells.get(i).cloned().unwrap_or_default(),
+                                    false,
+                                )
+                            });
+                    }
+                });
+            }
+        });
     });
 }
 /// Filter, sort, checkbox selection, column visibility and paginated records.

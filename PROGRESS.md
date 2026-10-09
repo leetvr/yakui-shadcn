@@ -43,10 +43,10 @@ initial public APIs and native routes. Current behaviour includes:
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All three consuming examples compile.
-- 39 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
-- 100 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **238 captures,
+- 42 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
+- 102 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **242 captures,
   zero failures** in the latest full smoke run.
-- The configured upstream suite covers 21 actual previews: **106 comparison pairs**
+- The configured upstream suite covers 24 actual previews: **116 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
   used to find and correct concrete layout/painting defects, not to certify parity.
 - Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
@@ -60,7 +60,7 @@ focused layout tests cover the radio/progress/button regressions.
 ## Required work still outstanding
 
 `reference/components.json` records component-specific deviations and every upstream
-preview separately. Only 21 of 461 previews currently have paired captures. The
+preview separately. Only 24 of 461 previews currently have paired captures. The
 remaining previews must be studied, implemented and compared, not mapped to a
 generic default rendition. Important incomplete areas include:
 
@@ -115,3 +115,20 @@ remain visible. Table and multilingual RTL previews remain outstanding.
 
 The comparison runner now preserves other route/state captures when a component
 has more than one configured source route. No component was certified complete.
+
+## Table slot increment
+
+Added public `Table`, `TableCell`, header/body/footer/row/head/cell slots, cell
+spans, alignment and caption composition. Both `table` and `data_table` now use
+this same implementation. Native rows own hover tint; selection remains in caller
+state. A clipped horizontal viewport scrolls with wheel/trackpad and reveals newly
+focused controls. Column widths are explicit logical values, not an HTML table
+layout implementation.
+
+Ported table-demo, table-footer and checkbox-table. The latter uses the exact four
+upstream records and initial Sarah Chen selection; its header selects/clears all
+rows, and row checkboxes update independently. Three additional tests exercise
+actual gallery selection, column/span alignment and horizontal focus reveal. Ten
+additional permanent pairs cover both themes, plus checkbox focus/selected states.
+Table action menus, multilingual RTL and draggable scrollbar presentation remain
+outstanding. Text/border rendering differences remain under visual review.

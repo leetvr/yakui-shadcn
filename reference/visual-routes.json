@@ -133,5 +133,26 @@
     "states": [
       "default"
     ]
+  },
+  {
+    "component": "checkbox",
+    "variants": [
+      "table"
+    ],
+    "states": [
+      "default",
+      "focus",
+      "selected"
+    ]
+  },
+  {
+    "component": "table",
+    "variants": [
+      "default",
+      "footer"
+    ],
+    "states": [
+      "default"
+    ]
   }
 ]
