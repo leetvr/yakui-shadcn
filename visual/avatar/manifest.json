@@ -1,0 +1,667 @@
+{
+  "captures": [
+    {
+      "component": "avatar",
+      "variant": "default",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "default-light-default",
+      "metrics": {
+        "changed_fraction": 0.0015275,
+        "content_bounds": [
+          368,
+          384,
+          632,
+          416
+        ],
+        "content_rgb_rmse": 29.267707829464698,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.10584166666666667,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/default-light-default/native.png",
+        "pixels_differing_by_more_than_16": 1222,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/default-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.0076041129111393,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "default",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "default-dark-default",
+      "metrics": {
+        "changed_fraction": 0.0018325,
+        "content_bounds": [
+          368,
+          384,
+          632,
+          416
+        ],
+        "content_rgb_rmse": 41.94344671742987,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.15862916666666665,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/default-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 1466,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/default-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 4.31020214143142,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "basic",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "basic-light-default",
+      "metrics": {
+        "changed_fraction": 0.0003425,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 40.71869004216614,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.0239375,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-light-default/native.png",
+        "pixels_differing_by_more_than_16": 274,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.4567961422244362,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "basic",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "basic-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00033875,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 31.952749335607518,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.01983875,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 271,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.1431763133188744,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "badge",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "badge-light-default",
+      "metrics": {
+        "changed_fraction": 0.00053625,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 42.34648668893127,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.02770375,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/badge-light-default/native.png",
+        "pixels_differing_by_more_than_16": 429,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/badge-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.515033965515845,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "badge",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "badge-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00053375,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 57.78031480223895,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.03738958333333333,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/badge-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 427,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/badge-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.067218642685545,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "badge-icon",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "badge-icon-light-default",
+      "metrics": {
+        "changed_fraction": 0.000275,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 35.50042638388305,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.01969875,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/badge-icon-light-default/native.png",
+        "pixels_differing_by_more_than_16": 220,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/badge-icon-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.2701018659934329,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "badge-icon",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "badge-icon-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00041,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 61.89601915713158,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.03898,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/badge-icon-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 328,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/badge-icon-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.2144621243091964,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "group",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "group-light-default",
+      "metrics": {
+        "changed_fraction": 0.00074125,
+        "content_bounds": [
+          460,
+          384,
+          540,
+          416
+        ],
+        "content_rgb_rmse": 37.53073740282757,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.05278,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-light-default/native.png",
+        "pixels_differing_by_more_than_16": 593,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.1230591136376775,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "group",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "group-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00100125,
+        "content_bounds": [
+          460,
+          384,
+          540,
+          416
+        ],
+        "content_rgb_rmse": 58.0174273386885,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.08887875,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 801,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.2819782525178316,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "group-count",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "group-count-light-default",
+      "metrics": {
+        "changed_fraction": 0.00084875,
+        "content_bounds": [
+          448,
+          384,
+          552,
+          416
+        ],
+        "content_rgb_rmse": 33.752377053042785,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.0577425,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-count-light-default/native.png",
+        "pixels_differing_by_more_than_16": 679,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-count-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.176962907355107,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "group-count",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "group-count-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00101375,
+        "content_bounds": [
+          448,
+          384,
+          552,
+          416
+        ],
+        "content_rgb_rmse": 48.63167963810295,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.08568375,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-count-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 811,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-count-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.1366704082513994,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "group-count-icon",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "group-count-icon-light-default",
+      "metrics": {
+        "changed_fraction": 0.00084125,
+        "content_bounds": [
+          448,
+          384,
+          552,
+          416
+        ],
+        "content_rgb_rmse": 33.47027509453495,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.05659625,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-count-icon-light-default/native.png",
+        "pixels_differing_by_more_than_16": 673,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-count-icon-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.1587678777487866,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "group-count-icon",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "group-count-icon-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00099375,
+        "content_bounds": [
+          448,
+          384,
+          552,
+          416
+        ],
+        "content_rgb_rmse": 48.55186870066819,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.0851225,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-count-icon-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 795,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-count-icon-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.1315227925084628,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "size",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "size-light-default",
+      "metrics": {
+        "changed_fraction": 0.00119625,
+        "content_bounds": [
+          444,
+          380,
+          556,
+          420
+        ],
+        "content_rgb_rmse": 36.491039751463056,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.0834375,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/size-light-default/native.png",
+        "pixels_differing_by_more_than_16": 957,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/size-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.7307393687424657,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "size",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "size-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00115375,
+        "content_bounds": [
+          444,
+          380,
+          556,
+          420
+        ],
+        "content_rgb_rmse": 28.139643013524022,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.06786125,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/size-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 923,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/size-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.105778062854678,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "dropdown",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "dropdown-light-default",
+      "metrics": {
+        "changed_fraction": 0.0004525,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 37.74183738323427,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.022907916666666667,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-light-default/native.png",
+        "pixels_differing_by_more_than_16": 362,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.350293023754474,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "dropdown",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "path": "dropdown-light-open",
+      "metrics": {
+        "changed_fraction": 0.002985,
+        "content_bounds": [
+          483,
+          384,
+          613,
+          553
+        ],
+        "content_rgb_rmse": 18.505520833523757,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.15290541666666665,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-light-open/native.png",
+        "pixels_differing_by_more_than_16": 2388,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-light-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.0708832198571145,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "dropdown",
+      "theme": "light",
+      "state": "focus",
+      "keys": [],
+      "path": "dropdown-light-focus",
+      "metrics": {
+        "changed_fraction": 0.00077,
+        "content_bounds": [
+          481,
+          381,
+          519,
+          419
+        ],
+        "content_rgb_rmse": 37.48719079477963,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.037485833333333336,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-light-focus/native.png",
+        "pixels_differing_by_more_than_16": 616,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-light-focus/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.5926542311500007,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "dropdown",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "dropdown-dark-default",
+      "metrics": {
+        "changed_fraction": 0.0004575,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 35.36878810300121,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.022148333333333332,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 366,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.2653922316815447,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "dropdown",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "path": "dropdown-dark-open",
+      "metrics": {
+        "changed_fraction": 0.0024475,
+        "content_bounds": [
+          483,
+          384,
+          613,
+          550
+        ],
+        "content_rgb_rmse": 12.232757720390898,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.16059291666666667,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-dark-open/native.png",
+        "pixels_differing_by_more_than_16": 1958,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-dark-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.0091873357156125,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "dropdown",
+      "theme": "dark",
+      "state": "focus",
+      "keys": [],
+      "path": "dropdown-dark-focus",
+      "metrics": {
+        "changed_fraction": 0.00077875,
+        "content_bounds": [
+          481,
+          381,
+          519,
+          419
+        ],
+        "content_rgb_rmse": 37.08497641270563,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.0383975,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-dark-focus/native.png",
+        "pixels_differing_by_more_than_16": 623,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-dark-focus/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.5755660358529353,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "basic",
+      "theme": "light",
+      "state": "image-error",
+      "keys": [],
+      "path": "basic-light-image-error",
+      "metrics": {
+        "changed_fraction": 0.0001025,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 10.364688022921866,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.00487625,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-light-image-error/native.png",
+        "pixels_differing_by_more_than_16": 82,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-light-image-error/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.3708183517572991,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "avatar",
+      "variant": "basic",
+      "theme": "dark",
+      "state": "image-error",
+      "keys": [],
+      "path": "basic-dark-image-error",
+      "metrics": {
+        "changed_fraction": 8.375e-05,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 8.100524031402742,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.00437,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-dark-image-error/native.png",
+        "pixels_differing_by_more_than_16": 67,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-dark-image-error/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.28981315820139475,
+        "width": 1000
+      },
+      "review": "pending"
+    }
+  ],
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/SecondHalfGames/yakui",
+      "commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+    }
+  }
+}

@@ -4,7 +4,9 @@
 //! `Yakui::finish`. Business state remains owned by the calling application.
 //! The library emits Yakui paint commands and does not depend on a renderer.
 mod advanced_layout;
+mod avatar;
 mod basic;
+pub use avatar::*;
 mod checkbox;
 mod control_field;
 mod switch;

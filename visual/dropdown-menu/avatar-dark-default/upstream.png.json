@@ -1,0 +1,21 @@
+{
+  "example": "dropdown-menu-avatar",
+  "theme": "dark",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [
+    {
+      "url": "https://github.com/shadcn.png",
+      "asset": "crates/gallery/assets/avatars/shadcn.jpg"
+    }
+  ],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 484,
+    "y": 384,
+    "width": 32,
+    "height": 32
+  }
+}

@@ -53,8 +53,15 @@ impl<F: FnMut()> ApplicationHandler for App<F> {
     }
 }
 pub fn run(build: impl FnMut() + 'static) -> Result<(), Box<dyn Error>> {
+    run_initialized(|_| build)
+}
+/// Let an application load textures before constructing its ordinary frame closure.
+pub fn run_initialized<F: FnMut() + 'static>(
+    initialize: impl FnOnce(&mut yakui::Yakui) -> F,
+) -> Result<(), Box<dyn Error>> {
     let mut yak = yakui::Yakui::new();
     ui::add_fonts(&mut yak);
+    let build = initialize(&mut yak);
     EventLoop::new()?.run_app(&mut App {
         build,
         yak,

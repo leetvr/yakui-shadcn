@@ -94,6 +94,8 @@ pub struct ExampleState {
     pub menubar: ui::MenubarState,
     pub menu_items: Vec<ui::MenuItem>,
     pub dropdown: crate::dropdown::DropdownExample,
+    pub avatar_images: bool,
+    pub avatar_items: Vec<ui::MenuItem>,
     pub values: [f64; 2],
     pub ratio: f32,
     pub carousel: ui::CarouselState,
@@ -771,7 +773,7 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
                 variant == "destructive",
             )
         }),
-        "avatar" => ui::avatar("CN", 32.),
+        "avatar" => crate::avatars::render(variant, state, disabled),
         "progress" => ui::progress(0.66, 360.),
         "separator" => ui::width(384., || {
             ui::column(16., || {
@@ -897,6 +899,7 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "group",
             "table",
         ],
+        "avatar" => crate::avatars::VARIANTS,
         "table" => &["default", "footer", "actions"],
         "dropdown-menu" => crate::dropdown::VARIANTS,
         "typography" => &["default", "icons"],
@@ -1029,6 +1032,7 @@ pub fn overlays(component: &str, variant: &str, state: &mut ExampleState) {
             &mut state.select,
             &["Next.js", "SvelteKit", "Nuxt", "Remix", "Astro"],
         ),
+        "avatar" if variant == "dropdown" => crate::avatars::content(state),
         "dropdown-menu" => {
             if let Some(id) =
                 crate::dropdown::content(variant, &mut state.dropdown, &mut state.menu)
@@ -1073,7 +1077,7 @@ impl ExampleState {
     pub fn is_open(&self, component: &str) -> bool {
         match component {
             "select" | "native-select" | "combobox" => self.select.popup.open,
-            "dropdown-menu" | "context-menu" => self.menu.popup.open,
+            "avatar" | "dropdown-menu" | "context-menu" => self.menu.popup.open,
             "menubar" => self.menubar.menu.popup.open,
             "table" => self.row_actions.iter().any(|menu| menu.popup.open),
             "tooltip" => self.trigger.hovering || self.trigger.focused,
@@ -1105,6 +1109,8 @@ impl Default for ExampleState {
             select: Default::default(),
             menu: Default::default(),
             dropdown: Default::default(),
+            avatar_images:true,
+            avatar_items:crate::avatars::items(),
             row_actions: Default::default(),
             last_table_action: None,
             menubar: Default::default(),

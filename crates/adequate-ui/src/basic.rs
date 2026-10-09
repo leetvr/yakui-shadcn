@@ -155,6 +155,20 @@ impl Button {
     }
     #[track_caller]
     pub fn show(self) -> ControlResponse {
+        self.show_content(None::<fn(Color)>)
+    }
+    /// Compose arbitrary native content, such as an Avatar, inside this button.
+    #[track_caller]
+    pub fn show_children(self, children: impl FnOnce()) -> ControlResponse {
+        self.show_content(Some(move |foreground| {
+            let mut inherited = (*theme()).clone();
+            inherited.foreground = foreground;
+            crate::with_theme(inherited, children);
+        }))
+    }
+    #[track_caller]
+    fn show_content(self, custom: Option<impl FnOnce(Color)>) -> ControlResponse {
+        let custom_content = custom.is_some();
         let t = theme();
         let radius = if self.rounded {
             999.
@@ -263,11 +277,19 @@ impl Button {
                             yakui::pad(
                                 Pad::balanced(
                                     if self.size.icon() { 0. } else { horizontal },
-                                    (height - line_height) / 2.,
+                                    if custom_content {
+                                        0.
+                                    } else {
+                                        (height - line_height) / 2.
+                                    },
                                 ),
                                 || {
                                     let is_icon = self.size.icon();
                                     let content = || {
+                                        if let Some(children) = custom {
+                                            children(fg);
+                                            return;
+                                        }
                                         if let Some(icon) = self.icon {
                                             icon_colored(
                                                 icon,
@@ -557,18 +579,6 @@ pub fn kbd(value: impl Into<String>) {
     let t = theme();
     surface(t.muted, None, 4., 2., || {
         RenderText::with_style(value, t.text_style(12., t.muted_foreground, 500)).show();
-    });
-}
-/// Avatar fallback. A dedicated image/texture avatar API remains pending.
-#[track_caller]
-pub fn avatar(initials: impl Into<String>, size: f32) {
-    let t = theme();
-    crate::size(Vec2::splat(size), || {
-        RoundRect::new(999.).color(t.muted).show_children(|| {
-            yakui::center(|| {
-                RenderText::with_style(initials, t.text_style(14., t.muted_foreground, 500)).show();
-            });
-        });
     });
 }
 /// Alert surface with title and description.

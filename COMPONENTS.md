@@ -15,7 +15,7 @@ overlay children. Keep overlays at the root and retain their state in your appli
 | Alert Dialog | `alert_dialog`, `OverlayState` | A modal dialog that interrupts the user with important content and expects a response. |
 | Aspect Ratio | `aspect_ratio` | Displays content within a desired ratio. |
 | Attachment | `Attachment`, `AttachmentState`, `AttachmentSize`, `attachment` | Show file metadata, upload state and actions. |
-| Avatar | `avatar` | Display an initials fallback. |
+| Avatar | `Avatar`, `AvatarImage`, `AvatarSize`, `AvatarBadge`, `avatar_group`, `AvatarGroupCount`, `avatar` | Display a circular application texture or initials, with status badges and overlapping groups. |
 | Badge | `badge` | Displays a badge or a component that looks like a badge. |
 | Breadcrumb | `breadcrumb` | Displays the path to the current resource using a hierarchy of links. |
 | Bubble | `bubble`, `BubbleVariant` | Group conversational content on a themed surface. |
@@ -207,3 +207,26 @@ while checkbox/radio values live in the caller's item tree. Actions return a
 stable ID; use that ID to mutate application state. Root and child menus scroll
 and reveal the keyboard selection. English shortcut symbols have a bundled font
 fallback.
+
+Applications own image loading and Yakui textures. Keep the texture alive while
+an avatar refers to it; pass `None` during loading or on failure.
+
+```rust
+ui::Avatar::new("CN")
+    .image(profile_image) // Option<ui::AvatarImage>
+    .size(ui::AvatarSize::Lg)
+    .badge(ui::AvatarBadge::new())
+    .show();
+ui::avatar_group(|| {
+    ui::Avatar::new("CN").image(profile_image).show();
+    ui::Avatar::new("ER").show();
+    ui::AvatarGroupCount::new("+3").show();
+});
+ui::Button::new("").variant(ui::Variant::Ghost)
+    .size(ui::ButtonSize::Icon).rounded(true)
+    .show_children(|| ui::Avatar::new("CN").image(profile_image).show());
+```
+
+`AvatarImage::new(texture_id, pixel_dimensions)` crops the image to cover the
+circle. The library has no file/image decoder dependency. Run the independent
+`avatars` example for app-owned decoding, texture registration and fallback changes.

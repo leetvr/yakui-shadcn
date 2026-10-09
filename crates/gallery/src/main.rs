@@ -1,4 +1,6 @@
 //! Native window and deterministic headless captures share exactly the same example tree.
+mod assets;
+mod avatars;
 mod dropdown;
 mod examples;
 mod showcases;
@@ -58,7 +60,7 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
     while let Some(arg) = args.next() {
         if arg == "--help" {
             println!(
-                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected|open] [--keys Tab,ArrowDown,Enter] [--width 1200] [--height 800] [--isolated] [--screenshot PATH]\ngallery --list\ngallery --showcase dashboard|settings|checkout [--theme dark] [--screenshot PATH]"
+                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected|open|image-error] [--keys Tab,ArrowDown,Enter] [--width 1200] [--height 800] [--isolated] [--screenshot PATH]\ngallery --list\ngallery --showcase dashboard|settings|checkout [--theme dark] [--screenshot PATH]"
             );
             return Ok(None);
         }
@@ -130,8 +132,16 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
         )
         .into());
     }
-    if !["default", "hover", "focus", "disabled", "selected", "open"]
-        .contains(&options.state.as_str())
+    if ![
+        "default",
+        "hover",
+        "focus",
+        "disabled",
+        "selected",
+        "open",
+        "image-error",
+    ]
+    .contains(&options.state.as_str())
     {
         return Err("Unsupported capture state".into());
     }
@@ -153,6 +163,9 @@ impl Gallery {
     fn new(options: Options) -> Self {
         let viewport = ui::Vec2::new(options.width as f32, options.height as f32);
         let mut state = examples::ExampleState::default();
+        if options.state == "image-error" {
+            state.avatar_images = false;
+        }
         if options.state == "selected" {
             state.checked = true;
             if options.component == "checkbox" {
@@ -450,6 +463,7 @@ impl Gallery {
 fn new_yak() -> yakui::Yakui {
     let mut yak = yakui::Yakui::new();
     ui::add_fonts(&mut yak);
+    assets::load(&mut yak);
     yak
 }
 fn capture_key(name: &str) -> Result<yakui::input::KeyCode, Box<dyn Error>> {

@@ -81,3 +81,11 @@ Read COMPONENTS.md for API selection, THEMING.md for overrides, and AGENTS.md fo
 agent usage and development rules. `ui::add_fonts` loads bundled Geist under OFL;
 font and Lucide licence notices are retained. Shadcn's MIT notice is preserved in
 reference/SHADCN-LICENSE. Source pins are in reference/upstream.json.
+
+Avatar captures use the same image assets from the pinned shadcn checkout on both
+renderers. They replace mutable GitHub portrait URLs only in the capture harness;
+source widgets and compositions stay unchanged. Captures record the substitutions,
+and `crates/gallery/assets/avatars/provenance.json` records hashes/licences.
+`--component avatar --variant basic --state image-error --screenshot /tmp/fallback.png`
+shows the real initials fallback. The `avatars` consuming example owns JPEG decoding
+and texture creation; the library accepts Yakui texture IDs.

@@ -202,3 +202,27 @@ Arabic/Hebrew assets were removed following Kane's English-only scope decision.
 `--keys` uses real input events on both renderers; captures record the exact path.
 The current scope targets internal work and prototypes, with targeted visual
 checks and common interaction tests, rather than exhaustive browser parity.
+
+## Avatar composition and native textures
+
+Pinned Base avatars use 24/32/40 diameters, full circular object-cover images,
+12px small and 14px ordinary fallback text, 8/10/12 status badges with a 2px
+surrounding-surface ring, and 8px overlapping groups. Badge icons are hidden at
+small size; group-count icons are 12/16/20. Nine actual source previews and the
+avatar dropdown trigger are composed through public Rust APIs.
+
+The library receives an AvatarImage(texture, pixel_dimensions); applications
+decode/register the texture and provide None during loading/error. A circular
+triangle fan uses symmetrically cropped UVs. No image parser or renderer-specific
+shader is required by the public library. The gallery's pinned MIT asset provenance
+is in crates/gallery/assets/avatars/provenance.json. The browser capture substitutes
+those same first-party files for mutable external GitHub portraits, recording the
+URLs/files in each capture's metadata. An image-error state aborts the actual
+reference request and supplies None natively to exercise the fallback.
+
+Button::show_children uses the ordinary button interaction and visual tokens;
+custom content inherits its foreground. Image loading stays outside components,
+and the standalone avatars app demonstrates that ownership using the public API.
+Native circle edges and CSS mix-blend borders differ; Nova's effective badge colour
+cascade can also differ from the documented green status override. These are
+recorded as polish differences for the internal/prototype quality target.

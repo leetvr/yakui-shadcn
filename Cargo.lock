@@ -22,6 +22,7 @@ checksum = "366ffbaa4442f4684d91e2cd7c5ea7c4ed8add41959a31447066e279e432b618"
 name = "adequate-gallery"
 version = "0.1.0"
 dependencies = [
+ "image",
  "pollster",
  "serde",
  "serde_json",
@@ -773,6 +774,8 @@ dependencies = [
  "num-traits",
  "png",
  "tiff",
+ "zune-core",
+ "zune-jpeg",
 ]
 
 [[package]]

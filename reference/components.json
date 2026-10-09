@@ -744,16 +744,61 @@
         "avatar-rtl"
       ],
       "rust_api": [
+        "Avatar",
+        "AvatarImage",
+        "AvatarSize",
+        "AvatarBadge",
+        "avatar_group",
+        "AvatarGroupCount",
         "avatar"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "basic",
+        "badge",
+        "badge-icon",
+        "group",
+        "group-count",
+        "group-count-icon",
+        "size",
+        "dropdown"
       ],
-      "behaviour_tests": [],
-      "visual_comparisons": [],
+      "behaviour_tests": [
+        "avatar_group_lays_out_overlapping_members_and_paints_the_application_texture",
+        "avatar_button_keeps_icon_button_dimensions_and_reports_pointer_activation_once"
+      ],
+      "visual_comparisons": [
+        "visual/avatar/default-light-default",
+        "visual/avatar/default-dark-default",
+        "visual/avatar/basic-light-default",
+        "visual/avatar/basic-dark-default",
+        "visual/avatar/basic-light-image-error",
+        "visual/avatar/basic-dark-image-error",
+        "visual/avatar/badge-light-default",
+        "visual/avatar/badge-dark-default",
+        "visual/avatar/badge-icon-light-default",
+        "visual/avatar/badge-icon-dark-default",
+        "visual/avatar/group-light-default",
+        "visual/avatar/group-dark-default",
+        "visual/avatar/group-count-light-default",
+        "visual/avatar/group-count-dark-default",
+        "visual/avatar/group-count-icon-light-default",
+        "visual/avatar/group-count-icon-dark-default",
+        "visual/avatar/size-light-default",
+        "visual/avatar/size-dark-default",
+        "visual/avatar/dropdown-light-default",
+        "visual/avatar/dropdown-light-open",
+        "visual/avatar/dropdown-light-focus",
+        "visual/avatar/dropdown-dark-default",
+        "visual/avatar/dropdown-dark-open",
+        "visual/avatar/dropdown-dark-focus"
+      ],
       "status": "in_progress",
       "deviations": [
-        "Fallback only; public texture/image, groups and status badges pending."
+        "Gallery uses matching pinned first-party portrait assets instead of mutable GitHub images; substitutions and hashes are recorded.",
+        "Native border blending, grayscale rasterization and circle edges differ from browser CSS.",
+        "English directional preview remains unported; translated text is outside the current scope.",
+        "Applications load/own textures and select image/fallback explicitly."
       ],
       "example_coverage": [
         {
@@ -765,10 +810,26 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/avatar"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "default",
+          "behaviour_tests": [
+            "avatar_group_lays_out_overlapping_members_and_paints_the_application_texture",
+            "avatar_button_keeps_icon_button_dimensions_and_reports_pointer_activation_once"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/avatar/default-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/avatar/default-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -780,10 +841,38 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/avatar"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "basic",
+          "behaviour_tests": [
+            "avatar_group_lays_out_overlapping_members_and_paints_the_application_texture",
+            "avatar_button_keeps_icon_button_dimensions_and_reports_pointer_activation_once"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/avatar/basic-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/avatar/basic-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "image-error",
+              "path": "visual/avatar/basic-light-image-error",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "image-error",
+              "path": "visual/avatar/basic-dark-image-error",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -795,10 +884,26 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/avatar"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "badge",
+          "behaviour_tests": [
+            "avatar_group_lays_out_overlapping_members_and_paints_the_application_texture",
+            "avatar_button_keeps_icon_button_dimensions_and_reports_pointer_activation_once"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/avatar/badge-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/avatar/badge-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -811,10 +916,26 @@
             "lucide-react",
             "@/styles/base-nova/ui/avatar"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "badge-icon",
+          "behaviour_tests": [
+            "avatar_group_lays_out_overlapping_members_and_paints_the_application_texture",
+            "avatar_button_keeps_icon_button_dimensions_and_reports_pointer_activation_once"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/avatar/badge-icon-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/avatar/badge-icon-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -826,10 +947,26 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/avatar"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "group",
+          "behaviour_tests": [
+            "avatar_group_lays_out_overlapping_members_and_paints_the_application_texture",
+            "avatar_button_keeps_icon_button_dimensions_and_reports_pointer_activation_once"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/avatar/group-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/avatar/group-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -841,10 +978,26 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/avatar"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "group-count",
+          "behaviour_tests": [
+            "avatar_group_lays_out_overlapping_members_and_paints_the_application_texture",
+            "avatar_button_keeps_icon_button_dimensions_and_reports_pointer_activation_once"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/avatar/group-count-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/avatar/group-count-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -857,10 +1010,26 @@
             "lucide-react",
             "@/styles/base-nova/ui/avatar"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "group-count-icon",
+          "behaviour_tests": [
+            "avatar_group_lays_out_overlapping_members_and_paints_the_application_texture",
+            "avatar_button_keeps_icon_button_dimensions_and_reports_pointer_activation_once"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/avatar/group-count-icon-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/avatar/group-count-icon-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -872,10 +1041,26 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/avatar"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "size",
+          "behaviour_tests": [
+            "avatar_group_lays_out_overlapping_members_and_paints_the_application_texture",
+            "avatar_button_keeps_icon_button_dimensions_and_reports_pointer_activation_once"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/avatar/size-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/avatar/size-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -889,10 +1074,50 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "dropdown",
+          "behaviour_tests": [
+            "avatar_group_lays_out_overlapping_members_and_paints_the_application_texture",
+            "avatar_button_keeps_icon_button_dimensions_and_reports_pointer_activation_once"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/avatar/dropdown-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/avatar/dropdown-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/avatar/dropdown-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/avatar/dropdown-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/avatar/dropdown-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/avatar/dropdown-dark-focus",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5246,7 +5471,8 @@
         "radio-group",
         "radio-icons",
         "destructive",
-        "complex"
+        "complex",
+        "avatar"
       ],
       "behaviour_tests": [
         "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
@@ -5315,6 +5541,12 @@
         "visual/dropdown-menu/destructive-dark-open",
         "visual/dropdown-menu/destructive-light-open+ArrowDown,ArrowDown,ArrowDown",
         "visual/dropdown-menu/destructive-dark-open+ArrowDown,ArrowDown,ArrowDown",
+        "visual/dropdown-menu/avatar-light-default",
+        "visual/dropdown-menu/avatar-light-open",
+        "visual/dropdown-menu/avatar-light-focus",
+        "visual/dropdown-menu/avatar-dark-default",
+        "visual/dropdown-menu/avatar-dark-open",
+        "visual/dropdown-menu/avatar-dark-focus",
         "visual/dropdown-menu/complex-light-default",
         "visual/dropdown-menu/complex-light-open",
         "visual/dropdown-menu/complex-dark-default",
@@ -5328,7 +5560,7 @@
       ],
       "status": "in_progress",
       "deviations": [
-        "Avatar trigger and English directional preview remain unported.",
+        "English directional preview remains unported; translated text is outside current scope.",
         "Popup uses opaque native surfaces; backdrop blur, saturation, soft shadow, hover delay/transit and motion differ from upstream.",
         "Typography and single-sample icon edges differ; targeted comparisons are retained without exhaustive parity certification.",
         "Native keyboard scroll reveal and placement of large nested menus can differ from the source harness."
@@ -5966,10 +6198,47 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "avatar",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/avatar-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/avatar-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/dropdown-menu/avatar-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/avatar-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/avatar-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/dropdown-menu/avatar-dark-focus",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {

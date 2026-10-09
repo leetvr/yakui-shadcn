@@ -287,5 +287,52 @@
       "open"
     ],
     "keys": "ArrowDown,ArrowDown,ArrowDown"
+  },
+  {
+    "component": "avatar",
+    "variants": [
+      "default",
+      "basic",
+      "badge",
+      "badge-icon",
+      "group",
+      "group-count",
+      "group-count-icon",
+      "size"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "avatar",
+    "variants": [
+      "dropdown"
+    ],
+    "states": [
+      "default",
+      "open",
+      "focus"
+    ]
+  },
+  {
+    "component": "avatar",
+    "variants": [
+      "basic"
+    ],
+    "states": [
+      "image-error"
+    ]
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "avatar"
+    ],
+    "states": [
+      "default",
+      "open",
+      "focus"
+    ]
   }
 ]

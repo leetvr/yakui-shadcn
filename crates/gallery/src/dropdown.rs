@@ -19,6 +19,7 @@ pub const VARIANTS: &[&str] = &[
     "radio-icons",
     "destructive",
     "complex",
+    "avatar",
 ];
 fn account(shortcuts: bool) -> Vec<M> {
     let mut items = vec![
@@ -130,6 +131,13 @@ fn items(variant: &str) -> Vec<M> {
             M::separator(),
             M::action(3, "Delete").icon(I::Trash).destructive(true),
         ],
+        "avatar" => vec![
+            M::action(1, "Account").icon(I::BadgeCheck),
+            M::action(2, "Billing").icon(I::CreditCard),
+            M::action(3, "Notifications").icon(I::Bell),
+            M::separator(),
+            M::action(4, "Sign Out").icon(I::LogOut),
+        ],
         "complex" => vec![
             M::label("File"),
             M::action(1, "New File").icon(I::File).shortcut("⌘N"),
@@ -222,6 +230,20 @@ pub fn trigger(
         example.variant = variant.into();
         example.notifications = [true, false, true];
     }
+    if variant == "avatar" {
+        return ui::dropdown_menu_trigger(menu, || {
+            ui::Button::new("")
+                .variant(ui::Variant::Ghost)
+                .size(ui::ButtonSize::Icon)
+                .rounded(true)
+                .disabled(disabled)
+                .show_children(|| {
+                    ui::Avatar::new("LR")
+                        .image(crate::assets::avatar(0, false))
+                        .show()
+                })
+        });
+    }
     ui::dropdown_menu_trigger(menu, || {
         ui::Button::new(match variant {
             "checkboxes-icons" => "Notifications",
@@ -264,6 +286,11 @@ pub fn content(
         &mut example.items,
         ui::MenuOptions {
             width,
+            align: if variant == "avatar" {
+                ui::PopoverAlign::End
+            } else {
+                ui::PopoverAlign::Start
+            },
             ..Default::default()
         },
     );

@@ -1,0 +1,29 @@
+{
+  "example": "avatar-group-count-icon",
+  "theme": "light",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [
+    {
+      "url": "https://github.com/shadcn.png",
+      "asset": "crates/gallery/assets/avatars/shadcn.jpg"
+    },
+    {
+      "url": "https://github.com/maxleiter.png",
+      "asset": "crates/gallery/assets/avatars/01.png"
+    },
+    {
+      "url": "https://github.com/evilrabbit.png",
+      "asset": "crates/gallery/assets/avatars/02.png"
+    }
+  ],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 1000,
+    "height": 800
+  }
+}

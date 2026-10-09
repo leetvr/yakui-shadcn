@@ -1833,6 +1833,168 @@
         "width": 1000
       },
       "review": "pending"
+    },
+    {
+      "component": "dropdown-menu",
+      "variant": "avatar",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "avatar-light-default",
+      "metrics": {
+        "changed_fraction": 0.00046125,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 38.00791447185704,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.02328,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-light-default/native.png",
+        "pixels_differing_by_more_than_16": 369,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.3598124870731259,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "dropdown-menu",
+      "variant": "avatar",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "path": "avatar-light-open",
+      "metrics": {
+        "changed_fraction": 0.00361125,
+        "content_bounds": [
+          387,
+          384,
+          517,
+          553
+        ],
+        "content_rgb_rmse": 21.46674874719383,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.19415333333333334,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-light-open/native.png",
+        "pixels_differing_by_more_than_16": 2889,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-light-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 3.561036014982157,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "dropdown-menu",
+      "variant": "avatar",
+      "theme": "light",
+      "state": "focus",
+      "keys": [],
+      "path": "avatar-light-focus",
+      "metrics": {
+        "changed_fraction": 0.00077,
+        "content_bounds": [
+          481,
+          381,
+          519,
+          419
+        ],
+        "content_rgb_rmse": 37.48719079477963,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.037485833333333336,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-light-focus/native.png",
+        "pixels_differing_by_more_than_16": 616,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-light-focus/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.5926542311500007,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "dropdown-menu",
+      "variant": "avatar",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "avatar-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00045125,
+        "content_bounds": [
+          484,
+          384,
+          516,
+          416
+        ],
+        "content_rgb_rmse": 35.545896277735075,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.022022916666666666,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 361,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.2717286463707578,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "dropdown-menu",
+      "variant": "avatar",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "path": "avatar-dark-open",
+      "metrics": {
+        "changed_fraction": 0.00293625,
+        "content_bounds": [
+          387,
+          384,
+          517,
+          550
+        ],
+        "content_rgb_rmse": 14.681681132953157,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.18478041666666667,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-dark-open/native.png",
+        "pixels_differing_by_more_than_16": 2349,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-dark-open/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 2.411388344916679,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "dropdown-menu",
+      "variant": "avatar",
+      "theme": "dark",
+      "state": "focus",
+      "keys": [],
+      "path": "avatar-dark-focus",
+      "metrics": {
+        "changed_fraction": 0.00077875,
+        "content_bounds": [
+          481,
+          381,
+          519,
+          419
+        ],
+        "content_rgb_rmse": 37.08497641270563,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.0383975,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-dark-focus/native.png",
+        "pixels_differing_by_more_than_16": 623,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-dark-focus/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 1.5755660358529353,
+        "width": 1000
+      },
+      "review": "pending"
     }
   ],
   "upstream": {

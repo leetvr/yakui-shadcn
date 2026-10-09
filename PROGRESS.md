@@ -40,18 +40,18 @@ initial public APIs and native routes. Current behaviour includes:
 - Chat parts, attachment action/state presentation, questionnaires, toast manager,
   transcript auto-follow/prepend preservation and jump-to-message.
 - Dashboard, settings and checkout showcases built with public library components.
-- Three standalone consuming applications: settings, dashboard and checkout.
+- Four standalone consuming applications: settings, dashboard, checkout and avatars.
 - CLI PNG capture, pinned upstream source harness, Playwright captures, Rust
   side-by-side/difference/content-region comparison tooling.
 
 ## Verification checkpoint
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
-- All three consuming examples compile.
-- 59 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
-- 119 native variant routes × two themes, plus six showcase captures and 52 actual-trigger overlay captures: **296 captures,
+- All four consuming examples compile.
+- 61 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
+- 128 native variant routes × two themes, plus six showcase captures and 56 actual-trigger overlay captures: **318 captures,
   zero failures** in the latest full smoke run.
-- The configured upstream suite covers 41 actual previews: **210 comparison pairs**
+- The configured upstream suite covers 51 actual previews: **240 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
   used to find and correct concrete layout/painting defects, not to certify parity.
 - Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
@@ -65,7 +65,7 @@ focused layout tests cover the radio/progress/button regressions.
 ## Required work still outstanding
 
 `reference/components.json` records component-specific deviations and every upstream
-preview separately. 41 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
+preview separately. 51 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
 do not map an unported preview to a generic default rendition. Important incomplete areas include:
 
 - Complete documented slots, sizes, disabled/invalid states and compositions.
@@ -210,3 +210,25 @@ assets were removed following Kane's English-only decision. Native keyboard
 scroll reveal and large nested popup positions can differ from the source harness;
 blur, soft shadows, motion and hover transit remain intentional deferred polish
 for the internal/prototype target. Avatar triggers remain the next useful gap.
+
+## Texture-backed avatar increment
+
+Added public Avatar/AvatarImage/AvatarSize/AvatarBadge, overlapping avatar_group
+and AvatarGroupCount. Applications own decoding, loading state and textures.
+Native meshes crop texture UVs to cover the circle; fallback text appears when
+the caller supplies no image. Groups overlap by 8px and expose count/icon items.
+Buttons accept public show_children composition, including avatar dropdowns.
+
+Ported nine non-directional avatar previews and dropdown-menu-avatar. Both
+renderers use the same pinned first-party portrait files, with hashes and capture
+substitutions recorded. The reference source/compositions remain unchanged.
+The gallery enables JPEG/PNG decoding; the independent library does not depend
+on image decoding or a renderer. A fourth consuming app demonstrates app-owned
+textures and changing between an image and initials.
+
+Two common-use tests cover real texture geometry, group placement and an avatar
+button's pointer activation. All 61 tests and four doctests pass; four apps compile.
+The full gallery has 318 successful native captures and no failures. Both-theme
+image/fallback/dropdown comparisons bring the component suite to 240 pairs across
+51 source previews. Border blending, grayscale rasterisation and badge cascade
+differences remain acceptable polish for the internal/prototype target.
