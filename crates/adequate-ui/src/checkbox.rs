@@ -1,11 +1,11 @@
 //! Checkbox fields share activation across the indicator, label and helper text.
+use crate::control_field::{FieldControlLayout, FieldControlLayoutProps, IndicatorRing};
 use crate::{
     Color, ControlResponse, Icon, Vec2,
     interaction::{Control, control},
 };
 use yakui::{
-    Border, Constraints, Rect,
-    widget::{LayoutContext, PaintContext, Widget},
+    Border,
     widgets::{RenderText, RoundRect},
 };
 
@@ -80,7 +80,7 @@ impl Checkbox {
                 }
                 let body = || {
                     let has_description = self.description.as_ref().is_some_and(|s| !s.is_empty());
-                    yakui::util::widget_children::<CheckboxLayout, _>(
+                    yakui::util::widget_children::<FieldControlLayout, _>(
                         || {
                             let base = crate::layout::surface_background();
                             let mut fill = if *value {
@@ -141,7 +141,7 @@ impl Checkbox {
                                             });
                                     });
                                 },
-                                ring,
+                                (ring, 4.),
                             );
                             if let Some(label) = &self.label {
                                 crate::column(2., || {
@@ -170,7 +170,12 @@ impl Checkbox {
                                 });
                             }
                         },
-                        (has_description, crate::advanced_layout::rtl()),
+                        FieldControlLayoutProps {
+                            description: has_description,
+                            rtl: crate::advanced_layout::rtl(),
+                            trailing: false,
+                            indicator_top: 1.,
+                        },
                     );
                 };
                 if self.card {
@@ -196,106 +201,5 @@ impl Checkbox {
                 }
             },
         )
-    }
-}
-
-#[derive(Debug, Default)]
-struct CheckboxLayout {
-    description: bool,
-    rtl: bool,
-}
-impl Widget for CheckboxLayout {
-    type Props<'a> = (bool, bool);
-    type Response = ();
-    fn new() -> Self {
-        Self::default()
-    }
-    fn update(&mut self, (description, rtl): Self::Props<'_>) {
-        self.description = description;
-        self.rtl = rtl;
-    }
-    fn layout(&self, mut ctx: LayoutContext<'_>, constraints: Constraints) -> Vec2 {
-        let children = &ctx.dom.get_current().children;
-        let indicator = children[0];
-        let indicator_size = ctx.calculate_layout(indicator, Constraints::loose(constraints.max));
-        let mut content = Vec2::ZERO;
-        if let Some(&label) = children.get(1) {
-            content = ctx.calculate_layout(
-                label,
-                Constraints::loose(Vec2::new(
-                    (constraints.max.x - indicator_size.x - 8.).max(0.),
-                    constraints.max.y,
-                )),
-            );
-        }
-        let size = constraints.constrain(Vec2::new(
-            indicator_size.x
-                + if children.len() > 1 {
-                    8. + content.x
-                } else {
-                    0.
-                },
-            indicator_size.y.max(content.y),
-        ));
-        // Helper text may be several lines tall. The indicator stays at the first
-        // line, and its own paint node owns the ring so RTL and wrapping cannot
-        // move keyboard focus decoration into the middle of the entire field.
-        let y = if self.description {
-            1.
-        } else {
-            (size.y - indicator_size.y) / 2.
-        };
-        ctx.layout.set_pos(
-            indicator,
-            Vec2::new(
-                if self.rtl {
-                    size.x - indicator_size.x
-                } else {
-                    0.
-                },
-                y,
-            ),
-        );
-        if let Some(&label) = children.get(1) {
-            ctx.layout.set_pos(
-                label,
-                Vec2::new(
-                    if self.rtl {
-                        size.x - indicator_size.x - 8. - content.x
-                    } else {
-                        indicator_size.x + 8.
-                    },
-                    0.,
-                ),
-            );
-        }
-        size
-    }
-}
-#[derive(Debug)]
-struct IndicatorRing(Color);
-impl Widget for IndicatorRing {
-    type Props<'a> = Color;
-    type Response = ();
-    fn new() -> Self {
-        Self(Color::CLEAR)
-    }
-    fn update(&mut self, color: Color) {
-        self.0 = color;
-    }
-    fn paint(&self, mut ctx: PaintContext<'_>) {
-        if self.0.a != 0 {
-            let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
-            crate::icons::outline(
-                &mut ctx,
-                Rect::from_pos_size(rect.pos() - Vec2::splat(3.), rect.size() + Vec2::splat(6.)),
-                7.,
-                3.,
-                self.0,
-            );
-        }
-        for &child in &ctx.dom.get_current().children {
-            ctx.paint(child);
-        }
     }
 }

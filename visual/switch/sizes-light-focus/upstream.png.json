@@ -1,0 +1,14 @@
+{
+  "example": "switch-sizes",
+  "theme": "light",
+  "state": "focus",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 420,
+    "y": 373.796875,
+    "width": 24,
+    "height": 14
+  }
+}

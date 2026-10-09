@@ -1,18 +1,18 @@
 {
-  "changed_fraction": 0.00512625,
+  "changed_fraction": 0.00419375,
   "content_bounds": [
     305,
     300,
     692,
     497
   ],
-  "content_rgb_rmse": 20.63790776734471,
+  "content_rgb_rmse": 15.423251048949918,
   "height": 800,
-  "mean_absolute_rgb_error": 0.3795570833333333,
+  "mean_absolute_rgb_error": 0.25798208333333333,
   "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-dark-focus/native.png",
-  "pixels_differing_by_more_than_16": 4101,
+  "pixels_differing_by_more_than_16": 3355,
   "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/default-dark-focus/upstream.png",
   "review_required": true,
-  "rgb_rmse": 6.371024413964628,
+  "rgb_rmse": 4.761234039966249,
   "width": 1000
 }

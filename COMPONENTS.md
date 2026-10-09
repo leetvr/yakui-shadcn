@@ -66,7 +66,7 @@ overlay children. Keep overlays at the root and retain their state in your appli
 | Skeleton | `skeleton`, `skeleton_at` | Use to show a placeholder while content is loading. |
 | Slider | `slider`, `range_slider`, `SliderOptions`, `SliderResponse`, `Orientation` | An input where the user selects a value from within a given range. |
 | Spinner | `spinner` | An indicator that can be used to show a loading state. |
-| Switch | `switch` | A control that allows the user to toggle between checked and not checked. |
+| Switch | `Switch`, `SwitchSize`, `switch` | A control that allows the user to toggle between checked and not checked. |
 | Table | `Table`, `TableCell`, `table`, `TableColumn`, `TableRow` | A responsive table component. |
 | Tabs | `tabs`, `TabsVariant` | A set of layered sections of content—known as tab panels—that are displayed one at a time. |
 | Textarea | `textarea` | Displays a form textarea or a component that looks like a textarea. |
@@ -159,3 +159,19 @@ ui::Table::new(&[32., 240.]).show(|| {
 
 Use `TableCell::new().span(3)` for footer totals and
 `.align(TableCellAlign::End)` for right-aligned values or action buttons.
+
+Use a switch for an immediately applied setting. It accepts the same caller-owned
+boolean as `switch(label, value, disabled)`, with explicit size, validation and
+field composition. A trailing switch is placed at the end of the available width.
+
+```rust
+ui::width(384., || {
+    ui::Switch::new()
+        .label("Share across devices")
+        .description("Focus is shared across devices.")
+        .trailing(true)
+        .card(true)
+        .show(&mut settings.shared);
+});
+ui::Switch::new().size(ui::SwitchSize::Sm).show(&mut compact_setting);
+```

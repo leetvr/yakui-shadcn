@@ -62,12 +62,16 @@
   {
     "component": "switch",
     "variants": [
-      "default"
+      "default",
+      "description",
+      "choice-card",
+      "invalid",
+      "sizes"
     ],
-    "reference_example": "switch-demo",
     "states": [
       "default",
-      "focus"
+      "focus",
+      "selected"
     ]
   },
   {
@@ -150,6 +154,15 @@
     "variants": [
       "default",
       "footer"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "switch",
+    "variants": [
+      "disabled"
     ],
     "states": [
       "default"

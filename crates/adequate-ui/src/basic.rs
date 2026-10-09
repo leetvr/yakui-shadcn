@@ -802,56 +802,10 @@ pub fn checkbox_disabled(
 /// A two-state compact control, with explicit disabled state.
 #[track_caller]
 pub fn switch(label_text: impl Into<String>, value: &mut bool, disabled: bool) -> ControlResponse {
-    let t = theme();
-    control(
-        Control {
-            disabled,
-            radius: 999.,
-            ring: t.ring,
-            focus_size: Some(Vec2::new(32., 18.4)),
-        },
-        |res| {
-            if res.clicked {
-                *value = !*value;
-            }
-            row(8., || {
-                crate::size(Vec2::new(32., 18.4), || {
-                    RoundRect::new(999.)
-                        .color(if *value {
-                            t.primary
-                        } else {
-                            crate::layout::resolve_color(t.input)
-                        })
-                        .show_children(|| {
-                            yakui::align(yakui::Alignment::TOP_LEFT, || {
-                                yakui::pad(
-                                    Pad {
-                                        left: if *value { 15. } else { 1. },
-                                        right: 0.,
-                                        top: 1.2,
-                                        bottom: 1.2,
-                                    },
-                                    || {
-                                        crate::size(Vec2::splat(16.), || {
-                                            RoundRect::new(999.)
-                                                .color(if *value {
-                                                    t.primary_foreground
-                                                } else if t.dark {
-                                                    t.foreground
-                                                } else {
-                                                    t.background
-                                                })
-                                                .show();
-                                        });
-                                    },
-                                );
-                            });
-                        });
-                });
-                label(label_text);
-            });
-        },
-    )
+    crate::Switch::new()
+        .label(label_text)
+        .disabled(disabled)
+        .show(value)
 }
 /// A persistent pressed action, useful for formatting toolbars.
 #[track_caller]

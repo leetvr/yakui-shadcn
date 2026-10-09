@@ -75,6 +75,8 @@ pub struct ExampleState {
     pub checkbox_fields: [bool; 4],
     pub checkbox_group: [bool; 4],
     pub table_selected: [bool; 4],
+    pub switch_values: [bool; 2],
+    pub switch_sizes: [bool; 2],
     pub selected: usize,
     pub radio: usize,
     pub toggle: bool,
@@ -697,7 +699,53 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             }),
         },
         "switch" => {
-            ui::switch("Airplane Mode", &mut state.checked, disabled);
+            match variant {
+                "description" | "invalid" => {
+                    ui::width(384., || {
+                        ui::Switch::new()
+                    .label(if variant == "invalid" { "Accept terms and conditions" } else { "Share across devices" })
+                    .description(if variant == "invalid" { "You must accept the terms and conditions to continue." } else { "Focus is shared across devices, and turns off when you leave the app." })
+                    .trailing(true).invalid(variant == "invalid").disabled(disabled).show(&mut state.checked);
+                    })
+                }
+                "choice-card" => ui::width(384., || {
+                    ui::column(20., || {
+                        for ((label, description), value) in [
+                    ("Share across devices", "Focus is shared across devices, and turns off when you leave the app."),
+                    ("Enable notifications", "Receive notifications when focus mode is enabled or disabled."),
+                ].into_iter().zip(&mut state.switch_values) {
+                    ui::Switch::new().label(label).description(description).trailing(true).card(true).disabled(disabled).show(value);
+                }
+                    })
+                }),
+                "sizes" => ui::width(160., || {
+                    ui::column(20., || {
+                        for ((label, size), value) in [
+                            ("Small", ui::SwitchSize::Sm),
+                            ("Default", ui::SwitchSize::Default),
+                        ]
+                        .into_iter()
+                        .zip(&mut state.switch_sizes)
+                        {
+                            ui::Switch::new()
+                                .label(label)
+                                .size(size)
+                                .disabled(disabled)
+                                .show(value);
+                        }
+                    })
+                }),
+                _ => {
+                    ui::Switch::new()
+                        .label(if variant == "disabled" {
+                            "Disabled"
+                        } else {
+                            "Airplane Mode"
+                        })
+                        .disabled(disabled || variant == "disabled")
+                        .show(&mut state.checked);
+                }
+            }
         }
         "toggle" => {
             ui::toggle("Bold", &mut state.toggle, variant == "outline");
@@ -832,6 +880,14 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "table",
         ],
         "table" => &["default", "footer"],
+        "switch" => &[
+            "default",
+            "description",
+            "choice-card",
+            "disabled",
+            "invalid",
+            "sizes",
+        ],
         "alert" => &["default", "destructive"],
         "tabs" => &["default", "line"],
         "chart" => &[
@@ -986,6 +1042,8 @@ impl Default for ExampleState {
             checkbox_fields: [false, true, false, false],
             checkbox_group: [true, true, false, false],
             table_selected: [true, false, false, false],
+            switch_values: [false, true],
+            switch_sizes: [false; 2],
             selected: 0,
             radio: 1,
             toggle: false,

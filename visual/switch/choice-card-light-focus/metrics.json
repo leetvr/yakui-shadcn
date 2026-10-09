@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00971125,
+  "content_bounds": [
+    305,
+    301,
+    695,
+    496
+  ],
+  "content_rgb_rmse": 23.38480769151696,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.6334625,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/switch/choice-card-light-focus/native.png",
+  "pixels_differing_by_more_than_16": 7769,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/switch/choice-card-light-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 7.210052357646233,
+  "width": 1000
+}

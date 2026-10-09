@@ -115,3 +115,17 @@ Yakui's pinned Scrollable supports only vertical scrolling. The table viewport
 therefore clips a full-width native canvas, clamps horizontal offset, bubbles wheel
 input at boundaries and reveals focused descendants. Before measuring a new focus
 rectangle, its previous frame's scroll translation must be reset to zero.
+
+## Switch source checks
+
+Studied pinned Base switch primitive, Nova switch/thumb tokens and every switch
+example. Default track is 32×18.4 with a 16px thumb; small is 24×14 with a 12px thumb.
+Unchecked dark input uses the semantic input alpha multiplied by 0.8. Description
+and invalid examples put content before the trailing switch; choice cards use
+FieldTitle's 19.25px leading and the checked FieldLabel surface. Invalid indicator
+rings use destructive/20 in light and destructive/40 in dark.
+
+Field layout keeps the indicator at the first helper line; bare compact labels
+centre against the taller track. Card focus decorates the card, while ordinary
+field focus decorates only the track. Both patterns use one native activation and
+focus target and write the application boolean from the consumed response.

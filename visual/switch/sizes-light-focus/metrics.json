@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0006125,
+  "content_bounds": [
+    417,
+    371,
+    508,
+    426
+  ],
+  "content_rgb_rmse": 21.614208890774282,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.04034,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/switch/sizes-light-focus/native.png",
+  "pixels_differing_by_more_than_16": 490,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/switch/sizes-light-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 1.70960741107425,
+  "width": 1000
+}

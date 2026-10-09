@@ -43,10 +43,10 @@ initial public APIs and native routes. Current behaviour includes:
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All three consuming examples compile.
-- 42 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
-- 102 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **242 captures,
+- 44 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
+- 107 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **252 captures,
   zero failures** in the latest full smoke run.
-- The configured upstream suite covers 24 actual previews: **116 comparison pairs**
+- The configured upstream suite covers 29 actual previews: **144 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
   used to find and correct concrete layout/painting defects, not to certify parity.
 - Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
@@ -60,7 +60,7 @@ focused layout tests cover the radio/progress/button regressions.
 ## Required work still outstanding
 
 `reference/components.json` records component-specific deviations and every upstream
-preview separately. Only 24 of 461 previews currently have paired captures. The
+preview separately. Only 29 of 461 previews currently have paired captures. The
 remaining previews must be studied, implemented and compared, not mapped to a
 generic default rendition. Important incomplete areas include:
 
@@ -132,3 +132,17 @@ actual gallery selection, column/span alignment and horizontal focus reveal. Ten
 additional permanent pairs cover both themes, plus checkbox focus/selected states.
 Table action menus, multilingual RTL and draggable scrollbar presentation remain
 outstanding. Text/border rendering differences remain under visual review.
+
+## Switch field increment
+
+Ported all six non-RTL switch previews: demo, description, choice card, disabled,
+invalid and sizes. `Switch` exposes the documented 32×18.4 and 24×14 tracks,
+label/helper composition, trailing placement, selectable cards and disabled/invalid
+styles. Track and field share one activation/focus target. Field layout and hollow
+indicator rings are shared with checkboxes; compact labels now centre vertically.
+
+Two additional real Yakui tests cover helper activation, Space release, one Tab
+stop, disabled skipping and exact track sizes. Thirty-two switch pairs replace
+the previous four default pairs; checkbox comparisons were rerun after the shared
+layout change. Multilingual RTL previews, motion, expanded touch targets and native
+platform accessibility remain outstanding. No component is certified complete.

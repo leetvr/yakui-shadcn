@@ -10375,21 +10375,61 @@
         "switch-rtl"
       ],
       "rust_api": [
+        "Switch",
+        "SwitchSize",
         "switch"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "description",
+        "choice-card",
+        "disabled",
+        "invalid",
+        "sizes"
       ],
-      "behaviour_tests": [],
+      "behaviour_tests": [
+        "switch_trailing_helper_text_activates_the_caller_value_and_has_one_focus_stop",
+        "switch_tracks_have_documented_sizes_and_disabled_switches_skip_focus"
+      ],
       "visual_comparisons": [
         "visual/switch/default-light-default",
         "visual/switch/default-light-focus",
+        "visual/switch/default-light-selected",
         "visual/switch/default-dark-default",
-        "visual/switch/default-dark-focus"
+        "visual/switch/default-dark-focus",
+        "visual/switch/default-dark-selected",
+        "visual/switch/description-light-default",
+        "visual/switch/description-light-focus",
+        "visual/switch/description-light-selected",
+        "visual/switch/description-dark-default",
+        "visual/switch/description-dark-focus",
+        "visual/switch/description-dark-selected",
+        "visual/switch/choice-card-light-default",
+        "visual/switch/choice-card-light-focus",
+        "visual/switch/choice-card-light-selected",
+        "visual/switch/choice-card-dark-default",
+        "visual/switch/choice-card-dark-focus",
+        "visual/switch/choice-card-dark-selected",
+        "visual/switch/disabled-light-default",
+        "visual/switch/disabled-dark-default",
+        "visual/switch/invalid-light-default",
+        "visual/switch/invalid-light-focus",
+        "visual/switch/invalid-light-selected",
+        "visual/switch/invalid-dark-default",
+        "visual/switch/invalid-dark-focus",
+        "visual/switch/invalid-dark-selected",
+        "visual/switch/sizes-light-default",
+        "visual/switch/sizes-light-focus",
+        "visual/switch/sizes-light-selected",
+        "visual/switch/sizes-dark-default",
+        "visual/switch/sizes-dark-focus",
+        "visual/switch/sizes-dark-selected"
       ],
       "status": "in_progress",
       "deviations": [
-        "Nova dimensions and indicator focus ring corrected; small size, disabled/invalid styling and remaining previews pending."
+        "The documented multilingual RTL preview is not yet ported; native scopes mirror track and label placement, with thumb direction mirrored.",
+        "Native glyph edge rendering differs from upstream; track/thumb dimensions and source field compositions are covered by paired screenshots.",
+        "CSS thumb motion and native platform accessibility semantics/touch target expansion remain outstanding."
       ],
       "example_coverage": [
         {
@@ -10403,7 +10443,10 @@
             "@/styles/base-nova/ui/switch"
           ],
           "gallery_variant": "default",
-          "behaviour_tests": [],
+          "behaviour_tests": [
+            "switch_trailing_helper_text_activates_the_caller_value_and_has_one_focus_stop",
+            "switch_tracks_have_documented_sizes_and_disabled_switches_skip_focus"
+          ],
           "visual_comparisons": [
             {
               "theme": "light",
@@ -10418,6 +10461,12 @@
               "review": "pending"
             },
             {
+              "theme": "light",
+              "state": "selected",
+              "path": "visual/switch/default-light-selected",
+              "review": "pending"
+            },
+            {
               "theme": "dark",
               "state": "default",
               "path": "visual/switch/default-dark-default",
@@ -10427,6 +10476,12 @@
               "theme": "dark",
               "state": "focus",
               "path": "visual/switch/default-dark-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "selected",
+              "path": "visual/switch/default-dark-selected",
               "review": "pending"
             }
           ],
@@ -10443,10 +10498,50 @@
             "@/styles/base-nova/ui/field",
             "@/styles/base-nova/ui/switch"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "description",
+          "behaviour_tests": [
+            "switch_trailing_helper_text_activates_the_caller_value_and_has_one_focus_stop",
+            "switch_tracks_have_documented_sizes_and_disabled_switches_skip_focus"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/switch/description-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/switch/description-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "selected",
+              "path": "visual/switch/description-light-selected",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/switch/description-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/switch/description-dark-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "selected",
+              "path": "visual/switch/description-dark-selected",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -10459,10 +10554,50 @@
             "@/styles/base-nova/ui/field",
             "@/styles/base-nova/ui/switch"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "choice-card",
+          "behaviour_tests": [
+            "switch_trailing_helper_text_activates_the_caller_value_and_has_one_focus_stop",
+            "switch_tracks_have_documented_sizes_and_disabled_switches_skip_focus"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/switch/choice-card-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/switch/choice-card-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "selected",
+              "path": "visual/switch/choice-card-light-selected",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/switch/choice-card-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/switch/choice-card-dark-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "selected",
+              "path": "visual/switch/choice-card-dark-selected",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -10475,10 +10610,26 @@
             "@/styles/base-nova/ui/field",
             "@/styles/base-nova/ui/switch"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "disabled",
+          "behaviour_tests": [
+            "switch_trailing_helper_text_activates_the_caller_value_and_has_one_focus_stop",
+            "switch_tracks_have_documented_sizes_and_disabled_switches_skip_focus"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/switch/disabled-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/switch/disabled-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -10491,10 +10642,50 @@
             "@/styles/base-nova/ui/field",
             "@/styles/base-nova/ui/switch"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "invalid",
+          "behaviour_tests": [
+            "switch_trailing_helper_text_activates_the_caller_value_and_has_one_focus_stop",
+            "switch_tracks_have_documented_sizes_and_disabled_switches_skip_focus"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/switch/invalid-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/switch/invalid-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "selected",
+              "path": "visual/switch/invalid-light-selected",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/switch/invalid-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/switch/invalid-dark-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "selected",
+              "path": "visual/switch/invalid-dark-selected",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -10507,10 +10698,50 @@
             "@/styles/base-nova/ui/field",
             "@/styles/base-nova/ui/switch"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "sizes",
+          "behaviour_tests": [
+            "switch_trailing_helper_text_activates_the_caller_value_and_has_one_focus_stop",
+            "switch_tracks_have_documented_sizes_and_disabled_switches_skip_focus"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/switch/sizes-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/switch/sizes-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "selected",
+              "path": "visual/switch/sizes-light-selected",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/switch/sizes-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/switch/sizes-dark-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "selected",
+              "path": "visual/switch/sizes-dark-selected",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {

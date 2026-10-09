@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00064125,
+  "content_bounds": [
+    420,
+    374,
+    508,
+    426
+  ],
+  "content_rgb_rmse": 24.0717622487893,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.043725,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/switch/sizes-light-selected/native.png",
+  "pixels_differing_by_more_than_16": 513,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/switch/sizes-light-selected/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 1.8205637863035724,
+  "width": 1000
+}

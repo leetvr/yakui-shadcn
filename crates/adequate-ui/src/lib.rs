@@ -6,7 +6,10 @@
 mod advanced_layout;
 mod basic;
 mod checkbox;
+mod control_field;
+mod switch;
 pub use checkbox::*;
+pub use switch::*;
 mod carousel;
 mod sidebar;
 pub use carousel::*;

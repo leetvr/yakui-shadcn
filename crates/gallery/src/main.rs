@@ -152,6 +152,13 @@ impl Gallery {
                     _ => state.checkbox_fields[0] = true,
                 }
             }
+            if options.component == "switch" {
+                match options.variant.as_str() {
+                    "choice-card" => state.switch_values[0] = true,
+                    "sizes" => state.switch_sizes[0] = true,
+                    _ => {}
+                }
+            }
             state.toggle = true;
             state.overlay.open = true;
             state.select.popup.open = true;
