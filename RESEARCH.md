@@ -169,3 +169,36 @@ The diagnostic compares all 137 SVGs against native geometry in both themes at
 single-sample renderer produces visibly different curve edges; all paths and
 alignment match. Dense geometry needs separate clipped bounds because pinned
 Yakui PaintDom merges consecutive compatible meshes without checking u16 overflow.
+
+## Documented dropdown previews
+
+Studied and ported the eleven non-avatar, non-directional dropdown previews,
+including three nested levels and the complex menu's shared notification booleans.
+The gallery renders the source item trees through public MenuItem/MenuOptions APIs.
+Child popups have an intrinsic 96px minimum and use Yakui's actual font shaping
+for labels/shortcuts. Tracking is 0.1em. Root popups use the anchor width with a
+128px minimum, unless a fixed width is supplied. The measured Nova cascade
+overrides radio-icons' min-w-56 to 128px, so its actual anchor-sized menu wraps
+Credit Card and Bank Transfer; that effective appearance is matched.
+
+Large menus use the positioner's available side, with a 5px collision margin,
+and native scrolling rather than a full-height popup clamped across the trigger.
+Yakui documents one layout calculation per widget per pass: previous popup height
+chooses whether to flip to a larger side on the next layout. Each actual pass
+uses the real scroll viewport so focus reveal is not consumed by a sizing pass.
+
+Yakui registers pointer interest in child layout order inside each layer. A
+backdrop built before content therefore intercepted clicks even inside a popup.
+Placement now creates a content layer above the backdrop. Child menus share the
+root dismissal target; they do not install another full-window blocker over their
+parent. Escape closes the current submenu, as pinned Base UI does by default.
+Pointer-opened popups enter rows on ArrowDown/Up; Home/End work after entering.
+Expanded parent rows retain the highlighted surface while a child is open.
+
+Noto Sans Symbols 2 is bundled under OFL from the official noto-fonts repository,
+with its source revision and hashes recorded in fonts/noto-provenance.json.
+Arabic/Hebrew assets were removed following Kane's English-only scope decision.
+`tools/fetch_fonts.py` restores and verifies the symbol asset and its licence.
+`--keys` uses real input events on both renderers; captures record the exact path.
+The current scope targets internal work and prototypes, with targeted visual
+checks and common interaction tests, rather than exhaustive browser parity.

@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0007125,
+  "content_bounds": [
+    433,
+    384,
+    567,
+    416
+  ],
+  "content_rgb_rmse": 30.196789267893237,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.0538725,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/radio-icons-dark-default/native.png",
+  "pixels_differing_by_more_than_16": 570,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/radio-icons-dark-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 2.210767966114943,
+  "width": 1000
+}

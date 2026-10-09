@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0026175,
+  "content_bounds": [
+    470,
+    384,
+    600,
+    540
+  ],
+  "content_rgb_rmse": 18.098926415939676,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.13485333333333333,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/radio-group-light-open/native.png",
+  "pixels_differing_by_more_than_16": 2094,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/radio-group-light-open/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 2.885885190601548,
+  "width": 1000
+}

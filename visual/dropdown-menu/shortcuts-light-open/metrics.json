@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00405875,
+  "content_bounds": [
+    470,
+    384,
+    600,
+    577
+  ],
+  "content_rgb_rmse": 23.15477208210092,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.23555208333333333,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/shortcuts-light-open/native.png",
+  "pixels_differing_by_more_than_16": 3247,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/shortcuts-light-open/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 4.1039995228232335,
+  "width": 1000
+}

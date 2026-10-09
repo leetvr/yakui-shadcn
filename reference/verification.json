@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-10-09T09:28:29.203305+00:00",
+  "recorded_at": "2026-10-09T10:15:08.560527+00:00",
   "upstream": {
     "shadcn": {
       "repository": "https://github.com/shadcn-ui/ui",
@@ -20,19 +20,19 @@
   "upstream_previews": 461,
   "certified_complete_components": 0,
   "automated_tests": {
-    "count": 51,
+    "count": 59,
     "result": "passed",
     "command": "cargo test --workspace"
   },
   "native_smoke": {
-    "captures": 256,
+    "captures": 296,
     "failures": 0,
     "includes_actual_trigger_opening": true,
     "command": "python3 tools/verify_gallery.py --all-variants --showcases --open-overlays"
   },
   "upstream_comparisons": {
-    "pairs": 148,
-    "previews": 30,
+    "pairs": 210,
+    "previews": 41,
     "review": "pending",
     "command": "python3 tools/visual_catalogue.py"
   },
@@ -52,5 +52,11 @@
     ],
     "path": "visual/icons",
     "review": "geometry inspected; single-sample edge differences remain"
+  },
+  "target": "English internal interfaces and prototypes; targeted common-path verification",
+  "targeted_native_smoke": {
+    "captures": 32,
+    "failures": 0,
+    "command": "python3 tools/verify_gallery.py --components dropdown-menu context-menu menubar table --all-variants"
   }
 }

@@ -185,6 +185,7 @@ fn long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view() {
     let (trigger, _) = frame(&mut y, &mut state, &mut items);
     click(&mut y, trigger.id.unwrap());
     frame(&mut y, &mut state, &mut items);
+    key(&mut y, KeyCode::ArrowDown);
     key(&mut y, KeyCode::End);
     frame(&mut y, &mut state, &mut items);
     frame(&mut y, &mut state, &mut items);
@@ -196,4 +197,153 @@ fn long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view() {
     assert!(previous.pos().y >= 8. && previous.max().y <= 392.);
     key(&mut y, KeyCode::Enter);
     assert_eq!(frame(&mut y, &mut state, &mut items).1, Some(28));
+}
+
+#[test]
+fn nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root() {
+    let mut y = yak();
+    let mut state = ui::MenuState::default();
+    let mut items = vec![ui::MenuItem::submenu(
+        1,
+        "Projects",
+        vec![
+            ui::MenuItem::action(2, "A long project name"),
+            ui::MenuItem::submenu(
+                3,
+                "More options",
+                vec![
+                    ui::MenuItem::action(4, "First"),
+                    ui::MenuItem::action(5, "Last"),
+                ],
+            ),
+        ],
+    )];
+    let (trigger, _) = frame(&mut y, &mut state, &mut items);
+    y.request_focus(trigger.id);
+    key(&mut y, KeyCode::ArrowDown);
+    for _ in 0..2 {
+        frame(&mut y, &mut state, &mut items);
+    }
+    key(&mut y, KeyCode::ArrowRight);
+    for _ in 0..2 {
+        frame(&mut y, &mut state, &mut items);
+    }
+    let rows = menu_rows(&y);
+    assert_eq!(rows.len(), 3);
+    assert!(rows[1].size().x > 128.);
+    key(&mut y, KeyCode::ArrowDown);
+    key(&mut y, KeyCode::ArrowRight);
+    for _ in 0..2 {
+        frame(&mut y, &mut state, &mut items);
+    }
+    assert_eq!(menu_rows(&y).len(), 5);
+    key(&mut y, KeyCode::End);
+    key(&mut y, KeyCode::Enter);
+    assert_eq!(frame(&mut y, &mut state, &mut items).1, Some(5));
+    assert!(!state.popup.open);
+    for _ in 0..2 {
+        frame(&mut y, &mut state, &mut items);
+    }
+    assert!(frame(&mut y, &mut state, &mut items).0.focused);
+}
+
+#[test]
+fn submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item() {
+    let mut y = yak();
+    let mut state = ui::MenuState::default();
+    let mut items = vec![
+        ui::MenuItem::submenu(1, "Projects", vec![ui::MenuItem::action(2, "Alpha")]),
+        ui::MenuItem::action(3, "Root action"),
+    ];
+    let (trigger, _) = frame(&mut y, &mut state, &mut items);
+    y.request_focus(trigger.id);
+    key(&mut y, KeyCode::ArrowDown);
+    for _ in 0..2 {
+        frame(&mut y, &mut state, &mut items);
+    }
+    key(&mut y, KeyCode::ArrowRight);
+    for _ in 0..2 {
+        frame(&mut y, &mut state, &mut items);
+    }
+    assert_eq!(menu_rows(&y).len(), 3);
+    key(&mut y, KeyCode::Escape);
+    for _ in 0..2 {
+        frame(&mut y, &mut state, &mut items);
+    }
+    assert!(state.popup.open);
+    assert_eq!(menu_rows(&y).len(), 2);
+    key(&mut y, KeyCode::ArrowRight);
+    for _ in 0..2 {
+        frame(&mut y, &mut state, &mut items);
+    }
+    assert_eq!(menu_rows(&y).len(), 3);
+    let row = menu_rows(&y)[1];
+    y.handle_event(Event::CursorMoved(Some(row.center())));
+    for down in [true, false] {
+        y.handle_event(Event::MouseButtonChanged {
+            button: MouseButton::One,
+            down,
+        });
+    }
+    let result = frame(&mut y, &mut state, &mut items).1;
+    assert_eq!(result, Some(3));
+    assert!(!state.popup.open);
+}
+
+#[test]
+fn narrow_menu_wraps_text_between_leading_icon_and_trailing_check() {
+    let mut y = yak();
+    let mut state = ui::MenuState::default();
+    let mut items =
+        vec![ui::MenuItem::radio(1, "Bank Transfer", 1, true).icon(ui::Icon::Building2)];
+    let (trigger, _) = frame(&mut y, &mut state, &mut items);
+    click(&mut y, trigger.id.unwrap());
+    for _ in 0..2 {
+        frame(&mut y, &mut state, &mut items);
+    }
+    let row = menu_rows(&y)[0];
+    assert_eq!(row.size(), Vec2::new(120., 48.));
+}
+
+#[test]
+fn bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once() {
+    fn frame(
+        y: &mut Yakui,
+        state: &mut ui::MenuState,
+        items: &mut [ui::MenuItem],
+    ) -> (ui::ControlResponse, Option<u64>) {
+        y.start();
+        let mut trigger = ui::ControlResponse::default();
+        yakui::align(Alignment::BOTTOM_RIGHT, || {
+            yakui::pad(yakui::widgets::Pad::all(20.), || {
+                trigger = ui::dropdown_menu_trigger(state, || ui::button("Open"));
+            });
+        });
+        let action = ui::dropdown_menu(state, items);
+        y.finish();
+        (trigger, action)
+    }
+    let mut y = yak();
+    let mut state = ui::MenuState::default();
+    let mut items: Vec<_> = (0..10)
+        .map(|id| ui::MenuItem::action(id, format!("Command {id}")))
+        .collect();
+    let (trigger, _) = frame(&mut y, &mut state, &mut items);
+    click(&mut y, trigger.id.unwrap());
+    for _ in 0..3 {
+        frame(&mut y, &mut state, &mut items);
+    }
+    let rows = menu_rows(&y);
+    let trigger = y.layout_dom().get(trigger.id.unwrap()).unwrap().rect;
+    assert!(rows[9].max().y < trigger.pos().y);
+    y.handle_event(Event::CursorMoved(Some(rows[4].center())));
+    for down in [true, false] {
+        y.handle_event(Event::MouseButtonChanged {
+            button: MouseButton::One,
+            down,
+        });
+    }
+    assert_eq!(frame(&mut y, &mut state, &mut items).1, Some(4));
+    assert_eq!(frame(&mut y, &mut state, &mut items).1, None);
+    assert!(!state.popup.open);
 }

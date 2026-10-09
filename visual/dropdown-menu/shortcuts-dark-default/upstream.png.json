@@ -1,0 +1,15 @@
+{
+  "example": "dropdown-menu-shortcuts",
+  "theme": "dark",
+  "state": "default",
+  "keys": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 471.453125,
+    "y": 384,
+    "width": 57.09375,
+    "height": 32
+  }
+}

@@ -55,7 +55,7 @@ pub use overlay::*;
 pub use theme::*;
 pub use yakui::{Color, Vec2};
 
-/// Load the bundled OFL Geist family into this Yakui instance.
+/// Load bundled OFL Geist and Noto symbol fallback into this instance.
 /// Call once per instance, before the first UI frame.
 pub fn add_fonts(yak: &mut yakui::Yakui) {
     use std::sync::Arc;
@@ -66,6 +66,7 @@ pub fn add_fonts(yak: &mut yakui::Yakui) {
         include_bytes!("../fonts/Geist-Medium.ttf").as_slice(),
         include_bytes!("../fonts/Geist-Bold.ttf").as_slice(),
         include_bytes!("../fonts/Geist-Light.ttf").as_slice(),
+        include_bytes!("../fonts/NotoSansSymbols2-Regular.ttf").as_slice(),
     ] {
         fonts.load_font_source(Source::Binary(Arc::new(bytes)));
     }

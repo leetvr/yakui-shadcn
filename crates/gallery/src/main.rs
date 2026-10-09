@@ -1,4 +1,5 @@
 //! Native window and deterministic headless captures share exactly the same example tree.
+mod dropdown;
 mod examples;
 mod showcases;
 use serde::Deserialize;
@@ -33,6 +34,7 @@ struct Options {
     height: u32,
     isolated: bool,
     state: String,
+    keys: Vec<yakui::input::KeyCode>,
 }
 impl Default for Options {
     fn default() -> Self {
@@ -46,6 +48,7 @@ impl Default for Options {
             height: 800,
             isolated: false,
             state: "default".into(),
+            keys: Vec::new(),
         }
     }
 }
@@ -55,7 +58,7 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
     while let Some(arg) = args.next() {
         if arg == "--help" {
             println!(
-                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected|open] [--width 1200] [--height 800] [--isolated] [--screenshot PATH]\ngallery --list\ngallery --showcase dashboard|settings|checkout [--theme dark] [--screenshot PATH]"
+                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected|open] [--keys Tab,ArrowDown,Enter] [--width 1200] [--height 800] [--isolated] [--screenshot PATH]\ngallery --list\ngallery --showcase dashboard|settings|checkout [--theme dark] [--screenshot PATH]"
             );
             return Ok(None);
         }
@@ -87,8 +90,17 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
                 }
             }
             "--state" => options.state = value,
+            "--keys" => {
+                options.keys = value
+                    .split(',')
+                    .map(capture_key)
+                    .collect::<Result<_, _>>()?
+            }
             _ => return Err(format!("Unknown option {arg}").into()),
         }
+    }
+    if !options.keys.is_empty() && options.screenshot.is_none() {
+        return Err("--keys requires --screenshot".into());
     }
     if options
         .showcase
@@ -440,6 +452,24 @@ fn new_yak() -> yakui::Yakui {
     ui::add_fonts(&mut yak);
     yak
 }
+fn capture_key(name: &str) -> Result<yakui::input::KeyCode, Box<dyn Error>> {
+    use yakui::input::KeyCode::*;
+    Ok(match name {
+        "Tab" => Tab,
+        "ArrowDown" => ArrowDown,
+        "ArrowUp" => ArrowUp,
+        "ArrowLeft" => ArrowLeft,
+        "ArrowRight" => ArrowRight,
+        "Home" => Home,
+        "End" => End,
+        "Enter" => Enter,
+        "Space" => Space,
+        "Escape" => Escape,
+        "Backspace" => Backspace,
+        "Delete" => Delete,
+        _ => return Err(format!("Unsupported capture key {name}").into()),
+    })
+}
 fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
     let mut yak = new_yak();
     yak.set_surface_size(gallery.viewport);
@@ -495,6 +525,22 @@ fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
     }
     if gallery.options.state == "open" && !gallery.state.is_open(&gallery.options.component) {
         return Err("The actual trigger interaction did not open this overlay".into());
+    }
+    for key in gallery.options.keys.clone() {
+        for down in [true, false] {
+            yak.handle_event(yakui::event::Event::KeyChanged {
+                key,
+                down,
+                modifiers: None,
+            });
+        }
+        // Consume each real event before the next key: submenu creation and
+        // deferred focus must finish their frame before navigation continues.
+        for _ in 0..3 {
+            yak.start();
+            gallery.render();
+            yak.finish();
+        }
     }
     if let Some(parent) = path.parent().filter(|p| !p.as_os_str().is_empty()) {
         std::fs::create_dir_all(parent)?;

@@ -163,3 +163,47 @@ fn modal_tab_wraps_inside_and_editor_escape_dismisses() {
     drop(build);
     assert!(!state.open);
 }
+
+#[test]
+fn modal_pointer_controls_activate_before_the_backdrop_and_outside_dismisses() {
+    fn build(y: &mut Yakui, state: &mut ui::OverlayState, saved: &mut u32) -> ui::ControlResponse {
+        y.start();
+        let mut save = ui::ControlResponse::default();
+        ui::dialog(state, |_| {
+            save = ui::button("Save");
+            if save.clicked {
+                *saved += 1;
+            }
+            ui::text("Editable content");
+        });
+        y.finish();
+        save
+    }
+    let mut y = yak();
+    let mut state = ui::OverlayState::default();
+    state.open = true;
+    let mut saved = 0;
+    let save = build(&mut y, &mut state, &mut saved);
+    let rect = y.layout_dom().get(save.id.unwrap()).unwrap().rect;
+    y.handle_event(Event::CursorMoved(Some(rect.center())));
+    for down in [true, false] {
+        y.handle_event(Event::MouseButtonChanged {
+            button: MouseButton::One,
+            down,
+        });
+    }
+    build(&mut y, &mut state, &mut saved);
+    build(&mut y, &mut state, &mut saved);
+    assert_eq!(saved, 1);
+    assert!(state.open);
+    y.handle_event(Event::CursorMoved(Some(Vec2::new(10., 10.))));
+    for down in [true, false] {
+        y.handle_event(Event::MouseButtonChanged {
+            button: MouseButton::One,
+            down,
+        });
+    }
+    build(&mut y, &mut state, &mut saved);
+    assert!(!state.open);
+    assert_eq!(saved, 1);
+}

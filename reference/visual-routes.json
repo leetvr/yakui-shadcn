@@ -177,5 +177,115 @@
       "default",
       "open"
     ]
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "default",
+      "basic",
+      "icons",
+      "shortcuts",
+      "checkboxes",
+      "checkboxes-icons",
+      "radio-group",
+      "radio-icons",
+      "destructive",
+      "submenu",
+      "complex"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "submenu"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "submenu"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,Escape"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "checkboxes"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,Enter"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "radio-group"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,Enter"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "complex"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "complex"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "complex"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "destructive"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowDown"
   }
 ]

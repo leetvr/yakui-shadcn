@@ -93,6 +93,7 @@ pub struct ExampleState {
     pub last_table_action: Option<(usize, u64)>,
     pub menubar: ui::MenubarState,
     pub menu_items: Vec<ui::MenuItem>,
+    pub dropdown: crate::dropdown::DropdownExample,
     pub values: [f64; 2],
     pub ratio: f32,
     pub carousel: ui::CarouselState,
@@ -211,10 +212,8 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             }
         }
         "dropdown-menu" => {
-            state.trigger = Button::new("Open").variant(V::Outline).show();
-            if state.trigger.clicked {
-                state.menu.open_from(state.trigger);
-            }
+            state.trigger =
+                crate::dropdown::trigger(variant, &mut state.dropdown, &mut state.menu, disabled);
         }
         "context-menu" => ui::context_menu_target(&mut state.menu, || {
             ui::surface(
@@ -899,6 +898,7 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "table",
         ],
         "table" => &["default", "footer", "actions"],
+        "dropdown-menu" => crate::dropdown::VARIANTS,
         "typography" => &["default", "icons"],
         "switch" => &[
             "default",
@@ -1029,7 +1029,14 @@ pub fn overlays(component: &str, variant: &str, state: &mut ExampleState) {
             &mut state.select,
             &["Next.js", "SvelteKit", "Nuxt", "Remix", "Astro"],
         ),
-        "dropdown-menu" | "context-menu" => {
+        "dropdown-menu" => {
+            if let Some(id) =
+                crate::dropdown::content(variant, &mut state.dropdown, &mut state.menu)
+            {
+                state.count = id as u32;
+            }
+        }
+        "context-menu" => {
             if let Some(id) = ui::dropdown_menu(&mut state.menu, &mut state.menu_items) {
                 state.count = id as u32;
             }
@@ -1097,6 +1104,7 @@ impl Default for ExampleState {
             data_table: Default::default(),
             select: Default::default(),
             menu: Default::default(),
+            dropdown: Default::default(),
             row_actions: Default::default(),
             last_table_action: None,
             menubar: Default::default(),

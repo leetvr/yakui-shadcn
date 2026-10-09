@@ -26,10 +26,13 @@ Capture states: `default`, `hover`, `focus`, `disabled`, `selected`, `open`.
 `open` clicks the actual isolated example trigger and checks popup state; use
 `--isolated` for reproducible trigger captures. Unknown/unported
 routes return errors. A normal gallery shows all 65 catalogue entries with their
-current native variants. Every implementation remains subject to the full upstream
-example and behavioural audit. `--isolated` matches the upstream preview
+current native variants. The current target is internal work and prototypes, with English examples.
+The inventory records remaining upstream examples and differences. `--isolated` matches the upstream preview
 viewport without gallery navigation. On macOS the screenshot process needs access
-to Metal; a sandbox without GPU access cannot capture.
+to Metal; a sandbox without GPU access cannot capture. Add `--keys ArrowDown,Enter`
+to send actual key events after the initial state. For example, `--component
+dropdown-menu --variant checkboxes --state open --keys ArrowDown,Enter` opens the
+menu and toggles its first checkbox.
 
 ## Upstream capture and comparison
 

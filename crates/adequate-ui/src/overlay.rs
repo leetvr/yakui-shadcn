@@ -278,6 +278,10 @@ impl Widget for PlacementWidget {
         self.props = props;
     }
     fn layout(&self, mut ctx: LayoutContext<'_>, input: Constraints) -> Vec2 {
+        // Yakui dispatches a layer's children in layout insertion order. Put
+        // content above its earlier backdrop so controls consume pointer events
+        // before the full-window dismissal target, while backdrop paint stays below.
+        ctx.layout.new_layer(ctx.dom);
         let viewport = input.max;
         let side = self.props.edge;
         let width = if matches!(side, Some(Side::Top | Side::Bottom)) {
@@ -485,21 +489,25 @@ struct PopupPlacement {
     point: Option<Vec2>,
     options: PopoverOptions,
     rtl: bool,
+    bounded_to_side: bool,
 }
 #[derive(Debug)]
 struct PopupPlacementWidget {
     props: PopupPlacement,
+    last_height: Cell<f32>,
 }
 impl Widget for PopupPlacementWidget {
     type Props<'a> = PopupPlacement;
     type Response = ();
     fn new() -> Self {
         Self {
+            last_height: Cell::new(0.),
             props: PopupPlacement {
                 anchor: None,
                 point: None,
                 options: PopoverOptions::default(),
                 rtl: false,
+                bounded_to_side: false,
             },
         }
     }
@@ -507,8 +515,11 @@ impl Widget for PopupPlacementWidget {
         self.props = props;
     }
     fn layout(&self, mut ctx: LayoutContext<'_>, input: Constraints) -> Vec2 {
+        // Yakui dispatches a layer's children in layout insertion order. Put
+        // content above its earlier backdrop so controls consume pointer events
+        // before the full-window dismissal target, while backdrop paint stays below.
+        ctx.layout.new_layer(ctx.dom);
         let viewport = input.max;
-        let width = self.props.options.width.min(viewport.x - 16.).max(0.);
         let anchor = self
             .props
             .anchor
@@ -518,16 +529,54 @@ impl Widget for PopupPlacementWidget {
             .props
             .point
             .map_or(anchor, |p| yakui::Rect::from_pos_size(p, Vec2::ZERO));
+        let margin = if self.props.bounded_to_side { 5. } else { 8. };
+        let requested_width = if self.props.options.width > 0. {
+            self.props.options.width
+        } else {
+            anchor.size().x.max(128.)
+        };
+        let width = requested_width.min(viewport.x - 2. * margin).max(0.);
         for &child in &ctx.dom.get_current().children {
+            let mut options = self.props.options;
+            let vertical = matches!(options.side, Side::Top | Side::Bottom);
+            let above = (anchor.pos().y - options.side_offset - margin).max(0.);
+            let below = (viewport.y - anchor.max().y - options.side_offset - margin).max(0.);
+            let (preferred, opposite) = if matches!(options.side, Side::Bottom) {
+                (below, above)
+            } else {
+                (above, below)
+            };
+            let bounded = self.props.bounded_to_side && vertical;
+            let available =
+                if bounded && self.last_height.get() >= preferred && opposite > preferred {
+                    options.side = if matches!(options.side, Side::Bottom) {
+                        Side::Top
+                    } else {
+                        Side::Bottom
+                    };
+                    opposite
+                } else {
+                    preferred
+                };
+            // Use one layout per widget, as required by Yakui. The previous frame's
+            // clipped height tells us whether the preferred side was full. Giving
+            // scrolling content its real viewport on its first pass also preserves
+            // Yakui's focus-reveal event and avoids duplicate pointer registrations.
             let size = ctx.calculate_layout(
                 child,
                 Constraints {
                     min: Vec2::new(width, 0.),
-                    max: Vec2::new(width, (viewport.y - 16.).max(0.)),
+                    max: Vec2::new(
+                        width,
+                        if bounded {
+                            available
+                        } else {
+                            (viewport.y - 2. * margin).max(0.)
+                        },
+                    ),
                 },
             );
-            let options = self.props.options;
-            let vertical = matches!(options.side, Side::Top | Side::Bottom);
+            self.last_height.set(size.y);
             let (start, end, extent) = if vertical {
                 (anchor.pos().x, anchor.max().x, size.x)
             } else {
@@ -562,15 +611,19 @@ impl Widget for PopupPlacementWidget {
                     pos.x = anchor.pos().x - size.x - options.side_offset
                 }
                 Side::Left if pos.x < 8. => pos.x = anchor.max().x + options.side_offset,
-                Side::Bottom if pos.y + size.y > viewport.y - 8. => {
+                Side::Bottom
+                    if !self.props.bounded_to_side && pos.y + size.y > viewport.y - margin =>
+                {
                     pos.y = anchor.pos().y - size.y - options.side_offset
                 }
-                Side::Top if pos.y < 8. => pos.y = anchor.max().y + options.side_offset,
+                Side::Top if !self.props.bounded_to_side && pos.y < margin => {
+                    pos.y = anchor.max().y + options.side_offset
+                }
                 _ => {}
             }
             pos = pos.clamp(
-                Vec2::splat(8.),
-                (viewport - size - Vec2::splat(8.)).max(Vec2::splat(8.)),
+                Vec2::splat(margin),
+                (viewport - size - Vec2::splat(margin)).max(Vec2::splat(margin)),
             );
             ctx.layout.set_pos(child, pos);
         }
@@ -585,6 +638,7 @@ fn popup(
     auto_focus: bool,
     padding: f32,
     radius_scale: f32,
+    bounded_to_side: bool,
     children: impl FnOnce(&mut OverlayState),
 ) {
     if state.dismiss.take() {
@@ -602,6 +656,7 @@ fn popup(
         point: state.anchor_position,
         options,
         rtl: crate::advanced_layout::rtl(),
+        bounded_to_side,
     };
     let t = theme();
     yakui::util::widget_children::<FocusScope, _>(
@@ -678,6 +733,7 @@ pub fn tooltip(trigger: ControlResponse, text: impl Into<String>) {
         false,
         8.,
         1.,
+        false,
         |_| crate::text(text),
     );
 }
@@ -694,6 +750,7 @@ pub fn hover_card(state: &mut OverlayState, width: f32, children: impl FnOnce(&m
         false,
         8.,
         1.,
+        false,
         children,
     )
 }
@@ -724,14 +781,24 @@ pub fn popover_with_options(
     options: PopoverOptions,
     children: impl FnOnce(&mut OverlayState),
 ) {
-    popup(state, options, true, true, 8., 1., children)
+    popup(state, options, true, true, 8., 1., false, children)
 }
 #[track_caller]
 pub(crate) fn menu_popup(
     state: &mut OverlayState,
     options: PopoverOptions,
     auto_focus: bool,
+    dismiss_on_outside: bool,
     children: impl FnOnce(&mut OverlayState),
 ) {
-    popup(state, options, true, auto_focus, 4., 0.8, children)
+    popup(
+        state,
+        options,
+        dismiss_on_outside,
+        auto_focus,
+        4.,
+        0.8,
+        true,
+        children,
+    )
 }

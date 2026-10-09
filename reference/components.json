@@ -4848,7 +4848,8 @@
       "behaviour_tests": [
         "overlay::dialog_autofocus_escape_and_restore_trigger",
         "overlay::dialog_backdrop_dismisses_but_content_does_not",
-        "overlay::modal_tab_wraps_inside_and_editor_escape_dismisses"
+        "overlay::modal_tab_wraps_inside_and_editor_escape_dismisses",
+        "modal_pointer_controls_activate_before_the_backdrop_and_outside_dismisses"
       ],
       "visual_comparisons": [],
       "status": "in_progress",
@@ -5235,7 +5236,17 @@
         "dropdown_menu_with_options"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "basic",
+        "submenu",
+        "shortcuts",
+        "icons",
+        "checkboxes",
+        "checkboxes-icons",
+        "radio-group",
+        "radio-icons",
+        "destructive",
+        "complex"
       ],
       "behaviour_tests": [
         "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
@@ -5243,12 +5254,84 @@
         "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
         "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
         "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
-        "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view"
+        "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+        "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+        "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+        "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+        "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+        "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+        "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
       ],
-      "visual_comparisons": [],
+      "visual_comparisons": [
+        "visual/dropdown-menu/default-light-default",
+        "visual/dropdown-menu/default-light-open",
+        "visual/dropdown-menu/default-dark-default",
+        "visual/dropdown-menu/default-dark-open",
+        "visual/dropdown-menu/default-light-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+        "visual/dropdown-menu/default-dark-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+        "visual/dropdown-menu/basic-light-default",
+        "visual/dropdown-menu/basic-light-open",
+        "visual/dropdown-menu/basic-dark-default",
+        "visual/dropdown-menu/basic-dark-open",
+        "visual/dropdown-menu/submenu-light-default",
+        "visual/dropdown-menu/submenu-light-open",
+        "visual/dropdown-menu/submenu-dark-default",
+        "visual/dropdown-menu/submenu-dark-open",
+        "visual/dropdown-menu/submenu-light-open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight",
+        "visual/dropdown-menu/submenu-dark-open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight",
+        "visual/dropdown-menu/submenu-light-open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,Escape",
+        "visual/dropdown-menu/submenu-dark-open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,Escape",
+        "visual/dropdown-menu/shortcuts-light-default",
+        "visual/dropdown-menu/shortcuts-light-open",
+        "visual/dropdown-menu/shortcuts-dark-default",
+        "visual/dropdown-menu/shortcuts-dark-open",
+        "visual/dropdown-menu/icons-light-default",
+        "visual/dropdown-menu/icons-light-open",
+        "visual/dropdown-menu/icons-dark-default",
+        "visual/dropdown-menu/icons-dark-open",
+        "visual/dropdown-menu/checkboxes-light-default",
+        "visual/dropdown-menu/checkboxes-light-open",
+        "visual/dropdown-menu/checkboxes-dark-default",
+        "visual/dropdown-menu/checkboxes-dark-open",
+        "visual/dropdown-menu/checkboxes-light-open+ArrowDown,Enter",
+        "visual/dropdown-menu/checkboxes-dark-open+ArrowDown,Enter",
+        "visual/dropdown-menu/checkboxes-icons-light-default",
+        "visual/dropdown-menu/checkboxes-icons-light-open",
+        "visual/dropdown-menu/checkboxes-icons-dark-default",
+        "visual/dropdown-menu/checkboxes-icons-dark-open",
+        "visual/dropdown-menu/radio-group-light-default",
+        "visual/dropdown-menu/radio-group-light-open",
+        "visual/dropdown-menu/radio-group-dark-default",
+        "visual/dropdown-menu/radio-group-dark-open",
+        "visual/dropdown-menu/radio-group-light-open+ArrowDown,Enter",
+        "visual/dropdown-menu/radio-group-dark-open+ArrowDown,Enter",
+        "visual/dropdown-menu/radio-icons-light-default",
+        "visual/dropdown-menu/radio-icons-light-open",
+        "visual/dropdown-menu/radio-icons-dark-default",
+        "visual/dropdown-menu/radio-icons-dark-open",
+        "visual/dropdown-menu/destructive-light-default",
+        "visual/dropdown-menu/destructive-light-open",
+        "visual/dropdown-menu/destructive-dark-default",
+        "visual/dropdown-menu/destructive-dark-open",
+        "visual/dropdown-menu/destructive-light-open+ArrowDown,ArrowDown,ArrowDown",
+        "visual/dropdown-menu/destructive-dark-open+ArrowDown,ArrowDown,ArrowDown",
+        "visual/dropdown-menu/complex-light-default",
+        "visual/dropdown-menu/complex-light-open",
+        "visual/dropdown-menu/complex-dark-default",
+        "visual/dropdown-menu/complex-dark-open",
+        "visual/dropdown-menu/complex-light-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+        "visual/dropdown-menu/complex-dark-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+        "visual/dropdown-menu/complex-light-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter",
+        "visual/dropdown-menu/complex-dark-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter",
+        "visual/dropdown-menu/complex-light-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter",
+        "visual/dropdown-menu/complex-dark-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter"
+      ],
       "status": "in_progress",
       "deviations": [
-        "Keyboard/typeahead/check/radio/submenu basics exist; full groups, positioning and documented previews pending."
+        "Avatar trigger and English directional preview remain unported.",
+        "Popup uses opaque native surfaces; backdrop blur, saturation, soft shadow, hover delay/transit and motion differ from upstream.",
+        "Typography and single-sample icon edges differ; targeted comparisons are retained without exhaustive parity certification.",
+        "Native keyboard scroll reveal and placement of large nested menus can differ from the source harness."
       ],
       "example_coverage": [
         {
@@ -5261,10 +5344,60 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "default",
+          "behaviour_tests": [
+            "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+            "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+            "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+            "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+            "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+            "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+            "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+            "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+            "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+            "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/default-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/default-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/default-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/default-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+              "path": "visual/dropdown-menu/default-light-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+              "path": "visual/dropdown-menu/default-dark-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5277,10 +5410,48 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "basic",
+          "behaviour_tests": [
+            "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+            "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+            "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+            "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+            "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+            "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+            "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+            "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+            "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+            "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/basic-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/basic-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/basic-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/basic-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5293,10 +5464,72 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "submenu",
+          "behaviour_tests": [
+            "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+            "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+            "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+            "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+            "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+            "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+            "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+            "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+            "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+            "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/submenu-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/submenu-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/submenu-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/submenu-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight",
+              "path": "visual/dropdown-menu/submenu-light-open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight",
+              "path": "visual/dropdown-menu/submenu-dark-open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,Escape",
+              "path": "visual/dropdown-menu/submenu-light-open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,Escape",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,Escape",
+              "path": "visual/dropdown-menu/submenu-dark-open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,Escape",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5309,10 +5542,48 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "shortcuts",
+          "behaviour_tests": [
+            "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+            "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+            "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+            "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+            "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+            "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+            "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+            "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+            "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+            "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/shortcuts-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/shortcuts-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/shortcuts-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/shortcuts-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5326,10 +5597,48 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "icons",
+          "behaviour_tests": [
+            "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+            "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+            "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+            "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+            "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+            "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+            "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+            "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+            "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+            "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/icons-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/icons-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/icons-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/icons-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5343,10 +5652,60 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "checkboxes",
+          "behaviour_tests": [
+            "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+            "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+            "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+            "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+            "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+            "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+            "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+            "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+            "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+            "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/checkboxes-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/checkboxes-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/checkboxes-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/checkboxes-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+ArrowDown,Enter",
+              "path": "visual/dropdown-menu/checkboxes-light-open+ArrowDown,Enter",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+ArrowDown,Enter",
+              "path": "visual/dropdown-menu/checkboxes-dark-open+ArrowDown,Enter",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5361,10 +5720,48 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "checkboxes-icons",
+          "behaviour_tests": [
+            "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+            "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+            "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+            "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+            "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+            "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+            "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+            "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+            "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+            "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/checkboxes-icons-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/checkboxes-icons-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/checkboxes-icons-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/checkboxes-icons-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5378,10 +5775,60 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "radio-group",
+          "behaviour_tests": [
+            "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+            "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+            "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+            "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+            "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+            "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+            "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+            "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+            "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+            "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/radio-group-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/radio-group-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/radio-group-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/radio-group-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+ArrowDown,Enter",
+              "path": "visual/dropdown-menu/radio-group-light-open+ArrowDown,Enter",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+ArrowDown,Enter",
+              "path": "visual/dropdown-menu/radio-group-dark-open+ArrowDown,Enter",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5396,10 +5843,48 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "radio-icons",
+          "behaviour_tests": [
+            "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+            "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+            "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+            "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+            "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+            "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+            "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+            "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+            "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+            "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/radio-icons-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/radio-icons-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/radio-icons-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/radio-icons-dark-open",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5413,10 +5898,60 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "destructive",
+          "behaviour_tests": [
+            "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+            "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+            "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+            "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+            "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+            "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+            "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+            "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+            "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+            "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/destructive-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/destructive-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/destructive-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/destructive-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+ArrowDown,ArrowDown,ArrowDown",
+              "path": "visual/dropdown-menu/destructive-light-open+ArrowDown,ArrowDown,ArrowDown",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+ArrowDown,ArrowDown,ArrowDown",
+              "path": "visual/dropdown-menu/destructive-dark-open+ArrowDown,ArrowDown,ArrowDown",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5449,10 +5984,84 @@
             "@/styles/base-nova/ui/button",
             "@/styles/base-nova/ui/dropdown-menu"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "complex",
+          "behaviour_tests": [
+            "selection::menu_skips_disabled_and_toggles_caller_owned_checks",
+            "pointer_open_focuses_popup_without_selecting_a_row_and_down_enters_first_item",
+            "keyboard_up_opens_at_last_enabled_item_and_popup_aligns_to_trigger_end",
+            "popup_pointer_focus_escape_and_typeahead_skip_disabled_items",
+            "checkbox_and_radio_items_keep_the_popup_open_and_write_selection",
+            "long_menu_keyboard_navigation_keeps_the_highlighted_row_in_view",
+            "nested_menu_measures_its_own_width_and_returns_deep_action_then_restores_root",
+            "submenu_escape_returns_to_parent_and_pointer_can_activate_another_root_item",
+            "narrow_menu_wraps_text_between_leading_icon_and_trailing_check",
+            "bottom_anchored_menu_flips_and_pointer_activation_is_consumed_once",
+            "complex_dropdown_updates_shared_source_notifications_from_actual_menu_activation",
+            "checkbox_dropdown_skips_disabled_activity_bar_and_retains_checked_state"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/dropdown-menu/complex-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/dropdown-menu/complex-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/dropdown-menu/complex-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/dropdown-menu/complex-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+              "path": "visual/dropdown-menu/complex-light-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+              "path": "visual/dropdown-menu/complex-dark-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter",
+              "path": "visual/dropdown-menu/complex-light-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter",
+              "path": "visual/dropdown-menu/complex-dark-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter",
+              "path": "visual/dropdown-menu/complex-light-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter",
+              "path": "visual/dropdown-menu/complex-dark-open+ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {

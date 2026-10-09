@@ -425,7 +425,10 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
                     if matches!(command,Some(MenuCommand::Open(i)) if i==index) {
                         output.submenu = Some((index, res));
                     }
-                    let active = res.focused || res.hovering;
+                    let active = res.focused
+                        || res.hovering
+                        || yakui::util::read_scope::<MenuOpenItem>()
+                            .is_some_and(|open| open.0 == Some(index));
                     let fill = if active && translucent {
                         t.foreground.with_alpha(0.1)
                     } else if active && item.destructive {
@@ -454,16 +457,19 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
                     crate::surface(fill, None, t.radius * 0.6, 0., || {
                         yakui::util::widget_children::<MenuRow, _>(
                             || {
-                                crate::row(6., || {
-                                    if let Some(icon) = item.icon {
-                                        crate::icon_colored(icon, 16., color);
-                                    }
-                                    yakui::widgets::RenderText::with_style(
-                                        &item.label,
-                                        t.text_style(14., color, 400),
-                                    )
-                                    .show();
-                                });
+                                yakui::util::widget_children::<MenuLeading, _>(
+                                    || {
+                                        if let Some(icon) = item.icon {
+                                            crate::icon_colored(icon, 16., color);
+                                        }
+                                        yakui::widgets::RenderText::with_style(
+                                            &item.label,
+                                            t.text_style(14., color, 400),
+                                        )
+                                        .show();
+                                    },
+                                    item.icon.is_some(),
+                                );
                                 if indicator {
                                     crate::size(crate::Vec2::splat(16.), || {
                                         if matches!(
@@ -481,6 +487,9 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
                                         400,
                                     );
                                     style.line_height_override = Some(16.);
+                                    style.attrs = yakui::cosmic_text::AttrsOwned::new(
+                                        &style.attrs.as_attrs().letter_spacing(0.1),
+                                    );
                                     yakui::widgets::RenderText::with_style(shortcut, style).show();
                                 } else if matches!(item.kind, MenuKind::Submenu(_)) {
                                     crate::icon_colored(crate::Icon::ChevronRight, 16., color);
@@ -518,9 +527,61 @@ fn menu_list(items: &mut [MenuItem], width: f32, external: Option<MenuContext>) 
 pub fn dropdown_menu(state: &mut MenuState, items: &mut [MenuItem]) -> Option<u64> {
     dropdown_menu_with_options(state, items, MenuOptions::default())
 }
+fn natural_menu_width(items: &[MenuItem], minimum: f32) -> f32 {
+    let t = theme();
+    let fonts = context::dom().get_global_or_init(yakui::font::Fonts::default);
+    fonts.with_system(|system| {
+        let mut buffer =
+            yakui::cosmic_text::Buffer::new(system, yakui::cosmic_text::Metrics::new(14., 20.));
+        let mut measure = |text: &str, size: f32, weight: u16, tracking: f32| {
+            let style = t.text_style(size, t.popover_foreground, weight);
+            buffer.set_metrics_and_size(system, style.to_metrics(1.), None, None);
+            buffer.set_text(
+                system,
+                text,
+                &style.attrs.as_attrs().letter_spacing(tracking),
+                yakui::cosmic_text::Shaping::Advanced,
+                None,
+            );
+            buffer.shape_until_scroll(system, true);
+            buffer
+                .layout_runs()
+                .map(|run| run.line_w)
+                .fold(0., f32::max)
+        };
+        let mut width = minimum;
+        // The child popup has its own intrinsic width, independent of the root's
+        // explicit width. Measure using Yakui's actual font system so long labels,
+        // icons and shortcuts fit without a second text renderer or guessed widths.
+        for item in items {
+            if matches!(item.kind, MenuKind::Separator) {
+                continue;
+            }
+            let label = matches!(item.kind, MenuKind::Label);
+            let leading = measure(
+                &item.label,
+                if label { 12. } else { 14. },
+                if label { 500 } else { 400 },
+                0.,
+            ) + if item.icon.is_some() { 22. } else { 0. };
+            let reserved = if matches!(item.kind, MenuKind::Checkbox(_) | MenuKind::Radio { .. }) {
+                32.
+            } else if let Some(shortcut) = &item.shortcut {
+                12. + measure(shortcut, 12., 400, 0.1)
+            } else if matches!(item.kind, MenuKind::Submenu(_)) {
+                28.
+            } else {
+                6.
+            };
+            width = width.max(8. + if item.inset { 28. } else { 6. } + leading + reserved);
+        }
+        width.ceil()
+    })
+}
 /// Menu placement and width; item geometry follows the scoped Nova tokens.
 #[derive(Debug, Clone, Copy)]
 pub struct MenuOptions {
+    /// Explicit outer width. Zero uses the trigger width with a 128px minimum.
     pub width: f32,
     pub side: crate::Side,
     pub align: crate::PopoverAlign,
@@ -530,7 +591,7 @@ pub struct MenuOptions {
 impl Default for MenuOptions {
     fn default() -> Self {
         Self {
-            width: 224.,
+            width: 0.,
             side: crate::Side::Bottom,
             align: crate::PopoverAlign::Start,
             side_offset: 4.,
@@ -545,6 +606,7 @@ pub fn dropdown_menu_with_options(
     options: MenuOptions,
 ) -> Option<u64> {
     let pending_focus = state.pending_focus.take();
+    let open_index = state.path.first().copied();
     let mut result = LevelResponse::default();
     crate::overlay::menu_popup(
         &mut state.popup,
@@ -556,10 +618,15 @@ pub fn dropdown_menu_with_options(
             align_offset: options.align_offset,
         },
         false,
+        true,
         |overlay| {
             result = menu_root(
                 items,
-                (options.width - 8.).max(0.),
+                if options.width > 0. {
+                    (options.width - 8.).max(0.)
+                } else {
+                    0.
+                },
                 if state.pointer_open {
                     MenuInitialFocus::Pointer
                 } else {
@@ -567,12 +634,17 @@ pub fn dropdown_menu_with_options(
                 },
                 pending_focus,
                 false,
+                open_index,
             );
             if result.action.is_some() && result.close_on_select {
                 overlay.close();
             }
         },
     );
+    if !state.popup.open {
+        state.close();
+        return result.action;
+    }
     if result.close_submenus {
         state.path.clear();
         state.submenus.clear();
@@ -601,20 +673,23 @@ pub fn dropdown_menu_with_options(
             break;
         };
         let mut result = LevelResponse::default();
+        let width = natural_menu_width(nested, 96.);
+        let open_index = state.path.get(depth + 1).copied();
         crate::overlay::menu_popup(
             overlay,
             crate::PopoverOptions {
-                width: options.width,
+                width,
                 side: crate::Side::Right,
                 align_offset: -3.,
                 side_offset: 0.,
                 ..Default::default()
             },
             false,
+            false,
             |overlay| {
                 result = menu_root(
                     nested,
-                    (options.width - 8.).max(0.),
+                    (width - 8.).max(0.),
                     if state.sub_pointer.get(depth).copied().unwrap_or(false) {
                         MenuInitialFocus::Pointer
                     } else {
@@ -622,12 +697,19 @@ pub fn dropdown_menu_with_options(
                     },
                     None,
                     true,
+                    open_index,
                 );
                 if result.action.is_some() && result.close_on_select {
                     overlay.close();
                 }
             },
         );
+        if !overlay.open && result.action.is_none() {
+            state.path.truncate(depth);
+            state.submenus.truncate(depth);
+            state.sub_pointer.truncate(depth);
+            break;
+        }
         if result.close_submenus {
             state.path.truncate(depth + 1);
             state.submenus.truncate(depth + 1);
@@ -662,6 +744,47 @@ pub struct SelectState {
     pub query: String,
 }
 
+#[derive(Debug)]
+struct MenuLeading(bool);
+impl Widget for MenuLeading {
+    type Props<'a> = bool;
+    type Response = ();
+    fn new() -> Self {
+        Self(false)
+    }
+    fn update(&mut self, icon: bool) {
+        self.0 = icon;
+    }
+    fn layout(&self, mut ctx: LayoutContext<'_>, constraints: yakui::Constraints) -> crate::Vec2 {
+        let children = &ctx.dom.get_current().children;
+        let icon = if self.0 {
+            ctx.calculate_layout(
+                children[0],
+                yakui::Constraints::loose(crate::Vec2::splat(16.)),
+            )
+        } else {
+            crate::Vec2::ZERO
+        };
+        let offset = if self.0 { icon.x + 6. } else { 0. };
+        let text = ctx.calculate_layout(
+            children[usize::from(self.0)],
+            yakui::Constraints::loose(crate::Vec2::new(
+                (constraints.max.x - offset).max(0.),
+                constraints.max.y,
+            )),
+        );
+        let size = constraints.constrain(crate::Vec2::new(offset + text.x, icon.y.max(text.y)));
+        if self.0 {
+            ctx.layout
+                .set_pos(children[0], crate::Vec2::new(0., (size.y - icon.y) / 2.));
+        }
+        ctx.layout.set_pos(
+            children[usize::from(self.0)],
+            crate::Vec2::new(offset, (size.y - text.y) / 2.),
+        );
+        size
+    }
+}
 #[derive(Debug, Clone, Copy)]
 struct MenuRowProps {
     width: f32,
@@ -686,7 +809,11 @@ impl Widget for MenuRow {
         self.0 = props;
     }
     fn layout(&self, mut ctx: LayoutContext<'_>, input: yakui::Constraints) -> crate::Vec2 {
-        let width = self.0.width.min(input.max.x);
+        let width = if self.0.width > 0. {
+            self.0.width.min(input.max.x)
+        } else {
+            input.max.x
+        };
         let left_padding = if self.0.inset { 28. } else { 6. };
         let right_padding = if self.0.indicator { 8. } else { 6. };
         let children = &ctx.dom.get_current().children;
@@ -743,21 +870,49 @@ fn menu_separator(width: f32) {
         } else {
             t.border
         });
-    crate::size(crate::Vec2::new(width, 9.), || {
-        yakui::widgets::Canvas::new(move |ctx| {
-            let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
-            let mut line = yakui::paint::PaintRect::new(yakui::Rect::from_pos_size(
-                rect.pos() + crate::Vec2::new(-4., 4.),
-                crate::Vec2::new(rect.size().x + 8., 1.),
-            ));
-            line.color = color;
-            line.add(ctx.paint);
-        })
-        .show();
-    });
+    yakui::util::widget::<MenuSeparator>((width, color));
 }
 #[derive(Debug)]
+struct MenuSeparator {
+    width: f32,
+    color: Color,
+}
+impl Widget for MenuSeparator {
+    type Props<'a> = (f32, Color);
+    type Response = ();
+    fn new() -> Self {
+        Self {
+            width: 0.,
+            color: Color::CLEAR,
+        }
+    }
+    fn update(&mut self, (width, color): Self::Props<'_>) {
+        self.width = width;
+        self.color = color;
+    }
+    fn layout(&self, _: LayoutContext<'_>, constraints: yakui::Constraints) -> crate::Vec2 {
+        let width = if self.width > 0. {
+            self.width.min(constraints.max.x)
+        } else {
+            constraints.max.x
+        };
+        constraints.constrain(crate::Vec2::new(width, 9.))
+    }
+    fn paint(&self, ctx: PaintContext<'_>) {
+        let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
+        let mut line = yakui::paint::PaintRect::new(yakui::Rect::from_pos_size(
+            rect.pos() + crate::Vec2::new(-4., 4.),
+            crate::Vec2::new(rect.size().x + 8., 1.),
+        ));
+        line.color = self.color;
+        line.add(ctx.paint);
+    }
+}
+
+#[derive(Debug)]
 struct MenuRootLevel(bool);
+#[derive(Debug)]
+struct MenuOpenItem(Option<usize>);
 #[derive(Debug)]
 struct MenuTranslucent;
 #[derive(Debug)]
@@ -838,8 +993,8 @@ impl Widget for MenuRoot {
         {
             let ids = props.context.ids.borrow();
             let target = match key {
-                KeyCode::ArrowDown | KeyCode::Home => ids.first(),
-                KeyCode::ArrowUp | KeyCode::End => ids.last(),
+                KeyCode::ArrowDown => ids.first(),
+                KeyCode::ArrowUp => ids.last(),
                 _ => None,
             };
             if let Some((_, target, _)) = target {
@@ -893,6 +1048,7 @@ fn menu_root(
     initial: MenuInitialFocus,
     requested: Option<MenuInitialFocus>,
     submenu: bool,
+    open_index: Option<usize>,
 ) -> LevelResponse {
     with_menu_context(None, |group| {
         let mut result = LevelResponse::default();
@@ -901,7 +1057,8 @@ fn menu_root(
                 yakui::widgets::Scrollable::vertical().show(|| {
                     Scope::new(MenuTranslucent).show(|| {
                         Scope::new(MenuRootLevel(submenu)).show(|| {
-                            result = menu_list(items, width, Some(group.clone()));
+                            Scope::new(MenuOpenItem(open_index))
+                                .show(|| result = menu_list(items, width, Some(group.clone())));
                         });
                     });
                 });

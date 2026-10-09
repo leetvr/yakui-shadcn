@@ -26,6 +26,7 @@ The radius scale is upstream's multiplicative scale: small 0.6, medium 0.8, larg
 1.0, extra large 1.4. Semantic translucent surfaces are composited in sRGB against
 the enclosing surface so their colours match CSS on both linear game renderers.
 
-Call `ui::add_fonts(&mut yak)` once. To use another family, load its font bytes into
+Call `ui::add_fonts(&mut yak)` once to load Geist and the OFL Noto symbol fallback
+for shortcuts such as ⌘ and ⇧. Font assets and source hashes are bundled. To use another family, load its font bytes into
 Yakui's `font::Fonts` and set `font_family` to the font's internal family name.
 Applications choose the renderer and UI scale through Yakui itself.

@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00237875,
+  "content_bounds": [
+    463,
+    384,
+    593,
+    525
+  ],
+  "content_rgb_rmse": 17.712435438358803,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.12288208333333334,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/destructive-light-open/native.png",
+  "pixels_differing_by_more_than_16": 1903,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/destructive-light-open/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 2.685384438648093,
+  "width": 1000
+}

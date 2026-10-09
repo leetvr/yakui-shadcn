@@ -1,9 +1,14 @@
 # Adequate UI port progress
 
-The objective remains the **complete** native port. The repository now contains a
-broad working first pass, not a production-complete port. No component is declared
-complete. Public API presence and successful rendering do not establish example,
-variant or behavioural parity.
+The target is a native port suitable for Kane's internal work and prototypes.
+Prioritize usable catalogue coverage, common interactions, simple public APIs and
+real screen compositions. Visual checks should catch obvious layout/style defects;
+exhaustive browser parity, rare edge cases and production certification are not
+required. Gallery/example text is English. Do not pursue translated demonstrations.
+
+The repository contains a broad working first pass. The inventory separately tracks
+upstream example coverage; API presence does not imply every source preview has
+been ported. No component is certified as having exhaustive upstream parity.
 
 ## Pinned specification
 
@@ -43,10 +48,10 @@ initial public APIs and native routes. Current behaviour includes:
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All three consuming examples compile.
-- 51 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
-- 109 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **256 captures,
+- 59 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
+- 119 native variant routes × two themes, plus six showcase captures and 52 actual-trigger overlay captures: **296 captures,
   zero failures** in the latest full smoke run.
-- The configured upstream suite covers 30 actual previews: **148 comparison pairs**
+- The configured upstream suite covers 41 actual previews: **210 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
   used to find and correct concrete layout/painting defects, not to certify parity.
 - Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
@@ -60,9 +65,8 @@ focused layout tests cover the radio/progress/button regressions.
 ## Required work still outstanding
 
 `reference/components.json` records component-specific deviations and every upstream
-preview separately. Only 30 of 461 previews currently have paired captures. The
-remaining previews must be studied, implemented and compared, not mapped to a
-generic default rendition. Important incomplete areas include:
+preview separately. 41 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
+do not map an unported preview to a generic default rendition. Important incomplete areas include:
 
 - Complete documented slots, sizes, disabled/invalid states and compositions.
 - Rich navigation flyouts, joined button/input groups, grouped/multiple autocomplete,
@@ -70,8 +74,8 @@ generic default rendition. Important incomplete areas include:
 - Drawer drag physics, overlay motion/shadows/delays, tooltip/hover-card pointer transit.
 - Calendar caption dropdowns/locales/presets/week numbers; complete data table cells,
   row actions/reordering; complete chart interpolation/axes/tooltips and preview kinds.
-- Image/video/texture APIs, full icon fidelity, avatar groups/status and chat reactions.
-- Complete sidebar variants, layouts, native accessibility audit and bidi/RTL audit.
+- Image/video/texture APIs, avatar groups/status and chat reactions.
+- Complete useful sidebar variants/layouts and common keyboard interactions.
 - Full screenshot/interaction coverage for every component and each upstream preview.
 - Final consuming-application, performance and normal-usage audit.
 
@@ -180,3 +184,29 @@ A real Yakui paint test checks the full grid's indices and finite geometry.
 Single-sample capture edges remain visibly less smooth than browser SVG edges.
 All 51 tests pass, and 256 native captures have zero failures. No component was
 certified complete.
+
+## Documented dropdown composition increment
+
+Ported eleven genuine dropdown previews using public MenuItem trees and native
+triggers: default, basic, submenu, shortcuts, icons, checkboxes, checkboxes-icons,
+radio-group, radio-icons, destructive and complex. The complex preview's duplicate
+notification entries share application booleans. Child popups size from actual
+Yakui font measurements; narrow rows wrap between icon and selection indicator.
+Root menus use the anchor width by default and scroll within the available side.
+
+Popup content now paints and receives pointer input above its backdrop. Child
+menus share the root outside-dismiss target. Escape closes one child level and
+returns to its trigger; ordinary actions close the whole menu. Expanded parent
+rows retain their highlighted appearance. Eight additional actual-system tests
+bring the total to 59; 296 full-suite native captures and 32 targeted native menu
+checks pass. Source comparisons include common arrow paths, nested levels, retained
+checks/radios and shared notifications. There are 210 component comparison pairs
+covering 41 previews, plus the separate icon diagnostic.
+
+`--keys` scripts actual input on both screenshot renderers and records the path.
+The bundled OFL Noto Symbols 2 fallback supplies English shortcut symbols; fonts
+and licence hashes are reproducible through tools/fetch_fonts.py. Arabic/Hebrew
+assets were removed following Kane's English-only decision. Native keyboard
+scroll reveal and large nested popup positions can differ from the source harness;
+blur, soft shadows, motion and hover transit remain intentional deferred polish
+for the internal/prototype target. Avatar triggers remain the next useful gap.

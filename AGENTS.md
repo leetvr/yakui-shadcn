@@ -28,7 +28,9 @@ The public library depends on no renderer; games can paint it with Yakui/Vulkan.
 
 # Working on this repository
 
-The complete port is unfinished. Consult PROGRESS.md and reference/components.json;
+The target is English interfaces for internal work and prototypes. Prioritize
+useful component coverage and common interactions; avoid exhaustive edge-case
+work and browser-parity certification. Consult PROGRESS.md and reference/components.json;
 do not infer completion from a public function or a gallery screenshot. Study pinned
 Base UI source, Nova styles and actual examples before implementing a component.
 Use the gallery and real input cycles; do not substitute static imagery.

@@ -1,0 +1,18 @@
+{
+  "example": "dropdown-menu-checkboxes",
+  "theme": "light",
+  "state": "open",
+  "keys": [
+    "ArrowDown",
+    "Enter"
+  ],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": -1,
+    "y": -1,
+    "width": 1,
+    "height": 1
+  }
+}

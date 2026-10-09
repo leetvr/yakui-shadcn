@@ -199,3 +199,11 @@ Use `ui::icon(ui::Icon::Settings, 16.)` for the pinned Lucide vocabulary.
 `Icon::ALL` lists the 137 assets used by upstream examples; `Icon::name()` returns
 the source name. `icon_colored` takes an application colour. The library paints
 vectors directly; it has no runtime SVG or browser dependency.
+
+Dropdowns use their trigger width with a 128px minimum by default. Set
+`MenuOptions.width` for a fixed popup width; child menus size themselves from
+their actual text, icons and shortcuts. `MenuItem::submenu` owns its child items,
+while checkbox/radio values live in the caller's item tree. Actions return a
+stable ID; use that ID to mutate application state. Root and child menus scroll
+and reveal the keyboard selection. English shortcut symbols have a bundled font
+fallback.
