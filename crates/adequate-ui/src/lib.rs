@@ -48,6 +48,8 @@ mod interaction;
 mod layout;
 mod lucide_icons;
 mod navigation;
+mod navigation_menu;
+pub use navigation_menu::*;
 mod overlay;
 mod theme;
 pub use navigation::*;

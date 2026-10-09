@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-10-09T11:14:53.603348+00:00",
+  "recorded_at": "2026-10-09T11:28:45.225923+00:00",
   "upstream": {
     "shadcn": {
       "repository": "https://github.com/shadcn-ui/ui",
@@ -20,19 +20,19 @@
   "upstream_previews": 461,
   "certified_complete_components": 0,
   "automated_tests": {
-    "count": 65,
+    "count": 67,
     "result": "passed",
     "command": "cargo test --workspace"
   },
   "native_smoke": {
-    "captures": 352,
+    "captures": 354,
     "failures": 0,
     "includes_actual_trigger_opening": true,
     "command": "python3 tools/verify_gallery.py --all-variants --showcases --open-overlays"
   },
   "upstream_comparisons": {
-    "pairs": 284,
-    "previews": 67,
+    "pairs": 292,
+    "previews": 68,
     "review": "pending",
     "command": "python3 tools/visual_catalogue.py"
   },

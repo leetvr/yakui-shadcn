@@ -35,7 +35,7 @@ for name,variants in routes.items():
    (args.output/'report.json').write_text(json.dumps(report,indent=2)+'\n')
  print(name,flush=True)
 if args.open_overlays:
- for name in ['dialog','alert-dialog','drawer','sheet','popover','hover-card','tooltip','select','native-select','combobox','dropdown-menu','context-menu','menubar']:
+ for name in ['dialog','alert-dialog','drawer','sheet','popover','hover-card','tooltip','select','native-select','combobox','dropdown-menu','context-menu','menubar','navigation-menu']:
   for variant in routes[name]:
    for theme in args.themes:
     output=args.output/f'{name}-{variant}-{theme}-open.png'

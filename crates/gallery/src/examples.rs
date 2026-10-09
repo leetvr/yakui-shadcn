@@ -92,6 +92,7 @@ pub struct ExampleState {
     pub row_actions: [ui::MenuState; 3],
     pub last_table_action: Option<(usize, u64)>,
     pub menubar: ui::MenubarState,
+    pub navigation: ui::NavigationMenuState,
     pub menu_items: Vec<ui::MenuItem>,
     pub dropdown: crate::dropdown::DropdownExample,
     pub avatar_images: bool,
@@ -230,12 +231,7 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             )
         }),
         "menubar" => ui::menubar(&["File", "Edit", "View", "Profile"], &mut state.menubar),
-        "navigation-menu" => {
-            ui::navigation_menu(
-                &["Getting started", "Components", "Documentation"],
-                &mut state.selected,
-            );
-        }
+        "navigation-menu" => crate::navigation_menus::render(state, disabled),
         "aspect-ratio" => ui::aspect_ratio(16. / 9., 450., || {
             ui::surface(ui::theme().muted, None, ui::theme().radius, 0., || {
                 yakui::center(|| ui::text("16 : 9"));
@@ -1034,6 +1030,7 @@ pub fn overlays(component: &str, variant: &str, state: &mut ExampleState) {
             &["Next.js", "SvelteKit", "Nuxt", "Remix", "Astro"],
         ),
         "button-group" => crate::button_groups::content(variant, state),
+        "navigation-menu" => crate::navigation_menus::content(state),
         "avatar" if variant == "dropdown" => crate::avatars::content(state),
         "dropdown-menu" => {
             if let Some(id) =
@@ -1080,6 +1077,7 @@ impl ExampleState {
         match component {
             "select" | "native-select" | "combobox" => self.select.popup.open,
             "button-group" => self.menu.popup.open || self.overlay.open,
+            "navigation-menu" => self.navigation.active().is_some(),
             "avatar" | "dropdown-menu" | "context-menu" => self.menu.popup.open,
             "menubar" => self.menubar.menu.popup.open,
             "table" => self.row_actions.iter().any(|menu| menu.popup.open),
@@ -1118,6 +1116,7 @@ impl Default for ExampleState {
             row_actions: Default::default(),
             last_table_action: None,
             menubar: Default::default(),
+            navigation: Default::default(),
             values:[75.,90.],ratio:0.5,carousel:Default::default(),sidebar:Default::default(),questionnaire:Default::default(),scroller:Default::default(),
             chat:vec!["I'm building a chat for our app and the scroll behavior is driving me nuts.".into(),"Wrap your message list in MessageScroller and turn on auto-follow. The viewport pins to the bottom as text arrives.".into(),"And if they've scrolled up to re-read an older answer?".into(),"Auto-follow stops when the reader scrolls up. Their position is preserved as new messages arrive.".into()],
             attachment:ui::Attachment::new("message-renderer.tsx","TypeScript · 12 KB"),toasts:Default::default(),chart:Default::default(),toggles:Default::default(),

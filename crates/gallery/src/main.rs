@@ -5,6 +5,7 @@ mod button_groups;
 mod dropdown;
 mod examples;
 mod input_groups;
+mod navigation_menus;
 mod showcases;
 use serde::Deserialize;
 use std::{error::Error, path::PathBuf};

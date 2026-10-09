@@ -1,0 +1,21 @@
+{
+  "example": "navigation-menu-demo",
+  "theme": "light",
+  "state": "open",
+  "keys": [
+    "Escape",
+    "ArrowRight",
+    "ArrowRight",
+    "ArrowDown"
+  ],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 299.21875,
+    "y": 382,
+    "width": 135.171875,
+    "height": 36
+  }
+}

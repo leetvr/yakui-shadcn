@@ -25,6 +25,25 @@ pub fn column(gap: f32, children: impl FnOnce()) {
 pub fn spacer() {
     yakui::widgets::Flexible::expanded().show(|| {});
 }
+#[derive(Debug)]
+struct Clip;
+impl yakui::widget::Widget for Clip {
+    type Props<'a> = ();
+    type Response = ();
+    fn new() -> Self {
+        Self
+    }
+    fn update(&mut self, _: ()) {}
+    fn layout(&self, ctx: yakui::widget::LayoutContext<'_>, constraints: Constraints) -> Vec2 {
+        ctx.layout.enable_clipping(ctx.dom);
+        self.default_layout(ctx, constraints)
+    }
+}
+/// Clip painting to the content's constrained bounds.
+#[track_caller]
+pub fn clip(children: impl FnOnce()) {
+    yakui::util::widget_children::<Clip, _>(children, ());
+}
 /// A bounded content region. The parent can shrink it when space is constrained.
 #[track_caller]
 pub fn width(width: f32, children: impl FnOnce()) {

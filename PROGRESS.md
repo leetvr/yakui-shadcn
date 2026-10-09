@@ -48,10 +48,10 @@ initial public APIs and native routes. Current behaviour includes:
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All four consuming examples compile.
-- 65 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
-- 142 native variant routes × two themes, plus six showcase captures and 62 actual-trigger overlay captures: **352 captures,
+- 67 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
+- 142 native variant routes × two themes, plus six showcase captures and 64 actual-trigger overlay captures: **354 captures,
   zero failures** in the latest full smoke run.
-- The configured upstream suite covers 67 actual previews: **284 comparison pairs**
+- The configured upstream suite covers 68 actual previews: **292 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
   used to find and correct concrete layout/painting defects, not to certify parity.
 - Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
@@ -65,11 +65,11 @@ focused layout tests cover the radio/progress/button regressions.
 ## Required work still outstanding
 
 `reference/components.json` records component-specific deviations and every upstream
-preview separately. 67 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
+preview separately. 68 of 461 source previews currently have paired captures. Keep remaining previews in the inventory and port useful compositions first;
 do not map an unported preview to a generic default rendition. Important incomplete areas include:
 
 - Complete documented slots, sizes, disabled/invalid states and compositions.
-- Rich navigation flyouts, richer input-group slots, grouped/multiple autocomplete,
+- Additional input-group compositions, grouped/multiple autocomplete,
   full forms/field association and advanced selector keyboard contracts.
 - Drawer drag physics, overlay motion/shadows/delays, tooltip/hover-card pointer transit.
 - Calendar caption dropdowns/locales/presets/week numbers; complete data table cells,
@@ -270,3 +270,27 @@ Two actual-system tests cover width budgeting, placement, typing, disabled editi
 independent button activation and multiline block layout. All 65 tests and five
 doctests pass; all four consuming apps compile. The configured suite has 284 pairs
 across 67 upstream previews. No exhaustive-parity claim is made.
+
+## Native navigation flyout increment
+
+Added NavigationMenuEntry/State/Link, navigation_menu_bar and root flyout content.
+The app owns visibility and handles returned stable route/link IDs. Existing native
+trigger and overlay mechanisms handle click/Enter/ArrowDown opening, Escape and
+focus restoration. Hover opens immediately; outside clicks close without blocking
+sibling triggers. Closed content stays declared long enough for focus restoration.
+
+The actual default source composition includes Getting started, a two-column
+Components grid, With Icon links, and Docs. Both-theme keyboard paths capture all
+three flyouts. Comparisons corrected trigger anchoring and the medium-viewport
+content width. Long descriptions clip to two lines without ellipsis. Hover transit,
+departure closing, shadows and transitions remain deferred prototype polish.
+The reference harness adapts Next Link to a plain browser anchor; upstream example
+and primitive source remain unchanged.
+
+Two actual-system tests cover single-click trigger switching, route/link IDs,
+keyboard opening/Escape and outside dismissal. All 67 tests and five doctests pass;
+all consuming apps compile. The full suite has 354 successful native captures,
+zero failures, and 292 paired source comparisons across 68 documented previews.
+The font database was inspected after a typography comparison: all four Geist
+weights are registered under the same family; remaining weight/rasterisation
+appearance differences were left alone.

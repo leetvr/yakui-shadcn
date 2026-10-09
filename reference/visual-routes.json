@@ -388,5 +388,35 @@
     "states": [
       "focus"
     ]
+  },
+  {
+    "component": "navigation-menu",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
+  },
+  {
+    "component": "navigation-menu",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "Escape,ArrowRight,ArrowDown"
+  },
+  {
+    "component": "navigation-menu",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "Escape,ArrowRight,ArrowRight,ArrowDown"
   }
 ]

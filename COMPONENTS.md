@@ -51,7 +51,7 @@ overlay children. Keep overlays at the root and retain their state in your appli
 | Message | `message`, `MessageAlign` | Displays a message in a conversation, with optional avatar, header, footer, and alignment. |
 | Message Scroller | `MessageScrollerState`, `message_scroller`, `message_scroller_item` | A chat scroll container that anchors turns, opens saved transcripts, follows streamed responses, loads history without jumping, and jumps to any message. |
 | Native Select | `native_select`, `select_content`, `SelectState` | Select a value through a native Yakui popup. |
-| Navigation Menu | `navigation_menu` | Choose a route; rich flyouts remain pending. |
+| Navigation Menu | `NavigationMenuEntry`, `NavigationMenuState`, `NavigationMenuLink`, `navigation_menu_bar`, `navigation_menu_content`, `navigation_menu` | Open richer navigation flyouts or return route IDs to your app. |
 | Pagination | `pagination` | Pagination with page navigation, next and previous links. |
 | Popover | `popover` | Displays rich content in a portal, triggered by a button. |
 | Progress | `progress` | Displays an indicator showing the completion progress of a task, typically displayed as a progress bar. |
@@ -275,3 +275,26 @@ Use `BlockStart`/`BlockEnd` for headers/footers around multiline editors.
 independently disabled. `Input::new(...).password(true)` also shares the group
 surface. `input_group_button` returns an ordinary configurable Button: default
 Xs is 24px high, Default is 32px, and IconXs supplies a 24px icon action.
+
+Navigation menus keep visibility in application state and return stable route IDs.
+Render the bar in content, and its flyout later at the root. Triggers open on hover,
+click, Enter or ArrowDown; Escape and outside clicks close the flyout. Sibling
+triggers remain reachable while it is open.
+
+```rust
+let route = ui::navigation_menu_bar(&[
+    ui::NavigationMenuEntry::trigger(1, "Projects"),
+    ui::NavigationMenuEntry::link(2, "Settings"),
+], &mut navigation);
+// Later at the root:
+let project = ui::navigation_menu_content(&mut navigation, 320., |_| {
+    ui::NavigationMenuLink::new("Current project")
+        .description("Open the project's dashboard.")
+        .show().clicked.then_some(10)
+});
+```
+
+Handle the returned IDs in your router. `NavigationMenuState::active()` returns
+an open entry's ID; use it to choose content width. `description_lines(2)` clips
+long descriptions. `navigation_menu` remains a simple row of direct route actions.
+Hover delays, departure closing and animation are deferred for this prototype API.

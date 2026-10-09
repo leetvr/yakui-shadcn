@@ -819,3 +819,65 @@ pub(crate) fn menu_popup(
         children,
     )
 }
+
+// Navigation flyouts leave the underlying bar reachable. An outside interest on
+// the popup closes it without a fullscreen pointer-blocking backdrop, so a click
+// can switch to another trigger in the same input cycle.
+#[derive(Debug)]
+struct OutsideDismiss(Option<Rc<Cell<bool>>>);
+impl Widget for OutsideDismiss {
+    type Props<'a> = Rc<Cell<bool>>;
+    type Response = ();
+    fn new() -> Self {
+        Self(None)
+    }
+    fn update(&mut self, dismiss: Self::Props<'_>) {
+        self.0 = Some(dismiss);
+    }
+    fn event_interest(&self) -> yakui::event::EventInterest {
+        yakui::event::EventInterest::MOUSE_OUTSIDE
+    }
+    fn event(
+        &mut self,
+        _: yakui::widget::EventContext<'_>,
+        event: &yakui::event::WidgetEvent,
+    ) -> yakui::event::EventResponse {
+        if matches!(
+            event,
+            yakui::event::WidgetEvent::MouseButtonChanged {
+                button: yakui::input::MouseButton::One,
+                down: true,
+                inside: false,
+                ..
+            }
+        ) {
+            self.0.as_ref().unwrap().set(true);
+        }
+        yakui::event::EventResponse::Bubble
+    }
+}
+#[track_caller]
+pub(crate) fn navigation_popup(
+    state: &mut OverlayState,
+    width: f32,
+    keyboard_open: bool,
+    children: impl FnOnce(),
+) {
+    let dismiss = state.dismiss.clone();
+    popup(
+        state,
+        PopoverOptions {
+            width,
+            side_offset: 8.,
+            ..Default::default()
+        },
+        false,
+        keyboard_open,
+        4.,
+        1.,
+        false,
+        |_| {
+            yakui::util::widget_children::<OutsideDismiss, _>(children, dismiss);
+        },
+    );
+}

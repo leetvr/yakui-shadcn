@@ -9520,16 +9520,35 @@
         "navigation-menu-rtl"
       ],
       "rust_api": [
-        "navigation_menu"
+        "navigation_menu",
+        "NavigationMenuEntry",
+        "NavigationMenuState",
+        "NavigationMenuLink",
+        "navigation_menu_bar",
+        "navigation_menu_content"
       ],
       "gallery_examples": [
         "default"
       ],
-      "behaviour_tests": [],
-      "visual_comparisons": [],
+      "behaviour_tests": [
+        "navigation_flyout_keeps_sibling_triggers_reachable_and_returns_link_ids_once",
+        "navigation_keyboard_open_escape_and_outside_click_close_the_actual_popup"
+      ],
+      "visual_comparisons": [
+        "visual/navigation-menu/default-light-default",
+        "visual/navigation-menu/default-light-open",
+        "visual/navigation-menu/default-dark-default",
+        "visual/navigation-menu/default-dark-open",
+        "visual/navigation-menu/default-light-open+Escape,ArrowRight,ArrowDown",
+        "visual/navigation-menu/default-dark-open+Escape,ArrowRight,ArrowDown",
+        "visual/navigation-menu/default-light-open+Escape,ArrowRight,ArrowRight,ArrowDown",
+        "visual/navigation-menu/default-dark-open+Escape,ArrowRight,ArrowRight,ArrowDown"
+      ],
       "status": "in_progress",
       "deviations": [
-        "Current selectable link row does not implement rich flyouts; documented navigation contents and keyboard disclosure pending."
+        "The default English composition includes all three native flyouts and a direct route. App receives stable route/link IDs; the library does not own URLs.",
+        "Hover opens immediately and remains open until a trigger toggle, link activation, Escape or outside click. Browser hover delays/transit/automatic departure closing and motion/shadows are deferred.",
+        "Long descriptions clip to two lines without CSS ellipsis. The Components layout targets the 1000px comparison viewport (two columns, 500px content)."
       ],
       "example_coverage": [
         {
@@ -9544,10 +9563,59 @@
             "lucide-react",
             "@/styles/base-nova/ui/navigation-menu"
           ],
-          "gallery_variant": null,
+          "gallery_variant": "default",
           "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/navigation-menu/default-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open",
+              "path": "visual/navigation-menu/default-light-open",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/navigation-menu/default-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open",
+              "path": "visual/navigation-menu/default-dark-open",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+Escape,ArrowRight,ArrowDown",
+              "path": "visual/navigation-menu/default-light-open+Escape,ArrowRight,ArrowDown",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+Escape,ArrowRight,ArrowDown",
+              "path": "visual/navigation-menu/default-dark-open+Escape,ArrowRight,ArrowDown",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "open+Escape,ArrowRight,ArrowRight,ArrowDown",
+              "path": "visual/navigation-menu/default-light-open+Escape,ArrowRight,ArrowRight,ArrowDown",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "open+Escape,ArrowRight,ArrowRight,ArrowDown",
+              "path": "visual/navigation-menu/default-dark-open+Escape,ArrowRight,ArrowRight,ArrowDown",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
