@@ -1,0 +1,2652 @@
+{
+  "upstream_commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+  "components": [
+    {
+      "name": "accordion",
+      "title": "Accordion",
+      "description": "A vertically stacked set of interactive headings that each reveal a section of content.",
+      "upstream_docs": "apps/v4/content/docs/components/base/accordion.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/accordion.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Basic",
+        "Multiple",
+        "Disabled",
+        "Borders",
+        "Card",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "accordion-demo",
+        "accordion-basic",
+        "accordion-multiple",
+        "accordion-disabled",
+        "accordion-borders",
+        "accordion-card",
+        "accordion-rtl"
+      ],
+      "rust_api": [
+        "accordion_item"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "alert",
+      "title": "Alert",
+      "description": "Displays a callout for user attention.",
+      "upstream_docs": "apps/v4/content/docs/components/base/alert.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/alert.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Basic",
+        "Destructive",
+        "Action",
+        "Custom Colors",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [
+        "default",
+        "destructive"
+      ],
+      "upstream_examples": [
+        "alert-demo",
+        "alert-basic",
+        "alert-destructive",
+        "alert-action",
+        "alert-colors",
+        "alert-rtl"
+      ],
+      "rust_api": [
+        "alert"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "title": "Alert Dialog",
+      "description": "A modal dialog that interrupts the user with important content and expects a response.",
+      "upstream_docs": "apps/v4/content/docs/components/base/alert-dialog.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/alert-dialog.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Basic",
+        "Small",
+        "Media",
+        "Small with Media",
+        "Destructive",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "alert-dialog-demo",
+        "alert-dialog-basic",
+        "alert-dialog-small",
+        "alert-dialog-media",
+        "alert-dialog-small-media",
+        "alert-dialog-destructive",
+        "alert-dialog-rtl"
+      ],
+      "rust_api": [
+        "alert_dialog",
+        "OverlayState"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [
+        "crates/adequate-ui/tests/overlay.rs"
+      ],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending.",
+        "Backdrop blur, animation and exact sheet/drawer sizing/gestures are not yet ported."
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "title": "Aspect Ratio",
+      "description": "Displays content within a desired ratio.",
+      "upstream_docs": "apps/v4/content/docs/components/base/aspect-ratio.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/aspect-ratio.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Square",
+        "Portrait",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "aspect-ratio-demo",
+        "aspect-ratio-square",
+        "aspect-ratio-portrait",
+        "aspect-ratio-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "attachment",
+      "title": "Attachment",
+      "description": "Displays a file or image attachment with media, metadata, upload state, and actions.",
+      "upstream_docs": "apps/v4/content/docs/components/base/attachment.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/attachment.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Features",
+        "Image",
+        "States",
+        "Sizes",
+        "Group",
+        "Trigger",
+        "Accessibility",
+        "API Reference"
+      ],
+      "variants": [
+        "default",
+        "icon",
+        "sm",
+        "xs"
+      ],
+      "upstream_examples": [
+        "attachment-demo",
+        "attachment-image",
+        "attachment-states",
+        "attachment-sizes",
+        "attachment-group",
+        "attachment-trigger"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "avatar",
+      "title": "Avatar",
+      "description": "An image element with a fallback for representing the user.",
+      "upstream_docs": "apps/v4/content/docs/components/base/avatar.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/avatar.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Basic",
+        "Badge",
+        "Badge with Icon",
+        "Avatar Group",
+        "Avatar Group Count",
+        "Avatar Group with Icon",
+        "Sizes",
+        "Dropdown",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "avatar-demo",
+        "avatar-basic",
+        "avatar-badge",
+        "avatar-badge-icon",
+        "avatar-group",
+        "avatar-group-count",
+        "avatar-group-count-icon",
+        "avatar-size",
+        "avatar-dropdown",
+        "avatar-rtl"
+      ],
+      "rust_api": [
+        "avatar"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "badge",
+      "title": "Badge",
+      "description": "Displays a badge or a component that looks like a badge.",
+      "upstream_docs": "apps/v4/content/docs/components/base/badge.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/badge.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Variants",
+        "With Icon",
+        "With Spinner",
+        "Link",
+        "Custom Colors",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [
+        "default",
+        "destructive",
+        "ghost",
+        "link",
+        "outline",
+        "secondary"
+      ],
+      "upstream_examples": [
+        "badge-demo",
+        "badge-variants",
+        "badge-icon",
+        "badge-spinner",
+        "badge-link",
+        "badge-colors",
+        "badge-rtl"
+      ],
+      "rust_api": [
+        "badge"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "title": "Breadcrumb",
+      "description": "Displays the path to the current resource using a hierarchy of links.",
+      "upstream_docs": "apps/v4/content/docs/components/base/breadcrumb.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/breadcrumb.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Basic",
+        "Custom separator",
+        "Dropdown",
+        "Collapsed",
+        "Link component",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "breadcrumb-demo",
+        "breadcrumb-basic",
+        "breadcrumb-separator",
+        "breadcrumb-dropdown",
+        "breadcrumb-ellipsis",
+        "breadcrumb-link",
+        "breadcrumb-rtl"
+      ],
+      "rust_api": [
+        "breadcrumb"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "bubble",
+      "title": "Bubble",
+      "description": "Displays conversational content in a message bubble. Supports variants, alignment, grouping, reactions, and collapsible content.",
+      "upstream_docs": "apps/v4/content/docs/components/base/bubble.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/bubble.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Features",
+        "Variants",
+        "Alignment",
+        "Bubble Group",
+        "Links and Buttons",
+        "Reactions",
+        "Show More / Collapsible",
+        "Tooltip",
+        "Popover",
+        "Accessibility",
+        "API Reference"
+      ],
+      "variants": [
+        "default",
+        "destructive",
+        "ghost",
+        "muted",
+        "outline",
+        "secondary",
+        "tinted"
+      ],
+      "upstream_examples": [
+        "bubble-demo",
+        "bubble-variants",
+        "bubble-alignment",
+        "bubble-group-demo",
+        "bubble-link-button",
+        "bubble-reactions",
+        "bubble-collapsible",
+        "bubble-tooltip",
+        "bubble-popover"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "button",
+      "title": "Button",
+      "description": "Displays a button or a component that looks like a button.",
+      "upstream_docs": "apps/v4/content/docs/components/base/button.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/button.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Cursor",
+        "Size",
+        "Default",
+        "Outline",
+        "Secondary",
+        "Ghost",
+        "Destructive",
+        "Link",
+        "Icon",
+        "With Icon",
+        "Rounded",
+        "Spinner",
+        "Button Group",
+        "As Link",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [
+        "default",
+        "destructive",
+        "ghost",
+        "icon",
+        "icon-lg",
+        "icon-sm",
+        "icon-xs",
+        "lg",
+        "link",
+        "outline",
+        "secondary",
+        "sm",
+        "xs"
+      ],
+      "upstream_examples": [
+        "button-demo",
+        "button-size",
+        "button-default",
+        "button-outline",
+        "button-secondary",
+        "button-ghost",
+        "button-destructive",
+        "button-link",
+        "button-icon",
+        "button-with-icon",
+        "button-rounded",
+        "button-spinner",
+        "button-group-demo",
+        "button-render",
+        "button-rtl"
+      ],
+      "rust_api": [
+        "Button",
+        "button",
+        "Variant",
+        "ButtonSize"
+      ],
+      "gallery_examples": [
+        "default",
+        "demo",
+        "size",
+        "outline",
+        "secondary",
+        "ghost",
+        "destructive",
+        "link",
+        "icon",
+        "with-icon",
+        "rounded",
+        "spinner"
+      ],
+      "behaviour_tests": [
+        "crates/adequate-ui/tests/interaction.rs"
+      ],
+      "visual_comparisons": [
+        "visual/button/manifest.json"
+      ],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending.",
+        "Link hover underline and exact icon/spinner compositions still require correction."
+      ]
+    },
+    {
+      "name": "button-group",
+      "title": "Button Group",
+      "description": "A container that groups related buttons together with consistent styling.",
+      "upstream_docs": "apps/v4/content/docs/components/base/button-group.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/button-group.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Accessibility",
+        "ButtonGroup vs ToggleGroup",
+        "Orientation",
+        "Size",
+        "Nested",
+        "Separator",
+        "Split",
+        "Input",
+        "Input Group",
+        "Dropdown Menu",
+        "Select",
+        "Popover",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "button-group-demo",
+        "button-group-orientation",
+        "button-group-size",
+        "button-group-nested",
+        "button-group-separator",
+        "button-group-split",
+        "button-group-input",
+        "button-group-input-group",
+        "button-group-dropdown",
+        "button-group-select",
+        "button-group-popover",
+        "button-group-rtl"
+      ],
+      "rust_api": [
+        "button_group"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "calendar",
+      "title": "Calendar",
+      "description": "A calendar component that allows users to select a date or a range of dates.",
+      "upstream_docs": "apps/v4/content/docs/components/base/calendar.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/calendar.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "About",
+        "Date Picker",
+        "Persian / Hijri / Jalali Calendar",
+        "Selected Date (With TimeZone)",
+        "Basic",
+        "Range Calendar",
+        "Month and Year Selector",
+        "Presets",
+        "Date and Time Picker",
+        "Booked dates",
+        "Custom Cell Size",
+        "Week Numbers",
+        "RTL",
+        "API Reference",
+        "Changelog"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "calendar-demo",
+        "calendar-hijri",
+        "calendar-basic",
+        "calendar-range",
+        "calendar-caption",
+        "calendar-presets",
+        "calendar-time",
+        "calendar-booked-dates",
+        "calendar-custom-days",
+        "calendar-week-numbers",
+        "calendar-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "card",
+      "title": "Card",
+      "description": "Displays a card with header, content, and footer.",
+      "upstream_docs": "apps/v4/content/docs/components/base/card.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/card.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Size",
+        "Spacing",
+        "Image",
+        "RTL",
+        "API Reference",
+        "Changelog"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "card-demo",
+        "card-small",
+        "card-spacing",
+        "card-edge-to-edge",
+        "card-image",
+        "card-rtl"
+      ],
+      "rust_api": [
+        "card",
+        "card_sized",
+        "card_header",
+        "card_title",
+        "card_description",
+        "card_content",
+        "card_footer"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "carousel",
+      "title": "Carousel",
+      "description": "A carousel with motion and swipe built using Embla.",
+      "upstream_docs": "apps/v4/content/docs/components/base/carousel.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/carousel.tsx",
+      "documented_sections": [
+        "About",
+        "Installation",
+        "Usage",
+        "Composition",
+        "Sizes",
+        "Spacing",
+        "Orientation",
+        "Options",
+        "API",
+        "Events",
+        "Plugins",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "carousel-demo",
+        "carousel-size",
+        "carousel-spacing",
+        "carousel-orientation",
+        "carousel-api",
+        "carousel-plugin",
+        "carousel-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "chart",
+      "title": "Chart",
+      "description": "Beautiful charts. Built using Recharts. Copy and paste into your apps.",
+      "upstream_docs": "apps/v4/content/docs/components/base/chart.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/chart.tsx",
+      "documented_sections": [
+        "Component",
+        "Updating to Recharts v3",
+        "Installation",
+        "Your First Chart",
+        "Chart Config",
+        "Theming",
+        "Tooltip",
+        "Legend",
+        "Accessibility",
+        "RTL"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "chart-demo",
+        "chart-example",
+        "chart-example-grid",
+        "chart-example-axis",
+        "chart-example-tooltip",
+        "chart-example-legend",
+        "chart-tooltip",
+        "chart-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "checkbox",
+      "title": "Checkbox",
+      "description": "A control that allows the user to toggle between checked and not checked.",
+      "upstream_docs": "apps/v4/content/docs/components/base/checkbox.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/checkbox.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Checked State",
+        "Invalid State",
+        "Basic",
+        "Description",
+        "Disabled",
+        "Group",
+        "Table",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "checkbox-demo",
+        "checkbox-invalid",
+        "checkbox-basic",
+        "checkbox-description",
+        "checkbox-disabled",
+        "checkbox-group",
+        "checkbox-table",
+        "checkbox-rtl"
+      ],
+      "rust_api": [
+        "checkbox",
+        "checkbox_disabled"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "collapsible",
+      "title": "Collapsible",
+      "description": "An interactive component which expands/collapses a panel.",
+      "upstream_docs": "apps/v4/content/docs/components/base/collapsible.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/collapsible.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Controlled State",
+        "Basic",
+        "Settings Panel",
+        "File Tree",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "collapsible-demo",
+        "collapsible-basic",
+        "collapsible-settings",
+        "collapsible-file-tree",
+        "collapsible-rtl"
+      ],
+      "rust_api": [
+        "collapsible"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "combobox",
+      "title": "Combobox",
+      "description": "Autocomplete input with a list of suggestions.",
+      "upstream_docs": "apps/v4/content/docs/components/base/combobox.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/combobox.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Custom Items",
+        "Multiple Selection",
+        "Basic",
+        "Multiple",
+        "Clear Button",
+        "Groups",
+        "Custom Items",
+        "Invalid",
+        "Disabled",
+        "Auto Highlight",
+        "Popup",
+        "Input Group",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "combobox-demo",
+        "combobox-basic",
+        "combobox-multiple",
+        "combobox-clear",
+        "combobox-groups",
+        "combobox-custom",
+        "combobox-invalid",
+        "combobox-disabled",
+        "combobox-auto-highlight",
+        "combobox-popup",
+        "combobox-input-group",
+        "combobox-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "command",
+      "title": "Command",
+      "description": "Command menu for search and quick actions.",
+      "upstream_docs": "apps/v4/content/docs/components/base/command.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/command.tsx",
+      "documented_sections": [
+        "About",
+        "Installation",
+        "Usage",
+        "Composition",
+        "Basic",
+        "Shortcuts",
+        "Groups",
+        "Scrollable",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "command-demo",
+        "command-basic",
+        "command-shortcuts",
+        "command-groups",
+        "command-scrollable",
+        "command-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "context-menu",
+      "title": "Context Menu",
+      "description": "Displays a menu of actions triggered by a right click.",
+      "upstream_docs": "apps/v4/content/docs/components/base/context-menu.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/context-menu.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Basic",
+        "Submenu",
+        "Shortcuts",
+        "Groups",
+        "Icons",
+        "Checkboxes",
+        "Radio",
+        "Destructive",
+        "Sides",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "context-menu-demo",
+        "context-menu-basic",
+        "context-menu-submenu",
+        "context-menu-shortcuts",
+        "context-menu-groups",
+        "context-menu-icons",
+        "context-menu-checkboxes",
+        "context-menu-radio",
+        "context-menu-destructive",
+        "context-menu-sides",
+        "context-menu-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "data-table",
+      "title": "Data Table",
+      "description": "Powerful table and datagrids built using TanStack Table.",
+      "upstream_docs": "apps/v4/content/docs/components/base/data-table.mdx",
+      "upstream_source": null,
+      "documented_sections": [
+        "Introduction",
+        "Table of Contents",
+        "Installation",
+        "Prerequisites",
+        "Project Structure",
+        "Set up Table Features",
+        "Basic Table",
+        "Cell Formatting",
+        "Row Actions",
+        "Pagination",
+        "Sorting",
+        "Filtering",
+        "Visibility",
+        "Row Selection",
+        "Reusable Components",
+        "RTL"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "data-table-demo",
+        "data-table-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "date-picker",
+      "title": "Date Picker",
+      "description": "A date picker component with range and presets.",
+      "upstream_docs": "apps/v4/content/docs/components/base/date-picker.mdx",
+      "upstream_source": null,
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Basic",
+        "Range Picker",
+        "Date of Birth",
+        "Input",
+        "Time Picker",
+        "Natural Language Picker",
+        "RTL"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "date-picker-demo",
+        "date-picker-basic",
+        "date-picker-range",
+        "date-picker-dob",
+        "date-picker-input",
+        "date-picker-time",
+        "date-picker-natural-language",
+        "date-picker-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "dialog",
+      "title": "Dialog",
+      "description": "A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.",
+      "upstream_docs": "apps/v4/content/docs/components/base/dialog.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/dialog.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Custom Close Button",
+        "No Close Button",
+        "Sticky Footer",
+        "Scrollable Content",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "dialog-demo",
+        "dialog-close-button",
+        "dialog-no-close-button",
+        "dialog-sticky-footer",
+        "dialog-scrollable-content",
+        "dialog-rtl"
+      ],
+      "rust_api": [
+        "dialog",
+        "OverlayState"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [
+        "crates/adequate-ui/tests/overlay.rs"
+      ],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending.",
+        "Backdrop blur, animation and exact sheet/drawer sizing/gestures are not yet ported."
+      ]
+    },
+    {
+      "name": "direction",
+      "title": "Direction",
+      "description": "A provider component that sets the text direction for your application.",
+      "upstream_docs": "apps/v4/content/docs/components/base/direction.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/direction.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "useDirection"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "card-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "drawer",
+      "title": "Drawer",
+      "description": "A drawer component for React.",
+      "upstream_docs": "apps/v4/content/docs/components/base/drawer.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/drawer.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Custom Sizes",
+        "Styling",
+        "Position",
+        "Swipe Handle",
+        "Nested",
+        "Non Modal",
+        "Snap Points",
+        "Responsive",
+        "Migrating from Vaul",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "drawer-demo",
+        "drawer-sides",
+        "drawer-swipe-handle",
+        "drawer-nested",
+        "drawer-non-modal",
+        "drawer-snap-points",
+        "drawer-dialog"
+      ],
+      "rust_api": [
+        "drawer"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [
+        "crates/adequate-ui/tests/overlay.rs"
+      ],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending.",
+        "Backdrop blur, animation and exact sheet/drawer sizing/gestures are not yet ported."
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "title": "Dropdown Menu",
+      "description": "Displays a menu to the user \u2014 such as a set of actions or functions \u2014 triggered by a button.",
+      "upstream_docs": "apps/v4/content/docs/components/base/dropdown-menu.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/dropdown-menu.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Basic",
+        "Submenu",
+        "Shortcuts",
+        "Icons",
+        "Checkboxes",
+        "Checkboxes Icons",
+        "Radio Group",
+        "Radio Icons",
+        "Destructive",
+        "Avatar",
+        "Complex",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "dropdown-menu-demo",
+        "dropdown-menu-basic",
+        "dropdown-menu-submenu",
+        "dropdown-menu-shortcuts",
+        "dropdown-menu-icons",
+        "dropdown-menu-checkboxes",
+        "dropdown-menu-checkboxes-icons",
+        "dropdown-menu-radio-group",
+        "dropdown-menu-radio-icons",
+        "dropdown-menu-destructive",
+        "dropdown-menu-avatar",
+        "dropdown-menu-complex",
+        "dropdown-menu-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "empty",
+      "title": "Empty",
+      "description": "Use the Empty component to display an empty state.",
+      "upstream_docs": "apps/v4/content/docs/components/base/empty.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/empty.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Outline",
+        "Background",
+        "Avatar",
+        "Avatar Group",
+        "InputGroup",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "empty-demo",
+        "empty-outline",
+        "empty-background",
+        "empty-avatar",
+        "empty-avatar-group",
+        "empty-input-group",
+        "empty-rtl"
+      ],
+      "rust_api": [
+        "empty"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "field",
+      "title": "Field",
+      "description": "Combine labels, controls, and help text to compose accessible form fields and grouped inputs.",
+      "upstream_docs": "apps/v4/content/docs/components/base/field.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/field.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Anatomy",
+        "Form",
+        "Input",
+        "Textarea",
+        "Select",
+        "Slider",
+        "Fieldset",
+        "Checkbox",
+        "Radio",
+        "Switch",
+        "Choice Card",
+        "Field Group",
+        "RTL",
+        "Responsive Layout",
+        "Validation and Errors",
+        "Accessibility",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "field-demo",
+        "field-input",
+        "field-textarea",
+        "field-select",
+        "field-slider",
+        "field-fieldset",
+        "field-checkbox",
+        "field-radio",
+        "field-switch",
+        "field-choice-card",
+        "field-group",
+        "field-rtl",
+        "field-responsive"
+      ],
+      "rust_api": [
+        "field"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "form",
+      "title": "Form",
+      "description": "",
+      "upstream_docs": null,
+      "upstream_source": null,
+      "documented_sections": [],
+      "variants": [],
+      "upstream_examples": [],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": [
+        "Listed in upstream navigation, but no Base UI documentation page at pinned revision."
+      ]
+    },
+    {
+      "name": "hover-card",
+      "title": "Hover Card",
+      "description": "For sighted users to preview content available behind a link.",
+      "upstream_docs": "apps/v4/content/docs/components/base/hover-card.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/hover-card.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Trigger Delays",
+        "Positioning",
+        "Basic",
+        "Sides",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "hover-card-demo",
+        "hover-card-sides",
+        "hover-card-rtl"
+      ],
+      "rust_api": [
+        "hover_card"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "input",
+      "title": "Input",
+      "description": "A text input component for forms and user data entry with built-in styling and accessibility features.",
+      "upstream_docs": "apps/v4/content/docs/components/base/input.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/input.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Basic",
+        "Field",
+        "Field Group",
+        "Disabled",
+        "Invalid",
+        "File",
+        "Inline",
+        "Grid",
+        "Required",
+        "Badge",
+        "Input Group",
+        "Button Group",
+        "Form",
+        "RTL"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "input-demo",
+        "input-basic",
+        "input-field",
+        "input-fieldgroup",
+        "input-disabled",
+        "input-invalid",
+        "input-file",
+        "input-inline",
+        "input-grid",
+        "input-required",
+        "input-badge",
+        "input-input-group",
+        "input-button-group",
+        "input-form",
+        "input-rtl"
+      ],
+      "rust_api": [
+        "input"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "input-group",
+      "title": "Input Group",
+      "description": "Add addons, buttons, and helper content to inputs.",
+      "upstream_docs": "apps/v4/content/docs/components/base/input-group.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/input-group.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Align",
+        "Icon",
+        "Text",
+        "Button",
+        "Kbd",
+        "Dropdown",
+        "Spinner",
+        "Textarea",
+        "Custom Input",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [
+        "icon-sm",
+        "icon-xs",
+        "sm",
+        "xs"
+      ],
+      "upstream_examples": [
+        "input-group-demo",
+        "input-group-inline-start",
+        "input-group-inline-end",
+        "input-group-block-start",
+        "input-group-block-end",
+        "input-group-icon",
+        "input-group-text",
+        "input-group-button",
+        "input-group-kbd",
+        "input-group-dropdown",
+        "input-group-spinner",
+        "input-group-textarea",
+        "input-group-custom",
+        "input-group-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "input-otp",
+      "title": "Input OTP",
+      "description": "Accessible one-time password component with copy-paste functionality.",
+      "upstream_docs": "apps/v4/content/docs/components/base/input-otp.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/input-otp.tsx",
+      "documented_sections": [
+        "About",
+        "Installation",
+        "Usage",
+        "Composition",
+        "Pattern",
+        "Separator",
+        "Disabled",
+        "Controlled",
+        "Invalid",
+        "Four Digits",
+        "Alphanumeric",
+        "Form",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "input-otp-demo",
+        "input-otp-pattern",
+        "input-otp-separator",
+        "input-otp-disabled",
+        "input-otp-controlled",
+        "input-otp-invalid",
+        "input-otp-four-digits",
+        "input-otp-alphanumeric",
+        "input-otp-form",
+        "input-otp-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "item",
+      "title": "Item",
+      "description": "A versatile component for displaying content with media, title, description, and actions.",
+      "upstream_docs": "apps/v4/content/docs/components/base/item.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/item.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Item vs Field",
+        "Variant",
+        "Size",
+        "Icon",
+        "Avatar",
+        "Image",
+        "Group",
+        "Header",
+        "Link",
+        "Dropdown",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [
+        "default",
+        "icon",
+        "image",
+        "muted",
+        "outline",
+        "sm",
+        "xs"
+      ],
+      "upstream_examples": [
+        "item-demo",
+        "item-variant",
+        "item-size",
+        "item-icon",
+        "item-avatar",
+        "item-image",
+        "item-group",
+        "item-header",
+        "item-link",
+        "item-dropdown",
+        "item-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "kbd",
+      "title": "Kbd",
+      "description": "Used to display textual user input from keyboard.",
+      "upstream_docs": "apps/v4/content/docs/components/base/kbd.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/kbd.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Group",
+        "Button",
+        "Tooltip",
+        "Input Group",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "kbd-demo",
+        "kbd-group",
+        "kbd-button",
+        "kbd-tooltip",
+        "kbd-input-group",
+        "kbd-rtl"
+      ],
+      "rust_api": [
+        "kbd"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "label",
+      "title": "Label",
+      "description": "Renders an accessible label associated with controls.",
+      "upstream_docs": "apps/v4/content/docs/components/base/label.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/label.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Label in Field",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "label-demo",
+        "field-demo",
+        "label-rtl"
+      ],
+      "rust_api": [
+        "label"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "marker",
+      "title": "Marker",
+      "description": "Displays an inline status, system note, bordered row, or labeled separator in a conversation.",
+      "upstream_docs": "apps/v4/content/docs/components/base/marker.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/marker.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Features",
+        "Variants",
+        "Status",
+        "Shimmer",
+        "Separator",
+        "Border",
+        "With Icon",
+        "Links and Buttons",
+        "Accessibility",
+        "API Reference"
+      ],
+      "variants": [
+        "border",
+        "default",
+        "separator"
+      ],
+      "upstream_examples": [
+        "marker-demo",
+        "marker-variants",
+        "marker-status",
+        "marker-shimmer",
+        "marker-separator",
+        "marker-border",
+        "marker-icon",
+        "marker-link-button"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "menubar",
+      "title": "Menubar",
+      "description": "A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.",
+      "upstream_docs": "apps/v4/content/docs/components/base/menubar.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/menubar.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Checkbox",
+        "Radio",
+        "Submenu",
+        "With Icons",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "menubar-demo",
+        "menubar-checkbox",
+        "menubar-radio",
+        "menubar-submenu",
+        "menubar-icons",
+        "menubar-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "message",
+      "title": "Message",
+      "description": "Displays a message in a conversation, with optional avatar, header, footer, and alignment.",
+      "upstream_docs": "apps/v4/content/docs/components/base/message.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/message.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Features",
+        "Avatar",
+        "Group",
+        "Header and Footer",
+        "Actions",
+        "Attachment",
+        "Accessibility",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "message-demo",
+        "message-avatar",
+        "message-group",
+        "message-header-footer",
+        "message-actions",
+        "message-attachment"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "message-scroller",
+      "title": "Message Scroller",
+      "description": "A chat scroll container that anchors turns, opens saved transcripts, follows streamed responses, loads history without jumping, and jumps to any message.",
+      "upstream_docs": "apps/v4/content/docs/components/base/message-scroller.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/message-scroller.tsx",
+      "documented_sections": [
+        "What Makes a Great Streaming Chat Experience",
+        "MessageScroller",
+        "Installation",
+        "Usage",
+        "Composition",
+        "Core Concepts",
+        "Performance",
+        "Virtualization",
+        "Accessibility",
+        "Unstyled",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "message-scroller-demo",
+        "message-scroller-anchoring",
+        "message-scroller-group-chat",
+        "message-scroller-previous-context",
+        "message-scroller-streaming",
+        "message-scroller-opening-position",
+        "message-scroller-load-history",
+        "message-scroller-animation",
+        "message-scroller-commands",
+        "message-scroller-visibility",
+        "message-scroller-scrollable"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "native-select",
+      "title": "Native Select",
+      "description": "A styled native HTML select element with consistent design system integration.",
+      "upstream_docs": "apps/v4/content/docs/components/base/native-select.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/native-select.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Groups",
+        "Disabled",
+        "Invalid",
+        "Native Select vs Select",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "native-select-demo",
+        "native-select-groups",
+        "native-select-disabled",
+        "native-select-invalid",
+        "native-select-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "navigation-menu",
+      "title": "Navigation Menu",
+      "description": "A collection of links for navigating websites.",
+      "upstream_docs": "apps/v4/content/docs/components/base/navigation-menu.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/navigation-menu.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Link Component",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "navigation-menu-demo",
+        "navigation-menu-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "pagination",
+      "title": "Pagination",
+      "description": "Pagination with page navigation, next and previous links.",
+      "upstream_docs": "apps/v4/content/docs/components/base/pagination.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/pagination.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Simple",
+        "Icons Only",
+        "Next.js",
+        "RTL",
+        "Changelog"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "pagination-demo",
+        "pagination-simple",
+        "pagination-icons-only",
+        "pagination-rtl"
+      ],
+      "rust_api": [
+        "pagination"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "popover",
+      "title": "Popover",
+      "description": "Displays rich content in a portal, triggered by a button.",
+      "upstream_docs": "apps/v4/content/docs/components/base/popover.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/popover.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Basic",
+        "Align",
+        "With Form",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "popover-demo",
+        "popover-basic",
+        "popover-alignments",
+        "popover-form",
+        "popover-rtl"
+      ],
+      "rust_api": [
+        "popover"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [
+        "crates/adequate-ui/tests/overlay.rs"
+      ],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending.",
+        "Backdrop blur, animation and exact sheet/drawer sizing/gestures are not yet ported."
+      ]
+    },
+    {
+      "name": "progress",
+      "title": "Progress",
+      "description": "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+      "upstream_docs": "apps/v4/content/docs/components/base/progress.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/progress.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Label",
+        "Controlled",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "progress-demo",
+        "progress-label",
+        "progress-controlled",
+        "progress-rtl"
+      ],
+      "rust_api": [
+        "progress"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "questionnaire",
+      "title": "Questionnaire",
+      "description": "A multi-step questionnaire with single-choice, multiple-choice, freeform, and skippable questions.",
+      "upstream_docs": "apps/v4/content/docs/components/base/questionnaire.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/questionnaire.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Server Rendering",
+        "Multiple Selection",
+        "Freeform Answer",
+        "Explicit Skip",
+        "Shortcuts",
+        "Custom Validation",
+        "Controlled",
+        "Resume",
+        "Conditional Items",
+        "Navigation State",
+        "Custom Progress",
+        "Animated Items",
+        "Card",
+        "Dialog",
+        "Accessibility",
+        "Unstyled",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "questionnaire-demo",
+        "questionnaire-multiple",
+        "questionnaire-freeform",
+        "questionnaire-skip",
+        "questionnaire-shortcuts",
+        "questionnaire-validation",
+        "questionnaire-controlled",
+        "questionnaire-resume",
+        "questionnaire-conditional",
+        "questionnaire-navigation-state",
+        "questionnaire-progress",
+        "questionnaire-animated",
+        "questionnaire-card",
+        "questionnaire-dialog"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "radio-group",
+      "title": "Radio Group",
+      "description": "A set of checkable buttons\u2014known as radio buttons\u2014where no more than one of the buttons can be checked at a time.",
+      "upstream_docs": "apps/v4/content/docs/components/base/radio-group.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/radio-group.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Description",
+        "Choice Card",
+        "Fieldset",
+        "Disabled",
+        "Invalid",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "radio-group-demo",
+        "radio-group-description",
+        "radio-group-choice-card",
+        "radio-group-fieldset",
+        "radio-group-disabled",
+        "radio-group-invalid",
+        "radio-group-rtl"
+      ],
+      "rust_api": [
+        "radio_group"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "resizable",
+      "title": "Resizable",
+      "description": "Accessible resizable panel groups and layouts with keyboard support.",
+      "upstream_docs": "apps/v4/content/docs/components/base/resizable.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/resizable.tsx",
+      "documented_sections": [
+        "About",
+        "Installation",
+        "Usage",
+        "Composition",
+        "Vertical",
+        "Handle",
+        "RTL",
+        "API Reference",
+        "Changelog"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "resizable-demo",
+        "resizable-vertical",
+        "resizable-handle",
+        "resizable-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "scroll-area",
+      "title": "Scroll Area",
+      "description": "Augments native scroll functionality for custom, cross-browser styling.",
+      "upstream_docs": "apps/v4/content/docs/components/base/scroll-area.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/scroll-area.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Horizontal",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "scroll-area-demo",
+        "scroll-area-horizontal-demo",
+        "scroll-area-rtl"
+      ],
+      "rust_api": [
+        "scroll_area"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "select",
+      "title": "Select",
+      "description": "Displays a list of options for the user to pick from\u2014triggered by a button.",
+      "upstream_docs": "apps/v4/content/docs/components/base/select.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/select.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Align Item With Trigger",
+        "Groups",
+        "Scrollable",
+        "Disabled",
+        "Invalid",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "select-demo",
+        "select-align-item",
+        "select-groups",
+        "select-scrollable",
+        "select-disabled",
+        "select-invalid",
+        "select-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "separator",
+      "title": "Separator",
+      "description": "Visually or semantically separates content.",
+      "upstream_docs": "apps/v4/content/docs/components/base/separator.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/separator.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Vertical",
+        "Menu",
+        "List",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "separator-demo",
+        "separator-vertical",
+        "separator-menu",
+        "separator-list",
+        "separator-rtl"
+      ],
+      "rust_api": [
+        "separator"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "sheet",
+      "title": "Sheet",
+      "description": "Extends the Dialog component to display content that complements the main content of the screen.",
+      "upstream_docs": "apps/v4/content/docs/components/base/sheet.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/sheet.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Side",
+        "No Close Button",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "sheet-demo",
+        "sheet-side",
+        "sheet-no-close-button",
+        "sheet-rtl"
+      ],
+      "rust_api": [
+        "sheet",
+        "Side"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [
+        "crates/adequate-ui/tests/overlay.rs"
+      ],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending.",
+        "Backdrop blur, animation and exact sheet/drawer sizing/gestures are not yet ported."
+      ]
+    },
+    {
+      "name": "sidebar",
+      "title": "Sidebar",
+      "description": "A composable, themeable and customizable sidebar component.",
+      "upstream_docs": "apps/v4/content/docs/components/base/sidebar.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/sidebar.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Structure",
+        "SidebarProvider",
+        "Sidebar",
+        "useSidebar",
+        "SidebarHeader",
+        "SidebarFooter",
+        "SidebarContent",
+        "SidebarGroup",
+        "SidebarMenu",
+        "SidebarMenuButton",
+        "SidebarMenuAction",
+        "SidebarMenuSub",
+        "SidebarMenuBadge",
+        "SidebarMenuSkeleton",
+        "SidebarTrigger",
+        "SidebarRail",
+        "Controlled Sidebar",
+        "Theming",
+        "Styling",
+        "RTL",
+        "Changelog"
+      ],
+      "variants": [
+        "default",
+        "lg",
+        "outline",
+        "sm"
+      ],
+      "upstream_examples": [
+        "sidebar-demo"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "skeleton",
+      "title": "Skeleton",
+      "description": "Use to show a placeholder while content is loading.",
+      "upstream_docs": "apps/v4/content/docs/components/base/skeleton.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/skeleton.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Avatar",
+        "Card",
+        "Text",
+        "Form",
+        "Table",
+        "RTL"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "skeleton-demo",
+        "skeleton-avatar",
+        "skeleton-card",
+        "skeleton-text",
+        "skeleton-form",
+        "skeleton-table",
+        "skeleton-rtl"
+      ],
+      "rust_api": [
+        "skeleton"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "slider",
+      "title": "Slider",
+      "description": "An input where the user selects a value from within a given range.",
+      "upstream_docs": "apps/v4/content/docs/components/base/slider.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/slider.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Range",
+        "Multiple Thumbs",
+        "Vertical",
+        "Controlled",
+        "Disabled",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "slider-demo",
+        "slider-range",
+        "slider-multiple",
+        "slider-vertical",
+        "slider-controlled",
+        "slider-disabled",
+        "slider-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "spinner",
+      "title": "Spinner",
+      "description": "An indicator that can be used to show a loading state.",
+      "upstream_docs": "apps/v4/content/docs/components/base/spinner.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/spinner.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Customization",
+        "Size",
+        "Button",
+        "Badge",
+        "Input Group",
+        "Empty",
+        "RTL"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "spinner-demo",
+        "spinner-custom",
+        "spinner-size",
+        "spinner-button",
+        "spinner-badge",
+        "spinner-input-group",
+        "spinner-empty",
+        "spinner-rtl"
+      ],
+      "rust_api": [
+        "spinner"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "switch",
+      "title": "Switch",
+      "description": "A control that allows the user to toggle between checked and not checked.",
+      "upstream_docs": "apps/v4/content/docs/components/base/switch.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/switch.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Description",
+        "Choice Card",
+        "Disabled",
+        "Invalid",
+        "Size",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "switch-demo",
+        "switch-description",
+        "switch-choice-card",
+        "switch-disabled",
+        "switch-invalid",
+        "switch-sizes",
+        "switch-rtl"
+      ],
+      "rust_api": [
+        "switch"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "table",
+      "title": "Table",
+      "description": "A responsive table component.",
+      "upstream_docs": "apps/v4/content/docs/components/base/table.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/table.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Footer",
+        "Actions",
+        "Data Table",
+        "RTL"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "table-demo",
+        "table-footer",
+        "table-actions",
+        "table-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "tabs",
+      "title": "Tabs",
+      "description": "A set of layered sections of content\u2014known as tab panels\u2014that are displayed one at a time.",
+      "upstream_docs": "apps/v4/content/docs/components/base/tabs.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/tabs.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Line",
+        "Vertical",
+        "Disabled",
+        "Icons",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "tabs-demo",
+        "tabs-line",
+        "tabs-vertical",
+        "tabs-disabled",
+        "tabs-icons",
+        "tabs-rtl"
+      ],
+      "rust_api": [
+        "tabs",
+        "TabsVariant"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [
+        "crates/adequate-ui/tests/overlay.rs"
+      ],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending.",
+        "Line underline, vertical orientation, disabled tab and panel keyboard parity remain pending."
+      ]
+    },
+    {
+      "name": "textarea",
+      "title": "Textarea",
+      "description": "Displays a form textarea or a component that looks like a textarea.",
+      "upstream_docs": "apps/v4/content/docs/components/base/textarea.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/textarea.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Field",
+        "Disabled",
+        "Invalid",
+        "Button",
+        "RTL"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "textarea-demo",
+        "textarea-field",
+        "textarea-disabled",
+        "textarea-invalid",
+        "textarea-button",
+        "textarea-rtl"
+      ],
+      "rust_api": [
+        "textarea"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "toast",
+      "title": "Toast",
+      "description": "A succinct message that is displayed temporarily.",
+      "upstream_docs": "apps/v4/content/docs/components/base/toast.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/toast.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Types",
+        "Action",
+        "Promise",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "toast-demo",
+        "toast-types",
+        "toast-promise"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "toggle",
+      "title": "Toggle",
+      "description": "A two-state button that can be either on or off.",
+      "upstream_docs": "apps/v4/content/docs/components/base/toggle.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/toggle.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Outline",
+        "With Text",
+        "Size",
+        "Disabled",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [
+        "default",
+        "lg",
+        "outline",
+        "sm"
+      ],
+      "upstream_examples": [
+        "toggle-demo",
+        "toggle-outline",
+        "toggle-text",
+        "toggle-sizes",
+        "toggle-disabled",
+        "toggle-rtl"
+      ],
+      "rust_api": [
+        "toggle"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "title": "Toggle Group",
+      "description": "A set of two-state buttons that can be toggled on or off.",
+      "upstream_docs": "apps/v4/content/docs/components/base/toggle-group.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/toggle-group.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Outline",
+        "Size",
+        "Spacing",
+        "Vertical",
+        "Disabled",
+        "Custom",
+        "RTL",
+        "API Reference",
+        "Changelog"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "toggle-group-demo",
+        "toggle-group-outline",
+        "toggle-group-sizes",
+        "toggle-group-spacing",
+        "toggle-group-vertical",
+        "toggle-group-disabled",
+        "toggle-group-font-weight-selector",
+        "toggle-group-rtl"
+      ],
+      "rust_api": [],
+      "gallery_examples": [],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "pending",
+      "deviations": []
+    },
+    {
+      "name": "tooltip",
+      "title": "Tooltip",
+      "description": "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      "upstream_docs": "apps/v4/content/docs/components/base/tooltip.mdx",
+      "upstream_source": "apps/v4/registry/bases/base/ui/tooltip.tsx",
+      "documented_sections": [
+        "Installation",
+        "Usage",
+        "Composition",
+        "Side",
+        "With Keyboard Shortcut",
+        "Disabled Button",
+        "RTL",
+        "API Reference"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "tooltip-demo",
+        "tooltip-sides",
+        "tooltip-keyboard",
+        "tooltip-disabled",
+        "tooltip-rtl"
+      ],
+      "rust_api": [
+        "tooltip"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending.",
+        "Delay, intrinsic sizing and inverted tooltip theme remain pending."
+      ]
+    },
+    {
+      "name": "typography",
+      "title": "Typography",
+      "description": "Styles for headings, paragraphs, lists, etc.",
+      "upstream_docs": "apps/v4/content/docs/components/base/typography.mdx",
+      "upstream_source": null,
+      "documented_sections": [
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "p",
+        "blockquote",
+        "table",
+        "list",
+        "Inline code",
+        "Lead",
+        "Large",
+        "Small",
+        "Muted",
+        "RTL"
+      ],
+      "variants": [],
+      "upstream_examples": [
+        "typography-demo",
+        "typography-h1",
+        "typography-h2",
+        "typography-h3",
+        "typography-h4",
+        "typography-p",
+        "typography-blockquote",
+        "typography-table",
+        "typography-list",
+        "typography-inline-code",
+        "typography-lead",
+        "typography-large",
+        "typography-small",
+        "typography-muted",
+        "typography-rtl"
+      ],
+      "rust_api": [
+        "text",
+        "muted",
+        "heading"
+      ],
+      "gallery_examples": [
+        "default"
+      ],
+      "behaviour_tests": [],
+      "visual_comparisons": [],
+      "status": "in_progress",
+      "deviations": [
+        "Full documented example/variant parity and visual audit remain pending."
+      ]
+    }
+  ]
+}

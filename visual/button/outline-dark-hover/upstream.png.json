@@ -1,0 +1,14 @@
+{
+  "example": "button-outline",
+  "theme": "dark",
+  "state": "hover",
+  "width": 600,
+  "height": 400,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 265.09375,
+    "y": 184,
+    "width": 69.8125,
+    "height": 32
+  }
+}

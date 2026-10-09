@@ -1,0 +1,14 @@
+{
+  "example": "button-ghost",
+  "theme": "dark",
+  "state": "disabled",
+  "width": 600,
+  "height": 400,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 269.453125,
+    "y": 184,
+    "width": 61.078125,
+    "height": 32
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "changed_fraction": 0.0019,
+  "height": 400,
+  "mean_absolute_rgb_error": 0.149025,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-light-focus/native.png",
+  "pixels_differing_by_more_than_16": 456,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/button/ghost-light-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 3.8729467678586373,
+  "width": 600
+}

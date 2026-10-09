@@ -1,0 +1,11 @@
+{
+  "changed_fraction": 0.0016916666666666666,
+  "height": 400,
+  "mean_absolute_rgb_error": 0.037318055555555556,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-dark-disabled/native.png",
+  "pixels_differing_by_more_than_16": 406,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-dark-disabled/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.7182569564964585,
+  "width": 600
+}

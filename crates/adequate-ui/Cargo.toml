@@ -1,0 +1,10 @@
+[package]
+name = "yakui-adequate-ui"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "Native shadcn components for Yakui"
+
+[dependencies]
+yakui.workspace = true
+yakui-core.workspace = true

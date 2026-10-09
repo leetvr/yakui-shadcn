@@ -1,0 +1,11 @@
+{
+  "changed_fraction": 0.0022416666666666665,
+  "height": 400,
+  "mean_absolute_rgb_error": 0.13262916666666666,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-dark-focus/native.png",
+  "pixels_differing_by_more_than_16": 538,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-dark-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 2.8900425314056077,
+  "width": 600
+}
