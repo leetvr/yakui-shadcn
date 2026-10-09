@@ -22,7 +22,9 @@ pub fn muted(text: impl Into<String>) {
 #[track_caller]
 pub fn label(text: impl Into<String>) {
     let t = theme();
-    RenderText::with_style(text, t.text_style(t.font_size, t.foreground, 500)).show();
+    let mut style = t.text_style(t.font_size, t.foreground, 500);
+    style.line_height_override = Some(t.font_size);
+    RenderText::with_style(text, style).show();
 }
 /// Draw a heading (levels 1 through 4).
 #[track_caller]
@@ -144,6 +146,7 @@ impl Button {
                 disabled: self.disabled,
                 radius,
                 ring: t.ring,
+                focus_size: None,
             },
             |res| {
                 let active = res.hovering || res.pressed;
@@ -236,7 +239,8 @@ impl Button {
                                     (height - line_height) / 2.,
                                 ),
                                 || {
-                                    row(6., || {
+                                    let is_icon = self.size.icon();
+                                    let content = || {
                                         if let Some(icon) = self.icon {
                                             icon_colored(
                                                 icon,
@@ -247,9 +251,22 @@ impl Button {
                                         if !self.size.icon() {
                                             let mut style = t.text_style(fs, fg, 500);
                                             style.line_height_override = Some(line_height);
-                                            RenderText::with_style(self.text, style).show();
+                                            yakui::util::widget_children::<Underline, _>(
+                                                || {
+                                                    RenderText::with_style(self.text, style).show();
+                                                },
+                                                (
+                                                    matches!(self.variant, Variant::Link) && active,
+                                                    fg,
+                                                ),
+                                            );
                                         }
-                                    });
+                                    };
+                                    if is_icon {
+                                        yakui::center(content);
+                                    } else {
+                                        crate::min_size(Vec2::ZERO, || row(6., content));
+                                    }
                                 },
                             );
                         });
@@ -279,11 +296,16 @@ pub fn badge(text: impl Into<String>, variant: Variant) {
         Variant::Ghost => (Color::CLEAR, t.foreground, None),
         Variant::Link => (Color::CLEAR, t.primary, None),
     };
+    let fill = if fill.a == 0 && border.is_some() {
+        crate::layout::surface_background()
+    } else {
+        crate::layout::resolve_color(fill)
+    };
     RoundRect::new(999.)
         .color(fill)
         .border(border.map(|c| Border::new(c, 1.)))
         .show_children(|| {
-            yakui::pad(Pad::balanced(8., 2.), || {
+            yakui::pad(Pad::balanced(9., 2.), || {
                 let mut style = t.text_style(12., fg, 500);
                 style.line_height_override = Some(16.);
                 RenderText::with_style(text, style).show();
@@ -297,8 +319,45 @@ pub enum CardSize {
     Default,
     Sm,
 }
-#[derive(Debug, Clone, Copy)]
-struct CardSpacing(f32);
+#[derive(Debug, Clone)]
+struct CardSpacing {
+    padding: f32,
+    footer: std::rc::Rc<std::cell::Cell<bool>>,
+}
+#[derive(Debug)]
+struct CardPadding {
+    spacing: CardSpacing,
+}
+impl yakui::widget::Widget for CardPadding {
+    type Props<'a> = CardSpacing;
+    type Response = ();
+    fn new() -> Self {
+        Self {
+            spacing: CardSpacing {
+                padding: 16.,
+                footer: Default::default(),
+            },
+        }
+    }
+    fn update(&mut self, spacing: CardSpacing) {
+        self.spacing = spacing;
+    }
+    fn layout(&self, ctx: yakui::widget::LayoutContext<'_>, constraints: Constraints) -> Vec2 {
+        // Footer declaration occurs after header/content. Defer the bottom padding
+        // decision until layout, when all slots have registered with this card.
+        let mut pad = yakui::widgets::PadWidget::new();
+        pad.update(
+            Pad::ZERO
+                .top(self.spacing.padding)
+                .bottom(if self.spacing.footer.get() {
+                    0.
+                } else {
+                    self.spacing.padding
+                }),
+        );
+        pad.layout(ctx, constraints)
+    }
+}
 /// A composable content surface; use the header/content/footer slots inside it.
 #[track_caller]
 pub fn card(children: impl FnOnce()) {
@@ -317,16 +376,25 @@ pub fn card_sized(size: CardSize, children: impl FnOnce()) {
         t.radius * 1.4,
         0.,
         || {
-            yakui::widgets::Scope::new(CardSpacing(spacing)).show(|| column(spacing, children));
+            let spacing = CardSpacing {
+                padding: spacing,
+                footer: Default::default(),
+            };
+            yakui::widgets::Scope::new(spacing.clone()).show(|| {
+                yakui::util::widget_children::<CardPadding, _>(
+                    || column(spacing.padding, children),
+                    spacing.clone(),
+                );
+            });
         },
     );
 }
 fn card_spacing() -> f32 {
-    yakui::util::read_scope::<CardSpacing>().map_or(16., |s| s.0)
+    yakui::util::read_scope::<CardSpacing>().map_or(16., |s| s.padding)
 }
 #[track_caller]
 pub fn card_header(children: impl FnOnce()) {
-    yakui::pad(Pad::all(card_spacing()), || column(4., children));
+    yakui::pad(Pad::horizontal(card_spacing()), || column(4., children));
 }
 #[track_caller]
 pub fn card_title(text: impl Into<String>) {
@@ -352,13 +420,28 @@ pub fn card_content(children: impl FnOnce()) {
 #[track_caller]
 pub fn card_footer(children: impl FnOnce()) {
     let t = theme();
-    surface(
-        t.muted.with_alpha(0.5),
-        Some(t.border),
-        t.radius * 1.4,
-        card_spacing(),
-        children,
-    );
+    if let Some(spacing) = yakui::util::read_scope::<CardSpacing>() {
+        spacing.footer.set(true);
+    }
+    let fill = crate::layout::resolve_color(t.muted.with_alpha(0.5));
+    RoundRect::new(yakui::BorderRadius::bottom(t.radius * 1.4))
+        .color(fill)
+        .show_children(|| {
+            column(0., || {
+                crate::fill_width(|| {
+                    crate::size(Vec2::new(0., t.border_width), || {
+                        yakui::widgets::Canvas::new(move |ctx| {
+                            let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
+                            let mut rule = yakui::paint::PaintRect::new(rect);
+                            rule.color = t.border;
+                            rule.add(ctx.paint);
+                        })
+                        .show();
+                    })
+                });
+                yakui::pad(Pad::all(card_spacing()), children);
+            });
+        });
 }
 /// Thin horizontal separator with an explicit width.
 #[track_caller]
@@ -370,10 +453,16 @@ pub fn separator(width: f32) {
 /// Muted placeholder surface. Animation is driven by the application frame clock.
 #[track_caller]
 pub fn skeleton(size: Vec2) {
-    crate::size(size, || {
-        RoundRect::new(theme().radius - 2.)
-            .color(theme().muted)
-            .show();
+    skeleton_at(size, theme().radius * 0.8, 0.)
+}
+/// Loading placeholder with an application-supplied animation phase in radians.
+/// A fixed phase of zero produces a reproducible visual reference.
+#[track_caller]
+pub fn skeleton_at(size: Vec2, radius: f32, phase: f32) {
+    let t = theme();
+    let opacity = 0.75 + phase.cos() * 0.25;
+    surface(t.muted.with_alpha(opacity), None, radius, 0., || {
+        crate::size(size, || {});
     });
 }
 /// Bounded progress in the range 0..=1; non-finite values are treated as zero.
@@ -385,14 +474,14 @@ pub fn progress(value: f32, width: f32) {
     } else {
         0.
     };
-    crate::size(Vec2::new(width, 6.), || {
-        RoundRect::new(999.)
-            .color(t.primary.with_alpha(0.2))
-            .show_children(|| {
-                crate::size(Vec2::new(width * value, 6.), || {
+    crate::size(Vec2::new(width, 4.), || {
+        RoundRect::new(999.).color(t.muted).show_children(|| {
+            yakui::align(yakui::Alignment::TOP_LEFT, || {
+                crate::size(Vec2::new(width * value, 4.), || {
                     RoundRect::new(999.).color(t.primary).show();
-                });
+                })
             });
+        });
     });
 }
 /// Keyboard shortcut hint.
@@ -403,7 +492,7 @@ pub fn kbd(value: impl Into<String>) {
         RenderText::with_style(value, t.text_style(12., t.muted_foreground, 500)).show();
     });
 }
-/// Avatar fallback. Image avatars accept Yakui texture IDs through normal composition.
+/// Avatar fallback. A dedicated image/texture avatar API remains pending.
 #[track_caller]
 pub fn avatar(initials: impl Into<String>, size: f32) {
     let t = theme();
@@ -491,46 +580,140 @@ pub fn field(
 /// Edited text is copied back to application state; `true` reports a text change.
 #[track_caller]
 pub fn input(value: &mut String, placeholder: &str) -> bool {
-    input_multiline(value, placeholder, false)
+    Input::new(value).placeholder(placeholder).show().changed
 }
-/// A multiline editor using Yakui's Cosmic Text selection, clipboard and cursor.
+/// Native multiline selection, clipboard and cursor behaviour.
 #[track_caller]
 pub fn textarea(value: &mut String, placeholder: &str) -> bool {
-    input_multiline(value, placeholder, true)
+    Input::new(value)
+        .placeholder(placeholder)
+        .multiline(true)
+        .show()
+        .changed
 }
-#[track_caller]
-fn input_multiline(value: &mut String, placeholder: &str, multiline: bool) -> bool {
-    let t = theme();
-    let mut changed = false;
-    surface(
-        if t.dark {
+/// Configurable native editor. Application state is borrowed only while building the frame.
+#[derive(Debug)]
+pub struct Input<'a> {
+    value: &'a mut String,
+    placeholder: String,
+    disabled: bool,
+    read_only: bool,
+    invalid: bool,
+    multiline: bool,
+    password: bool,
+}
+#[derive(Debug, Default, Clone, Copy)]
+pub struct InputResponse {
+    pub changed: bool,
+    pub submitted: bool,
+    pub lost_focus: bool,
+    pub id: Option<yakui::WidgetId>,
+}
+impl<'a> Input<'a> {
+    pub fn new(value: &'a mut String) -> Self {
+        Self {
+            value,
+            placeholder: String::new(),
+            disabled: false,
+            read_only: false,
+            invalid: false,
+            multiline: false,
+            password: false,
+        }
+    }
+    pub fn placeholder(mut self, placeholder: impl Into<String>) -> Self {
+        self.placeholder = placeholder.into();
+        self
+    }
+    pub fn disabled(mut self, disabled: bool) -> Self {
+        self.disabled = disabled;
+        self
+    }
+    pub fn read_only(mut self, read_only: bool) -> Self {
+        self.read_only = read_only;
+        self
+    }
+    pub fn invalid(mut self, invalid: bool) -> Self {
+        self.invalid = invalid;
+        self
+    }
+    pub fn multiline(mut self, multiline: bool) -> Self {
+        self.multiline = multiline;
+        self
+    }
+    /// Mask graphemes, selection and caret. Password controls are single line.
+    pub fn password(mut self, password: bool) -> Self {
+        self.password = password;
+        if password {
+            self.multiline = false;
+        }
+        self
+    }
+    #[track_caller]
+    pub fn show(self) -> InputResponse {
+        let t = theme();
+        let mut response = InputResponse::default();
+        let fill = if self.disabled {
+            t.input.with_alpha(if t.dark { 0.8 } else { 0.5 })
+        } else if t.dark {
             t.input.with_alpha(0.045)
         } else {
             Color::CLEAR
-        },
-        Some(t.input),
-        t.radius,
-        0.,
-        || {
-            let editor = yakui::widgets::TextBox::new(value.clone())
-                .style(t.text_style(t.font_size, t.foreground, 400))
-                .padding(Pad::balanced(10., 6.))
-                .fill(None)
-                .radius(t.radius)
-                .placeholder(placeholder.to_owned())
-                .cursor_color(t.foreground)
-                .selection_halo_color(Color::CLEAR)
-                .selected_bg_color(t.accent)
-                .multiline(multiline)
-                .inline_edit(!multiline);
-            let res = yakui::util::widget::<crate::editor::Editor>(editor);
-            if let Some(next) = res.into_inner().text {
-                *value = next;
-                changed = true;
-            }
-        },
-    );
-    changed
+        };
+        surface(
+            fill,
+            Some(if self.invalid { t.destructive } else { t.input }),
+            t.radius,
+            0.,
+            || {
+                let foreground = if self.disabled {
+                    crate::layout::resolve_color(t.foreground.with_alpha(0.5))
+                } else {
+                    t.foreground
+                };
+                let textbox = yakui::widgets::TextBox::new(self.value.clone())
+                    .style(t.text_style(t.font_size, foreground, 400))
+                    .padding(Pad::balanced(10., 6.))
+                    .fill(None)
+                    .radius(t.radius)
+                    .placeholder(self.placeholder)
+                    .cursor_color(t.foreground)
+                    .selection_halo_color(Color::CLEAR)
+                    .selected_bg_color(t.accent)
+                    .multiline(self.multiline)
+                    .inline_edit(!self.multiline);
+                ConstrainedBox::new(Constraints {
+                    min: Vec2::new(0., if self.multiline { 64. } else { 32. }),
+                    max: Vec2::new(
+                        f32::INFINITY,
+                        if self.multiline { f32::INFINITY } else { 32. },
+                    ),
+                })
+                .show(|| {
+                    let props = crate::editor::EditorProps {
+                        textbox,
+                        disabled: self.disabled,
+                        read_only: self.read_only,
+                        invalid: self.invalid,
+                    };
+                    let res = if self.password {
+                        yakui::util::widget::<crate::password::Password>(props)
+                    } else {
+                        yakui::util::widget::<crate::editor::Editor>(props)
+                    };
+                    response.id = Some(res.id);
+                    let res = res.into_inner();
+                    response.submitted = res.activated;
+                    response.lost_focus = res.lost_focus;
+                    if let Some(next) = res.text {
+                        response.changed = *self.value != next;
+                        *self.value = next;
+                    }
+                });
+            },
+        );
+        response
+    }
 }
 /// Checkbox and label share one hit target and keyboard focus.
 #[track_caller]
@@ -549,6 +732,7 @@ pub fn checkbox_disabled(
             disabled,
             radius: 4.,
             ring: t.ring,
+            focus_size: Some(Vec2::splat(16.)),
         },
         |res| {
             if res.clicked {
@@ -557,9 +741,17 @@ pub fn checkbox_disabled(
             row(8., || {
                 crate::size(Vec2::splat(16.), || {
                     RoundRect::new(4.)
-                        .color(if *value { t.primary } else { Color::CLEAR })
+                        .color(if *value {
+                            t.primary
+                        } else {
+                            crate::layout::surface_background()
+                        })
                         .border(Some(Border::new(
-                            if *value { t.primary } else { t.input },
+                            if *value {
+                                t.primary
+                            } else {
+                                crate::layout::resolve_color(t.input)
+                            },
                             1.,
                         )))
                         .show_children(|| {
@@ -572,7 +764,11 @@ pub fn checkbox_disabled(
                     label_text,
                     t.text_style(
                         14.,
-                        t.foreground.with_alpha(if disabled { 0.5 } else { 1. }),
+                        crate::layout::resolve_color(t.foreground.with_alpha(if disabled {
+                            0.5
+                        } else {
+                            1.
+                        })),
                         500,
                     ),
                 )
@@ -591,35 +787,44 @@ pub fn switch(label_text: impl Into<String>, value: &mut bool, disabled: bool) -
             disabled,
             radius: 999.,
             ring: t.ring,
+            focus_size: Some(Vec2::new(32., 18.4)),
         },
         |res| {
             if res.clicked {
                 *value = !*value;
             }
             row(8., || {
-                crate::size(Vec2::new(28., 16.), || {
+                crate::size(Vec2::new(32., 18.4), || {
                     RoundRect::new(999.)
-                        .color(if *value { t.primary } else { t.input })
+                        .color(if *value {
+                            t.primary
+                        } else {
+                            crate::layout::resolve_color(t.input)
+                        })
                         .show_children(|| {
-                            yakui::pad(
-                                Pad {
-                                    left: if *value { 13. } else { 1. },
-                                    right: 0.,
-                                    top: 1.,
-                                    bottom: 1.,
-                                },
-                                || {
-                                    crate::size(Vec2::splat(14.), || {
-                                        RoundRect::new(999.)
-                                            .color(if *value {
-                                                t.primary_foreground
-                                            } else {
-                                                t.background
-                                            })
-                                            .show();
-                                    });
-                                },
-                            );
+                            yakui::align(yakui::Alignment::TOP_LEFT, || {
+                                yakui::pad(
+                                    Pad {
+                                        left: if *value { 15. } else { 1. },
+                                        right: 0.,
+                                        top: 1.2,
+                                        bottom: 1.2,
+                                    },
+                                    || {
+                                        crate::size(Vec2::splat(16.), || {
+                                            RoundRect::new(999.)
+                                                .color(if *value {
+                                                    t.primary_foreground
+                                                } else if t.dark {
+                                                    t.foreground
+                                                } else {
+                                                    t.background
+                                                })
+                                                .show();
+                                        });
+                                    },
+                                );
+                            });
                         });
                 });
                 label(label_text);
@@ -644,42 +849,44 @@ pub fn toggle(text: impl Into<String>, value: &mut bool, outline: bool) -> Contr
     }
     res
 }
-/// Single-selection radio group. Directional navigation is handled by Yakui.
+/// Single-selection radio group. Tab enters at the selection; arrows/Home/End
+/// move focus and select, wrapping at either end of the group.
 #[track_caller]
 pub fn radio_group(options: &[&str], selected: &mut usize) {
     let t = theme();
-    column(10., || {
-        for (i, option) in options.iter().enumerate() {
-            control(
-                Control {
-                    disabled: false,
-                    radius: 999.,
-                    ring: t.ring,
-                },
-                |res| {
-                    if res.clicked {
-                        *selected = i;
-                    }
-                    row(8., || {
-                        crate::size(Vec2::splat(16.), || {
-                            RoundRect::new(999.)
-                                .color(Color::CLEAR)
-                                .border(Some(Border::new(t.input, 1.)))
-                                .show_children(|| {
-                                    if *selected == i {
-                                        yakui::pad(Pad::all(4.), || {
-                                            crate::size(Vec2::splat(8.), || {
-                                                RoundRect::new(999.).color(t.primary).show();
-                                            });
-                                        });
-                                    }
+    column(8., || {
+        crate::navigation::choice_group(options.len(), selected, |i, selected, _response| {
+            row(12., || {
+                crate::size(Vec2::splat(16.), || {
+                    RoundRect::new(999.)
+                        .color(if *selected == i {
+                            t.primary
+                        } else {
+                            crate::layout::surface_background()
+                        })
+                        .border(Some(Border::new(
+                            if *selected == i {
+                                t.primary
+                            } else {
+                                crate::layout::resolve_color(t.input)
+                            },
+                            1.,
+                        )))
+                        .show_children(|| {
+                            if *selected == i {
+                                yakui::pad(Pad::all(4.), || {
+                                    crate::size(Vec2::splat(8.), || {
+                                        RoundRect::new(999.).color(t.primary_foreground).show();
+                                    });
                                 });
+                            }
                         });
-                        label((*option).to_owned());
-                    });
-                },
-            );
-        }
+                });
+                let mut style = t.text_style(14., t.foreground, 500);
+                style.line_height_override = Some(14.);
+                RenderText::with_style(options[i].to_owned(), style).show();
+            });
+        });
     });
 }
 /// A simple horizontal group of actions using normal component composition.
@@ -706,4 +913,94 @@ pub fn spinner(size: f32, phase: f32) {
         })
         .show();
     });
+}
+
+/// Caller-owned toolbar selections. Single mode permits at most one pressed action.
+#[derive(Debug, Default, Clone)]
+pub struct ToggleGroupState {
+    pub selected: std::collections::BTreeSet<usize>,
+    pub single: bool,
+}
+#[track_caller]
+pub fn toggle_group(options: &[&str], state: &mut ToggleGroupState, outline: bool) {
+    row(0., || {
+        for (i, option) in options.iter().enumerate() {
+            let pressed = state.selected.contains(&i);
+            if Button::new(*option)
+                .variant(if pressed {
+                    Variant::Secondary
+                } else if outline {
+                    Variant::Outline
+                } else {
+                    Variant::Ghost
+                })
+                .show()
+                .clicked
+            {
+                if pressed {
+                    state.selected.remove(&i);
+                } else {
+                    if state.single {
+                        state.selected.clear();
+                    }
+                    state.selected.insert(i);
+                }
+            }
+        }
+    });
+}
+
+#[derive(Debug)]
+struct Underline {
+    enabled: bool,
+    color: Color,
+}
+impl yakui::widget::Widget for Underline {
+    type Props<'a> = (bool, Color);
+    type Response = ();
+    fn new() -> Self {
+        Self {
+            enabled: false,
+            color: Color::BLACK,
+        }
+    }
+    fn update(&mut self, props: Self::Props<'_>) {
+        self.enabled = props.0;
+        self.color = props.1;
+    }
+    fn paint(&self, mut ctx: yakui::widget::PaintContext<'_>) {
+        for &child in &ctx.dom.get_current().children {
+            ctx.paint(child);
+        }
+        if self.enabled {
+            let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
+            let mut line = yakui::paint::PaintRect::new(yakui::Rect::from_pos_size(
+                Vec2::new(rect.pos().x, rect.max().y),
+                Vec2::new(rect.size().x, 1.),
+            ));
+            line.color = self.color;
+            line.add(ctx.paint);
+        }
+    }
+}
+/// Inline link action. The caller owns routing; hover paints the upstream underline.
+#[track_caller]
+pub fn link(text: impl Into<String>) -> ControlResponse {
+    let t = theme();
+    control(
+        Control {
+            disabled: false,
+            radius: 0.,
+            ring: t.ring,
+            focus_size: None,
+        },
+        |response| {
+            yakui::util::widget_children::<Underline, _>(
+                || {
+                    RenderText::with_style(text, t.text_style(14., t.primary, 400)).show();
+                },
+                (response.hovering, t.primary),
+            );
+        },
+    )
 }

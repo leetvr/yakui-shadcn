@@ -37,11 +37,57 @@ fn main() -> Result<(), Box<dyn Error>> {
             diff.put_pixel(x, y, Rgba([max.saturating_mul(4), 0, 0, 255]));
         }
     }
+    // Report the union of visible content as well as the whole viewport. Empty
+    // margins otherwise make even a badly sized small control score deceptively low.
+    let mut bounds = (w, h, 0, 0);
+    let background_a = reference.get_pixel(0, 0);
+    let background_b = native.get_pixel(0, 0);
+    for y in 0..h {
+        for x in 0..w {
+            if (0..3).any(|channel| {
+                reference.get_pixel(x, y)[channel].abs_diff(background_a[channel]) > 8
+                    || native.get_pixel(x, y)[channel].abs_diff(background_b[channel]) > 8
+            }) {
+                bounds.0 = bounds.0.min(x);
+                bounds.1 = bounds.1.min(y);
+                bounds.2 = bounds.2.max(x + 1);
+                bounds.3 = bounds.3.max(y + 1);
+            }
+        }
+    }
+    let content = if bounds.2 > bounds.0 && bounds.3 > bounds.1 {
+        let mut total = 0f64;
+        for y in bounds.1..bounds.3 {
+            for x in bounds.0..bounds.2 {
+                for channel in 0..3 {
+                    total += (reference.get_pixel(x, y)[channel]
+                        .abs_diff(native.get_pixel(x, y)[channel])
+                        as f64)
+                        .powi(2);
+                }
+            }
+        }
+        let cw = bounds.2 - bounds.0;
+        let ch = bounds.3 - bounds.1;
+        let mut cropped = RgbaImage::new(cw * 2, ch);
+        for y in 0..ch {
+            for x in 0..cw {
+                cropped.put_pixel(x, y, *reference.get_pixel(x + bounds.0, y + bounds.1));
+                cropped.put_pixel(x + cw, y, *native.get_pixel(x + bounds.0, y + bounds.1));
+            }
+        }
+        Some((cropped, (total / (cw as f64 * ch as f64 * 3.)).sqrt()))
+    } else {
+        None
+    };
     let out = PathBuf::from(&args[2]);
     std::fs::create_dir_all(&out)?;
     side.save(out.join("side-by-side.png"))?;
     diff.save(out.join("difference.png"))?;
-    let metrics = serde_json::json!({"reference":args[0],"native":args[1],"width":w,"height":h,"mean_absolute_rgb_error":absolute as f64/(w as f64*h as f64*3.),"rgb_rmse":(squared/(w as f64*h as f64*3.)).sqrt(),"pixels_differing_by_more_than_16":changed,"changed_fraction":changed as f64/(w as f64*h as f64),"review_required":true});
+    if let Some((cropped, _)) = &content {
+        cropped.save(out.join("content-side-by-side.png"))?;
+    }
+    let metrics = serde_json::json!({"reference":args[0],"native":args[1],"width":w,"height":h,"mean_absolute_rgb_error":absolute as f64/(w as f64*h as f64*3.),"rgb_rmse":(squared/(w as f64*h as f64*3.)).sqrt(),"pixels_differing_by_more_than_16":changed,"changed_fraction":changed as f64/(w as f64*h as f64),"content_bounds":bounds,"content_rgb_rmse":content.map(|(_,rmse)|rmse),"review_required":true});
     std::fs::write(
         out.join("metrics.json"),
         serde_json::to_string_pretty(&metrics)? + "\n",

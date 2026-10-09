@@ -179,3 +179,62 @@ pub(crate) fn circle(
         );
     }
 }
+
+/// Hollow rounded outline. Yakui's bordered rectangle paints a solid silhouette
+/// underneath its inset fill; a focus ring must leave the interior untouched.
+pub(crate) fn outline(
+    ctx: &mut yakui::widget::PaintContext<'_>,
+    rect: yakui::Rect,
+    radius: f32,
+    width: f32,
+    color: yakui::Color,
+) {
+    use yakui::paint::{PaintMesh, Vertex};
+    const STEPS: usize = 12;
+    let contour = |rect: yakui::Rect, radius: f32| {
+        let r = radius.max(0.).min(rect.size().min_element().max(0.) / 2.);
+        let centers = [
+            rect.pos() + yakui::Vec2::splat(r),
+            yakui::Vec2::new(rect.max().x - r, rect.pos().y + r),
+            rect.max() - yakui::Vec2::splat(r),
+            yakui::Vec2::new(rect.pos().x + r, rect.max().y - r),
+        ];
+        let mut result = Vec::new();
+        for (corner, center) in centers.iter().enumerate() {
+            for step in 0..=STEPS {
+                let angle = std::f32::consts::PI
+                    + (corner as f32 + step as f32 / STEPS as f32) * std::f32::consts::FRAC_PI_2;
+                result.push(*center + yakui::Vec2::new(angle.cos(), angle.sin()) * r);
+            }
+        }
+        result
+    };
+    let width = width.max(0.).min(rect.size().min_element().max(0.) / 2.);
+    let outer = contour(rect, radius);
+    let inner = contour(
+        yakui::Rect::from_pos_size(
+            rect.pos() + yakui::Vec2::splat(width),
+            rect.size() - yakui::Vec2::splat(width * 2.),
+        ),
+        radius - width,
+    );
+    let vertices: Vec<_> = outer
+        .iter()
+        .zip(inner.iter())
+        .flat_map(|(a, b)| {
+            [
+                Vertex::new(*a, yakui::Vec2::ZERO, color.to_linear()),
+                Vertex::new(*b, yakui::Vec2::ZERO, color.to_linear()),
+            ]
+        })
+        .collect();
+    let count = outer.len() as u16;
+    let indices: Vec<u16> = (0..count)
+        .flat_map(|i| {
+            let a = i * 2;
+            let b = ((i + 1) % count) * 2;
+            [a, b, b + 1, a, b + 1, a + 1]
+        })
+        .collect();
+    ctx.paint.add_mesh(PaintMesh::new(vertices, indices));
+}

@@ -8,3 +8,5 @@ description = "Native shadcn components for Yakui"
 [dependencies]
 yakui.workspace = true
 yakui-core.workspace = true
+yakui-widgets.workspace = true
+unicode-segmentation = "1.12"

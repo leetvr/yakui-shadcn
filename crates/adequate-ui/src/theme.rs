@@ -150,7 +150,7 @@ impl Theme {
             } else {
                 size * 1.4
             }),
-            color: crate::layout::resolve_color(color),
+            color,
             attrs: AttrsOwned::new(
                 &Attrs::new()
                     .family(Family::Name(&self.font_family))

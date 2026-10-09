@@ -1,5 +1,5 @@
 //! One pointer/keyboard activation contract shared by styled controls.
-use yakui::{Border, Color, Rect, Vec2, shapes::RoundedRectangle};
+use yakui::{Color, Rect, Vec2};
 use yakui_core::{
     WidgetId, context,
     event::{EventInterest, EventResponse, WidgetEvent},
@@ -21,6 +21,7 @@ pub(crate) struct Control {
     pub disabled: bool,
     pub radius: f32,
     pub ring: Color,
+    pub focus_size: Option<Vec2>,
 }
 impl Default for Control {
     fn default() -> Self {
@@ -28,6 +29,7 @@ impl Default for Control {
             disabled: false,
             radius: 8.0,
             ring: Color::GRAY,
+            focus_size: None,
         }
     }
 }
@@ -35,6 +37,7 @@ impl Default for Control {
 pub(crate) struct ControlWidget {
     props: Control,
     dismiss: Option<std::rc::Rc<crate::overlay::DismissContext>>,
+    carousel: Option<std::rc::Rc<crate::carousel::CarouselContext>>,
     hovering: bool,
     pointer_down: bool,
     key_down: Option<KeyCode>,
@@ -54,6 +57,7 @@ impl Widget for ControlWidget {
         // Event dispatch holds a mutable DOM borrow. Capture scopes during update
         // rather than trying to borrow the current node again inside an event.
         self.dismiss = yakui::util::read_scope::<crate::overlay::DismissContext>();
+        self.carousel = yakui::util::read_scope();
         if props.disabled {
             self.pointer_down = false;
             self.key_down = None;
@@ -69,15 +73,18 @@ impl Widget for ControlWidget {
     }
     fn paint(&self, mut ctx: PaintContext<'_>) {
         if self.focus_visible && !self.props.disabled {
-            let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
+            let mut rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
+            if let Some(size) = self.props.focus_size {
+                rect = Rect::from_pos_size(
+                    rect.pos() + Vec2::new(0., (rect.size().y - size.y) / 2.),
+                    size,
+                );
+            }
             let outer = Rect::from_pos_size(
                 rect.pos() - Vec2::splat(3.0),
                 rect.size() + Vec2::splat(6.0),
             );
-            RoundedRectangle::new(outer, self.props.radius + 3.0)
-                .color(Color::CLEAR)
-                .border(Some(Border::new(self.props.ring, 3.0)))
-                .add(ctx.paint);
+            crate::icons::outline(&mut ctx, outer, self.props.radius + 3., 3., self.props.ring);
         }
         for &child in &ctx.dom.get_current().children {
             ctx.paint(child);
@@ -105,6 +112,11 @@ impl Widget for ControlWidget {
         }
         if crate::overlay::escape(&ctx, event, self.dismiss.as_deref()) {
             return EventResponse::Sink;
+        }
+        if let Some(carousel) = &self.carousel {
+            if carousel.key(event) {
+                return EventResponse::Sink;
+            }
         }
         match event {
             WidgetEvent::MouseEnter => {

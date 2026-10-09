@@ -1,5 +1,6 @@
 //! Native window and deterministic headless captures share exactly the same example tree.
 mod examples;
+mod showcases;
 use serde::Deserialize;
 use std::{error::Error, path::PathBuf};
 use winit::{
@@ -24,6 +25,7 @@ struct Entry {
 #[derive(Clone)]
 struct Options {
     component: String,
+    showcase: Option<String>,
     variant: String,
     dark: bool,
     screenshot: Option<PathBuf>,
@@ -36,6 +38,7 @@ impl Default for Options {
     fn default() -> Self {
         Self {
             component: "button".into(),
+            showcase: None,
             variant: "default".into(),
             dark: false,
             screenshot: None,
@@ -52,7 +55,7 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
     while let Some(arg) = args.next() {
         if arg == "--help" {
             println!(
-                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected] [--width 1200] [--height 800] [--isolated] [--screenshot PATH]\ngallery --list"
+                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected] [--width 1200] [--height 800] [--isolated] [--screenshot PATH]\ngallery --list\ngallery --showcase dashboard|settings|checkout [--theme dark] [--screenshot PATH]"
             );
             return Ok(None);
         }
@@ -71,6 +74,7 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
             .ok_or_else(|| format!("Missing value for {arg}"))?;
         match arg.as_str() {
             "--component" => options.component = value,
+            "--showcase" => options.showcase = Some(value),
             "--variant" => options.variant = value,
             "--screenshot" => options.screenshot = Some(value.into()),
             "--width" => options.width = value.parse()?,
@@ -85,6 +89,13 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
             "--state" => options.state = value,
             _ => return Err(format!("Unknown option {arg}").into()),
         }
+    }
+    if options
+        .showcase
+        .as_deref()
+        .is_some_and(|name| !showcases::NAMES.contains(&name))
+    {
+        return Err("Unknown showcase; use dashboard, settings or checkout".into());
     }
     if !examples::AVAILABLE.contains(&options.component.as_str()) {
         return Err(format!(
@@ -119,6 +130,8 @@ struct Gallery {
     options: Options,
     catalogue: Catalogue,
     state: examples::ExampleState,
+    showcase_state: showcases::State,
+    started: std::time::Instant,
     viewport: ui::Vec2,
     states: std::collections::BTreeMap<String, examples::ExampleState>,
 }
@@ -130,12 +143,16 @@ impl Gallery {
             state.checked = true;
             state.toggle = true;
             state.overlay.open = true;
+            state.select.popup.open = true;
+            state.menu.popup.open = true;
         }
         Self {
             options,
             catalogue: serde_json::from_str(include_str!("../../../reference/components.json"))
                 .unwrap(),
             state,
+            showcase_state: Default::default(),
+            started: std::time::Instant::now(),
             viewport,
             states: Default::default(),
         }
@@ -146,9 +163,56 @@ impl Gallery {
         } else {
             ui::Theme::light()
         };
+        self.state.phase = if self.options.screenshot.is_some() {
+            0.
+        } else {
+            self.started.elapsed().as_secs_f32() * 6.
+        };
+        for state in self.states.values_mut() {
+            state.phase = self.state.phase;
+        }
         ui::with_theme(t.clone(), || {
             ui::size(self.viewport, || {
                 ui::surface(t.background, None, 0., 0., || {
+                    if let Some(name) = self.options.showcase.clone() {
+                        ui::scroll_area(self.viewport.y, || {
+                            ui::surface(t.background, None, 0., 24., || {
+                                ui::column(24., || {
+                                    ui::row(8., || {
+                                        for route in showcases::NAMES {
+                                            if ui::Button::new(*route)
+                                                .variant(ui::Variant::Outline)
+                                                .show()
+                                                .clicked
+                                            {
+                                                self.options.showcase = Some((*route).into());
+                                            }
+                                        }
+                                        if ui::Button::new("Components")
+                                            .variant(ui::Variant::Ghost)
+                                            .show()
+                                            .clicked
+                                        {
+                                            self.options.showcase = None;
+                                        }
+                                        if ui::Button::new("Toggle theme")
+                                            .variant(ui::Variant::Ghost)
+                                            .show()
+                                            .clicked
+                                        {
+                                            self.options.dark = !self.options.dark;
+                                        }
+                                    });
+                                    showcases::render(
+                                        &name,
+                                        &mut self.showcase_state,
+                                        self.viewport.x - 48.,
+                                    );
+                                });
+                            });
+                        });
+                        return;
+                    }
                     if self.options.isolated {
                         yakui::center(|| {
                             examples::render(
@@ -161,21 +225,32 @@ impl Gallery {
                         return;
                     }
                     ui::column(0., || {
-                        ui::surface(t.background, Some(t.border), 0., 16., || {
-                            ui::row(16., || {
-                                ui::label("Adequate UI");
-                                ui::muted("shadcn / Base UI / Nova");
-                                if ui::Button::new(if self.options.dark {
-                                    "Light theme"
-                                } else {
-                                    "Dark theme"
+                        ui::fill_width(|| {
+                            ui::surface(t.background, Some(t.border), 0., 16., || {
+                                ui::row(16., || {
+                                    ui::label("Adequate UI");
+                                    ui::muted("shadcn / Base UI / Nova");
+                                    for name in showcases::NAMES {
+                                        if ui::Button::new(*name)
+                                            .variant(ui::Variant::Ghost)
+                                            .show()
+                                            .clicked
+                                        {
+                                            self.options.showcase = Some((*name).into());
+                                        }
+                                    }
+                                    if ui::Button::new(if self.options.dark {
+                                        "Light theme"
+                                    } else {
+                                        "Dark theme"
+                                    })
+                                    .variant(ui::Variant::Outline)
+                                    .show()
+                                    .clicked
+                                    {
+                                        self.options.dark = !self.options.dark;
+                                    }
                                 })
-                                .variant(ui::Variant::Outline)
-                                .show()
-                                .clicked
-                                {
-                                    self.options.dark = !self.options.dark;
-                                }
                             })
                         });
                         ui::row(0., || {
@@ -272,25 +347,34 @@ impl Gallery {
                                                         examples::variants(&self.options.component)
                                                     {
                                                         ui::label(variant.to_string());
-                                                        ui::surface(
-                                                            t.background,
-                                                            Some(t.border),
-                                                            t.radius,
-                                                            24.,
-                                                            || {
-                                                                examples::render(
-                                                                    &self.options.component,
-                                                                    variant,
-                                                                    self.states
-                                                                        .entry(format!(
+                                                        ui::fill_width(|| {
+                                                            ui::surface(
+                                                                t.background,
+                                                                Some(t.border),
+                                                                t.radius,
+                                                                24.,
+                                                                || {
+                                                                    ui::min_size(
+                                                                        ui::Vec2::new(0., 112.),
+                                                                        || {
+                                                                            examples::render(
+                                                                                &self
+                                                                                    .options
+                                                                                    .component,
+                                                                                variant,
+                                                                                self.states
+                                                                                    .entry(format!(
                                                                             "{}:{variant}",
                                                                             self.options.component
                                                                         ))
-                                                                        .or_default(),
-                                                                    false,
-                                                                );
-                                                            },
-                                                        );
+                                                                                    .or_default(),
+                                                                                false,
+                                                                            )
+                                                                        },
+                                                                    );
+                                                                },
+                                                            )
+                                                        });
                                                     }
                                                     ui::muted(format!(
                                                         "Actions: {}",
@@ -313,7 +397,9 @@ impl Gallery {
                     });
                 })
             });
-            if self.options.isolated {
+            if let Some(name) = &self.options.showcase {
+                showcases::overlays(name, &mut self.showcase_state);
+            } else if self.options.isolated {
                 examples::overlays(
                     &self.options.component,
                     &self.options.variant,
@@ -349,7 +435,11 @@ fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
     if gallery.options.state == "hover" || gallery.options.state == "focus" {
         fn first_control(yak: &yakui::Yakui, id: yakui::WidgetId) -> Option<yakui::WidgetId> {
             let node = yak.dom().get(id)?;
-            if node.widget.type_name().ends_with("::ControlWidget") {
+            if node
+                .widget
+                .focus_policy()
+                .contains(yakui::widget::FocusPolicy::SEQUENTIAL)
+            {
                 return Some(id);
             }
             node.children.iter().find_map(|id| first_control(yak, *id))

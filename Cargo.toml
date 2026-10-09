@@ -9,5 +9,9 @@ yakui-core = { git = "https://github.com/SecondHalfGames/yakui", rev = "7c2bd75c
 yakui-app = { git = "https://github.com/SecondHalfGames/yakui", rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8" }
 yakui-to-image = { git = "https://github.com/SecondHalfGames/yakui", rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8" }
 
+[workspace.dependencies.yakui-widgets]
+git = "https://github.com/SecondHalfGames/yakui"
+rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+
 [profile.dev]
 debug = 1

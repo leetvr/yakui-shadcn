@@ -3,7 +3,33 @@
 //! Call [`add_fonts`] once, then declare components between `Yakui::start` and
 //! `Yakui::finish`. Business state remains owned by the calling application.
 //! The library emits Yakui paint commands and does not depend on a renderer.
+mod advanced_layout;
 mod basic;
+mod carousel;
+mod sidebar;
+pub use carousel::*;
+pub use sidebar::*;
+mod message_scroller;
+mod questionnaire;
+mod toast;
+pub use message_scroller::*;
+pub use questionnaire::*;
+pub use toast::*;
+mod message;
+pub use message::*;
+mod otp;
+pub use advanced_layout::*;
+pub use otp::*;
+mod calendar;
+mod slider;
+pub use slider::*;
+mod chart;
+pub use chart::*;
+mod menu;
+pub use menu::*;
+mod table;
+pub use calendar::*;
+pub use table::*;
 mod icons;
 mod interaction;
 mod layout;
@@ -12,6 +38,7 @@ mod overlay;
 mod theme;
 pub use navigation::*;
 mod editor;
+mod password;
 pub use basic::*;
 pub use icons::*;
 pub use interaction::ControlResponse;

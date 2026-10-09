@@ -21,6 +21,7 @@ struct ChoiceContext {
 struct ChoiceProps {
     index: usize,
     selected: usize,
+    radio: bool,
 }
 #[derive(Debug)]
 struct ChoiceWidget {
@@ -36,6 +37,7 @@ impl Widget for ChoiceWidget {
             props: ChoiceProps {
                 index: 0,
                 selected: 0,
+                radio: false,
             },
             control: ControlWidget::new(),
             context: None,
@@ -47,8 +49,13 @@ impl Widget for ChoiceWidget {
         let t = theme();
         self.control.update(Control {
             disabled: false,
-            radius: t.radius,
+            radius: if props.radio { 999. } else { t.radius },
             ring: t.ring,
+            focus_size: if props.radio {
+                Some(crate::Vec2::splat(16.))
+            } else {
+                None
+            },
         })
     }
     fn paint(&self, ctx: PaintContext<'_>) {
@@ -97,6 +104,49 @@ impl Widget for ChoiceWidget {
         self.control.event(ctx, event)
     }
 }
+/// Build a single tab stop with selection following arrow/Home/End navigation.
+/// The caller owns selection; Yakui retains only the event awaiting the next frame.
+#[track_caller]
+pub(crate) fn choice_group(
+    count: usize,
+    selected: &mut usize,
+    mut item: impl FnMut(usize, &mut usize, ControlResponse),
+) {
+    *selected = (*selected).min(count.saturating_sub(1));
+    let ids = Rc::new(RefCell::new(Vec::new()));
+    crate::layout::with_state(
+        || Rc::new(Cell::new(None::<usize>)),
+        |pending| {
+            if let Some(next) = pending.borrow().take() {
+                *selected = next.min(count.saturating_sub(1));
+            }
+            Scope::new(ChoiceContext {
+                ids: ids.clone(),
+                pending: pending.borrow().clone(),
+            })
+            .show(|| {
+                column(8., || {
+                    for index in 0..count {
+                        let dom = context::dom();
+                        let response = dom.begin_widget::<ChoiceWidget>(ChoiceProps {
+                            index,
+                            selected: *selected,
+                            radio: true,
+                        });
+                        let id = response.id;
+                        ids.borrow_mut().push(id);
+                        let response = response.into_inner();
+                        if response.clicked {
+                            *selected = index;
+                        }
+                        item(index, selected, response);
+                        dom.end_widget::<ChoiceWidget>(id);
+                    }
+                });
+            });
+        },
+    )
+}
 /// Tab-list appearance from the documented default/line variants.
 #[derive(Debug, Clone, Copy, Default)]
 pub enum TabsVariant {
@@ -116,56 +166,62 @@ pub fn tabs(
     let ids = Rc::new(RefCell::new(Vec::new()));
     // The scope widget owns the pending selection across frames. Caller state is
     // only changed here, so consumers never need a second selection store.
-    let persisted = yakui::use_state(|| Rc::new(Cell::new(None::<usize>)));
-    if let Some(next) = persisted.borrow().take() {
-        *selected = next.min(options.len().saturating_sub(1));
-    }
-    let context = ChoiceContext {
-        ids: ids.clone(),
-        pending: persisted.borrow().clone(),
-    };
-    column(16., || {
-        Scope::new(context).show(|| {
-            surface(
-                if matches!(variant, TabsVariant::Default) {
-                    t.muted
-                } else {
-                    Color::CLEAR
-                },
-                None,
-                t.radius,
-                3.,
-                || {
-                    row(2., || {
-                        for (index, option) in options.iter().enumerate() {
-                            let dom = context::dom();
-                            let response = dom.begin_widget::<ChoiceWidget>(ChoiceProps {
-                                index,
-                                selected: *selected,
-                            });
-                            let id = response.id;
-                            ids.borrow_mut().push(id);
-                            let res = response.into_inner();
-                            if res.clicked {
-                                *selected = index;
-                            }
-                            let fill =
-                                if *selected == index && matches!(variant, TabsVariant::Default) {
-                                    t.background
-                                } else {
-                                    Color::CLEAR
-                                };
-                            surface(fill, None, t.radius - 2., 5., || {
-                                crate::label((*option).to_owned())
-                            });
-                            dom.end_widget::<ChoiceWidget>(id);
-                        }
-                    })
-                },
-            )
-        });
-        content(*selected);
-    });
+    crate::layout::with_state(
+        || Rc::new(Cell::new(None::<usize>)),
+        |persisted| {
+            if let Some(next) = persisted.borrow().take() {
+                *selected = next.min(options.len().saturating_sub(1));
+            }
+            let context = ChoiceContext {
+                ids: ids.clone(),
+                pending: persisted.borrow().clone(),
+            };
+            column(16., || {
+                Scope::new(context).show(|| {
+                    surface(
+                        if matches!(variant, TabsVariant::Default) {
+                            t.muted
+                        } else {
+                            Color::CLEAR
+                        },
+                        None,
+                        t.radius,
+                        3.,
+                        || {
+                            row(2., || {
+                                for (index, option) in options.iter().enumerate() {
+                                    let dom = context::dom();
+                                    let response = dom.begin_widget::<ChoiceWidget>(ChoiceProps {
+                                        index,
+                                        selected: *selected,
+                                        radio: false,
+                                    });
+                                    let id = response.id;
+                                    ids.borrow_mut().push(id);
+                                    let res = response.into_inner();
+                                    if res.clicked {
+                                        *selected = index;
+                                    }
+                                    let fill = if *selected == index
+                                        && matches!(variant, TabsVariant::Default)
+                                    {
+                                        t.background
+                                    } else {
+                                        Color::CLEAR
+                                    };
+                                    surface(fill, None, t.radius - 2., 5., || {
+                                        crate::label((*option).to_owned())
+                                    });
+                                    dom.end_widget::<ChoiceWidget>(id);
+                                }
+                            })
+                        },
+                    )
+                });
+                content(*selected);
+            });
+        },
+    )
 }
 /// Expandable content with application-owned visibility.
 #[track_caller]

@@ -9,16 +9,28 @@ use yakui_core::{
 };
 
 /// Application-owned visibility and return-focus target for a popup.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Default)]
 pub struct OverlayState {
     pub open: bool,
     pub trigger: Option<WidgetId>,
+    pub anchor_position: Option<Vec2>,
     dismiss: Rc<Cell<bool>>,
+}
+impl Clone for OverlayState {
+    fn clone(&self) -> Self {
+        Self {
+            open: self.open,
+            trigger: self.trigger,
+            anchor_position: self.anchor_position,
+            dismiss: Rc::new(Cell::new(self.dismiss.get())),
+        }
+    }
 }
 impl OverlayState {
     /// Open from the actual trigger response, allowing focus to be restored on dismissal.
     pub fn open_from(&mut self, response: ControlResponse) {
         self.trigger = response.id;
+        self.anchor_position = None;
         self.open = true;
         self.dismiss.set(false);
     }
@@ -243,6 +255,7 @@ impl Widget for Backdrop {
 #[derive(Debug, Clone, Copy)]
 struct Placement {
     anchor: Alignment,
+    edge: Option<Side>,
     width: f32,
 }
 #[derive(Debug)]
@@ -256,6 +269,7 @@ impl Widget for PlacementWidget {
         Self {
             props: Placement {
                 anchor: Alignment::CENTER,
+                edge: None,
                 width: 384.,
             },
         }
@@ -265,13 +279,33 @@ impl Widget for PlacementWidget {
     }
     fn layout(&self, mut ctx: LayoutContext<'_>, input: Constraints) -> Vec2 {
         let viewport = input.max;
-        let width = self.props.width.min(viewport.x - 32.).max(0.);
+        let side = self.props.edge;
+        let width = if matches!(side, Some(Side::Top | Side::Bottom)) {
+            viewport.x
+        } else {
+            self.props
+                .width
+                .min(if side.is_some() {
+                    viewport.x
+                } else {
+                    viewport.x - 32.
+                })
+                .max(0.)
+        };
+        let full_height = matches!(side, Some(Side::Left | Side::Right));
         for &child in &ctx.dom.get_current().children {
             let size = ctx.calculate_layout(
                 child,
                 Constraints {
-                    min: Vec2::new(width, 0.),
-                    max: Vec2::new(width, (viewport.y - 32.).max(0.)),
+                    min: Vec2::new(width, if full_height { viewport.y } else { 0. }),
+                    max: Vec2::new(
+                        width,
+                        if side.is_some() {
+                            viewport.y
+                        } else {
+                            (viewport.y - 32.).max(0.)
+                        },
+                    ),
                 },
             );
             ctx.layout
@@ -317,6 +351,7 @@ fn modal(
     width: f32,
     anchor: Alignment,
     dismissible: bool,
+    edge: Option<Side>,
     children: impl FnOnce(&mut OverlayState),
 ) {
     if state.dismiss.take() {
@@ -354,9 +389,13 @@ fn modal(
                         yakui::util::widget_children::<BlockPointer, _>(
                             || {
                                 surface(
-                                    t.popover,
+                                    if edge.is_some() {
+                                        t.background
+                                    } else {
+                                        t.popover
+                                    },
                                     Some(t.foreground.with_alpha(0.1)),
-                                    t.radius * 1.4,
+                                    if edge.is_some() { 0. } else { t.radius * 1.4 },
                                     16.,
                                     || column(16., || children(state)),
                                 )
@@ -364,7 +403,11 @@ fn modal(
                             (),
                         );
                     },
-                    Placement { width, anchor },
+                    Placement {
+                        width,
+                        anchor,
+                        edge,
+                    },
                 );
             });
         },
@@ -375,12 +418,12 @@ fn modal(
 /// Pass the state into the content closure to close it from an action.
 #[track_caller]
 pub fn dialog(state: &mut OverlayState, children: impl FnOnce(&mut OverlayState)) {
-    modal(state, 384., Alignment::CENTER, true, children)
+    modal(state, 384., Alignment::CENTER, true, None, children)
 }
 /// Confirmation dialog. Backdrop clicks are blocked; Escape and explicit actions dismiss.
 #[track_caller]
 pub fn alert_dialog(state: &mut OverlayState, children: impl FnOnce(&mut OverlayState)) {
-    modal(state, 384., Alignment::CENTER, false, children)
+    modal(state, 384., Alignment::CENTER, false, None, children)
 }
 /// Edge of a sheet or drawer.
 #[derive(Debug, Clone, Copy, Default)]
@@ -400,9 +443,9 @@ pub fn sheet(state: &mut OverlayState, side: Side, children: impl FnOnce(&mut Ov
         Side::Top => Alignment::TOP_CENTER,
         Side::Bottom => Alignment::BOTTOM_CENTER,
     };
-    modal(state, 384., anchor, true, children)
+    modal(state, 384., anchor, true, Some(side), children)
 }
-/// A bottom drawer. Drag gestures are tracked separately from the shared modal contract.
+/// A bottom modal drawer. Pointer dragging is not yet implemented.
 #[track_caller]
 pub fn drawer(state: &mut OverlayState, children: impl FnOnce(&mut OverlayState)) {
     sheet(state, Side::Bottom, children)
@@ -411,6 +454,8 @@ pub fn drawer(state: &mut OverlayState, children: impl FnOnce(&mut OverlayState)
 #[derive(Debug, Clone, Copy)]
 struct PopupPlacement {
     anchor: Option<WidgetId>,
+    point: Option<Vec2>,
+    side: Side,
     width: f32,
 }
 #[derive(Debug)]
@@ -424,6 +469,8 @@ impl Widget for PopupPlacementWidget {
         Self {
             props: PopupPlacement {
                 anchor: None,
+                point: None,
+                side: Side::Bottom,
                 width: 240.,
             },
         }
@@ -439,6 +486,10 @@ impl Widget for PopupPlacementWidget {
             .anchor
             .and_then(|id| ctx.rect_relative_to(id, ctx.dom.root()))
             .unwrap_or_else(|| yakui::Rect::from_pos_size(viewport / 2., Vec2::ZERO));
+        let anchor = self
+            .props
+            .point
+            .map_or(anchor, |p| yakui::Rect::from_pos_size(p, Vec2::ZERO));
         for &child in &ctx.dom.get_current().children {
             let size = ctx.calculate_layout(
                 child,
@@ -447,17 +498,24 @@ impl Widget for PopupPlacementWidget {
                     max: Vec2::new(width, (viewport.y - 16.).max(0.)),
                 },
             );
-            let x = anchor.pos().x.clamp(8., (viewport.x - size.x - 8.).max(8.));
-            let below = anchor.max().y + 4.;
-            let y = if below + size.y > viewport.y - 8. {
-                anchor.pos().y - size.y - 4.
-            } else {
-                below
+            let preferred = match self.props.side {
+                Side::Right => Vec2::new(anchor.max().x + 4., anchor.pos().y),
+                Side::Left => Vec2::new(anchor.pos().x - size.x - 4., anchor.pos().y),
+                Side::Top => Vec2::new(anchor.pos().x, anchor.pos().y - size.y - 4.),
+                Side::Bottom => Vec2::new(anchor.pos().x, anchor.max().y + 4.),
             };
-            ctx.layout.set_pos(
-                child,
-                Vec2::new(x, y.clamp(8., (viewport.y - size.y - 8.).max(8.))),
+            let mut pos = preferred;
+            if matches!(self.props.side, Side::Right) && pos.x + size.x > viewport.x - 8. {
+                pos.x = anchor.pos().x - size.x - 4.;
+            }
+            if matches!(self.props.side, Side::Bottom) && pos.y + size.y > viewport.y - 8. {
+                pos.y = anchor.pos().y - size.y - 4.;
+            }
+            pos = pos.clamp(
+                Vec2::splat(8.),
+                (viewport - size - Vec2::splat(8.)).max(Vec2::splat(8.)),
             );
+            ctx.layout.set_pos(child, pos);
         }
         viewport
     }
@@ -467,6 +525,7 @@ fn popup(
     state: &mut OverlayState,
     width: f32,
     interactive: bool,
+    side: Side,
     children: impl FnOnce(&mut OverlayState),
 ) {
     if state.dismiss.take() {
@@ -481,6 +540,8 @@ fn popup(
     };
     let placement = PopupPlacement {
         anchor: state.trigger,
+        point: state.anchor_position,
+        side,
         width,
     };
     let t = theme();
@@ -530,7 +591,7 @@ fn popup(
 /// Render at the application root after the trigger; the state retains its WidgetId.
 #[track_caller]
 pub fn popover(state: &mut OverlayState, width: f32, children: impl FnOnce(&mut OverlayState)) {
-    popup(state, width, true, children)
+    popup(state, width, true, Side::Bottom, children)
 }
 /// Tooltip content anchored to a trigger. The caller supplies the trigger response.
 /// This initial API displays on hover/focus; delayed opening is recorded as a deviation.
@@ -541,10 +602,21 @@ pub fn tooltip(trigger: ControlResponse, text: impl Into<String>) {
         trigger: trigger.id,
         ..OverlayState::default()
     };
-    popup(&mut state, 200., false, |_| crate::text(text));
+    popup(&mut state, 200., false, Side::Bottom, |_| crate::text(text));
 }
 /// A hover-card surface. Caller controls visibility so content can remain open when hovered.
 #[track_caller]
 pub fn hover_card(state: &mut OverlayState, width: f32, children: impl FnOnce(&mut OverlayState)) {
-    popup(state, width, false, children)
+    popup(state, width, false, Side::Bottom, children)
+}
+
+/// Popup with a preferred side. Placement flips/clamps against the viewport.
+#[track_caller]
+pub fn popover_on_side(
+    state: &mut OverlayState,
+    width: f32,
+    side: Side,
+    children: impl FnOnce(&mut OverlayState),
+) {
+    popup(state, width, true, side, children)
 }

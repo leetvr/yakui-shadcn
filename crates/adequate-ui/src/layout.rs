@@ -6,11 +6,11 @@ use yakui::{
 /// Horizontal content with the given gap, tightly sized to its children.
 #[track_caller]
 pub fn row(gap: f32, children: impl FnOnce()) {
-    List::row()
+    let props = List::row()
         .main_axis_size(MainAxisSize::Min)
         .cross_axis_alignment(CrossAxisAlignment::Center)
-        .item_spacing(gap)
-        .show(children);
+        .item_spacing(gap);
+    yakui::util::widget_children::<crate::advanced_layout::RowWidget, _>(children, props);
 }
 /// Vertical content with the given gap, tightly sized to its children.
 #[track_caller]
@@ -52,7 +52,13 @@ pub fn surface(
     };
     let border = border.map(|c| Border::new(composite(c, resolved), t.border_width));
     RoundRect::new(radius)
-        .color(if fill.a == 0 { Color::CLEAR } else { resolved })
+        // Yakui paints a solid border silhouette before the inset fill. A clear
+        // interior would expose that silhouette across the whole surface.
+        .color(if fill.a == 0 && border.is_none() {
+            Color::CLEAR
+        } else {
+            resolved
+        })
         .border(border)
         .show_children(|| {
             yakui::widgets::Scope::new(SurfaceBackground(resolved)).show(|| {
@@ -117,4 +123,55 @@ impl yakui::widget::Widget for FillWidth {
 #[track_caller]
 pub fn fill_width(children: impl FnOnce()) {
     yakui::util::widget_children::<FillWidth, _>(children, ());
+}
+
+#[derive(Debug)]
+struct MinimumSize {
+    minimum: Vec2,
+}
+impl yakui::widget::Widget for MinimumSize {
+    type Props<'a> = Vec2;
+    type Response = ();
+    fn new() -> Self {
+        Self {
+            minimum: Vec2::ZERO,
+        }
+    }
+    fn update(&mut self, minimum: Vec2) {
+        self.minimum = minimum;
+    }
+    fn layout(&self, mut ctx: yakui::widget::LayoutContext<'_>, input: Constraints) -> Vec2 {
+        let children = ctx.dom.get_current().children.clone();
+        let mut natural = Vec2::ZERO;
+        for &child in &children {
+            natural = natural.max(ctx.calculate_layout(child, Constraints::loose(input.max)));
+        }
+        let size = input.constrain(natural.max(self.minimum));
+        for &child in &children {
+            let child_size = ctx.layout.get(child).unwrap().rect.size();
+            ctx.layout.set_pos(child, (size - child_size) / 2.);
+        }
+        size
+    }
+}
+/// A centered region with a minimum size; larger content expands the region normally.
+#[track_caller]
+pub fn min_size(minimum: Vec2, children: impl FnOnce()) {
+    yakui::util::widget_children::<MinimumSize, _>(children, minimum);
+}
+
+/// Retain state on the component's container node rather than inserting an empty
+/// state sibling into the caller's List (where it would consume item spacing).
+#[track_caller]
+pub(crate) fn with_state<T: 'static, R>(
+    initial: impl FnOnce() -> T + 'static,
+    children: impl FnOnce(yakui::widgets::StateResponse<T>) -> R,
+) -> R {
+    let dom = yakui::context::dom();
+    let response =
+        dom.begin_widget::<yakui::widgets::StateWidget<T>>(yakui::widgets::State::new(initial));
+    let id = response.id;
+    let result = children(response.into_inner());
+    dom.end_widget::<yakui::widgets::StateWidget<T>>(id);
+    result
 }
