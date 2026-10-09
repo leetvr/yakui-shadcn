@@ -13,6 +13,8 @@ pub struct ControlResponse {
     pub clicked: bool,
     pub hovering: bool,
     pub focused: bool,
+    /// Keyboard navigation focus, used to show a visible focus indicator.
+    pub focus_visible: bool,
     pub pressed: bool,
     pub id: Option<WidgetId>,
 }
@@ -53,7 +55,11 @@ impl Widget for ControlWidget {
     }
     fn update(&mut self, props: Control) -> ControlResponse {
         self.props = props;
-        self.props.ring = crate::layout::resolve_color(props.ring.with_alpha(0.5));
+        self.props.ring = if props.ring.a == 0 {
+            props.ring
+        } else {
+            crate::layout::resolve_color(props.ring.with_alpha(0.5))
+        };
         // Event dispatch holds a mutable DOM borrow. Capture scopes during update
         // rather than trying to borrow the current node again inside an event.
         self.dismiss = yakui::util::read_scope::<crate::overlay::DismissContext>();
@@ -67,12 +73,13 @@ impl Widget for ControlWidget {
             clicked: std::mem::take(&mut self.clicked),
             hovering: self.hovering,
             focused: self.focused,
+            focus_visible: self.focus_visible,
             pressed: self.pointer_down || self.key_down.is_some(),
             id: None,
         }
     }
     fn paint(&self, mut ctx: PaintContext<'_>) {
-        if self.focus_visible && !self.props.disabled {
+        if self.focus_visible && !self.props.disabled && self.props.ring.a != 0 {
             let mut rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
             if let Some(size) = self.props.focus_size {
                 rect = Rect::from_pos_size(

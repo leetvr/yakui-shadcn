@@ -43,10 +43,10 @@ initial public APIs and native routes. Current behaviour includes:
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All three consuming examples compile.
-- 36 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
-- 95 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **228 captures,
+- 39 focused tests pass using actual Yakui input/layout cycles and pure algorithms.
+- 100 native variant routes × two themes, plus six showcase captures and 32 actual-trigger overlay captures: **238 captures,
   zero failures** in the latest full smoke run.
-- The configured upstream suite covers 15 actual previews: **74 comparison pairs**
+- The configured upstream suite covers 21 actual previews: **106 comparison pairs**
   across light/dark and applicable states. Review remains pending; screenshots were
   used to find and correct concrete layout/painting defects, not to certify parity.
 - Persistent pairs live under `visual/`; smoke output lives in ignored `visual/local`.
@@ -60,7 +60,7 @@ focused layout tests cover the radio/progress/button regressions.
 ## Required work still outstanding
 
 `reference/components.json` records component-specific deviations and every upstream
-preview separately. Only 15 of 461 previews currently have paired captures. The
+preview separately. Only 21 of 461 previews currently have paired captures. The
 remaining previews must be studied, implemented and compared, not mapped to a
 generic default rendition. Important incomplete areas include:
 
@@ -96,3 +96,22 @@ this checkpoint as a finished shadcn port.
 
 Do not run Clippy or add mocked integration tests. Mobile visual validation belongs
 to Kane. The project brief authorizes autonomous desktop implementation/verification.
+
+## Checkbox field increment
+
+Ported six actual checkbox previews: demo, basic, description, disabled, invalid
+and group. `Checkbox` now exposes a bare indicator, label, helper text, disabled
+and invalid styling, font weight and the selectable FieldLabel card composition.
+The complete field activates as one native target; wrapping and RTL place the ring
+on the indicator. Field legend/description typography is public. Three actual
+Yakui tests cover label/helper activation, one Tab stop, Space release, disabled
+skipping, bare sizing and mirrored indicator placement.
+
+Thirty-two persistent pairs cover both themes and default/focus/selected states
+where supported. Source computed styles establish 14px label leading, 19.25px card
+title leading, 21px description leading and the effective 20px group gap. Same
+Geist files and exact face matching were confirmed; glyph edge/weight differences
+remain visible. Table and multilingual RTL previews remain outstanding.
+
+The comparison runner now preserves other route/state captures when a component
+has more than one configured source route. No component was certified complete.

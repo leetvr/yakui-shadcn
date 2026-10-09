@@ -18,7 +18,13 @@ p.add_argument('--height',type=int,default=400)
 args=p.parse_args()
 if args.output is None:args.output=root/'visual'/args.component
 if args.component!='button' and args.variants==['default','outline','secondary','ghost','destructive','link']:args.variants=['default']
-manifest={'upstream':json.loads((root/'reference/upstream.json').read_text()),'captures':[]}
+manifest_path=args.output/'manifest.json'
+manifest=json.loads(manifest_path.read_text()) if manifest_path.exists() else {'captures':[]}
+manifest['upstream']=json.loads((root/'reference/upstream.json').read_text())
+# A component can have several source routes with different supported states.
+# Replace the evidence for this exact route/state, retaining its other captures.
+requested={(variant,theme,state) for variant in args.variants for theme in args.themes for state in args.states}
+manifest['captures']=[capture for capture in manifest['captures'] if (capture['variant'],capture['theme'],capture['state']) not in requested]
 for variant in args.variants:
  for theme in args.themes:
   for state in args.states:

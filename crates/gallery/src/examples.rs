@@ -72,6 +72,8 @@ pub const AVAILABLE: &[&str] = &[
 pub struct ExampleState {
     pub text: String,
     pub checked: bool,
+    pub checkbox_fields: [bool; 4],
+    pub checkbox_group: [bool; 4],
     pub selected: usize,
     pub radio: usize,
     pub toggle: bool,
@@ -625,9 +627,76 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
         "textarea" => ui::width(384., || {
             ui::textarea(&mut state.text, "Type your message here.");
         }),
-        "checkbox" => {
-            ui::checkbox_disabled("Accept terms and conditions", &mut state.checked, disabled);
-        }
+        "checkbox" => match variant {
+            "default" => ui::width(384., || {
+                ui::column(20., || {
+                    ui::Checkbox::new()
+                        .label("Accept terms and conditions")
+                        .disabled(disabled)
+                        .show(&mut state.checkbox_fields[0]);
+                    ui::Checkbox::new()
+                        .label("Accept terms and conditions")
+                        .description("By clicking this checkbox, you agree to the terms.")
+                        .disabled(disabled)
+                        .show(&mut state.checkbox_fields[1]);
+                    ui::Checkbox::new()
+                        .label("Enable notifications")
+                        .disabled(true)
+                        .show(&mut state.checkbox_fields[2]);
+                    ui::Checkbox::new()
+                        .label("Enable notifications")
+                        .description("You can enable or disable notifications at any time.")
+                        .card(true)
+                        .disabled(disabled)
+                        .show(&mut state.checkbox_fields[3]);
+                });
+            }),
+            "description" => ui::width(288., || {
+                ui::Checkbox::new()
+                    .label("Accept terms and conditions")
+                    .description(
+                        "By clicking this checkbox, you agree to the terms and conditions.",
+                    )
+                    .disabled(disabled)
+                    .show(&mut state.checkbox_fields[1]);
+            }),
+            "group" => ui::column(16., || {
+                ui::column(2., || {
+                    ui::field_legend(
+                        "Show these items on the desktop:",
+                        ui::FieldLegendVariant::Label,
+                    );
+                    ui::field_description("Select the items you want to show on the desktop.");
+                });
+                ui::column(20., || {
+                    for (label, value) in [
+                        "Hard disks",
+                        "External disks",
+                        "CDs, DVDs, and iPods",
+                        "Connected servers",
+                    ]
+                    .into_iter()
+                    .zip(&mut state.checkbox_group)
+                    {
+                        ui::Checkbox::new()
+                            .label(label)
+                            .disabled(disabled)
+                            .show(value);
+                    }
+                });
+            }),
+            _ => ui::width(224., || {
+                ui::Checkbox::new()
+                    .label(if variant == "disabled" {
+                        "Enable notifications"
+                    } else {
+                        "Accept terms and conditions"
+                    })
+                    .disabled(disabled || variant == "disabled")
+                    .invalid(variant == "invalid")
+                    .show(&mut state.checkbox_fields[0]);
+            }),
+        },
         "switch" => {
             ui::switch("Airplane Mode", &mut state.checked, disabled);
         }
@@ -753,6 +822,14 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "with-icon",
             "rounded",
             "spinner",
+        ],
+        "checkbox" => &[
+            "default",
+            "basic",
+            "description",
+            "disabled",
+            "invalid",
+            "group",
         ],
         "alert" => &["default", "destructive"],
         "tabs" => &["default", "line"],
@@ -905,6 +982,8 @@ impl Default for ExampleState {
             text: String::new(),
             second: String::new(),
             checked: false,
+            checkbox_fields: [false, true, false, false],
+            checkbox_group: [true, true, false, false],
             selected: 0,
             radio: 1,
             toggle: false,

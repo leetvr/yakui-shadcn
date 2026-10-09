@@ -109,5 +109,29 @@
     "states": [
       "default"
     ]
+  },
+  {
+    "component": "checkbox",
+    "variants": [
+      "default",
+      "basic",
+      "description",
+      "invalid",
+      "group"
+    ],
+    "states": [
+      "default",
+      "focus",
+      "selected"
+    ]
+  },
+  {
+    "component": "checkbox",
+    "variants": [
+      "disabled"
+    ],
+    "states": [
+      "default"
+    ]
   }
 ]

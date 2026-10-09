@@ -1,0 +1,14 @@
+{
+  "example": "checkbox-invalid",
+  "theme": "light",
+  "state": "default",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 388,
+    "y": 392,
+    "width": 16,
+    "height": 16
+  }
+}

@@ -25,7 +25,7 @@ overlay children. Keep overlays at the root and retain their state in your appli
 | Card | `card`, `card_sized`, `card_header`, `card_header_with_action`, `card_title`, `card_description`, `card_content`, `card_footer` | Displays a card with header, content, and footer. |
 | Carousel | `CarouselState`, `CarouselOptions`, `carousel` | Navigate or swipe through composable slides. |
 | Chart | `Chart`, `ChartKind`, `ChartPoint`, `ChartSeries`, `ChartResponse` | Plot series with native meshes and inspect points. |
-| Checkbox | `checkbox`, `checkbox_disabled` | A control that allows the user to toggle between checked and not checked. |
+| Checkbox | `Checkbox`, `checkbox`, `checkbox_disabled` | A control that allows the user to toggle between checked and not checked. |
 | Collapsible | `collapsible` | An interactive component which expands/collapses a panel. |
 | Combobox | `SelectState`, `combobox`, `combobox_content` | Autocomplete input with a list of suggestions. |
 | Command | `command`, `MenuItem` | Command menu for search and quick actions. |
@@ -119,3 +119,22 @@ The standalone `settings`, `dashboard` and `checkout` examples under
 `crates/gallery/examples` compile as separate applications consuming this public API.
 Run `cargo run -p adequate-gallery --example settings`.
 The gallery includes larger `--showcase dashboard|settings|checkout` compositions.
+
+Checkbox fields and selectable cards share one hit target and focus stop. Boolean
+state belongs to the caller. Helper text wraps within the enclosing width.
+
+```rust
+ui::width(288., || {
+    ui::Checkbox::new()
+        .label("Enable notifications")
+        .description("You can change this at any time.")
+        .card(true)
+        .disabled(!settings.editable)
+        .invalid(settings.needs_consent)
+        .show(&mut settings.notifications);
+});
+```
+
+Use `Checkbox::new().show(&mut selected)` for a bare table selection control.
+`field_legend(title, FieldLegendVariant::Label)` and `field_description(text)`
+provide the field-set typography used by checkbox groups.

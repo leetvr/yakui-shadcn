@@ -1,0 +1,14 @@
+{
+  "example": "checkbox-description",
+  "theme": "light",
+  "state": "default",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 356,
+    "y": 372,
+    "width": 16,
+    "height": 16
+  }
+}

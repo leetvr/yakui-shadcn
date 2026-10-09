@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00139,
+  "content_bounds": [
+    385,
+    389,
+    600,
+    411
+  ],
+  "content_rgb_rmse": 43.5600530773492,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.0885425,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/invalid-light-focus/native.png",
+  "pixels_differing_by_more_than_16": 1112,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/invalid-light-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 3.3494536867972964,
+  "width": 1000
+}

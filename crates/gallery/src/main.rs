@@ -143,6 +143,14 @@ impl Gallery {
         let mut state = examples::ExampleState::default();
         if options.state == "selected" {
             state.checked = true;
+            if options.component == "checkbox" {
+                match options.variant.as_str() {
+                    "description" => state.checkbox_fields[1] = false,
+                    "group" => state.checkbox_group[0] = false,
+                    "disabled" => {}
+                    _ => state.checkbox_fields[0] = true,
+                }
+            }
             state.toggle = true;
             state.overlay.open = true;
             state.select.popup.open = true;

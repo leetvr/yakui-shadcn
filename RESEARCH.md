@@ -86,3 +86,17 @@ Password controls keep plaintext in application/retained editing state and paint
 bullets. Grapheme indices own selection and deletion. A clipped masked viewport
 measures bullet advances for pointer/caret/scroll coordinates. Paste uses Yakui
 clipboard facilities; copy/cut do not expose password text.
+
+## Checkbox field source checks
+
+Studied all eight pinned `examples/base/checkbox-*.tsx` files, Base checkbox/field
+primitives and Nova CSS. Computed styles from the source harness matter: Label and
+FieldLabel resolve to 14px leading (Label's rule overrides the nominal snug class);
+FieldTitle resolves to 19.25px. Group label font-normal and gap-3 are overridden in
+the compiled cascade by effective weight 500 and gap 20px. Match that rendered
+reference rather than inferring geometry from class strings alone.
+
+Both browser and native use the identical Geist files. Cosmic shaping was checked
+to select Geist-Medium at weight 500 and the same 187.698px label advance as the
+browser's 187.703125px. Remaining perceived weight differences arise after shaping
+and require a rendering audit. Do not substitute heavier font weights to mask them.

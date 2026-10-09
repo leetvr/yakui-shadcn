@@ -26,6 +26,33 @@ pub fn label(text: impl Into<String>) {
     style.line_height_override = Some(t.font_size);
     RenderText::with_style(text, style).show();
 }
+/// Typography used by the heading of a group of fields.
+#[derive(Debug, Clone, Copy, Default)]
+pub enum FieldLegendVariant {
+    #[default]
+    Legend,
+    Label,
+}
+/// Heading for a field set. Put it before the group's description and controls.
+#[track_caller]
+pub fn field_legend(text: impl Into<String>, variant: FieldLegendVariant) {
+    let t = theme();
+    let (size, height) = match variant {
+        FieldLegendVariant::Legend => (16., 24.),
+        FieldLegendVariant::Label => (14., 20.),
+    };
+    let mut style = t.text_style(size, t.foreground, 500);
+    style.line_height_override = Some(height);
+    RenderText::with_style(text, style).show();
+}
+/// Helper text using the FieldDescription's normal 1.5 line height.
+#[track_caller]
+pub fn field_description(text: impl Into<String>) {
+    let t = theme();
+    let mut style = t.text_style(14., t.muted_foreground, 400);
+    style.line_height_override = Some(21.);
+    RenderText::with_style(text, style).show();
+}
 /// Draw a heading (levels 1 through 4).
 #[track_caller]
 pub fn heading(level: u8, text: impl Into<String>) {
@@ -758,65 +785,19 @@ impl<'a> Input<'a> {
 /// Checkbox and label share one hit target and keyboard focus.
 #[track_caller]
 pub fn checkbox(label_text: impl Into<String>, value: &mut bool) -> ControlResponse {
-    checkbox_disabled(label_text, value, false)
+    crate::Checkbox::new().label(label_text).show(value)
 }
+/// A labelled checkbox that skips interaction and focus when disabled.
 #[track_caller]
 pub fn checkbox_disabled(
     label_text: impl Into<String>,
     value: &mut bool,
     disabled: bool,
 ) -> ControlResponse {
-    let t = theme();
-    let res = control(
-        Control {
-            disabled,
-            radius: 4.,
-            ring: t.ring,
-            focus_size: Some(Vec2::splat(16.)),
-        },
-        |res| {
-            if res.clicked {
-                *value = !*value;
-            }
-            row(8., || {
-                crate::size(Vec2::splat(16.), || {
-                    RoundRect::new(4.)
-                        .color(if *value {
-                            t.primary
-                        } else {
-                            crate::layout::surface_background()
-                        })
-                        .border(Some(Border::new(
-                            if *value {
-                                t.primary
-                            } else {
-                                crate::layout::resolve_color(t.input)
-                            },
-                            1.,
-                        )))
-                        .show_children(|| {
-                            if *value {
-                                icon_colored(Icon::Check, 14., t.primary_foreground);
-                            }
-                        });
-                });
-                RenderText::with_style(
-                    label_text,
-                    t.text_style(
-                        14.,
-                        crate::layout::resolve_color(t.foreground.with_alpha(if disabled {
-                            0.5
-                        } else {
-                            1.
-                        })),
-                        500,
-                    ),
-                )
-                .show();
-            });
-        },
-    );
-    res
+    crate::Checkbox::new()
+        .label(label_text)
+        .disabled(disabled)
+        .show(value)
 }
 /// A two-state compact control, with explicit disabled state.
 #[track_caller]

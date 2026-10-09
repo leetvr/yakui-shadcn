@@ -1,0 +1,14 @@
+{
+  "example": "checkbox-demo",
+  "theme": "dark",
+  "state": "focus",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 308,
+    "y": 303.375,
+    "width": 16,
+    "height": 16
+  }
+}

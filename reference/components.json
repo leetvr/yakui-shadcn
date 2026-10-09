@@ -3279,19 +3279,64 @@
         "checkbox-rtl"
       ],
       "rust_api": [
+        "Checkbox",
         "checkbox",
         "checkbox_disabled"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "basic",
+        "description",
+        "disabled",
+        "invalid",
+        "group"
       ],
       "behaviour_tests": [
-        "interaction::checkbox_updates_caller_owned_state"
+        "checkbox_updates_caller_owned_state",
+        "checkbox_helper_text_activates_once_and_keeps_one_focus_stop",
+        "checkbox_card_focus_activation_and_disabled_field_contract",
+        "checkbox_bare_and_rtl_indicator_layout"
       ],
-      "visual_comparisons": [],
+      "visual_comparisons": [
+        "visual/checkbox/default-light-default",
+        "visual/checkbox/default-light-focus",
+        "visual/checkbox/default-light-selected",
+        "visual/checkbox/default-dark-default",
+        "visual/checkbox/default-dark-focus",
+        "visual/checkbox/default-dark-selected",
+        "visual/checkbox/invalid-light-default",
+        "visual/checkbox/invalid-light-focus",
+        "visual/checkbox/invalid-light-selected",
+        "visual/checkbox/invalid-dark-default",
+        "visual/checkbox/invalid-dark-focus",
+        "visual/checkbox/invalid-dark-selected",
+        "visual/checkbox/basic-light-default",
+        "visual/checkbox/basic-light-focus",
+        "visual/checkbox/basic-light-selected",
+        "visual/checkbox/basic-dark-default",
+        "visual/checkbox/basic-dark-focus",
+        "visual/checkbox/basic-dark-selected",
+        "visual/checkbox/description-light-default",
+        "visual/checkbox/description-light-focus",
+        "visual/checkbox/description-light-selected",
+        "visual/checkbox/description-dark-default",
+        "visual/checkbox/description-dark-focus",
+        "visual/checkbox/description-dark-selected",
+        "visual/checkbox/disabled-light-default",
+        "visual/checkbox/disabled-dark-default",
+        "visual/checkbox/group-light-default",
+        "visual/checkbox/group-light-focus",
+        "visual/checkbox/group-light-selected",
+        "visual/checkbox/group-dark-default",
+        "visual/checkbox/group-dark-focus",
+        "visual/checkbox/group-dark-selected"
+      ],
       "status": "in_progress",
       "deviations": [
-        "Caller state works; focus ring currently includes label; indeterminate, invalid and richer content slots pending."
+        "The documented table and multilingual RTL previews have not yet been ported.",
+        "Native glyph rasterisation visibly differs despite matching Geist font files, selected faces and weights.",
+        "Yakui text layout rounds line metrics to physical pixels; card title leading differs by less than one logical pixel.",
+        "Native platform accessibility semantics and touch target expansion still require implementation and verification."
       ],
       "example_coverage": [
         {
@@ -3305,10 +3350,52 @@
             "@/styles/base-nova/ui/field",
             "@/styles/base-nova/ui/label"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "default",
+          "behaviour_tests": [
+            "checkbox_updates_caller_owned_state",
+            "checkbox_helper_text_activates_once_and_keeps_one_focus_stop",
+            "checkbox_card_focus_activation_and_disabled_field_contract",
+            "checkbox_bare_and_rtl_indicator_layout"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/checkbox/default-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/checkbox/default-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "selected",
+              "path": "visual/checkbox/default-light-selected",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/checkbox/default-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/checkbox/default-dark-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "selected",
+              "path": "visual/checkbox/default-dark-selected",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -3321,10 +3408,52 @@
             "@/styles/base-nova/ui/checkbox",
             "@/styles/base-nova/ui/field"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "invalid",
+          "behaviour_tests": [
+            "checkbox_updates_caller_owned_state",
+            "checkbox_helper_text_activates_once_and_keeps_one_focus_stop",
+            "checkbox_card_focus_activation_and_disabled_field_contract",
+            "checkbox_bare_and_rtl_indicator_layout"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/checkbox/invalid-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/checkbox/invalid-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "selected",
+              "path": "visual/checkbox/invalid-light-selected",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/checkbox/invalid-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/checkbox/invalid-dark-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "selected",
+              "path": "visual/checkbox/invalid-dark-selected",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -3337,10 +3466,52 @@
             "@/styles/base-nova/ui/checkbox",
             "@/styles/base-nova/ui/field"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "basic",
+          "behaviour_tests": [
+            "checkbox_updates_caller_owned_state",
+            "checkbox_helper_text_activates_once_and_keeps_one_focus_stop",
+            "checkbox_card_focus_activation_and_disabled_field_contract",
+            "checkbox_bare_and_rtl_indicator_layout"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/checkbox/basic-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/checkbox/basic-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "selected",
+              "path": "visual/checkbox/basic-light-selected",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/checkbox/basic-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/checkbox/basic-dark-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "selected",
+              "path": "visual/checkbox/basic-dark-selected",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -3353,10 +3524,52 @@
             "@/styles/base-nova/ui/checkbox",
             "@/styles/base-nova/ui/field"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "description",
+          "behaviour_tests": [
+            "checkbox_updates_caller_owned_state",
+            "checkbox_helper_text_activates_once_and_keeps_one_focus_stop",
+            "checkbox_card_focus_activation_and_disabled_field_contract",
+            "checkbox_bare_and_rtl_indicator_layout"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/checkbox/description-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/checkbox/description-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "selected",
+              "path": "visual/checkbox/description-light-selected",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/checkbox/description-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/checkbox/description-dark-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "selected",
+              "path": "visual/checkbox/description-dark-selected",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -3369,10 +3582,28 @@
             "@/styles/base-nova/ui/checkbox",
             "@/styles/base-nova/ui/field"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "disabled",
+          "behaviour_tests": [
+            "checkbox_updates_caller_owned_state",
+            "checkbox_helper_text_activates_once_and_keeps_one_focus_stop",
+            "checkbox_card_focus_activation_and_disabled_field_contract",
+            "checkbox_bare_and_rtl_indicator_layout"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/checkbox/disabled-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/checkbox/disabled-dark-default",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -3385,10 +3616,52 @@
             "@/styles/base-nova/ui/checkbox",
             "@/styles/base-nova/ui/field"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
+          "gallery_variant": "group",
+          "behaviour_tests": [
+            "checkbox_updates_caller_owned_state",
+            "checkbox_helper_text_activates_once_and_keeps_one_focus_stop",
+            "checkbox_card_focus_activation_and_disabled_field_contract",
+            "checkbox_bare_and_rtl_indicator_layout"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "path": "visual/checkbox/group-light-default",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "path": "visual/checkbox/group-light-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "light",
+              "state": "selected",
+              "path": "visual/checkbox/group-light-selected",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "path": "visual/checkbox/group-dark-default",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "path": "visual/checkbox/group-dark-focus",
+              "review": "pending"
+            },
+            {
+              "theme": "dark",
+              "state": "selected",
+              "path": "visual/checkbox/group-dark-selected",
+              "review": "pending"
+            }
+          ],
+          "status": "in_progress",
           "review": "pending"
         },
         {
@@ -5361,7 +5634,10 @@
         "field-responsive"
       ],
       "rust_api": [
-        "field"
+        "field",
+        "field_legend",
+        "field_description",
+        "FieldLegendVariant"
       ],
       "gallery_examples": [
         "default",

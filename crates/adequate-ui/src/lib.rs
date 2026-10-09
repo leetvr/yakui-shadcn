@@ -5,6 +5,8 @@
 //! The library emits Yakui paint commands and does not depend on a renderer.
 mod advanced_layout;
 mod basic;
+mod checkbox;
+pub use checkbox::*;
 mod carousel;
 mod sidebar;
 pub use carousel::*;
