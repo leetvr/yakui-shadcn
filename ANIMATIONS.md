@@ -130,3 +130,6 @@ opacity for both WGPU and Vulkan. All Yakui dependencies in a consuming app must
 use the same fork revision as this library; see Cargo.toml and reference/upstream.json.
 Vulkan submission/completion contracts are documented in the fork's
 `crates/yakui-vulkan/README.md`.
+
+Slider hover and keyboard rings use the shared 150ms transition, independently
+per thumb. Dragged values paint immediately; only the ring animates.

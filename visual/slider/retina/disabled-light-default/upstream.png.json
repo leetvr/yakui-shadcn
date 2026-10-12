@@ -1,0 +1,18 @@
+{
+  "example": "slider-disabled",
+  "theme": "light",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 600,
+  "height": 400,
+  "deviceScaleFactor": 2,
+  "animationSamples": [],
+  "motionTimeMs": null,
+  "bounds": {
+    "x": 294,
+    "y": 194,
+    "width": 12,
+    "height": 12
+  }
+}

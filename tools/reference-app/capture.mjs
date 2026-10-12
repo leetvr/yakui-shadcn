@@ -2,10 +2,10 @@ import { chromium } from 'playwright'
 import { mkdir,writeFile } from 'node:fs/promises'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-const [example='button-default',theme='light',output='/tmp/reference.png',state='default',width='600',height='400',keys='',motionTime='']=process.argv.slice(2)
+const [example='button-default',theme='light',output='/tmp/reference.png',state='default',width='600',height='400',keys='',motionTime='',scaleFactor='1']=process.argv.slice(2)
 const browser=await chromium.launch({headless:true})
 try {
- const page=await browser.newPage({viewport:{width:Number(width),height:Number(height)},deviceScaleFactor:1,colorScheme:theme})
+ const page=await browser.newPage({viewport:{width:Number(width),height:Number(height)},deviceScaleFactor:Number(scaleFactor),colorScheme:theme})
  let animationSamples=[]
  const errors=[];page.on('pageerror',e=>errors.push(String(e)))
  const assetOverrides=[]
@@ -26,9 +26,13 @@ try {
  await page.goto(`${process.env.REFERENCE_URL||'http://127.0.0.1:4173'}/?example=${example}&theme=${theme}`)
  await page.waitForFunction(()=>window.referenceReady===true && document.getElementById('root').childElementCount>0)
  const tooltipArea=example==='tooltip-disabled' || ['button-group-nested','button-group-input-group'].includes(example)
- const target=page.locator(tooltipArea && state==='open'?'[data-slot=tooltip-trigger]':example.startsWith('select-') && state==='open'?'[data-slot=select-trigger]':example.startsWith('button-group-') && state==='open'?'button[aria-haspopup]':'button, input, textarea, [tabindex]').filter({visible:true}).first()
+ const target=page.locator(example.startsWith('slider-')?'[data-slot=slider-thumb]':tooltipArea && state==='open'?'[data-slot=tooltip-trigger]':example.startsWith('select-') && state==='open'?'[data-slot=select-trigger]':example.startsWith('button-group-') && state==='open'?'button[aria-haspopup]':'button, input, textarea, [tabindex]').filter({visible:true}).first()
  if(await target.count()) await target.waitFor({state:'visible'})
  await page.evaluate(()=>document.fonts.ready)
+ if(example.startsWith('slider-')) {
+  const track=await page.locator('[data-slot=slider-track]').first().boundingBox()
+  if(!track || track.width<=0 || track.height<=0) throw new Error('Slider track is empty; check the upstream shadcn.css orientation variants')
+ }
  await page.locator('[data-slot="avatar-image"]').evaluateAll(images=>Promise.all(images.map(image=>image.decode().catch(()=>{}))))
  // Pause Chromium's animation clock before input so short transitions survive
  // until sampling. Source components and their timing curves remain unchanged.
@@ -69,6 +73,6 @@ try {
  await mkdir(dirname(output),{recursive:true})
  await page.screenshot({path:output,animations:motionTime===''?'disabled':'allow'})
  const bounds=await target.count()?await target.boundingBox():await page.locator('#root').boundingBox()
- await writeFile(`${output}.json`,JSON.stringify({example,theme,state,keys:keys.split(',').filter(Boolean),assetOverrides,width:Number(width),height:Number(height),deviceScaleFactor:1,animationSamples,motionTimeMs:motionTime===''?null:Number(motionTime),bounds},null,2)+'\n')
+ await writeFile(`${output}.json`,JSON.stringify({example,theme,state,keys:keys.split(',').filter(Boolean),assetOverrides,width:Number(width),height:Number(height),deviceScaleFactor:Number(scaleFactor),animationSamples,motionTimeMs:motionTime===''?null:Number(motionTime),bounds},null,2)+'\n')
  console.log(output)
 } finally {await browser.close()}

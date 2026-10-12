@@ -1,0 +1,18 @@
+{
+  "example": "slider-demo",
+  "theme": "light",
+  "state": "hover",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "animationSamples": [],
+  "motionTimeMs": null,
+  "bounds": {
+    "x": 571,
+    "y": 394,
+    "width": 12,
+    "height": 12
+  }
+}

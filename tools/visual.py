@@ -15,6 +15,7 @@ p.add_argument('--states',nargs='+',default=['default','hover','focus','disabled
 p.add_argument('--output',type=Path)
 p.add_argument('--width',type=int,default=600)
 p.add_argument('--height',type=int,default=400)
+p.add_argument('--scale-factor',type=float,default=1,help='Physical pixels per logical pixel, shared by both renderers')
 p.add_argument('--keys',default='',help='Comma-separated actual keyboard events after the initial state')
 args=p.parse_args()
 if args.output is None:args.output=root/'visual'/args.component
@@ -33,12 +34,12 @@ for variant in args.variants:
    out=args.output/f'{variant}-{theme}-{state_label(state)}'
    out.mkdir(parents=True,exist_ok=True)
    reference=out/'upstream.png';native=out/'native.png'
-   subprocess.run(['node',str(root/'tools/reference-app/capture.mjs'),args.reference_example or f'{args.component}-{variant if args.component=="button" or variant!="default" else "demo"}',theme,str(reference),state,str(args.width),str(args.height),args.keys],check=True,stdout=subprocess.DEVNULL)
-   command=[str(root/'target/debug/gallery'),'--component',args.component,'--variant',variant,'--theme',theme,'--state',state,'--isolated','--width',str(args.width),'--height',str(args.height),'--screenshot',str(native)]
+   subprocess.run(['node',str(root/'tools/reference-app/capture.mjs'),args.reference_example or f'{args.component}-{variant if args.component=="button" or variant!="default" else "demo"}',theme,str(reference),state,str(args.width),str(args.height),args.keys,'',str(args.scale_factor)],check=True,stdout=subprocess.DEVNULL)
+   command=[str(root/'target/debug/gallery'),'--component',args.component,'--variant',variant,'--theme',theme,'--state',state,'--isolated','--width',str(args.width),'--height',str(args.height),'--screenshot',str(native),'--scale-factor',str(args.scale_factor)]
    if args.keys:command+=['--keys',args.keys]
    subprocess.run(command,check=True,stdout=subprocess.DEVNULL)
    subprocess.run([str(root/'target/debug/compare'),str(reference),str(native),str(out)],check=True,stdout=subprocess.DEVNULL)
    metrics=json.loads((out/'metrics.json').read_text())
-   manifest['captures'].append({'component':args.component,'variant':variant,'theme':theme,'state':state_label(state),'keys':args.keys.split(',') if args.keys else [],'path':str(out.relative_to(args.output)),'metrics':metrics,'review':'pending'})
+   manifest['captures'].append({'component':args.component,'variant':variant,'theme':theme,'state':state_label(state),'keys':args.keys.split(',') if args.keys else [],'scale_factor':args.scale_factor,'path':str(out.relative_to(args.output)),'metrics':metrics,'review':'pending'})
    (args.output/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
    print(f'{variant} {theme} {state}: RMSE {metrics["rgb_rmse"]:.2f}',flush=True)

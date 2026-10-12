@@ -1,0 +1,251 @@
+{
+  "captures": [
+    {
+      "component": "slider",
+      "variant": "default",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "scale_factor": 2.0,
+      "path": "default-light-default",
+      "metrics": {
+        "changed_fraction": 4.375e-05,
+        "content_bounds": [
+          280,
+          388,
+          920,
+          412
+        ],
+        "content_rgb_rmse": 2.356327363893509,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.0024447916666666667,
+        "native": "visual/slider/retina/default-light-default/native.png",
+        "pixels_differing_by_more_than_16": 42,
+        "reference": "visual/slider/retina/default-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.2980544553153556,
+        "width": 1200
+      },
+      "review": "reviewed_with_deviations"
+    },
+    {
+      "component": "slider",
+      "variant": "default",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "scale_factor": 2.0,
+      "path": "default-dark-default",
+      "metrics": {
+        "changed_fraction": 8.333333333333333e-05,
+        "content_bounds": [
+          280,
+          388,
+          920,
+          412
+        ],
+        "content_rgb_rmse": 2.7677340122381704,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.003521875,
+        "native": "visual/slider/retina/default-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 80,
+        "reference": "visual/slider/retina/default-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.35009373744755845,
+        "width": 1200
+      },
+      "review": "reviewed_with_deviations"
+    },
+    {
+      "component": "slider",
+      "variant": "range",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "scale_factor": 2.0,
+      "path": "range-light-default",
+      "metrics": {
+        "changed_fraction": 7.604166666666667e-05,
+        "content_bounds": [
+          280,
+          388,
+          920,
+          412
+        ],
+        "content_rgb_rmse": 2.165108614481038,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.003636458333333333,
+        "native": "visual/slider/retina/range-light-default/native.png",
+        "pixels_differing_by_more_than_16": 73,
+        "reference": "visual/slider/retina/range-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.27386698413645993,
+        "width": 1200
+      },
+      "review": "reviewed_with_deviations"
+    },
+    {
+      "component": "slider",
+      "variant": "range",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "scale_factor": 2.0,
+      "path": "range-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00015729166666666666,
+        "content_bounds": [
+          280,
+          388,
+          920,
+          412
+        ],
+        "content_rgb_rmse": 3.7042258384850135,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.006503125,
+        "native": "visual/slider/retina/range-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 151,
+        "reference": "visual/slider/retina/range-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.46855162469038564,
+        "width": 1200
+      },
+      "review": "reviewed_with_deviations"
+    },
+    {
+      "component": "slider",
+      "variant": "vertical",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "scale_factor": 2.0,
+      "path": "vertical-light-default",
+      "metrics": {
+        "changed_fraction": 9.375e-05,
+        "content_bounds": [
+          560,
+          240,
+          640,
+          560
+        ],
+        "content_rgb_rmse": 2.59142214816498,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.004954166666666667,
+        "native": "visual/slider/retina/vertical-light-default/native.png",
+        "pixels_differing_by_more_than_16": 90,
+        "reference": "visual/slider/retina/vertical-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.4231774647434179,
+        "width": 1200
+      },
+      "review": "reviewed_with_deviations"
+    },
+    {
+      "component": "slider",
+      "variant": "vertical",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "scale_factor": 2.0,
+      "path": "vertical-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00016041666666666667,
+        "content_bounds": [
+          560,
+          240,
+          640,
+          560
+        ],
+        "content_rgb_rmse": 3.0843734169195534,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.007264583333333333,
+        "native": "visual/slider/retina/vertical-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 154,
+        "reference": "visual/slider/retina/vertical-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.5036760698438366,
+        "width": 1200
+      },
+      "review": "reviewed_with_deviations"
+    },
+    {
+      "component": "slider",
+      "variant": "disabled",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "scale_factor": 2.0,
+      "path": "disabled-light-default",
+      "metrics": {
+        "changed_fraction": 1.25e-05,
+        "content_bounds": [
+          280,
+          388,
+          612,
+          412
+        ],
+        "content_rgb_rmse": 1.5243587762449033,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.005023958333333333,
+        "native": "visual/slider/retina/disabled-light-default/native.png",
+        "pixels_differing_by_more_than_16": 12,
+        "reference": "visual/slider/retina/disabled-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.14339993607622936,
+        "width": 1200
+      },
+      "review": "reviewed_with_deviations"
+    },
+    {
+      "component": "slider",
+      "variant": "disabled",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "scale_factor": 2.0,
+      "path": "disabled-dark-default",
+      "metrics": {
+        "changed_fraction": 3.4375e-05,
+        "content_bounds": [
+          280,
+          388,
+          920,
+          412
+        ],
+        "content_rgb_rmse": 1.3536938277050194,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.001821875,
+        "native": "visual/slider/retina/disabled-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 33,
+        "reference": "visual/slider/retina/disabled-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 0.17123023000237625,
+        "width": 1200
+      },
+      "review": "reviewed_with_deviations"
+    }
+  ],
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/leetvr/yakui",
+      "commit": "1ede37af9329d7a4ac89fc4e7105a1c905bdcc07",
+      "upstream_commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8",
+      "upstream_repository": "https://github.com/SecondHalfGames/yakui"
+    },
+    "lazy_vulkan": {
+      "repository": "https://github.com/leetvr/lazy_vulkan",
+      "commit": "33aec6209289d3dd8ee684276b9f15b6a904fc21",
+      "use": "Allocator mechanism adapted into yakui-vulkan; no runtime renderer dependency.",
+      "license": "MIT"
+    }
+  }
+}

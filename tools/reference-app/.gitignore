@@ -3,5 +3,6 @@
 /src/registry
 /src/app
 /src/nova.css
+/src/shadcn.css
 /src/theme.css
 /public/*.ttf

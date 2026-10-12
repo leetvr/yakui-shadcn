@@ -269,3 +269,131 @@ fn password_edits_graphemes_and_replaces_selection_in_caller_state() {
     frame(&mut y, &mut build);
     assert_eq!(&*value.borrow(), "secret!");
 }
+
+#[test]
+fn slider_drag_updates_caller_and_painted_thumb_in_the_same_frame_at_hidpi() {
+    use std::cell::{Cell, RefCell};
+    use yakui::input::MouseButton;
+    for orientation in [ui::Orientation::Horizontal, ui::Orientation::Vertical] {
+        let mut y = yak();
+        y.set_scale_factor(2.);
+        let value = RefCell::new(25.);
+        let disabled = Cell::new(false);
+        let response = Cell::new(ui::SliderResponse::default());
+        let mut build = || {
+            ui::animation::with_motion_enabled(false, || {
+                response.set(ui::slider(
+                    &mut value.borrow_mut(),
+                    ui::SliderOptions {
+                        length: 200.,
+                        orientation,
+                        disabled: disabled.get(),
+                        ..Default::default()
+                    },
+                ));
+            });
+        };
+        frame(&mut y, &mut build);
+        let rect = y.layout_dom().get(find(&y, "::SliderWidget")).unwrap().rect;
+        let point = |ratio: f32| {
+            if orientation == ui::Orientation::Horizontal {
+                Vec2::new(rect.pos().x + 6. + ratio * 188., rect.center().y)
+            } else {
+                Vec2::new(rect.center().x, rect.max().y - 6. - ratio * 188.)
+            }
+        };
+        y.handle_event(Event::CursorMoved(Some(point(0.25) * 2.)));
+        y.handle_event(Event::MouseButtonChanged {
+            button: MouseButton::One,
+            down: true,
+        });
+        y.handle_event(Event::CursorMoved(Some(point(0.75) * 2.)));
+        frame(&mut y, &mut build);
+        assert_eq!(*value.borrow(), 75.);
+        assert!(response.get().changed);
+        assert!(!response.get().confirmed);
+        // Inspect the actual painted white thumb, not just the returned value.
+        // A stale props copy used to paint the previous position for one frame.
+        let surface = y.surface_size();
+        let paint = y.paint();
+        let white: Vec<_> = paint
+            .layers()
+            .iter()
+            .flat_map(|layer| &layer.calls)
+            .flat_map(|call| &call.vertices)
+            .filter(|v| v.color == yakui::Color::WHITE.to_linear())
+            .map(|v| v.position * surface / 2.)
+            .collect();
+        assert!(!white.is_empty());
+        assert!(white.iter().all(|p| p.distance(point(0.75)) <= 6.01));
+        y.handle_event(Event::MouseButtonChanged {
+            button: MouseButton::One,
+            down: false,
+        });
+        frame(&mut y, &mut build);
+        assert!(response.get().confirmed);
+        frame(&mut y, &mut build);
+        assert!(!response.get().confirmed);
+        disabled.set(true);
+        frame(&mut y, &mut build);
+        y.handle_event(Event::CursorMoved(Some(point(0.1) * 2.)));
+        for down in [true, false] {
+            y.handle_event(Event::MouseButtonChanged {
+                button: MouseButton::One,
+                down,
+            });
+        }
+        key(&mut y, KeyCode::ArrowLeft);
+        frame(&mut y, &mut build);
+        assert_eq!(*value.borrow(), 75.);
+        assert!(!response.get().changed);
+    }
+}
+
+#[test]
+fn slider_ring_follows_the_hovered_thumb_and_keyboard_focus() {
+    let mut y = yak();
+    let mut value = 75.;
+    let mut build = || {
+        ui::animation::with_motion_enabled(false, || {
+            ui::slider(
+                &mut value,
+                ui::SliderOptions {
+                    length: 200.,
+                    ..Default::default()
+                },
+            );
+        });
+    };
+    frame(&mut y, &mut build);
+    let rect = y.layout_dom().get(find(&y, "::SliderWidget")).unwrap().rect;
+    let has_ring = |y: &mut Yakui| {
+        let surface = y.surface_size();
+        y.paint()
+            .layers()
+            .iter()
+            .flat_map(|layer| &layer.calls)
+            .flat_map(|call| &call.vertices)
+            .any(|v| v.position.y * surface.y > rect.center().y + 8.)
+    };
+    y.handle_event(Event::CursorMoved(Some(rect.center())));
+    frame(&mut y, &mut build);
+    assert!(
+        !has_ring(&mut y),
+        "hovering the bare track must not highlight the thumb"
+    );
+    y.handle_event(Event::CursorMoved(Some(Vec2::new(
+        rect.pos().x + 147.,
+        rect.center().y,
+    ))));
+    frame(&mut y, &mut build);
+    assert!(has_ring(&mut y));
+    y.handle_event(Event::CursorMoved(None));
+    frame(&mut y, &mut build);
+    assert!(!has_ring(&mut y));
+    key(&mut y, KeyCode::Tab);
+    // Yakui applies deferred navigation at finish; the next update receives focus.
+    frame(&mut y, &mut build);
+    frame(&mut y, &mut build);
+    assert!(has_ring(&mut y));
+}

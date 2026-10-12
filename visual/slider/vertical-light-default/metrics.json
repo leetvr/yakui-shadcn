@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00002375,
+  "content_bounds": [
+    480,
+    320,
+    520,
+    480
+  ],
+  "content_rgb_rmse": 2.174353352148634,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.0018975,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/slider/vertical-light-default/native.png",
+  "pixels_differing_by_more_than_16": 19,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/slider/vertical-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.19448007610035534,
+  "width": 1000
+}

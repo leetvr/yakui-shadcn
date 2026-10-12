@@ -39,6 +39,7 @@ struct Options {
     screenshot: Option<PathBuf>,
     width: u32,
     height: u32,
+    scale_factor: f32,
     isolated: bool,
     animation_time_ms: Option<u64>,
     state: String,
@@ -54,6 +55,7 @@ impl Default for Options {
             screenshot: None,
             width: 1200,
             height: 800,
+            scale_factor: 1.,
             isolated: false,
             animation_time_ms: None,
             state: "default".into(),
@@ -67,7 +69,7 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
     while let Some(arg) = args.next() {
         if arg == "--help" {
             println!(
-                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected|open|image-error] [--keys Tab,ArrowDown,Enter] [--width 1200] [--height 800] [--isolated] [--screenshot PATH] [--animation-time-ms 50]\ngallery --list\ngallery --showcase dashboard|settings|checkout [--theme dark] [--screenshot PATH]"
+                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected|open|image-error] [--keys Tab,ArrowDown,Enter] [--width 1200] [--height 800] [--scale-factor 1] [--isolated] [--screenshot PATH] [--animation-time-ms 50]\ngallery --list\ngallery --showcase dashboard|settings|checkout [--theme dark] [--screenshot PATH]"
             );
             return Ok(None);
         }
@@ -92,6 +94,7 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
             "--animation-time-ms" => options.animation_time_ms = Some(value.parse()?),
             "--width" => options.width = value.parse()?,
             "--height" => options.height = value.parse()?,
+            "--scale-factor" => options.scale_factor = value.parse()?,
             "--theme" => {
                 options.dark = match value.as_str() {
                     "light" => false,
@@ -158,6 +161,9 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
     }
     if options.width == 0 || options.height == 0 {
         return Err("Capture dimensions must be nonzero".into());
+    }
+    if !options.scale_factor.is_finite() || options.scale_factor <= 0. {
+        return Err("Scale factor must be finite and positive".into());
     }
     Ok(Some(options))
 }
@@ -518,9 +524,11 @@ fn capture_frame(gallery: &mut Gallery, yak: &mut yakui::Yakui, milliseconds: u6
 }
 fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
     let mut yak = new_yak();
-    yak.set_surface_size(gallery.viewport);
-    yak.set_unscaled_viewport(yakui::Rect::from_pos_size(ui::Vec2::ZERO, gallery.viewport));
-    yak.set_scale_factor(1.0);
+    let scale = gallery.options.scale_factor;
+    let physical_size = (gallery.viewport * scale).round();
+    yak.set_surface_size(physical_size);
+    yak.set_unscaled_viewport(yakui::Rect::from_pos_size(ui::Vec2::ZERO, physical_size));
+    yak.set_scale_factor(scale);
     for _ in 0..3 {
         capture_frame(&mut gallery, &mut yak, 0);
     }
@@ -551,7 +559,22 @@ fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
         .ok_or("This example has no focusable control")?;
         if gallery.options.state == "hover" || gallery.options.state == "open" {
             let rect = yak.layout_dom().get(id).unwrap().rect;
-            yak.handle_event(yakui::event::Event::CursorMoved(Some(rect.center())));
+            let mut position = rect.center();
+            if gallery.options.component == "slider" {
+                // Hover the first actual thumb, like the browser harness. The
+                // center of a range control is not necessarily over a thumb.
+                let (value, vertical) = match gallery.options.variant.as_str() {
+                    "range" => (gallery.state.slider_range[0], false),
+                    "vertical" => (gallery.state.slider_vertical[0], true),
+                    _ => (gallery.state.slider_value, false),
+                };
+                if vertical {
+                    position.y = rect.max().y - 6. - value as f32 / 100. * (rect.size().y - 12.);
+                } else {
+                    position.x = rect.pos().x + 6. + value as f32 / 100. * (rect.size().x - 12.);
+                }
+            }
+            yak.handle_event(yakui::event::Event::CursorMoved(Some(position * scale)));
             let hover_popup = gallery.options.component == "tooltip"
                 || (gallery.options.component == "button-group"
                     && matches!(gallery.options.variant.as_str(), "nested" | "input-group"));

@@ -10,7 +10,7 @@
   },
   "yakui": {
     "repository": "https://github.com/leetvr/yakui",
-    "commit": "6afaed864554f9aaec2c1cac7403a151f6b06610",
+    "commit": "1ede37af9329d7a4ac89fc4e7105a1c905bdcc07",
     "upstream_commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8",
     "upstream_repository": "https://github.com/SecondHalfGames/yakui"
   },

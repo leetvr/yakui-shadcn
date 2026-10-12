@@ -167,7 +167,7 @@ only sampled paths and Yakui meshes, with round stroke caps and joins.
 
 The diagnostic compares all 137 SVGs against native geometry in both themes at
 24 logical pixels. It is not an additional documented shadcn preview. The native
-single-sample renderer produces visibly different curve edges; all paths and
+single-sample renderer used for that historical capture produced visibly different curve edges; all paths and
 alignment match. Dense geometry needs separate clipped bounds because pinned
 Yakui PaintDom merges consecutive compatible meshes without checking u16 overflow.
 
@@ -227,3 +227,27 @@ and the standalone avatars app demonstrates that ownership using the public API.
 Native circle edges and CSS mix-blend borders differ; Nova's effective badge colour
 cascade can also differ from the documented green status override. These are
 recorded as polish differences for the internal/prototype quality target.
+
+## Slider rendering follow-up (2026-10-13)
+
+Read the pinned Base slider source, Nova rules, slider-demo/range/vertical/disabled
+examples, and Base UI's edge-aligned thumb positioning. The track spans the full
+control length; thumb centers travel between 6px inset endpoints. Nova uses a
+4px track, white 12px thumbs with a 1px opaque ring-color border, 3px ring on
+thumb hover/active/focus-visible, and 50% opacity for disabled controls.
+The native horizontal input region remains 20px tall for pointer interaction.
+
+The reference harness previously omitted `packages/shadcn/src/tailwind.css`.
+That stylesheet defines data-horizontal/data-vertical and other state variants;
+without it the slider track had zero height. Preparation now copies and imports
+the unmodified stylesheet, and slider capture rejects an empty track. Historical
+comparisons retain their original capture conditions; new slider references use
+the corrected harness. Chromium/Base UI focuses the hidden range input without
+a ring on the outer thumb in the pinned example; native keyboard focus keeps its
+visible ring deliberately.
+
+Native thumb outlines now use one joined strip instead of 48 disconnected line
+quads. Yakui curves use a finer chord tolerance and headless WGPU resolves 4× MSAA,
+matching the live gallery. Captures can set physical pixel density independently
+of logical viewport dimensions. The live WGPU multisample target now persists
+until its size, format or sample count changes.

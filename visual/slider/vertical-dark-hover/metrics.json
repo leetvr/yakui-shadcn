@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0000825,
+  "content_bounds": [
+    477,
+    320,
+    520,
+    480
+  ],
+  "content_rgb_rmse": 5.465842665729744,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.00520375,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/slider/vertical-dark-hover/native.png",
+  "pixels_differing_by_more_than_16": 66,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/slider/vertical-dark-hover/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.5068813963838089,
+  "width": 1000
+}

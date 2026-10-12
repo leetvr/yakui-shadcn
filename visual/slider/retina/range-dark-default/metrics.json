@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00015729166666666666,
+  "content_bounds": [
+    280,
+    388,
+    920,
+    412
+  ],
+  "content_rgb_rmse": 3.7042258384850135,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.006503125,
+  "native": "visual/slider/retina/range-dark-default/native.png",
+  "pixels_differing_by_more_than_16": 151,
+  "reference": "visual/slider/retina/range-dark-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.46855162469038564,
+  "width": 1200
+}

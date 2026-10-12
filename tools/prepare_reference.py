@@ -17,6 +17,7 @@ for dest in ['styles/base-nova/ui','registry/bases/base/ui']:
 # All source files remain byte-for-byte identical, including the upstream examples.
 shutil.copytree(v4/'examples/base',src/'examples',dirs_exist_ok=True)
 shutil.copy(v4/'registry/styles/style-nova.css',src/'nova.css')
+shutil.copy(upstream/'packages/shadcn/src/tailwind.css',src/'shadcn.css')
 shutil.copy(root/'crates/adequate-ui/fonts/Geist-Regular.ttf',app/'public/Geist-Regular.ttf')
 shutil.copy(root/'crates/adequate-ui/fonts/Geist-Medium.ttf',app/'public/Geist-Medium.ttf')
 shutil.copy(root/'crates/adequate-ui/fonts/Geist-Bold.ttf',app/'public/Geist-Bold.ttf')
@@ -26,7 +27,7 @@ icon.parent.mkdir(parents=True,exist_ok=True)
 icon.write_text('import * as React from "react"\nimport * as icons from "lucide-react"\nexport function IconPlaceholder({lucide,tabler,hugeicons,phosphor,remixicon,...props}) { const Icon=icons[lucide]; if(!Icon) throw new Error(`Missing Lucide icon ${lucide}`); return <Icon {...props}/> }\n')
 theme_text=(v4/'registry/themes.ts').read_text().split('name: "stone"')[0]
 blocks=re.findall(r'(light|dark): \{(.*?)\n      \}',theme_text,re.S)
-css='@source "./styles";\n@source "./examples";\n@source "./registry";\n@import "tailwindcss";\n@import "tw-animate-css";\n@import "./nova.css";\n@custom-variant dark (&:is(.dark *));\n'
+css='@source "./styles";\n@source "./examples";\n@source "./registry";\n@import "tailwindcss";\n@import "tw-animate-css";\n@import "./shadcn.css";\n@import "./nova.css";\n@custom-variant dark (&:is(.dark *));\n'
 css+='@theme inline {\n --font-sans: Geist;\n'
 keys=[]
 for mode,block in blocks:
@@ -37,7 +38,6 @@ for key in keys:
 for name,mult in [('sm',.6),('md',.8),('lg',1),('xl',1.4),('2xl',1.8),('3xl',2.2),('4xl',2.6)]:
     css+=f' --radius-{name}: calc(var(--radius) * {mult});\n'
 css+='}\n'
-css+='@utility no-scrollbar { scrollbar-width: none; &::-webkit-scrollbar { display:none; } }\n'
 for mode,block in blocks:
     css+=(':root' if mode=='light' else '.dark')+' {\n'
     for a,b,v in re.findall(r'(?:"([\w-]+)"|([\w-]+)): "([^"]+)"',block):css+=f' --{a or b}: {v};\n'

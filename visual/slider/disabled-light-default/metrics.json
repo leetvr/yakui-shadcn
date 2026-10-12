@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 7.5e-6,
+  "content_bounds": [
+    340,
+    394,
+    506,
+    406
+  ],
+  "content_rgb_rmse": 1.380442860085067,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.0012325,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/slider/disabled-light-default/native.png",
+  "pixels_differing_by_more_than_16": 6,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/slider/disabled-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.06904708538381617,
+  "width": 1000
+}

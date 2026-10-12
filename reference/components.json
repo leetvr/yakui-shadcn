@@ -11691,16 +11691,55 @@
       "gallery_examples": [
         "default",
         "range",
-        "vertical"
+        "vertical",
+        "disabled"
       ],
       "behaviour_tests": [
         "advanced::slider_keyboard_respects_step_and_ordered_neighbours",
-        "advanced::range_slider_tab_reaches_the_second_thumb_before_leaving"
+        "advanced::range_slider_tab_reaches_the_second_thumb_before_leaving",
+        "advanced::slider_drag_updates_caller_and_painted_thumb_in_the_same_frame_at_hidpi",
+        "advanced::slider_ring_follows_the_hovered_thumb_and_keyboard_focus"
       ],
-      "visual_comparisons": [],
+      "visual_comparisons": [
+        "visual/slider/default-light-default",
+        "visual/slider/default-light-hover",
+        "visual/slider/default-light-focus",
+        "visual/slider/default-dark-default",
+        "visual/slider/default-dark-hover",
+        "visual/slider/default-dark-focus",
+        "visual/slider/range-light-default",
+        "visual/slider/range-light-hover",
+        "visual/slider/range-light-focus",
+        "visual/slider/range-dark-default",
+        "visual/slider/range-dark-hover",
+        "visual/slider/range-dark-focus",
+        "visual/slider/vertical-light-default",
+        "visual/slider/vertical-light-hover",
+        "visual/slider/vertical-light-focus",
+        "visual/slider/vertical-dark-default",
+        "visual/slider/vertical-dark-hover",
+        "visual/slider/vertical-dark-focus",
+        "visual/slider/disabled-light-default",
+        "visual/slider/disabled-dark-default",
+        "visual/slider/default-light-default+Tab,ArrowRight",
+        "visual/slider/default-dark-default+Tab,ArrowRight",
+        "visual/slider/range-light-default+Tab,Tab,ArrowRight",
+        "visual/slider/range-dark-default+Tab,Tab,ArrowRight",
+        "visual/slider/retina/default-light-default",
+        "visual/slider/retina/default-dark-default",
+        "visual/slider/retina/range-light-default",
+        "visual/slider/retina/range-dark-default",
+        "visual/slider/retina/vertical-light-default",
+        "visual/slider/retina/vertical-dark-default",
+        "visual/slider/retina/disabled-light-default",
+        "visual/slider/retina/disabled-dark-default"
+      ],
       "status": "in_progress",
       "deviations": [
-        "Drag, keyboard, range ordering and internal Tab tested; distinct thumb IDs/accessibility and complete disabled/invalid styling pending."
+        "Thumbs share one retained widget with internal keyboard navigation; distinct platform accessibility nodes are not implemented.",
+        "Native keyboard focus deliberately keeps a visible thumb ring; the pinned browser example focuses its hidden input without styling the outer thumb.",
+        "The native input band is 20px across around the 4px visible track. Gallery vertical spacing compensates for this input padding.",
+        "Multiple/controlled values use the public range/value APIs; separate upstream multiple/controlled demos and RTL composition are not ported."
       ],
       "example_coverage": [
         {
@@ -11712,11 +11751,87 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/slider"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
-          "review": "pending"
+          "gallery_variant": "default",
+          "behaviour_tests": [
+            "advanced::slider_keyboard_respects_step_and_ordered_neighbours",
+            "advanced::range_slider_tab_reaches_the_second_thumb_before_leaving",
+            "advanced::slider_drag_updates_caller_and_painted_thumb_in_the_same_frame_at_hidpi",
+            "advanced::slider_ring_follows_the_hovered_thumb_and_keyboard_focus"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "scale_factor": 1,
+              "path": "visual/slider/default-light-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "hover",
+              "scale_factor": 1,
+              "path": "visual/slider/default-light-hover",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "scale_factor": 1,
+              "path": "visual/slider/default-light-focus",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "scale_factor": 1,
+              "path": "visual/slider/default-dark-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "hover",
+              "scale_factor": 1,
+              "path": "visual/slider/default-dark-hover",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "scale_factor": 1,
+              "path": "visual/slider/default-dark-focus",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "default+Tab,ArrowRight",
+              "scale_factor": 1,
+              "path": "visual/slider/default-light-default+Tab,ArrowRight",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "default+Tab,ArrowRight",
+              "scale_factor": 1,
+              "path": "visual/slider/default-dark-default+Tab,ArrowRight",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "default",
+              "scale_factor": 2.0,
+              "path": "visual/slider/retina/default-light-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "scale_factor": 2.0,
+              "path": "visual/slider/retina/default-dark-default",
+              "review": "reviewed_with_deviations"
+            }
+          ],
+          "status": "in_progress",
+          "review": "reviewed_with_deviations"
         },
         {
           "name": "slider-range",
@@ -11727,11 +11842,87 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/slider"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
-          "review": "pending"
+          "gallery_variant": "range",
+          "behaviour_tests": [
+            "advanced::slider_keyboard_respects_step_and_ordered_neighbours",
+            "advanced::range_slider_tab_reaches_the_second_thumb_before_leaving",
+            "advanced::slider_drag_updates_caller_and_painted_thumb_in_the_same_frame_at_hidpi",
+            "advanced::slider_ring_follows_the_hovered_thumb_and_keyboard_focus"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "scale_factor": 1,
+              "path": "visual/slider/range-light-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "hover",
+              "scale_factor": 1,
+              "path": "visual/slider/range-light-hover",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "scale_factor": 1,
+              "path": "visual/slider/range-light-focus",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "scale_factor": 1,
+              "path": "visual/slider/range-dark-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "hover",
+              "scale_factor": 1,
+              "path": "visual/slider/range-dark-hover",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "scale_factor": 1,
+              "path": "visual/slider/range-dark-focus",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "default+Tab,Tab,ArrowRight",
+              "scale_factor": 1,
+              "path": "visual/slider/range-light-default+Tab,Tab,ArrowRight",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "default+Tab,Tab,ArrowRight",
+              "scale_factor": 1,
+              "path": "visual/slider/range-dark-default+Tab,Tab,ArrowRight",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "default",
+              "scale_factor": 2.0,
+              "path": "visual/slider/retina/range-light-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "scale_factor": 2.0,
+              "path": "visual/slider/retina/range-dark-default",
+              "review": "reviewed_with_deviations"
+            }
+          ],
+          "status": "in_progress",
+          "review": "reviewed_with_deviations"
         },
         {
           "name": "slider-multiple",
@@ -11757,11 +11948,73 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/slider"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
-          "review": "pending"
+          "gallery_variant": "vertical",
+          "behaviour_tests": [
+            "advanced::slider_keyboard_respects_step_and_ordered_neighbours",
+            "advanced::range_slider_tab_reaches_the_second_thumb_before_leaving",
+            "advanced::slider_drag_updates_caller_and_painted_thumb_in_the_same_frame_at_hidpi",
+            "advanced::slider_ring_follows_the_hovered_thumb_and_keyboard_focus"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "scale_factor": 1,
+              "path": "visual/slider/vertical-light-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "hover",
+              "scale_factor": 1,
+              "path": "visual/slider/vertical-light-hover",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "focus",
+              "scale_factor": 1,
+              "path": "visual/slider/vertical-light-focus",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "scale_factor": 1,
+              "path": "visual/slider/vertical-dark-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "hover",
+              "scale_factor": 1,
+              "path": "visual/slider/vertical-dark-hover",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "focus",
+              "scale_factor": 1,
+              "path": "visual/slider/vertical-dark-focus",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "default",
+              "scale_factor": 2.0,
+              "path": "visual/slider/retina/vertical-light-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "scale_factor": 2.0,
+              "path": "visual/slider/retina/vertical-dark-default",
+              "review": "reviewed_with_deviations"
+            }
+          ],
+          "status": "in_progress",
+          "review": "reviewed_with_deviations"
         },
         {
           "name": "slider-controlled",
@@ -11789,11 +12042,45 @@
           "upstream_imports": [
             "@/styles/base-nova/ui/slider"
           ],
-          "gallery_variant": null,
-          "behaviour_tests": [],
-          "visual_comparisons": [],
-          "status": "pending",
-          "review": "pending"
+          "gallery_variant": "disabled",
+          "behaviour_tests": [
+            "advanced::slider_keyboard_respects_step_and_ordered_neighbours",
+            "advanced::range_slider_tab_reaches_the_second_thumb_before_leaving",
+            "advanced::slider_drag_updates_caller_and_painted_thumb_in_the_same_frame_at_hidpi",
+            "advanced::slider_ring_follows_the_hovered_thumb_and_keyboard_focus"
+          ],
+          "visual_comparisons": [
+            {
+              "theme": "light",
+              "state": "default",
+              "scale_factor": 1,
+              "path": "visual/slider/disabled-light-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "scale_factor": 1,
+              "path": "visual/slider/disabled-dark-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "light",
+              "state": "default",
+              "scale_factor": 2.0,
+              "path": "visual/slider/retina/disabled-light-default",
+              "review": "reviewed_with_deviations"
+            },
+            {
+              "theme": "dark",
+              "state": "default",
+              "scale_factor": 2.0,
+              "path": "visual/slider/retina/disabled-dark-default",
+              "review": "reviewed_with_deviations"
+            }
+          ],
+          "status": "in_progress",
+          "review": "reviewed_with_deviations"
         },
         {
           "name": "slider-rtl",

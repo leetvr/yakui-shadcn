@@ -3113,7 +3113,7 @@ checksum = "e450f9b2ed1dff33c94c12589a87338689467b9c4f5d8a5710bd09a847d2c8a7"
 [[package]]
 name = "yakui"
 version = "0.3.0"
-source = "git+https://github.com/leetvr/yakui?rev=6afaed864554f9aaec2c1cac7403a151f6b06610#6afaed864554f9aaec2c1cac7403a151f6b06610"
+source = "git+https://github.com/leetvr/yakui?rev=1ede37af9329d7a4ac89fc4e7105a1c905bdcc07#1ede37af9329d7a4ac89fc4e7105a1c905bdcc07"
 dependencies = [
  "yakui-core",
  "yakui-widgets",
@@ -3132,7 +3132,7 @@ dependencies = [
 [[package]]
 name = "yakui-app"
 version = "0.3.0"
-source = "git+https://github.com/leetvr/yakui?rev=6afaed864554f9aaec2c1cac7403a151f6b06610#6afaed864554f9aaec2c1cac7403a151f6b06610"
+source = "git+https://github.com/leetvr/yakui?rev=1ede37af9329d7a4ac89fc4e7105a1c905bdcc07#1ede37af9329d7a4ac89fc4e7105a1c905bdcc07"
 dependencies = [
  "profiling",
  "wgpu",
@@ -3145,7 +3145,7 @@ dependencies = [
 [[package]]
 name = "yakui-core"
 version = "0.3.0"
-source = "git+https://github.com/leetvr/yakui?rev=6afaed864554f9aaec2c1cac7403a151f6b06610#6afaed864554f9aaec2c1cac7403a151f6b06610"
+source = "git+https://github.com/leetvr/yakui?rev=1ede37af9329d7a4ac89fc4e7105a1c905bdcc07#1ede37af9329d7a4ac89fc4e7105a1c905bdcc07"
 dependencies = [
  "anymap",
  "bitflags 2.13.2",
@@ -3162,7 +3162,7 @@ dependencies = [
 [[package]]
 name = "yakui-to-image"
 version = "0.0.0"
-source = "git+https://github.com/leetvr/yakui?rev=6afaed864554f9aaec2c1cac7403a151f6b06610#6afaed864554f9aaec2c1cac7403a151f6b06610"
+source = "git+https://github.com/leetvr/yakui?rev=1ede37af9329d7a4ac89fc4e7105a1c905bdcc07#1ede37af9329d7a4ac89fc4e7105a1c905bdcc07"
 dependencies = [
  "image",
  "pollster",
@@ -3174,7 +3174,7 @@ dependencies = [
 [[package]]
 name = "yakui-wgpu"
 version = "0.3.0"
-source = "git+https://github.com/leetvr/yakui?rev=6afaed864554f9aaec2c1cac7403a151f6b06610#6afaed864554f9aaec2c1cac7403a151f6b06610"
+source = "git+https://github.com/leetvr/yakui?rev=1ede37af9329d7a4ac89fc4e7105a1c905bdcc07#1ede37af9329d7a4ac89fc4e7105a1c905bdcc07"
 dependencies = [
  "bytemuck",
  "glam",
@@ -3187,7 +3187,7 @@ dependencies = [
 [[package]]
 name = "yakui-widgets"
 version = "0.3.0"
-source = "git+https://github.com/leetvr/yakui?rev=6afaed864554f9aaec2c1cac7403a151f6b06610#6afaed864554f9aaec2c1cac7403a151f6b06610"
+source = "git+https://github.com/leetvr/yakui?rev=1ede37af9329d7a4ac89fc4e7105a1c905bdcc07#1ede37af9329d7a4ac89fc4e7105a1c905bdcc07"
 dependencies = [
  "arboard",
  "cosmic-text",
@@ -3200,7 +3200,7 @@ dependencies = [
 [[package]]
 name = "yakui-winit"
 version = "0.3.0"
-source = "git+https://github.com/leetvr/yakui?rev=6afaed864554f9aaec2c1cac7403a151f6b06610#6afaed864554f9aaec2c1cac7403a151f6b06610"
+source = "git+https://github.com/leetvr/yakui?rev=1ede37af9329d7a4ac89fc4e7105a1c905bdcc07#1ede37af9329d7a4ac89fc4e7105a1c905bdcc07"
 dependencies = [
  "winit",
  "yakui-core",

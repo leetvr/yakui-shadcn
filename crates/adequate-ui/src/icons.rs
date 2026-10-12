@@ -115,17 +115,23 @@ pub(crate) fn circle(
     start: f32,
     end: f32,
 ) {
-    for i in 0..48 {
-        let a = start + (end - start) * i as f32 / 48.;
-        let b = start + (end - start) * (i + 1) as f32 / 48.;
-        line(
-            ctx,
-            center + Vec2::new(a.cos(), a.sin()) * radius,
-            center + Vec2::new(b.cos(), b.sin()) * radius,
-            stroke,
-            color,
-        );
+    // One joined strip keeps translucent rings watertight. Independent line
+    // quads leave wedges between segments and produce dotted small circles.
+    let mut vertices = Vec::with_capacity(98);
+    let mut indices = Vec::with_capacity(288);
+    let color = color.to_linear();
+    for i in 0..=48u16 {
+        let angle = start + (end - start) * i as f32 / 48.;
+        let direction = Vec2::new(angle.cos(), angle.sin());
+        for r in [(radius - stroke / 2.).max(0.), radius + stroke / 2.] {
+            vertices.push(Vertex::new(center + direction * r, Vec2::ZERO, color));
+        }
+        if i > 0 {
+            let n = i * 2;
+            indices.extend_from_slice(&[n - 2, n - 1, n, n, n - 1, n + 1]);
+        }
     }
+    ctx.paint.add_mesh(PaintMesh::new(vertices, indices));
 }
 
 /// Hollow rounded outline. Yakui's bordered rectangle paints a solid silhouette
