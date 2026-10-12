@@ -973,6 +973,12 @@ impl Widget for MenuRoot {
             },
             constraints,
         );
+        // Exit presence keeps this widget alive. Logical closure must reset the
+        // initial-focus cycle and must never steal focus back from the trigger.
+        if self.dismiss.as_ref().is_some_and(|scope| !scope.open) {
+            self.focused_once.set(false);
+            return size;
+        }
         let props = self.props.as_ref().unwrap();
         let first_layout = !self.focused_once.replace(true);
         let requested = self.requested.take().or_else(|| {

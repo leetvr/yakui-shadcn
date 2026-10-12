@@ -230,23 +230,33 @@ pub fn tabs(
                                     } else {
                                         Color::CLEAR
                                     };
-                                    surface(fill, None, t.radius - 2., 0., || {
-                                        yakui::pad(yakui::widgets::Pad::balanced(7., 3.), || {
-                                            yakui::widgets::RenderText::with_style(
-                                                (*option).to_owned(),
-                                                t.text_style(
-                                                    14.,
-                                                    if *selected == index {
-                                                        t.foreground
-                                                    } else {
-                                                        t.muted_foreground
+                                    let fill = crate::layout::composite(
+                                        fill,
+                                        crate::layout::surface_background(),
+                                    );
+                                    let foreground = if *selected == index {
+                                        t.foreground
+                                    } else {
+                                        t.muted_foreground
+                                    };
+                                    crate::animation::animate(
+                                        (fill, foreground),
+                                        Default::default(),
+                                        |(fill, foreground)| {
+                                            surface(fill, None, t.radius - 2., 0., || {
+                                                yakui::pad(
+                                                    yakui::widgets::Pad::balanced(7., 3.),
+                                                    || {
+                                                        yakui::widgets::RenderText::with_style(
+                                                            (*option).to_owned(),
+                                                            t.text_style(14., foreground, 500),
+                                                        )
+                                                        .show();
                                                     },
-                                                    500,
-                                                ),
-                                            )
-                                            .show();
-                                        });
-                                    });
+                                                );
+                                            });
+                                        },
+                                    );
                                     dom.end_widget::<ChoiceWidget>(id);
                                 }
                             })
@@ -258,25 +268,54 @@ pub fn tabs(
         },
     )
 }
+#[track_caller]
+fn disclosure_header(title: String, open: bool) -> ControlResponse {
+    Button::new("").variant(Variant::Ghost).show_children(|| {
+        row(6., || {
+            crate::animation::animate(
+                if open {
+                    std::f32::consts::FRAC_PI_2
+                } else {
+                    0.
+                },
+                crate::animation::Motion::new(
+                    std::time::Duration::from_millis(200),
+                    crate::animation::Easing::EaseOut,
+                ),
+                |rotation| {
+                    crate::animation::motion(
+                        crate::animation::MotionStyle {
+                            rotation,
+                            ..Default::default()
+                        },
+                        || crate::icon(crate::Icon::ChevronRight, 16.),
+                    );
+                },
+            );
+            let t = theme();
+            let mut style = t.text_style(14., t.foreground, 500);
+            style.line_height_override = Some(20.);
+            yakui::widgets::RenderText::with_style(title, style).show();
+        })
+    })
+}
 /// Expandable content with application-owned visibility.
 #[track_caller]
 pub fn collapsible(title: impl Into<String>, open: &mut bool, children: impl FnOnce()) {
-    column(8., || {
-        if Button::new(title)
-            .variant(Variant::Ghost)
-            .icon(if *open {
-                crate::Icon::ChevronDown
-            } else {
-                crate::Icon::ChevronRight
-            })
-            .show()
-            .clicked
-        {
+    column(0., || {
+        let response = disclosure_header(title.into(), *open);
+        if response.clicked {
             *open = !*open;
         }
-        if *open {
-            children();
-        }
+        crate::animation::reveal(*open, response.id, || {
+            yakui::pad(
+                yakui::widgets::Pad {
+                    top: 8.,
+                    ..Default::default()
+                },
+                children,
+            );
+        });
     });
 }
 /// One accordion item, including the dividing rule and expanded-content spacing.
@@ -289,21 +328,13 @@ pub fn accordion_item(
 ) {
     crate::width(width, || {
         column(0., || {
-            if Button::new(title)
-                .variant(Variant::Ghost)
-                .icon(if *open {
-                    crate::Icon::ChevronDown
-                } else {
-                    crate::Icon::ChevronRight
-                })
-                .show()
-                .clicked
-            {
+            let response = disclosure_header(title.into(), *open);
+            if response.clicked {
                 *open = !*open;
             }
-            if *open {
-                surface(Color::CLEAR, None, 0., 10., children);
-            }
+            crate::animation::reveal(*open, response.id, || {
+                surface(Color::CLEAR, None, 0., 10., children)
+            });
             crate::separator(width);
         })
     });

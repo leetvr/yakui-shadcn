@@ -122,26 +122,46 @@ impl Checkbox {
                                 } else {
                                     Color::CLEAR
                                 };
-                            yakui::util::widget_children::<IndicatorRing, _>(
-                                || {
-                                    crate::size(Vec2::splat(16.), || {
-                                        RoundRect::new(4.)
-                                            .color(fill)
-                                            .border(Some(Border::new(border, 1.)))
-                                            .show_children(|| {
-                                                if *value {
-                                                    crate::min_size(Vec2::ZERO, || {
-                                                        crate::icon_colored(
-                                                            Icon::Check,
-                                                            14.,
-                                                            foreground,
-                                                        )
+                            crate::animation::animate(
+                                (fill, border, if *value { 1. } else { 0. }),
+                                Default::default(),
+                                |(fill, border, check)| {
+                                    yakui::util::widget_children::<IndicatorRing, _>(
+                                        || {
+                                            crate::size(Vec2::splat(16.), || {
+                                                RoundRect::new(4.)
+                                                    .color(fill)
+                                                    .border(Some(Border::new(border, 1.)))
+                                                    .show_children(|| {
+                                                        if check > 0. {
+                                                            crate::animation::motion(
+                                                                crate::animation::MotionStyle {
+                                                                    opacity: check,
+                                                                    scale: Vec2::splat(
+                                                                        0.8 + check * 0.2,
+                                                                    ),
+                                                                    ..Default::default()
+                                                                },
+                                                                || {
+                                                                    crate::min_size(
+                                                                        Vec2::ZERO,
+                                                                        || {
+                                                                            crate::icon_colored(
+                                                                                Icon::Check,
+                                                                                14.,
+                                                                                foreground,
+                                                                            )
+                                                                        },
+                                                                    )
+                                                                },
+                                                            );
+                                                        }
                                                     });
-                                                }
                                             });
-                                    });
+                                        },
+                                        (ring, 4.),
+                                    );
                                 },
-                                (ring, 4.),
                             );
                             if let Some(label) = &self.label {
                                 crate::column(2., || {

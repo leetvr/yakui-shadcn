@@ -20,6 +20,8 @@ pub(crate) struct Editor {
     focused: bool,
     radius: f32,
     ring: yakui::Color,
+    ring_animation: Option<crate::animation::Transition<f32>>,
+    ring_opacity: f32,
     disabled: bool,
     grouped: bool,
     read_only: bool,
@@ -35,6 +37,8 @@ impl Widget for Editor {
             focused: false,
             radius: 10.,
             ring: yakui::Color::GRAY,
+            ring_animation: None,
+            ring_opacity: 0.,
             disabled: false,
             grouped: false,
             read_only: false,
@@ -55,6 +59,16 @@ impl Widget for Editor {
         } else {
             t.ring.with_alpha(0.5)
         });
+        let target = if self.focused && !self.disabled && !self.grouped {
+            1.
+        } else {
+            0.
+        };
+        self.ring_opacity = crate::animation::update_transition(
+            &mut self.ring_animation,
+            target,
+            Default::default(),
+        );
         let text = props.textbox.text.clone();
         let placeholder = std::mem::take(&mut props.textbox.placeholder);
         let padding = props.textbox.padding;
@@ -84,14 +98,26 @@ impl Widget for Editor {
             self.inner.layout(ctx, constraints)
         }
     }
-    fn paint(&self, mut ctx: PaintContext<'_>) {
-        if self.focused && !self.disabled && !self.grouped {
+    fn paint(&self, ctx: PaintContext<'_>) {
+        if self.ring_opacity > 0. {
             let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
             let outer = yakui::Rect::from_pos_size(
                 rect.pos() - Vec2::splat(3.),
                 rect.size() + Vec2::splat(6.),
             );
-            crate::icons::outline(&mut ctx, outer, self.radius + 3., 3., self.ring);
+            ctx.paint.with_opacity(self.ring_opacity, |paint| {
+                crate::icons::outline(
+                    &mut PaintContext {
+                        dom: ctx.dom,
+                        layout: ctx.layout,
+                        paint,
+                    },
+                    outer,
+                    self.radius + 3.,
+                    3.,
+                    self.ring,
+                )
+            });
         }
         if self.disabled {
             self.default_paint(ctx)

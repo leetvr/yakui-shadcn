@@ -1,7 +1,7 @@
 //! An explicit native toast queue; expiration and actions stay local to the application.
 use crate::{Button, ButtonSize, Variant, Vec2, column, row, surface, theme};
 use std::time::{Duration, Instant};
-#[derive(Debug, Default, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub enum ToastKind {
     #[default]
     Default,
@@ -11,7 +11,7 @@ pub enum ToastKind {
     Warning,
     Loading,
 }
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Toast {
     pub id: u64,
     pub title: String,
@@ -25,6 +25,14 @@ pub struct Toast {
 pub struct ToastManager {
     pub toasts: Vec<Toast>,
     next_id: u64,
+    visual: Vec<VisualToast>,
+}
+#[derive(Debug)]
+struct VisualToast {
+    toast: Toast,
+    transition: crate::animation::Transition<f32>,
+    visible: bool,
+    progress: f32,
 }
 impl ToastManager {
     pub fn add(
@@ -91,39 +99,96 @@ impl yakui::widget::Widget for ToastViewport {
 #[track_caller]
 pub fn toast_viewport(manager: &mut ToastManager) -> ToastResponse {
     manager.update();
+    let now = crate::animation::now();
+    let timing = crate::animation::Motion::new(
+        Duration::from_millis(200),
+        crate::animation::Easing::EaseOut,
+    );
+    for toast in &manager.toasts {
+        if let Some(visual) = manager.visual.iter_mut().find(|v| v.toast.id == toast.id) {
+            if visual.toast != *toast {
+                visual.toast.clone_from(toast);
+            }
+        } else {
+            manager.visual.push(VisualToast {
+                toast: toast.clone(),
+                transition: crate::animation::Transition::new(0.),
+                visible: true,
+                progress: 0.,
+            });
+        }
+    }
+    for visual in &mut manager.visual {
+        visual.visible = manager
+            .toasts
+            .iter()
+            .any(|toast| toast.id == visual.toast.id);
+        let target = if visual.visible { 1. } else { 0. };
+        if crate::animation::enabled() {
+            visual.transition.set_target(target, timing, now);
+        } else {
+            visual.transition.snap(target);
+        }
+        visual.progress = visual.transition.value(now);
+        if visual.transition.is_active(now) {
+            crate::animation::request_frame();
+        }
+    }
+    // Application state removes/expires toasts immediately; paint retains the
+    // snapshot until exit ends. Transition state is keyed by toast ID, so row
+    // removal cannot transfer another toast's animation progress to this one.
+    manager.visual.retain(|visual| {
+        visual.visible || visual.transition.is_active(now) || visual.progress > 0.
+    });
     let t = theme();
     let mut response = ToastResponse::default();
     yakui::util::widget_children::<ToastViewport, _>(
         || {
             column(8., || {
-                for toast in &manager.toasts {
-                    surface(t.popover, Some(t.border), t.radius, 12., || {
-                        row(12., || {
-                            if matches!(toast.kind, ToastKind::Loading) {
-                                crate::spinner(16., 0.);
-                            } else if matches!(toast.kind, ToastKind::Success) {
-                                crate::icon(crate::Icon::Check, 16.);
-                            }
-                            column(4., || {
-                                crate::label(&toast.title);
-                                crate::muted(&toast.description);
+                for visual in &manager.visual {
+                    let toast = &visual.toast;
+                    crate::animation::motion(
+                        crate::animation::MotionStyle {
+                            opacity: visual.progress,
+                            translation: Vec2::new(0., 16. * (1. - visual.progress)),
+                            ..Default::default()
+                        },
+                        || {
+                            surface(t.popover, Some(t.border), t.radius, 12., || {
+                                row(12., || {
+                                    if matches!(toast.kind, ToastKind::Loading) {
+                                        crate::spinner_auto(16.);
+                                    } else if matches!(toast.kind, ToastKind::Success) {
+                                        crate::icon(crate::Icon::Check, 16.);
+                                    }
+                                    column(4., || {
+                                        crate::label(&toast.title);
+                                        crate::muted(&toast.description);
+                                    });
+                                    if let Some(action) = &toast.action {
+                                        if Button::new(action)
+                                            .size(ButtonSize::Sm)
+                                            .disabled(!visual.visible)
+                                            .show()
+                                            .clicked
+                                        {
+                                            response.action = Some(toast.id);
+                                        }
+                                    }
+                                    if Button::new("")
+                                        .variant(Variant::Ghost)
+                                        .size(ButtonSize::IconXs)
+                                        .icon(crate::Icon::X)
+                                        .disabled(!visual.visible)
+                                        .show()
+                                        .clicked
+                                    {
+                                        response.dismissed = Some(toast.id);
+                                    }
+                                })
                             });
-                            if let Some(action) = &toast.action {
-                                if Button::new(action).size(ButtonSize::Sm).show().clicked {
-                                    response.action = Some(toast.id);
-                                }
-                            }
-                            if Button::new("")
-                                .variant(Variant::Ghost)
-                                .size(ButtonSize::IconXs)
-                                .icon(crate::Icon::X)
-                                .show()
-                                .clicked
-                            {
-                                response.dismissed = Some(toast.id);
-                            }
-                        })
-                    });
+                        },
+                    );
                 }
             })
         },
@@ -131,6 +196,7 @@ pub fn toast_viewport(manager: &mut ToastManager) -> ToastResponse {
     );
     if let Some(id) = response.dismissed {
         manager.close(id);
+        crate::animation::request_frame();
     }
     response
 }

@@ -3113,7 +3113,7 @@ checksum = "e450f9b2ed1dff33c94c12589a87338689467b9c4f5d8a5710bd09a847d2c8a7"
 [[package]]
 name = "yakui"
 version = "0.3.0"
-source = "git+https://github.com/SecondHalfGames/yakui?rev=7c2bd75cd00ee83a1d33b8af360788cb322a3df8#7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+source = "git+https://github.com/leetvr/yakui?rev=2924f065478cd86063fdafe25721bcb8363c74e3#2924f065478cd86063fdafe25721bcb8363c74e3"
 dependencies = [
  "yakui-core",
  "yakui-widgets",
@@ -3132,7 +3132,7 @@ dependencies = [
 [[package]]
 name = "yakui-app"
 version = "0.3.0"
-source = "git+https://github.com/SecondHalfGames/yakui?rev=7c2bd75cd00ee83a1d33b8af360788cb322a3df8#7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+source = "git+https://github.com/leetvr/yakui?rev=2924f065478cd86063fdafe25721bcb8363c74e3#2924f065478cd86063fdafe25721bcb8363c74e3"
 dependencies = [
  "profiling",
  "wgpu",
@@ -3145,7 +3145,7 @@ dependencies = [
 [[package]]
 name = "yakui-core"
 version = "0.3.0"
-source = "git+https://github.com/SecondHalfGames/yakui?rev=7c2bd75cd00ee83a1d33b8af360788cb322a3df8#7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+source = "git+https://github.com/leetvr/yakui?rev=2924f065478cd86063fdafe25721bcb8363c74e3#2924f065478cd86063fdafe25721bcb8363c74e3"
 dependencies = [
  "anymap",
  "bitflags 2.13.2",
@@ -3162,7 +3162,7 @@ dependencies = [
 [[package]]
 name = "yakui-to-image"
 version = "0.0.0"
-source = "git+https://github.com/SecondHalfGames/yakui?rev=7c2bd75cd00ee83a1d33b8af360788cb322a3df8#7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+source = "git+https://github.com/leetvr/yakui?rev=2924f065478cd86063fdafe25721bcb8363c74e3#2924f065478cd86063fdafe25721bcb8363c74e3"
 dependencies = [
  "image",
  "pollster",
@@ -3174,7 +3174,7 @@ dependencies = [
 [[package]]
 name = "yakui-wgpu"
 version = "0.3.0"
-source = "git+https://github.com/SecondHalfGames/yakui?rev=7c2bd75cd00ee83a1d33b8af360788cb322a3df8#7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+source = "git+https://github.com/leetvr/yakui?rev=2924f065478cd86063fdafe25721bcb8363c74e3#2924f065478cd86063fdafe25721bcb8363c74e3"
 dependencies = [
  "bytemuck",
  "glam",
@@ -3187,7 +3187,7 @@ dependencies = [
 [[package]]
 name = "yakui-widgets"
 version = "0.3.0"
-source = "git+https://github.com/SecondHalfGames/yakui?rev=7c2bd75cd00ee83a1d33b8af360788cb322a3df8#7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+source = "git+https://github.com/leetvr/yakui?rev=2924f065478cd86063fdafe25721bcb8363c74e3#2924f065478cd86063fdafe25721bcb8363c74e3"
 dependencies = [
  "arboard",
  "cosmic-text",
@@ -3200,7 +3200,7 @@ dependencies = [
 [[package]]
 name = "yakui-winit"
 version = "0.3.0"
-source = "git+https://github.com/SecondHalfGames/yakui?rev=7c2bd75cd00ee83a1d33b8af360788cb322a3df8#7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+source = "git+https://github.com/leetvr/yakui?rev=2924f065478cd86063fdafe25721bcb8363c74e3#2924f065478cd86063fdafe25721bcb8363c74e3"
 dependencies = [
  "winit",
  "yakui-core",

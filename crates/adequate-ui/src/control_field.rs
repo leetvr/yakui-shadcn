@@ -97,27 +97,53 @@ impl Widget for FieldControlLayout {
     }
 }
 #[derive(Debug)]
-pub(crate) struct IndicatorRing(Color, f32);
+pub(crate) struct IndicatorRing {
+    color: Color,
+    radius: f32,
+    transition: Option<crate::animation::Transition<f32>>,
+    opacity: f32,
+}
 impl Widget for IndicatorRing {
     type Props<'a> = (Color, f32);
     type Response = ();
     fn new() -> Self {
-        Self(Color::CLEAR, 0.)
+        Self {
+            color: Color::CLEAR,
+            radius: 0.,
+            transition: None,
+            opacity: 0.,
+        }
     }
     fn update(&mut self, (color, radius): Self::Props<'_>) {
-        self.0 = color;
-        self.1 = radius;
+        if color.a != 0 {
+            self.color = color;
+        }
+        self.radius = radius;
+        self.opacity = crate::animation::update_transition(
+            &mut self.transition,
+            if color.a != 0 { 1. } else { 0. },
+            Default::default(),
+        );
     }
     fn paint(&self, mut ctx: PaintContext<'_>) {
-        if self.0.a != 0 {
+        if self.opacity > 0. {
             let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
-            crate::icons::outline(
-                &mut ctx,
-                Rect::from_pos_size(rect.pos() - Vec2::splat(3.), rect.size() + Vec2::splat(6.)),
-                self.1 + 3.,
-                3.,
-                self.0,
-            );
+            ctx.paint.with_opacity(self.opacity, |paint| {
+                crate::icons::outline(
+                    &mut PaintContext {
+                        dom: ctx.dom,
+                        layout: ctx.layout,
+                        paint,
+                    },
+                    Rect::from_pos_size(
+                        rect.pos() - Vec2::splat(3.),
+                        rect.size() + Vec2::splat(6.),
+                    ),
+                    self.radius + 3.,
+                    3.,
+                    self.color,
+                )
+            });
         }
         for &child in &ctx.dom.get_current().children {
             ctx.paint(child);

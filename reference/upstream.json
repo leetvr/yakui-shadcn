@@ -1,4 +1,17 @@
 {
-  "shadcn": {"repository": "https://github.com/shadcn-ui/ui", "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26", "base": "base", "style": "nova", "colour": "neutral", "docs": "apps/v4/content/docs/components/base", "source": "apps/v4/registry/bases/base"},
-  "yakui": {"repository": "https://github.com/SecondHalfGames/yakui", "commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"}
+  "shadcn": {
+    "repository": "https://github.com/shadcn-ui/ui",
+    "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+    "base": "base",
+    "style": "nova",
+    "colour": "neutral",
+    "docs": "apps/v4/content/docs/components/base",
+    "source": "apps/v4/registry/bases/base"
+  },
+  "yakui": {
+    "repository": "https://github.com/leetvr/yakui",
+    "commit": "2924f065478cd86063fdafe25721bcb8363c74e3",
+    "upstream_commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8",
+    "upstream_repository": "https://github.com/SecondHalfGames/yakui"
+  }
 }
