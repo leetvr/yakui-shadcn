@@ -48,6 +48,7 @@ impl OverlayState {
 }
 #[derive(Debug, Clone)]
 pub(crate) struct DismissContext {
+    pub open: bool,
     pub dismiss: Rc<Cell<bool>>,
     pub trigger: Option<WidgetId>,
 }
@@ -76,6 +77,7 @@ pub(crate) fn escape(
 #[derive(Debug, Clone)]
 struct FocusProps {
     open: bool,
+    present: bool,
     modal: bool,
     auto_focus: bool,
     backdrop: bool,
@@ -107,6 +109,7 @@ impl Widget for FocusScope {
         Self {
             props: FocusProps {
                 open: false,
+                present: false,
                 modal: true,
                 auto_focus: true,
                 backdrop: true,
@@ -137,7 +140,9 @@ impl Widget for FocusScope {
             {
                 ctx.input.set_focus(self.props.trigger, false);
             }
-            return Vec2::ZERO;
+            if !self.props.present {
+                return Vec2::ZERO;
+            }
         }
         ctx.layout.new_layer(ctx.dom);
         let size = self.default_layout(
@@ -149,7 +154,7 @@ impl Widget for FocusScope {
             },
             constraints,
         );
-        if !was_open && self.props.auto_focus {
+        if self.props.open && !was_open && self.props.auto_focus {
             let nav = NavigateContext {
                 dom: ctx.dom,
                 input: ctx.input,
@@ -159,7 +164,8 @@ impl Widget for FocusScope {
                 ctx.input.set_focus(Some(focus), true);
             }
         }
-        self.owned_focus.set(self.contains_focus(&ctx));
+        self.owned_focus
+            .set(self.props.open && self.contains_focus(&ctx));
         size
     }
     fn navigate(&self, ctx: NavigateContext<'_>, dir: NavDirection) -> Option<WidgetId> {
@@ -224,31 +230,30 @@ impl Widget for FocusScope {
         yakui_core::event::EventResponse::Bubble
     }
 }
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 struct BackdropProps {
     fill: Color,
     dismissible: bool,
+    dismiss: Rc<Cell<bool>>,
 }
 #[derive(Debug)]
 struct Backdrop {
     props: BackdropProps,
-    dismissed: bool,
 }
 impl Widget for Backdrop {
     type Props<'a> = BackdropProps;
-    type Response = bool;
+    type Response = ();
     fn new() -> Self {
         Self {
             props: BackdropProps {
                 fill: Color::CLEAR,
                 dismissible: true,
+                dismiss: Rc::default(),
             },
-            dismissed: false,
         }
     }
-    fn update(&mut self, props: BackdropProps) -> bool {
+    fn update(&mut self, props: BackdropProps) {
         self.props = props;
-        std::mem::take(&mut self.dismissed)
     }
     fn paint(&self, ctx: yakui_core::widget::PaintContext<'_>) {
         let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
@@ -271,7 +276,9 @@ impl Widget for Backdrop {
             ..
         } = event
         {
-            self.dismissed = self.props.dismissible;
+            if self.props.dismissible {
+                self.props.dismiss.set(true);
+            }
             return yakui_core::event::EventResponse::Sink;
         }
         if matches!(event, yakui_core::event::WidgetEvent::MouseScroll { .. }) {
@@ -285,6 +292,7 @@ struct Placement {
     anchor: Alignment,
     edge: Option<Side>,
     width: f32,
+    progress: f32,
 }
 #[derive(Debug)]
 struct PlacementWidget {
@@ -299,6 +307,7 @@ impl Widget for PlacementWidget {
                 anchor: Alignment::CENTER,
                 edge: None,
                 width: 384.,
+                progress: 1.,
             },
         }
     }
@@ -340,8 +349,20 @@ impl Widget for PlacementWidget {
                     ),
                 },
             );
-            ctx.layout
-                .set_pos(child, (viewport - size) * self.props.anchor.as_vec2());
+            let closed = 1. - self.props.progress;
+            let slide = match side {
+                Some(Side::Left) => Vec2::new(-size.x * closed, 0.),
+                Some(Side::Right) => Vec2::new(size.x * closed, 0.),
+                Some(Side::Top) => Vec2::new(0., -size.y * closed),
+                Some(Side::Bottom) => Vec2::new(0., size.y * closed),
+                None => Vec2::ZERO,
+            };
+            // Sheet motion changes real layout positions so hit targets travel
+            // with the visible panel instead of staying at its final position.
+            ctx.layout.set_pos(
+                child,
+                (viewport - size) * self.props.anchor.as_vec2() + slide,
+            );
         }
         viewport
     }
@@ -386,66 +407,99 @@ fn modal(
     edge: Option<Side>,
     children: impl FnOnce(&mut OverlayState),
 ) {
+    use crate::animation::{Easing, Motion, MotionStyle, motion, presence};
+    use std::time::Duration;
     if state.dismiss.take() {
         state.open = false;
     }
     let t = theme();
-    let props = FocusProps {
-        open: state.open,
-        modal: true,
-        auto_focus: true,
-        backdrop: true,
-        trigger: state.trigger,
-        dismiss: state.dismiss.clone(),
-    };
-    yakui::util::widget_children::<FocusScope, _>(
-        || {
-            if !state.open {
-                return;
-            }
-            let dismissed = yakui::util::widget::<Backdrop>(BackdropProps {
-                fill: Color::BLACK.with_alpha(0.1),
-                dismissible,
-            })
-            .into_inner();
-            if dismissed {
-                state.open = false;
-                return;
-            }
-            Scope::new(DismissContext {
-                dismiss: state.dismiss.clone(),
-                trigger: state.trigger,
-            })
-            .show(|| {
-                yakui::util::widget_children::<PlacementWidget, _>(
-                    || {
-                        yakui::util::widget_children::<BlockPointer, _>(
-                            || {
-                                surface(
-                                    if edge.is_some() {
-                                        t.background
-                                    } else {
-                                        t.popover
-                                    },
-                                    Some(t.foreground.with_alpha(0.1)),
-                                    if edge.is_some() { 0. } else { t.radius * 1.4 },
-                                    16.,
-                                    || column(16., || children(state)),
-                                )
-                            },
-                            (),
-                        );
+    let timing = Motion::new(
+        Duration::from_millis(if edge.is_some() { 200 } else { 100 }),
+        Easing::EaseInOut,
+    );
+    let declared_open = state.open;
+    presence(state.open, timing, |sample| {
+        let props = FocusProps {
+            open: state.open,
+            present: sample.present,
+            modal: true,
+            auto_focus: true,
+            backdrop: true,
+            trigger: state.trigger,
+            dismiss: state.dismiss.clone(),
+        };
+        yakui::util::widget_children::<FocusScope, _>(
+            || {
+                if !sample.present {
+                    return;
+                }
+                motion(
+                    MotionStyle {
+                        opacity: sample.progress,
+                        ..Default::default()
                     },
-                    Placement {
-                        width,
-                        anchor,
-                        edge,
+                    || {
+                        yakui::util::widget::<Backdrop>(BackdropProps {
+                            fill: Color::BLACK.with_alpha(0.1),
+                            dismissible,
+                            dismiss: state.dismiss.clone(),
+                        });
                     },
                 );
-            });
-        },
-        props,
-    );
+                Scope::new(DismissContext {
+                    open: state.open,
+                    dismiss: state.dismiss.clone(),
+                    trigger: state.trigger,
+                })
+                .show(|| {
+                    yakui::util::widget_children::<PlacementWidget, _>(
+                        || {
+                            motion(
+                                MotionStyle {
+                                    opacity: sample.progress,
+                                    scale: Vec2::splat(if edge.is_some() {
+                                        1.
+                                    } else {
+                                        0.95 + 0.05 * sample.progress
+                                    }),
+                                    ..Default::default()
+                                },
+                                || {
+                                    yakui::util::widget_children::<BlockPointer, _>(
+                                        || {
+                                            surface(
+                                                if edge.is_some() {
+                                                    t.background
+                                                } else {
+                                                    t.popover
+                                                },
+                                                Some(t.foreground.with_alpha(0.1)),
+                                                if edge.is_some() { 0. } else { t.radius * 1.4 },
+                                                16.,
+                                                || column(16., || children(state)),
+                                            )
+                                        },
+                                        (),
+                                    );
+                                },
+                            );
+                        },
+                        Placement {
+                            width,
+                            anchor,
+                            edge,
+                            progress: sample.progress,
+                        },
+                    );
+                });
+            },
+            props,
+        );
+    });
+    if state.open != declared_open || state.dismiss.get() {
+        // Content actions run after presence samples this frame's target.
+        crate::animation::request_frame();
+    }
 }
 /// Modal dialog. Render at the application root after ordinary content.
 /// Pass the state into the content closure to close it from an action.
@@ -683,17 +737,10 @@ fn popup(
     bounded_to_side: bool,
     children: impl FnOnce(&mut OverlayState),
 ) {
+    use crate::animation::{Easing, Motion, MotionStyle, motion, presence};
     if state.dismiss.take() {
         state.open = false;
     }
-    let props = FocusProps {
-        open: state.open,
-        modal: false,
-        auto_focus,
-        backdrop: interactive,
-        trigger: state.trigger,
-        dismiss: state.dismiss.clone(),
-    };
     let placement = PopupPlacement {
         anchor: state.trigger,
         point: state.anchor_position,
@@ -707,47 +754,81 @@ fn popup(
         fit_width: false,
     };
     let t = theme();
-    yakui::util::widget_children::<FocusScope, _>(
-        || {
-            if !state.open {
-                return;
-            }
-            if interactive
-                && yakui::util::widget::<Backdrop>(BackdropProps {
-                    fill: Color::CLEAR,
-                    dismissible: true,
-                })
-                .into_inner()
-            {
-                state.close();
-                return;
-            }
-            Scope::new(DismissContext {
-                dismiss: state.dismiss.clone(),
+    let declared_open = state.open;
+    presence(
+        state.open,
+        Motion::new(std::time::Duration::from_millis(100), Easing::EaseOut),
+        |sample| {
+            let props = FocusProps {
+                open: state.open,
+                present: sample.present,
+                modal: false,
+                auto_focus,
+                backdrop: interactive,
                 trigger: state.trigger,
-            })
-            .show(|| {
-                yakui::util::widget_children::<PopupPlacementWidget, _>(
-                    || {
-                        yakui::util::widget_children::<BlockPointer, _>(
+                dismiss: state.dismiss.clone(),
+            };
+            yakui::util::widget_children::<FocusScope, _>(
+                || {
+                    if !sample.present {
+                        return;
+                    }
+                    if interactive {
+                        yakui::util::widget::<Backdrop>(BackdropProps {
+                            fill: Color::CLEAR,
+                            dismissible: true,
+                            dismiss: state.dismiss.clone(),
+                        });
+                    }
+                    Scope::new(DismissContext {
+                        open: state.open,
+                        dismiss: state.dismiss.clone(),
+                        trigger: state.trigger,
+                    })
+                    .show(|| {
+                        yakui::util::widget_children::<PopupPlacementWidget, _>(
                             || {
-                                surface(
-                                    t.popover,
-                                    Some(t.foreground.with_alpha(0.1)),
-                                    t.radius * radius_scale,
-                                    padding,
-                                    || children(state),
-                                )
+                                let slide = 8. * (1. - sample.progress);
+                                let translation = match options.side {
+                                    Side::Bottom => Vec2::new(0., -slide),
+                                    Side::Top => Vec2::new(0., slide),
+                                    Side::Left => Vec2::new(slide, 0.),
+                                    Side::Right => Vec2::new(-slide, 0.),
+                                };
+                                motion(
+                                    MotionStyle {
+                                        opacity: sample.progress,
+                                        scale: Vec2::splat(0.95 + 0.05 * sample.progress),
+                                        translation,
+                                        ..Default::default()
+                                    },
+                                    || {
+                                        yakui::util::widget_children::<BlockPointer, _>(
+                                            || {
+                                                surface(
+                                                    t.popover,
+                                                    Some(t.foreground.with_alpha(0.1)),
+                                                    t.radius * radius_scale,
+                                                    padding,
+                                                    || children(state),
+                                                )
+                                            },
+                                            (),
+                                        );
+                                    },
+                                );
                             },
-                            (),
+                            placement,
                         );
-                    },
-                    placement,
-                );
-            });
+                    });
+                },
+                props,
+            );
         },
-        props,
     );
+    if state.open != declared_open || state.dismiss.get() {
+        crate::animation::request_frame();
+    }
 }
 /// An anchored popup with viewport collision avoidance, Escape and outside dismissal.
 /// Render at the application root after the trigger; the state retains its WidgetId.

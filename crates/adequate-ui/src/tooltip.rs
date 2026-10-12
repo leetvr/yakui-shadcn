@@ -174,34 +174,61 @@ impl Tooltip {
     #[track_caller]
     pub fn show_children(self, state: &mut TooltipState, children: impl FnOnce()) -> bool {
         state.refresh();
-        if !state.is_open() {
-            return false;
-        }
-        let t = crate::theme();
-        let mut inherited = (*t).clone();
-        inherited.foreground = t.background;
-        inherited.muted_foreground = t.background;
-        inherited.font_size = 12.;
-        inherited.line_height = 16.;
-        inherited.muted = crate::layout::composite(
-            t.background.with_alpha(if t.dark { 0.1 } else { 0.2 }),
-            t.foreground,
-        );
-        crate::overlay::tooltip_popup(state.trigger, self.options, || {
-            crate::with_theme(inherited, || {
-                Scope::new(TooltipContent).show(|| {
-                    yakui::util::widget_children::<Arrow, _>(
-                        || {
-                            crate::surface(t.foreground, None, t.radius * 0.6, 0., || {
-                                yakui::pad(Pad::balanced(12., 6.), || crate::row(6., children));
-                            });
+        let open = state.is_open();
+        crate::animation::presence(
+            open,
+            crate::animation::Motion::new(
+                std::time::Duration::from_millis(100),
+                crate::animation::Easing::EaseOut,
+            ),
+            |sample| {
+                if !sample.present {
+                    return;
+                }
+                let t = crate::theme();
+                let mut inherited = (*t).clone();
+                inherited.foreground = t.background;
+                inherited.muted_foreground = t.background;
+                inherited.font_size = 12.;
+                inherited.line_height = 16.;
+                inherited.muted = crate::layout::composite(
+                    t.background.with_alpha(if t.dark { 0.1 } else { 0.2 }),
+                    t.foreground,
+                );
+                crate::overlay::tooltip_popup(state.trigger, self.options, || {
+                    crate::animation::motion(
+                        crate::animation::MotionStyle {
+                            opacity: sample.progress,
+                            scale: crate::Vec2::splat(0.95 + 0.05 * sample.progress),
+                            ..Default::default()
                         },
-                        (state.trigger.id, t.foreground),
+                        || {
+                            crate::with_theme(inherited, || {
+                                Scope::new(TooltipContent).show(|| {
+                                    yakui::util::widget_children::<Arrow, _>(
+                                        || {
+                                            crate::surface(
+                                                t.foreground,
+                                                None,
+                                                t.radius * 0.6,
+                                                0.,
+                                                || {
+                                                    yakui::pad(Pad::balanced(12., 6.), || {
+                                                        crate::row(6., children)
+                                                    });
+                                                },
+                                            );
+                                        },
+                                        (state.trigger.id, t.foreground),
+                                    );
+                                });
+                            })
+                        },
                     );
                 });
-            });
-        });
-        true
+            },
+        );
+        open
     }
 }
 #[derive(Debug)]

@@ -152,38 +152,58 @@ impl Switch {
                                 };
                             let dimensions = self.size.dimensions();
                             let thumb = self.size.thumb();
-                            yakui::util::widget_children::<IndicatorRing, _>(
-                                || {
-                                    crate::size(dimensions, || {
-                                        RoundRect::new(999.)
-                                            .color(fill)
-                                            .border(border.map(|c| Border::new(c, t.border_width)))
-                                            .show_children(|| {
-                                                yakui::align(yakui::Alignment::TOP_LEFT, || {
-                                                    yakui::pad(
-                                                        Pad {
-                                                            left: if *value != rtl {
-                                                                dimensions.x - thumb - 1.
-                                                            } else {
-                                                                1.
+                            let thumb_x = if *value != rtl {
+                                dimensions.x - thumb - 1.
+                            } else {
+                                1.
+                            };
+                            crate::animation::animate(
+                                (fill, thumb_color, thumb_x),
+                                Default::default(),
+                                |(fill, thumb_color, thumb_x)| {
+                                    yakui::util::widget_children::<IndicatorRing, _>(
+                                        || {
+                                            crate::size(dimensions, || {
+                                                RoundRect::new(999.)
+                                                    .color(fill)
+                                                    .border(
+                                                        border.map(|c| {
+                                                            Border::new(c, t.border_width)
+                                                        }),
+                                                    )
+                                                    .show_children(|| {
+                                                        yakui::align(
+                                                            yakui::Alignment::TOP_LEFT,
+                                                            || {
+                                                                yakui::pad(
+                                                                    Pad {
+                                                                        left: thumb_x,
+                                                                        right: 0.,
+                                                                        top: (dimensions.y - thumb)
+                                                                            / 2.,
+                                                                        bottom: 0.,
+                                                                    },
+                                                                    || {
+                                                                        crate::size(
+                                                                            Vec2::splat(thumb),
+                                                                            || {
+                                                                                RoundRect::new(
+                                                                                    999.,
+                                                                                )
+                                                                                .color(thumb_color)
+                                                                                .show();
+                                                                            },
+                                                                        )
+                                                                    },
+                                                                );
                                                             },
-                                                            right: 0.,
-                                                            top: (dimensions.y - thumb) / 2.,
-                                                            bottom: 0.,
-                                                        },
-                                                        || {
-                                                            crate::size(Vec2::splat(thumb), || {
-                                                                RoundRect::new(999.)
-                                                                    .color(thumb_color)
-                                                                    .show();
-                                                            })
-                                                        },
-                                                    );
-                                                });
+                                                        );
+                                                    });
                                             });
-                                    });
+                                        },
+                                        (ring, 999.),
+                                    );
                                 },
-                                (ring, 999.),
                             );
                             if let Some(label) = &self.label {
                                 crate::column(2., || {

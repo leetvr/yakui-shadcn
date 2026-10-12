@@ -270,93 +270,104 @@ impl Button {
                     border =
                         border.map(|c| crate::layout::composite(c.with_alpha(0.5), background));
                 }
-                let height = self.size.height();
-                let fs = if self.input_group_style {
-                    14.
-                } else {
-                    self.size.font_size()
-                };
-                let line_height = if fs < 14. { 16. } else { 20. };
-                let horizontal = if self.input_group_style {
-                    6.
-                } else {
-                    1.0 + if matches!(self.size, ButtonSize::Xs) {
-                        8.
-                    } else {
-                        10.
-                    }
-                };
-                let min_width = if self.size.icon() { height } else { 0. };
-                ConstrainedBox::new(Constraints {
-                    min: Vec2::new(min_width, height),
-                    max: Vec2::new(
-                        if self.size.icon() {
-                            height
+                crate::animation::animate(
+                    (fill, fg, border.unwrap_or(Color::CLEAR)),
+                    Default::default(),
+                    |(fill, fg, edge)| {
+                        let border = border.map(|_| edge);
+                        let height = self.size.height();
+                        let fs = if self.input_group_style {
+                            14.
                         } else {
-                            f32::INFINITY
-                        },
-                        height,
-                    ),
-                })
-                .show(|| {
-                    crate::button_group::button_surface(
-                        radius,
-                        fill,
-                        border.map(|c| Border::new(c, t.border_width)),
-                        || {
-                            yakui::pad(
-                                Pad::balanced(
-                                    if self.size.icon() { 0. } else { horizontal },
-                                    if custom_content {
-                                        0.
-                                    } else {
-                                        (height - line_height) / 2.
-                                    },
-                                ),
+                            self.size.font_size()
+                        };
+                        let line_height = if fs < 14. { 16. } else { 20. };
+                        let horizontal = if self.input_group_style {
+                            6.
+                        } else {
+                            1.0 + if matches!(self.size, ButtonSize::Xs) {
+                                8.
+                            } else {
+                                10.
+                            }
+                        };
+                        let min_width = if self.size.icon() { height } else { 0. };
+                        ConstrainedBox::new(Constraints {
+                            min: Vec2::new(min_width, height),
+                            max: Vec2::new(
+                                if self.size.icon() {
+                                    height
+                                } else {
+                                    f32::INFINITY
+                                },
+                                height,
+                            ),
+                        })
+                        .show(|| {
+                            crate::button_group::button_surface(
+                                radius,
+                                fill,
+                                border.map(|c| Border::new(c, t.border_width)),
                                 || {
-                                    let is_icon = self.size.icon();
-                                    let content = || {
-                                        if let Some(children) = custom {
-                                            children(fg);
-                                            return;
-                                        }
-                                        if let Some(icon) = self.icon {
-                                            icon_colored(
-                                                icon,
-                                                if self.input_group_style && height == 24. {
-                                                    14.
-                                                } else if height == 24. {
-                                                    12.
-                                                } else {
-                                                    16.
-                                                },
-                                                fg,
-                                            );
-                                        }
-                                        if !self.size.icon() && !self.text.is_empty() {
-                                            let mut style = t.text_style(fs, fg, 500);
-                                            style.line_height_override = Some(line_height);
-                                            yakui::util::widget_children::<Underline, _>(
-                                                || {
-                                                    RenderText::with_style(self.text, style).show();
-                                                },
-                                                (
-                                                    matches!(self.variant, Variant::Link) && active,
-                                                    fg,
-                                                ),
-                                            );
-                                        }
-                                    };
-                                    if is_icon {
-                                        yakui::center(content);
-                                    } else {
-                                        crate::min_size(Vec2::ZERO, || row(6., content));
-                                    }
+                                    yakui::pad(
+                                        Pad::balanced(
+                                            if self.size.icon() { 0. } else { horizontal },
+                                            if custom_content {
+                                                0.
+                                            } else {
+                                                (height - line_height) / 2.
+                                            },
+                                        ),
+                                        || {
+                                            let is_icon = self.size.icon();
+                                            let content = || {
+                                                if let Some(children) = custom {
+                                                    children(fg);
+                                                    return;
+                                                }
+                                                if let Some(icon) = self.icon {
+                                                    icon_colored(
+                                                        icon,
+                                                        if self.input_group_style && height == 24. {
+                                                            14.
+                                                        } else if height == 24. {
+                                                            12.
+                                                        } else {
+                                                            16.
+                                                        },
+                                                        fg,
+                                                    );
+                                                }
+                                                if !self.size.icon() && !self.text.is_empty() {
+                                                    let mut style = t.text_style(fs, fg, 500);
+                                                    style.line_height_override = Some(line_height);
+                                                    yakui::util::widget_children::<Underline, _>(
+                                                        || {
+                                                            RenderText::with_style(
+                                                                self.text, style,
+                                                            )
+                                                            .show();
+                                                        },
+                                                        (
+                                                            matches!(self.variant, Variant::Link)
+                                                                && active,
+                                                            fg,
+                                                        ),
+                                                    );
+                                                }
+                                            };
+                                            if is_icon {
+                                                yakui::center(content);
+                                            } else {
+                                                crate::min_size(Vec2::ZERO, || row(6., content));
+                                            }
+                                        },
+                                    );
                                 },
                             );
-                        },
-                    );
-                });
+                        });
+                    },
+                );
             },
         )
     }
@@ -579,7 +590,13 @@ pub fn separator(width: f32) {
 /// Muted placeholder surface. Animation is driven by the application frame clock.
 #[track_caller]
 pub fn skeleton(size: Vec2) {
-    skeleton_at(size, theme().radius * 0.8, 0.)
+    let phase = if crate::animation::enabled() {
+        crate::animation::request_frame();
+        crate::animation::now().as_secs_f32() * std::f32::consts::PI
+    } else {
+        0.
+    };
+    skeleton_at(size, theme().radius * 0.8, phase)
 }
 /// Loading placeholder with an application-supplied animation phase in radians.
 /// A fixed phase of zero produces a reproducible visual reference.
@@ -600,12 +617,14 @@ pub fn progress(value: f32, width: f32) {
     } else {
         0.
     };
-    crate::size(Vec2::new(width, 4.), || {
-        RoundRect::new(999.).color(t.muted).show_children(|| {
-            yakui::align(yakui::Alignment::TOP_LEFT, || {
-                crate::size(Vec2::new(width * value, 4.), || {
-                    RoundRect::new(999.).color(t.primary).show();
-                })
+    crate::animation::animate(value, Default::default(), |value| {
+        crate::size(Vec2::new(width, 4.), || {
+            RoundRect::new(999.).color(t.muted).show_children(|| {
+                yakui::align(yakui::Alignment::TOP_LEFT, || {
+                    crate::size(Vec2::new(width * value, 4.), || {
+                        RoundRect::new(999.).color(t.primary).show();
+                    })
+                });
             });
         });
     });
@@ -939,7 +958,18 @@ pub fn radio_group(options: &[&str], selected: &mut usize) {
         });
     });
 }
-/// Draw a loading indicator at a deterministic phase (radians).
+/// Draw a loading indicator driven by the shared animation clock.
+#[track_caller]
+pub fn spinner_auto(size: f32) {
+    let phase = if crate::animation::enabled() {
+        crate::animation::request_frame();
+        crate::animation::now().as_secs_f32() * std::f32::consts::TAU
+    } else {
+        0.
+    };
+    spinner(size, phase);
+}
+/// Spinner with an explicitly supplied phase in radians.
 #[track_caller]
 pub fn spinner(size: f32, phase: f32) {
     let t = theme();

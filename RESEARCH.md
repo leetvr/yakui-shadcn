@@ -1,7 +1,8 @@
 # Pinned references and native mechanisms
 
 shadcn/ui is pinned at `6ea090075cd537d3b792c6c1a625e2448b6ede26`.
-Yakui is pinned at `7c2bd75cd00ee83a1d33b8af360788cb322a3df8`.
+The original Yakui reference is `7c2bd75cd00ee83a1d33b8af360788cb322a3df8`;
+current code consumes the maintained leetvr fork pin in reference/upstream.json.
 The repository URLs, source roots and pins are machine-readable in
 `reference/upstream.json`. MIT notices and bundled font licences are retained.
 

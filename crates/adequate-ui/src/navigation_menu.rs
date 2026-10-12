@@ -90,13 +90,21 @@ pub fn navigation_menu_bar(
                             )
                             .show();
                             if entry.flyout {
-                                crate::icon(
-                                    if was_open {
-                                        crate::Icon::ChevronUp
-                                    } else {
-                                        crate::Icon::ChevronDown
+                                crate::animation::animate(
+                                    if was_open { std::f32::consts::PI } else { 0. },
+                                    crate::animation::Motion::new(
+                                        std::time::Duration::from_millis(300),
+                                        crate::animation::Easing::Standard,
+                                    ),
+                                    |rotation| {
+                                        crate::animation::motion(
+                                            crate::animation::MotionStyle {
+                                                rotation,
+                                                ..Default::default()
+                                            },
+                                            || crate::icon(crate::Icon::ChevronDown, 12.),
+                                        );
                                     },
-                                    12.,
                                 );
                             }
                         })

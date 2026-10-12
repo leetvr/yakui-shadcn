@@ -79,7 +79,8 @@ retains source nodes, hashes and licences. Run the separate icon diagnostic with
 `python3 tools/visual.py --component typography --variants icons --reference-example
 lucide-catalogue --states default --width 1000 --height 800 --output visual/icons`.
 
-Read COMPONENTS.md for API selection, THEMING.md for overrides, and AGENTS.md for
+Read COMPONENTS.md for API selection, THEMING.md for overrides, ANIMATIONS.md for
+motion and deterministic sequence capture, and AGENTS.md for
 agent usage and development rules. `ui::add_fonts` loads bundled Geist under OFL;
 font and Lucide licence notices are retained. Shadcn's MIT notice is preserved in
 reference/SHADCN-LICENSE. Source pins are in reference/upstream.json.

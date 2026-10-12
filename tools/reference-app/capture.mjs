@@ -2,10 +2,11 @@ import { chromium } from 'playwright'
 import { mkdir,writeFile } from 'node:fs/promises'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-const [example='button-default',theme='light',output='/tmp/reference.png',state='default',width='600',height='400',keys='']=process.argv.slice(2)
+const [example='button-default',theme='light',output='/tmp/reference.png',state='default',width='600',height='400',keys='',motionTime='']=process.argv.slice(2)
 const browser=await chromium.launch({headless:true})
 try {
  const page=await browser.newPage({viewport:{width:Number(width),height:Number(height)},deviceScaleFactor:1,colorScheme:theme})
+ let animationSamples=[]
  const errors=[];page.on('pageerror',e=>errors.push(String(e)))
  const assetOverrides=[]
  if(example.startsWith('avatar-') || example==='dropdown-menu-avatar') {
@@ -29,6 +30,14 @@ try {
  if(await target.count()) await target.waitFor({state:'visible'})
  await page.evaluate(()=>document.fonts.ready)
  await page.locator('[data-slot="avatar-image"]').evaluateAll(images=>Promise.all(images.map(image=>image.decode().catch(()=>{}))))
+ // Pause Chromium's animation clock before input so short transitions survive
+ // until sampling. Source components and their timing curves remain unchanged.
+ if(motionTime!=='') {
+  await page.waitForTimeout(150)
+  const session=await page.context().newCDPSession(page)
+  await session.send('Animation.enable')
+  await session.send('Animation.setPlaybackRate',{playbackRate:0})
+ }
  if(state==='hover' && await target.count()) await target.hover()
  if(state==='focus') await page.keyboard.press('Tab')
  if(state==='disabled' && await target.count()) await target.evaluate(el=>{el.disabled=true})
@@ -38,12 +47,28 @@ try {
  // Let that transfer settle before sending the first navigation key; otherwise
  // it can land on the trigger and be consumed by opening rather than navigation.
  if(keys) await page.waitForTimeout(150)
- for(const key of keys.split(',').filter(Boolean)) {await page.keyboard.press(key);await page.waitForTimeout(120)}
- await page.waitForTimeout(example==='progress-demo'?650:150)
+ for(const key of keys.split(',').filter(Boolean)) {
+  if(motionTime!=='') await page.evaluate(async()=>{
+   // Each native scripted key settles its preceding action before dispatch.
+   // Finish finite browser transitions too, then sample only the latest action.
+   for(const animation of document.getAnimations()) if(Number.isFinite(animation.effect.getTiming().iterations)) animation.finish()
+   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))
+  })
+  await page.keyboard.press(key);await page.waitForTimeout(120)
+ }
+ if(motionTime!=='') {
+  animationSamples=await page.evaluate(async time=>{
+   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))
+   const animations=document.getAnimations()
+   for(const animation of animations) {animation.pause();animation.currentTime=Number(time)}
+   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))
+   return animations.map(animation=>({property:animation.transitionProperty||animation.animationName,currentTime:animation.currentTime,timing:animation.effect.getTiming()}))
+  },motionTime)
+ } else await page.waitForTimeout(example==='progress-demo'?650:150)
  if(errors.length) throw new Error(errors.join('\n'))
  await mkdir(dirname(output),{recursive:true})
- await page.screenshot({path:output,animations:'disabled'})
+ await page.screenshot({path:output,animations:motionTime===''?'disabled':'allow'})
  const bounds=await target.count()?await target.boundingBox():await page.locator('#root').boundingBox()
- await writeFile(`${output}.json`,JSON.stringify({example,theme,state,keys:keys.split(',').filter(Boolean),assetOverrides,width:Number(width),height:Number(height),deviceScaleFactor:1,bounds},null,2)+'\n')
+ await writeFile(`${output}.json`,JSON.stringify({example,theme,state,keys:keys.split(',').filter(Boolean),assetOverrides,width:Number(width),height:Number(height),deviceScaleFactor:1,animationSamples,motionTimeMs:motionTime===''?null:Number(motionTime),bounds},null,2)+'\n')
  console.log(output)
 } finally {await browser.close()}

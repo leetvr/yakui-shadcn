@@ -1,0 +1,397 @@
+{
+  "recorded_at": "2026-10-12T14:50:34.013178+00:00",
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/leetvr/yakui",
+      "commit": "2924f065478cd86063fdafe25721bcb8363c74e3",
+      "upstream_commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8",
+      "upstream_repository": "https://github.com/SecondHalfGames/yakui"
+    }
+  },
+  "scope": "Common native motion and per-frame renderer ownership; no exhaustive browser animation parity certification.",
+  "tests": {
+    "workspace": 83,
+    "doctests": 8,
+    "result": "passed",
+    "command": "cargo test --workspace",
+    "yakui_core": 6,
+    "yakui_core_doctests": 1
+  },
+  "native_smoke": {
+    "captures": 396,
+    "failures": 0,
+    "command": "python3 tools/verify_gallery.py --all-variants --showcases --open-overlays --output visual/local/animation-final-gallery"
+  },
+  "motion_sequences": [
+    {
+      "component": "accordion",
+      "theme": "dark",
+      "state": "default",
+      "keys": [
+        "Tab",
+        "Enter"
+      ],
+      "frames": 16,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/accordion-dark-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "accordion",
+      "theme": "light",
+      "state": "default",
+      "keys": [
+        "Tab",
+        "Enter"
+      ],
+      "frames": 16,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/accordion-light-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "carousel",
+      "theme": "dark",
+      "state": "default",
+      "keys": [
+        "Tab",
+        "ArrowRight"
+      ],
+      "frames": 23,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/carousel-dark-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "carousel",
+      "theme": "light",
+      "state": "default",
+      "keys": [
+        "Tab",
+        "ArrowRight"
+      ],
+      "frames": 23,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/carousel-light-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "dialog",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "frames": 11,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/dialog-dark-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "dialog",
+      "theme": "dark",
+      "state": "open",
+      "keys": [
+        "Escape"
+      ],
+      "frames": 11,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/dialog-dark-exit",
+      "pixels_changed": true
+    },
+    {
+      "component": "dialog",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "frames": 11,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/dialog-light-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "dialog",
+      "theme": "light",
+      "state": "open",
+      "keys": [
+        "Escape"
+      ],
+      "frames": 11,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/dialog-light-exit",
+      "pixels_changed": true
+    },
+    {
+      "component": "dropdown-menu",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "frames": 11,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/dropdown-menu-dark-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "dropdown-menu",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "frames": 11,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/dropdown-menu-light-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "sheet",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "frames": 16,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/sheet-dark-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "sheet",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "frames": 16,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/sheet-light-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "switch",
+      "theme": "dark",
+      "state": "default",
+      "keys": [
+        "Tab",
+        "Space"
+      ],
+      "frames": 13,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/switch-dark-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "switch",
+      "theme": "light",
+      "state": "default",
+      "keys": [
+        "Tab",
+        "Space"
+      ],
+      "frames": 13,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/switch-light-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "toast",
+      "theme": "dark",
+      "state": "default",
+      "keys": [
+        "Tab",
+        "Enter"
+      ],
+      "frames": 16,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/toast-dark-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "toast",
+      "theme": "light",
+      "state": "default",
+      "keys": [
+        "Tab",
+        "Enter"
+      ],
+      "frames": 16,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/toast-light-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "tooltip",
+      "theme": "dark",
+      "state": "open",
+      "keys": [],
+      "frames": 11,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/tooltip-dark-entry",
+      "pixels_changed": true
+    },
+    {
+      "component": "tooltip",
+      "theme": "light",
+      "state": "open",
+      "keys": [],
+      "frames": 11,
+      "step_ms": 16,
+      "path": "visual/local/motion-final/tooltip-light-entry",
+      "pixels_changed": true
+    }
+  ],
+  "motion_frames": 256,
+  "paired_motion_frames": [
+    {
+      "component": "switch",
+      "theme": "light",
+      "time_ms": 0,
+      "keys": [
+        "Tab",
+        "Space"
+      ],
+      "path": "visual/motion/switch-light-0"
+    },
+    {
+      "component": "switch",
+      "theme": "light",
+      "time_ms": 50,
+      "keys": [
+        "Tab",
+        "Space"
+      ],
+      "path": "visual/motion/switch-light-50"
+    },
+    {
+      "component": "switch",
+      "theme": "light",
+      "time_ms": 100,
+      "keys": [
+        "Tab",
+        "Space"
+      ],
+      "path": "visual/motion/switch-light-100"
+    },
+    {
+      "component": "switch",
+      "theme": "light",
+      "time_ms": 150,
+      "keys": [
+        "Tab",
+        "Space"
+      ],
+      "path": "visual/motion/switch-light-150"
+    },
+    {
+      "component": "switch",
+      "theme": "dark",
+      "time_ms": 0,
+      "keys": [
+        "Tab",
+        "Space"
+      ],
+      "path": "visual/motion/switch-dark-0"
+    },
+    {
+      "component": "switch",
+      "theme": "dark",
+      "time_ms": 50,
+      "keys": [
+        "Tab",
+        "Space"
+      ],
+      "path": "visual/motion/switch-dark-50"
+    },
+    {
+      "component": "switch",
+      "theme": "dark",
+      "time_ms": 100,
+      "keys": [
+        "Tab",
+        "Space"
+      ],
+      "path": "visual/motion/switch-dark-100"
+    },
+    {
+      "component": "switch",
+      "theme": "dark",
+      "time_ms": 150,
+      "keys": [
+        "Tab",
+        "Space"
+      ],
+      "path": "visual/motion/switch-dark-150"
+    }
+  ],
+  "paired_motion_command": "python3 tools/motion_capture.py --component switch --state default --keys Tab,Space --reference-example switch-demo --theme light --duration-ms 150 --step-ms 50 --output visual/local/motion-paired-final/light",
+  "review": "Native contact sheets and switch midpoint/endpoints inspected. Source metadata records 150 ms cubic-bezier(0.4, 0, 0.2, 1) background/translate transitions. Native typography/ring rasterization differences remain.",
+  "vulkan_gpu": {
+    "device": "Apple M3 Max / MoltenVK",
+    "frames": 336,
+    "max_in_flight": 3,
+    "paints": 1680,
+    "textures": 2016,
+    "geometry_growth": ">10 MiB",
+    "validation_errors": 0,
+    "synchronization_validation": true,
+    "command": "cargo run -p yakui-vulkan --example frame_stress",
+    "checks": [
+      "GPU pixel readback",
+      "multiple paints per frame",
+      "geometry and staging growth/reuse",
+      "aligned odd-size R8 uploads",
+      "texture and descriptor retirement/reuse",
+      "straight/premultiplied textures and color glyph opacity",
+      "offscreen and repeated clipping",
+      "host-owned image view survives retirement"
+    ]
+  },
+  "checks": [
+    "cargo fmt --all -- --check",
+    "cargo check -p yakui-adequate-ui",
+    "cargo check -p adequate-gallery --examples",
+    "cargo doc -p yakui-adequate-ui --no-deps",
+    "cargo check -p yakui-vulkan -p yakui-wgpu --all-targets --offline",
+    "python3 tools/audit_inventory.py"
+  ],
+  "allocator_followup": {
+    "yakui_commit": "6afaed864554f9aaec2c1cac7403a151f6b06610",
+    "source": {
+      "repository": "https://github.com/leetvr/lazy_vulkan",
+      "commit": "33aec6209289d3dd8ee684276b9f15b6a904fc21",
+      "use": "Allocator mechanism adapted into yakui-vulkan; no runtime renderer dependency.",
+      "license": "MIT"
+    },
+    "vulkan_stress": {
+      "frames": 336,
+      "max_in_flight": 3,
+      "paints": 1680,
+      "textures": 2016,
+      "validation_errors": 0,
+      "live_bindings_after_warmup": 47,
+      "backing_allocations_after_warmup": 5,
+      "reserved_bytes_after_warmup": 83886080,
+      "counts_and_bytes_stable_after_warmup": true,
+      "all_memory_released_after_cleanup": true,
+      "command": "cargo run -p yakui-vulkan --example frame_stress"
+    },
+    "allocator_tests": {
+      "count": 1,
+      "result": "passed",
+      "command": "cargo test -p yakui-vulkan --lib --offline"
+    },
+    "checks": [
+      "cargo check -p yakui-vulkan --lib --offline",
+      "cargo check -p yakui-vulkan --all-targets --offline",
+      "cargo doc -p yakui-vulkan --no-deps --offline",
+      "cargo fmt --all -- --check"
+    ],
+    "workspace_tests": {
+      "tests": 83,
+      "doctests": 8,
+      "result": "passed",
+      "note": "Implementation verified before the documentation-only cleanup diagnostics follow-up."
+    }
+  }
+}

@@ -1,7 +1,7 @@
 # Building interfaces with Adequate UI
 
 Use `yakui-adequate-ui as ui`. Prefer existing components before custom widgets.
-Read COMPONENTS.md and THEMING.md. State belongs to your application: pass mutable
+Read COMPONENTS.md, THEMING.md and ANIMATIONS.md. State belongs to your application: pass mutable
 values into controls and act on `ControlResponse.clicked`. Use scoped theme tokens. Put multiple sequential children in `ui::row` or
 `ui::column`; a generic Yakui container overlays its children.
 
@@ -25,6 +25,11 @@ Render overlays at the application root, after ordinary content, outside scroll
 areas. Keep `OverlayState` in application state. Open with the actual trigger's
 response so dismissal can return focus. Text editing uses Yakui's Cosmic Text editor.
 The public library depends on no renderer; games can paint it with Yakui/Vulkan.
+
+Use existing motion primitives before custom timers. Retain stable component call
+sites and keep overlay content data alive through its exit transition. For an idle
+host, check `ui::animation::animations_active(&yak)` after `yak.finish()`. Consume
+the same pinned Yakui fork for every Yakui crate to avoid duplicate UI contexts.
 
 # Working on this repository
 

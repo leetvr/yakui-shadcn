@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0023916666666666665,
+  "content_bounds": [
+    230,
+    188,
+    368,
+    212
+  ],
+  "content_rgb_rmse": 35.50602963014336,
+  "height": 400,
+  "mean_absolute_rgb_error": 0.18025833333333333,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/local/motion-paired-final/light/0000.png",
+  "pixels_differing_by_more_than_16": 574,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/local/motion-paired-final/light/0000-upstream.png",
+  "review_required": true,
+  "rgb_rmse": 4.171014065348298,
+  "width": 600
+}

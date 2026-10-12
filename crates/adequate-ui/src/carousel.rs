@@ -144,7 +144,114 @@ impl Widget for Swipe {
         EventResponse::Bubble
     }
 }
+#[derive(Debug, Clone, Copy)]
+struct TrackProps {
+    index: usize,
+    visible: usize,
+    options: CarouselOptions,
+}
+#[derive(Debug)]
+struct Track {
+    props: TrackProps,
+    transition: Option<crate::animation::Transition<f32>>,
+    position: f32,
+}
+impl Widget for Track {
+    type Props<'a> = TrackProps;
+    type Response = ();
+    fn new() -> Self {
+        Self {
+            props: TrackProps {
+                index: 0,
+                visible: 1,
+                options: Default::default(),
+            },
+            transition: None,
+            position: 0.,
+        }
+    }
+    fn update(&mut self, props: TrackProps) {
+        self.props = props;
+        let target = props.index as f32;
+        let now = crate::animation::now();
+        let transition = self
+            .transition
+            .get_or_insert_with(|| crate::animation::Transition::new(target));
+        if crate::animation::enabled() {
+            transition.set_target(
+                target,
+                crate::animation::Motion::new(
+                    Duration::from_millis(300),
+                    crate::animation::Easing::CubicBezier([0.22, 1., 0.36, 1.]),
+                ),
+                now,
+            );
+        } else {
+            transition.snap(target);
+        }
+        self.position = transition.value(now);
+        if transition.is_active(now) {
+            crate::animation::request_frame();
+        }
+    }
+    fn layout(&self, mut ctx: LayoutContext<'_>, constraints: Constraints) -> Vec2 {
+        let horizontal = self.props.options.orientation == Orientation::Horizontal;
+        let size = constraints.constrain(self.props.options.size);
+        let slot = if horizontal {
+            Vec2::new(size.x / self.props.visible as f32, size.y)
+        } else {
+            Vec2::new(size.x, size.y / self.props.visible as f32)
+        };
+        for (index, &child) in ctx.dom.get_current().children.iter().enumerate() {
+            ctx.calculate_layout(child, Constraints::tight(slot));
+            let offset = index as f32 - self.position;
+            ctx.layout.set_pos(
+                child,
+                if horizontal {
+                    Vec2::new(offset * slot.x, 0.)
+                } else {
+                    Vec2::new(0., offset * slot.y)
+                },
+            );
+            if index < self.props.index || index >= self.props.index + self.props.visible {
+                // The viewport clips paint and pointer bounds. Logical selection
+                // also excludes outgoing/offscreen slides from keyboard input.
+                let mut focus = ctx.input.focus();
+                while let Some(id) = focus {
+                    if id == child {
+                        ctx.input
+                            .set_focus(ctx.dom.get(ctx.dom.current()).unwrap().parent, true);
+                        break;
+                    }
+                    focus = ctx.dom.get(id).and_then(|node| node.parent);
+                }
+                ctx.layout.disable_input(ctx.dom, child);
+            }
+        }
+        size
+    }
+    fn navigate(
+        &self,
+        ctx: yakui::widget::NavigateContext<'_>,
+        direction: yakui_core::navigation::NavDirection,
+    ) -> Option<yakui::WidgetId> {
+        let children = &ctx.dom.get_current().children;
+        let start = self.props.index.min(children.len());
+        let end = (start + self.props.visible).min(children.len());
+        if matches!(direction, yakui_core::navigation::NavDirection::Previous) {
+            children[start..end]
+                .iter()
+                .rev()
+                .find_map(|&child| ctx.try_navigate(child, direction))
+        } else {
+            children[start..end]
+                .iter()
+                .find_map(|&child| ctx.try_navigate(child, direction))
+        }
+    }
+}
 fn advance(state: &mut CarouselState, count: usize, visible: usize, delta: i32) {
+    let previous = state.index;
     let max = count.saturating_sub(visible);
     state.index = if state.looping {
         ((state.index as i64 + delta as i64).rem_euclid(count.max(1) as i64)) as usize
@@ -152,9 +259,15 @@ fn advance(state: &mut CarouselState, count: usize, visible: usize, delta: i32) 
         (state.index as i64 + delta as i64).clamp(0, max as i64) as usize
     };
     state.last_transition = Instant::now();
+    if state.index != previous {
+        // Arrow activation can happen after the track was declared this frame.
+        // An idle host still needs the next frame to observe the new target.
+        crate::animation::request_frame();
+    }
 }
-/// Render native slides by index. Only visible slides are built; arrows and swipe
-/// update application-owned selection. Set `looping` for cyclic navigation.
+/// Render a native slide track. Slides stay declared for smooth movement and
+/// retain their state; offscreen slides ignore input and keyboard navigation.
+/// Arrows/swipe update app-owned selection. `looping` enables cyclic navigation.
 #[track_caller]
 pub fn carousel(
     state: &mut CarouselState,
@@ -166,7 +279,11 @@ pub fn carousel(
         return;
     }
     let visible = options.visible.max(1).min(count);
-    state.index = state.index.min(count - 1);
+    state.index = state.index.min(if state.looping {
+        count - 1
+    } else {
+        count - visible
+    });
     crate::layout::with_state(
         || Rc::new(Cell::new(0)),
         |hook| {
@@ -201,29 +318,24 @@ pub fn carousel(
                     crate::size(options.size, || {
                         yakui::util::widget_children::<Swipe, _>(
                             || {
-                                let mut slides = || {
-                                    for offset in 0..visible {
-                                        let index = (state.index + offset) % count;
-                                        let size = if options.orientation == Orientation::Horizontal
-                                        {
-                                            Vec2::new(
-                                                options.size.x / visible as f32,
-                                                options.size.y,
+                                yakui::util::widget_children::<Track, _>(
+                                    || {
+                                        // Tail copies preserve cyclic multi-slide viewports.
+                                        let slots =
+                                            count + if state.looping { visible - 1 } else { 0 };
+                                        for index in 0..slots {
+                                            yakui::widgets::ConstrainedBox::new(
+                                                Constraints::none(),
                                             )
-                                        } else {
-                                            Vec2::new(
-                                                options.size.x,
-                                                options.size.y / visible as f32,
-                                            )
-                                        };
-                                        crate::size(size, || slide(index));
-                                    }
-                                };
-                                if options.orientation == Orientation::Horizontal {
-                                    crate::row(0., &mut slides)
-                                } else {
-                                    crate::column(0., &mut slides)
-                                }
+                                            .show(|| slide(index % count));
+                                        }
+                                    },
+                                    TrackProps {
+                                        index: state.index,
+                                        visible,
+                                        options,
+                                    },
+                                );
                             },
                             (),
                         );

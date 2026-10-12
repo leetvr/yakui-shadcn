@@ -4,14 +4,14 @@ members = ["crates/adequate-ui", "crates/gallery"]
 default-members = ["crates/gallery"]
 
 [workspace.dependencies]
-yakui = { git = "https://github.com/SecondHalfGames/yakui", rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8" }
-yakui-core = { git = "https://github.com/SecondHalfGames/yakui", rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8" }
-yakui-app = { git = "https://github.com/SecondHalfGames/yakui", rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8" }
-yakui-to-image = { git = "https://github.com/SecondHalfGames/yakui", rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8" }
+yakui = { git = "https://github.com/leetvr/yakui", rev = "6afaed864554f9aaec2c1cac7403a151f6b06610" }
+yakui-core = { git = "https://github.com/leetvr/yakui", rev = "6afaed864554f9aaec2c1cac7403a151f6b06610" }
+yakui-app = { git = "https://github.com/leetvr/yakui", rev = "6afaed864554f9aaec2c1cac7403a151f6b06610" }
+yakui-to-image = { git = "https://github.com/leetvr/yakui", rev = "6afaed864554f9aaec2c1cac7403a151f6b06610" }
 
 [workspace.dependencies.yakui-widgets]
-git = "https://github.com/SecondHalfGames/yakui"
-rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+git = "https://github.com/leetvr/yakui"
+rev = "6afaed864554f9aaec2c1cac7403a151f6b06610"
 
 [profile.dev]
 debug = 1

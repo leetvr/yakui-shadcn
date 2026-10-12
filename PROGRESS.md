@@ -17,7 +17,8 @@ been ported. No component is certified as having exhaustive upstream parity.
 
 - shadcn/ui `6ea090075cd537d3b792c6c1a625e2448b6ede26`
 - Primary reference: Base UI / Nova / Neutral / Geist
-- Yakui `7c2bd75cd00ee83a1d33b8af360788cb322a3df8`
+- Maintained Yakui fork `6afaed864554f9aaec2c1cac7403a151f6b06610` (leetvr/yakui),
+  based on upstream `7c2bd75cd00ee83a1d33b8af360788cb322a3df8`
 - 65 navigation entries, 64 MDX pages, 461 documented previews
 - Form is listed without a Base MDX file. Some newer previews import Base Rhea;
   chart-demo imports new-york-v4. Per-preview imports/styles are in the inventory.
@@ -47,7 +48,7 @@ initial public APIs and native routes. Current behaviour includes:
 - CLI PNG capture, pinned upstream source harness, Playwright captures, Rust
   side-by-side/difference/content-region comparison tooling.
 
-## Verification checkpoint
+## Prototype completion verification checkpoint (before motion)
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All four consuming examples compile.
@@ -352,3 +353,84 @@ the independent library compile. The final native suite has 396 captures without
 failures; the paired source suite has 352 comparisons across 82 genuine previews.
 The remaining 379 preview records stay documented and are outside the agreed
 completion requirement. No exhaustive parity certification is claimed.
+
+## Native motion and maintained Yakui fork (2026-10-13)
+
+The completed prototype port was merged and pushed to `main` as `f7614a5`.
+Current work is on `codex/animations`; the maintained Yakui branch is
+`codex/animations-vulkan` in leetvr/yakui. The ignored `.upstream/yakui-fork`
+checkout is clean and published. Kane's existing `../yakui` checkout and its
+uncommitted buffer-size change were left untouched.
+
+Kane approved a small native animation module and per-frame Vulkan resources.
+Shared frame time, CSS easing, interruption/reversal, retained exit presence,
+whole-subtree opacity/translation/scale/rotation and measured-height motion now
+drive controls, overlays, accordion/collapsible, sidebar, carousel and toasts.
+Closed content restores focus and rejects input while its last paint fades.
+Sheets and carousel tracks move actual layout/hit targets. See ANIMATIONS.md
+for public APIs, host redraw rules and practical limitations.
+
+The fork fixes renderer vertex packing (GPU vertices cannot inherit glam's SIMD
+padding), premultiplied fragment opacity and scissor state across multiple paints.
+Vulkan owns reusable geometry/staging buffers and retired textures per submitted
+frame. Historical transfers_submitted/transfers_finished APIs remain; completion
+must cover all transfers AND draws. Buffers use host-visible/coherent memory and
+retain their high-water capacity. Borrowed views preserve host image ownership.
+There is no general GPU allocator or device-local geometry migration.
+
+Verification: 83 actual-system/pure algorithm tests and eight doctests pass;
+all four consuming apps, the independent library and rustdoc compile. The final
+native catalogue run produced 396 captures with zero failures. Eighteen native
+motion sequences produced 256 frames in both themes; eight sampled switch frames
+are paired against Chromium's pinned CSS implementation at 0/50/100/150 ms.
+Contact sheets and paired images live under visual/motion. Full-rate PNG/video
+outputs remain reproducible in ignored visual/local. Browser metadata confirms
+the source 150 ms curve. This supplements the earlier 352 static pairs; it does
+not claim those were all rerun or certify every upstream animation.
+
+Real Vulkan/MoltenVK verification passed 336 frames with three gated frames in
+flight, 1,680 paints, 2,016 texture registrations, geometry beyond 10 MiB, pixel
+readbacks and zero synchronization/validation errors. Renderer checks include
+alpha conventions, color glyph opacity, clipping, upload alignment, descriptor
+reuse and borrowed image lifetime. Evidence and commands are recorded in
+reference/motion-verification.json.
+
+Remaining motion limits are explicit: carousel wrap is a track tween rather than
+a seamless periodic spring; toast stack reflow/hover/drag physics and sliding line
+tab indicators remain deferred; legacy response-only tooltip visibility is
+immediate. Paint effects do not change hit bounds; large movement uses layout.
+Sidebar labels change at a width threshold. Avoid turning these prototype gaps
+into an exhaustive animation-parity project without a new requirement.
+
+## lazy_vulkan allocator reuse (2026-10-13)
+
+Kane authorized using his lazy_vulkan code/allocator without further approval.
+Its complete renderer allocator depends on Arc<Context>, fixed global/staging
+slabs, device-address transfers and currently unimplemented frees. The smaller
+adaptation reuses its offset_allocator/aligned bind-offset mechanism directly
+inside yakui-vulkan, retaining the MIT notice and source pin
+33aec6209289d3dd8ee684276b9f15b6a904fc21. Neither ../lazy_vulkan nor ../yakui was
+modified. No full renderer/context dependency was introduced.
+
+Geometry/staging buffers and images share backing allocations per compatible
+Vulkan memory type; optimal images and buffers use separate pools. Blocks start
+at 16 MiB and grow for larger resources. Driver-required dedicated allocations
+are supported. Returning an image's range follows its existing frame retirement;
+growing an unused buffer returns its previous range after destroying its handle.
+Mapped coherent buffer memory and the host's submission API remain unchanged.
+Free block space is reused; backing blocks retain high-water capacity until cleanup.
+The public memory_stats() exposes reserved bytes, backing allocations and live
+bindings, excluding host-imported image memory.
+
+The real Vulkan stress run again passed 336 frames/1,680 paints/2,016 textures
+with three frames in flight and zero synchronization/validation errors. After
+warmup, 47 live bindings share five backing allocations reserving 80 MiB for this
+intentionally oversized workload. Counts/bytes stay stable throughout repeated
+texture churn, and cleanup returns all counts to zero. A pure allocator test
+checks aligned binding and reclamation, including an aligned full-block range.
+Independent Vulkan library compilation and rustdoc pass; explicit bytemuck derive
+features fix a dependency feature previously supplied only by dev dependencies.
+
+Existing motion captures remain evidence from their recorded fork revision. The
+allocator follow-up is recorded separately in reference/motion-verification.json.
+Both existing draft reviews are updated: leetvr/yakui#2 and yakui-shadcn#4.

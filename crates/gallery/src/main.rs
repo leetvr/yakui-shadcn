@@ -40,6 +40,7 @@ struct Options {
     width: u32,
     height: u32,
     isolated: bool,
+    animation_time_ms: Option<u64>,
     state: String,
     keys: Vec<yakui::input::KeyCode>,
 }
@@ -54,6 +55,7 @@ impl Default for Options {
             width: 1200,
             height: 800,
             isolated: false,
+            animation_time_ms: None,
             state: "default".into(),
             keys: Vec::new(),
         }
@@ -65,7 +67,7 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
     while let Some(arg) = args.next() {
         if arg == "--help" {
             println!(
-                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected|open|image-error] [--keys Tab,ArrowDown,Enter] [--width 1200] [--height 800] [--isolated] [--screenshot PATH]\ngallery --list\ngallery --showcase dashboard|settings|checkout [--theme dark] [--screenshot PATH]"
+                "gallery [--component NAME] [--variant NAME] [--theme light|dark] [--state default|hover|focus|disabled|selected|open|image-error] [--keys Tab,ArrowDown,Enter] [--width 1200] [--height 800] [--isolated] [--screenshot PATH] [--animation-time-ms 50]\ngallery --list\ngallery --showcase dashboard|settings|checkout [--theme dark] [--screenshot PATH]"
             );
             return Ok(None);
         }
@@ -87,6 +89,7 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
             "--showcase" => options.showcase = Some(value),
             "--variant" => options.variant = value,
             "--screenshot" => options.screenshot = Some(value.into()),
+            "--animation-time-ms" => options.animation_time_ms = Some(value.parse()?),
             "--width" => options.width = value.parse()?,
             "--height" => options.height = value.parse()?,
             "--theme" => {
@@ -105,6 +108,9 @@ fn parse() -> Result<Option<Options>, Box<dyn Error>> {
             }
             _ => return Err(format!("Unknown option {arg}").into()),
         }
+    }
+    if options.animation_time_ms.is_some() && options.screenshot.is_none() {
+        return Err("--animation-time-ms requires --screenshot".into());
     }
     if !options.keys.is_empty() && options.screenshot.is_none() {
         return Err("--keys requires --screenshot".into());
@@ -212,7 +218,9 @@ impl Gallery {
             ui::Theme::light()
         };
         self.state.phase = if self.options.screenshot.is_some() {
-            0.
+            self.options
+                .animation_time_ms
+                .map_or(0., |ms| ms as f32 * 0.006)
         } else {
             self.started.elapsed().as_secs_f32() * 6.
         };
@@ -498,15 +506,23 @@ fn capture_key(name: &str) -> Result<yakui::input::KeyCode, Box<dyn Error>> {
         _ => return Err(format!("Unsupported capture key {name}").into()),
     })
 }
+fn capture_frame(gallery: &mut Gallery, yak: &mut yakui::Yakui, milliseconds: u64) {
+    let animated = gallery.options.animation_time_ms.is_some();
+    yak.start();
+    ui::animation::with_motion_enabled(animated, || {
+        ui::animation::with_animation_time(std::time::Duration::from_millis(milliseconds), || {
+            gallery.render()
+        });
+    });
+    yak.finish();
+}
 fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
     let mut yak = new_yak();
     yak.set_surface_size(gallery.viewport);
     yak.set_unscaled_viewport(yakui::Rect::from_pos_size(ui::Vec2::ZERO, gallery.viewport));
     yak.set_scale_factor(1.0);
     for _ in 0..3 {
-        yak.start();
-        gallery.render();
-        yak.finish();
+        capture_frame(&mut gallery, &mut yak, 0);
     }
     if matches!(gallery.options.state.as_str(), "hover" | "focus" | "open") {
         fn first_control(yak: &yakui::Yakui, id: yakui::WidgetId) -> Option<yakui::WidgetId> {
@@ -557,15 +573,20 @@ fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
             });
         }
         for _ in 0..3 {
-            yak.start();
-            gallery.render();
-            yak.finish();
+            capture_frame(&mut gallery, &mut yak, 1000);
         }
     }
     if gallery.options.state == "open" && !gallery.state.is_open(&gallery.options.component) {
         return Err("The actual trigger interaction did not open this overlay".into());
     }
+    let mut action_time = if matches!(gallery.options.state.as_str(), "hover" | "focus" | "open") {
+        1000
+    } else {
+        0
+    };
     for key in gallery.options.keys.clone() {
+        capture_frame(&mut gallery, &mut yak, action_time + 1000);
+        action_time += 2000;
         for down in [true, false] {
             yak.handle_event(yakui::event::Event::KeyChanged {
                 key,
@@ -576,11 +597,11 @@ fn capture(mut gallery: Gallery, path: PathBuf) -> Result<(), Box<dyn Error>> {
         // Consume each real event before the next key: submenu creation and
         // deferred focus must finish their frame before navigation continues.
         for _ in 0..3 {
-            yak.start();
-            gallery.render();
-            yak.finish();
+            capture_frame(&mut gallery, &mut yak, action_time);
         }
     }
+    let final_time = action_time + gallery.options.animation_time_ms.unwrap_or(1000);
+    capture_frame(&mut gallery, &mut yak, final_time);
     if let Some(parent) = path.parent().filter(|p| !p.as_os_str().is_empty()) {
         std::fs::create_dir_all(parent)?;
     }

@@ -37,6 +37,7 @@ fn dialog_autofocus_escape_and_restore_trigger() {
     let mut y = yak();
     let mut state = ui::OverlayState::default();
     let mut inside = ui::ControlResponse::default();
+    let mut focused_while_open = false;
     let mut trigger = ui::ControlResponse::default();
     let mut build = || {
         ui::with_theme(ui::Theme::light(), || {
@@ -48,6 +49,7 @@ fn dialog_autofocus_escape_and_restore_trigger() {
             });
             ui::dialog(&mut state, |_| {
                 inside = ui::button("Save");
+                focused_while_open |= inside.focused;
             });
         })
     };
@@ -63,7 +65,8 @@ fn dialog_autofocus_escape_and_restore_trigger() {
     drop(build);
     assert!(!state.open);
     assert!(trigger.focused);
-    assert!(inside.focused);
+    assert!(focused_while_open);
+    assert!(!inside.focused);
 }
 #[test]
 fn dialog_backdrop_dismisses_but_content_does_not() {

@@ -48,6 +48,8 @@ pub(crate) struct ControlWidget {
     focused: bool,
     focus_visible: bool,
     clicked: bool,
+    ring_animation: Option<crate::animation::Transition<f32>>,
+    ring_opacity: f32,
 }
 impl Widget for ControlWidget {
     type Props<'a> = Control;
@@ -73,6 +75,16 @@ impl Widget for ControlWidget {
             self.key_down = None;
             self.clicked = false;
         }
+        let target = if self.focus_visible && !props.disabled {
+            1.
+        } else {
+            0.
+        };
+        self.ring_opacity = crate::animation::update_transition(
+            &mut self.ring_animation,
+            target,
+            Default::default(),
+        );
         ControlResponse {
             clicked: std::mem::take(&mut self.clicked),
             hovering: self.hovering,
@@ -83,7 +95,7 @@ impl Widget for ControlWidget {
         }
     }
     fn paint(&self, mut ctx: PaintContext<'_>) {
-        if self.focus_visible && !self.props.disabled && self.props.ring.a != 0 {
+        if self.ring_opacity > 0. && self.props.ring.a != 0 {
             let mut rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
             if let Some(size) = self.props.focus_size {
                 rect = Rect::from_pos_size(
@@ -95,7 +107,19 @@ impl Widget for ControlWidget {
                 rect.pos() - Vec2::splat(3.0),
                 rect.size() + Vec2::splat(6.0),
             );
-            crate::icons::outline(&mut ctx, outer, self.props.radius + 3., 3., self.props.ring);
+            ctx.paint.with_opacity(self.ring_opacity, |paint| {
+                crate::icons::outline(
+                    &mut PaintContext {
+                        dom: ctx.dom,
+                        layout: ctx.layout,
+                        paint,
+                    },
+                    outer,
+                    self.props.radius + 3.,
+                    3.,
+                    self.props.ring,
+                );
+            });
         }
         for &child in &ctx.dom.get_current().children {
             ctx.paint(child);

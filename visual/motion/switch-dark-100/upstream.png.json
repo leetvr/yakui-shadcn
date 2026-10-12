@@ -1,0 +1,50 @@
+{
+  "example": "switch-demo",
+  "theme": "dark",
+  "state": "default",
+  "keys": [
+    "Tab",
+    "Space"
+  ],
+  "assetOverrides": [],
+  "width": 600,
+  "height": 400,
+  "deviceScaleFactor": 1,
+  "animationSamples": [
+    {
+      "property": "background-color",
+      "currentTime": 100,
+      "timing": {
+        "delay": 0,
+        "direction": "normal",
+        "duration": 150,
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "endDelay": 0,
+        "fill": "backwards",
+        "iterationStart": 0,
+        "iterations": 1
+      }
+    },
+    {
+      "property": "translate",
+      "currentTime": 100,
+      "timing": {
+        "delay": 0,
+        "direction": "normal",
+        "duration": 150,
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "endDelay": 0,
+        "fill": "backwards",
+        "iterationStart": 0,
+        "iterations": 1
+      }
+    }
+  ],
+  "motionTimeMs": 100,
+  "bounds": {
+    "x": 232.625,
+    "y": 190.796875,
+    "width": 32,
+    "height": 18.390625
+  }
+}
