@@ -3436,7 +3436,8 @@
         "default",
         "vertical",
         "loop",
-        "loop-multiple"
+        "loop-multiple",
+        "autoplay"
       ],
       "behaviour_tests": [
         "advanced::carousel_keyboard_advances_and_stops_at_the_last_slide",
@@ -10004,7 +10005,8 @@
         "progress"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "animated"
       ],
       "behaviour_tests": [
         "advanced::progress_fill_is_sized_by_value_under_tight_track_constraints"
@@ -11525,7 +11527,8 @@
         "skeleton_at"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "loading"
       ],
       "behaviour_tests": [],
       "visual_comparisons": [
@@ -12139,7 +12142,8 @@
         "spinner"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "loading"
       ],
       "behaviour_tests": [],
       "visual_comparisons": [],
@@ -13256,7 +13260,8 @@
         "toast_viewport"
       ],
       "gallery_examples": [
-        "default"
+        "default",
+        "stack"
       ],
       "behaviour_tests": [
         "toast_removal_updates_business_state_immediately_and_keeps_exit_paint",

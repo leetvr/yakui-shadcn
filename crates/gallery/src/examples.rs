@@ -82,6 +82,7 @@ pub struct ExampleState {
     pub toggle: bool,
     pub count: u32,
     pub phase: f32,
+    pub loading: ui::animation::Transition<f32>,
     pub overlay: ui::OverlayState,
     pub trigger: ui::ControlResponse,
     pub second: String,
@@ -349,11 +350,12 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             });
         }
         "carousel" => {
-            state.carousel.looping = matches!(variant, "loop" | "loop-multiple");
+            state.carousel.looping = matches!(variant, "loop" | "loop-multiple" | "autoplay");
             ui::carousel(
                 &mut state.carousel,
                 5,
                 ui::CarouselOptions {
+                    autoplay: (variant == "autoplay").then_some(std::time::Duration::from_secs(3)),
                     visible: if variant == "loop-multiple" { 2 } else { 1 },
                     orientation: if variant == "vertical" {
                         ui::Orientation::Vertical
@@ -531,6 +533,33 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
                 }
                 _ => {
                     ui::slider(&mut state.slider_value, options);
+                }
+            }
+        }
+        "toast" if variant == "stack" => {
+            if Button::new("Replay notifications")
+                .variant(V::Outline)
+                .show()
+                .clicked
+            {
+                for (title, description, kind) in [
+                    (
+                        "Changes saved",
+                        "Your settings are up to date.",
+                        ui::ToastKind::Success,
+                    ),
+                    (
+                        "Build complete",
+                        "The new version is ready to preview.",
+                        ui::ToastKind::Default,
+                    ),
+                    (
+                        "You’re all set",
+                        "Notifications enter, reflow and leave together.",
+                        ui::ToastKind::Success,
+                    ),
+                ] {
+                    state.toasts.add(title, description, kind);
                 }
             }
         }
@@ -824,7 +853,62 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             )
         }),
         "avatar" => crate::avatars::render(variant, state, disabled),
+        "progress" if variant == "animated" => ui::column(16., || {
+            replay_loading(state);
+            let value = state.loading.value(ui::animation::now());
+            // The loading tween already supplies the displayed value; a second
+            // interpolation would put the bar behind its percentage label.
+            ui::animation::with_motion_enabled(false, || ui::progress(value, 360.));
+            ui::muted(format!("{}% complete", (value * 100.).round() as u32));
+        }),
         "progress" => ui::progress(0.66, 360.),
+        "skeleton" | "spinner" if variant == "loading" => ui::column(16., || {
+            replay_loading(state);
+            let loading = state.loading.is_active(ui::animation::now());
+            // Keep both phases at fixed call sites. Presence retains the exiting
+            // phase until its opacity reaches zero, without resetting the other.
+            ui::size(ui::Vec2::new(340., 72.), || {
+                ui::animation::presence(loading, Default::default(), |sample| {
+                    if sample.present {
+                        ui::animation::motion(
+                            ui::animation::MotionStyle {
+                                opacity: sample.progress,
+                                ..Default::default()
+                            },
+                            || {
+                                if component == "spinner" {
+                                    ui::row(12., || {
+                                        ui::spinner_auto(20.);
+                                        ui::muted("Loading profile…");
+                                    });
+                                } else {
+                                    ui::column(10., || {
+                                        ui::skeleton(ui::Vec2::new(220., 18.));
+                                        ui::skeleton(ui::Vec2::new(300., 14.));
+                                    });
+                                }
+                            },
+                        );
+                    }
+                });
+                ui::animation::presence(!loading, Default::default(), |sample| {
+                    if sample.present {
+                        ui::animation::motion(
+                            ui::animation::MotionStyle {
+                                opacity: sample.progress,
+                                ..Default::default()
+                            },
+                            || {
+                                ui::column(6., || {
+                                    ui::label("Ready to go");
+                                    ui::muted("Your profile is up to date.");
+                                });
+                            },
+                        );
+                    }
+                });
+            });
+        }),
         "separator" => ui::width(384., || {
             ui::column(16., || {
                 ui::column(6., || {
@@ -976,7 +1060,10 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "default", "line", "area", "pie", "donut", "radar", "radial", "scatter",
         ],
         "slider" => &["default", "range", "vertical", "disabled"],
-        "carousel" => &["default", "vertical", "loop", "loop-multiple"],
+        "carousel" => &["default", "vertical", "loop", "loop-multiple", "autoplay"],
+        "progress" => &["default", "animated"],
+        "skeleton" | "spinner" => &["default", "loading"],
+        "toast" => &["default", "stack"],
         "sheet" => &["default", "left", "top", "bottom"],
         "toggle" => &["default", "outline"],
         "field" => &["default", "invalid"],
@@ -1172,6 +1259,7 @@ impl Default for ExampleState {
             toggle: false,
             count: 0,
             phase: 0.,
+            loading: ui::animation::Transition::new(1.),
             overlay: Default::default(),
             trigger: Default::default(),
             calendar: ui::CalendarState::new(ui::Date::new(2026, 10, 9).unwrap()),
@@ -1503,4 +1591,23 @@ fn table_actions(menus: &mut [ui::MenuState; 3], disabled: bool) {
             }
         });
     });
+}
+
+/// A replay changes application state; the regular vsync frames sample the tween.
+fn replay_loading(state: &mut ExampleState) {
+    if ui::Button::new("Replay loading")
+        .variant(ui::Variant::Outline)
+        .show()
+        .clicked
+    {
+        state.loading.snap(0.);
+        state.loading.set_target(
+            1.,
+            ui::animation::Motion::new(
+                std::time::Duration::from_millis(2400),
+                ui::animation::Easing::EaseInOut,
+            ),
+            ui::animation::now(),
+        );
+    }
 }
