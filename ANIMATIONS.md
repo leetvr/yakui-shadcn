@@ -13,24 +13,23 @@ The explicit `spinner(size, phase)` and `skeleton_at` APIs remain caller control
 
 ## Host frame loop
 
-The supplied gallery and consuming examples redraw continuously with vsync.
-Games should declare UI each rendered frame. Hosts that sleep when idle can check
-for active motion after layout has finished:
+The supported host is a game rendering continuously with vsync, as the gallery
+and consuming examples do. Process input, declare UI, finish layout and paint on
+every rendered frame:
 
 ```rust
 use yakui_adequate_ui as ui;
-// Process input and application state changes first.
+// In the game's vsync frame, after input and application updates:
 yak.start();
 ui::button("Apply");
 yak.finish();
-let redraw = ui::animation::animations_active(&yak);
-// Paint this frame; schedule another while redraw is true.
+// Paint with the game's renderer.
 ```
 
-Application state changes still need a frame to declare their new targets. Timed
-business events (toast expiration, carousel autoplay) and editor cursor blinking
-need host wakeups even while no transition is active. `animations_active` reports
-motion declared this frame, not a general event-loop scheduler.
+Animation time is sampled once at `yak.start()`. Toast expiration and carousel
+autoplay are observed during these regular frames. `animations_active(&yak)` is
+available after `yak.finish()` for diagnostics and deterministic verification.
+There is no idle-host scheduler or non-vsync event-loop integration.
 
 ## Custom transitions
 
@@ -117,13 +116,17 @@ settled business-state preset, so it does not itself start a native transition.
 
 ## Current limits
 
-This is tween-based motion, not a spring/physics engine. Carousel loop wrap travels
-across the track rather than using a seamless duplicate-track wrap. Toast entry
-and exit animate, but stack reflow and hover/drag physics remain immediate.
-Line-style tab indicators do not slide between labels. Legacy response-only
-tooltip shorthand has immediate visibility; the composed Tooltip API animates.
-Rotated clips use axis-aligned bounding boxes. Typography and shadow differences
-from browser rendering remain recorded in the catalogue.
+This is tween-based motion, not a spring/physics engine. Carousel wrap moves one
+slot across the seam while preserving each slide's retained state; wrapping is
+disabled when all slides already fit. Toast entry, exit and stack reflow move
+layout and hit targets together. Surviving toast buttons retain their identity
+when another row disappears. Sidebar labels remain mounted and clip smoothly as
+the width changes. Line-tab underlines crossfade, matching the pinned Base source;
+they do not use a sliding indicator. Both composed and shorthand tooltips animate.
+
+Drag inertia, drawer drag gestures and Sonner's collapsed hover/drag stack are
+outside this tween pass. Rotated clips use axis-aligned bounding boxes. Typography
+and shadow differences from browser rendering remain recorded in the catalogue.
 
 The maintained Yakui fork supplies scoped paint effects and independent fragment
 opacity for both WGPU and Vulkan. All Yakui dependencies in a consuming app must

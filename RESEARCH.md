@@ -251,3 +251,31 @@ quads. Yakui curves use a finer chord tolerance and headless WGPU resolves 4× M
 matching the live gallery. Captures can set physical pixel density independently
 of logical viewport dimensions. The live WGPU multisample target now persists
 until its size, format or sample count changes.
+
+## Animation gap closure (2026-10-13)
+
+Re-read the pinned Base tabs/carousel/sidebar/Sonner wrappers, Nova rules and
+actual tabs-line/carousel examples. Base tabs use one `::after` underline per
+trigger with `transition-opacity`; they have no sliding shared indicator. Native
+line tabs now crossfade those underlines using the existing 150ms default tween.
+Source/native keyboard captures exposed an existing contract difference: the
+native tabs select on arrow focus while the pinned browser example requires
+activation. These captures are not matched selection-timing evidence.
+
+Periodic carousel layout relocates each slide outside the clipped viewport, so
+there is one retained tree and input owner per application slide. An unwrapped
+tween coordinate carries motion across the first/last seam. A spare offscreen
+slot is required; when every slide fits, selection stays at zero. Logical
+selection controls keyboard eligibility while layout supplies moving hit bounds.
+
+Toast snapshots retain exit paint. A viewport owns measured position tweens by
+toast ID and live rows reclaim closing rows' space immediately. Stable reusable
+Yakui child slots prevent removal from transplanting pressed/focused control
+state; a separate ID order drives layout, painting and keyboard traversal.
+Sidebar labels are measured at natural width and clipped as the sidebar shrinks,
+keeping their widgets and the icon controls at stable call sites.
+
+The host contract is continuous vsync game rendering. Existing motion-activity
+reporting serves diagnostics and captures; no scheduler or non-vsync host support
+was added. Gesture inertia and Sonner's collapsed hover/drag stack are separate
+interaction mechanisms, outside the existing tween architecture.

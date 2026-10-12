@@ -3434,16 +3434,20 @@
       ],
       "gallery_examples": [
         "default",
-        "vertical"
+        "vertical",
+        "loop",
+        "loop-multiple"
       ],
       "behaviour_tests": [
         "advanced::carousel_keyboard_advances_and_stops_at_the_last_slide",
-        "carousel_moves_retained_slide_layout_without_changing_application_selection"
+        "carousel_moves_retained_slide_layout_without_changing_application_selection",
+        "looping_carousel_wraps_one_slot_and_reverses_without_replacing_slides",
+        "looping_multislide_carousel_preserves_hit_targets_and_cyclic_keyboard_order"
       ],
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
-        "Native retained slide motion, swipe/arrows/autoplay exist. Loop wrap travels across the track; seamless periodic wrap, plugins and full documented visible-slide sizes remain pending."
+        "Native retained slide motion and seamless periodic wrap preserve one widget tree per slide. Looping is disabled when all slides fit. Swipe/arrows/autoplay exist; inertial drag, plugins and full documented slide-size examples remain outside this prototype API."
       ],
       "example_coverage": [
         {
@@ -11459,7 +11463,9 @@
       "gallery_examples": [
         "default"
       ],
-      "behaviour_tests": [],
+      "behaviour_tests": [
+        "sidebar_keeps_label_nodes_and_control_focus_through_collapse_and_reversal"
+      ],
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
@@ -12919,7 +12925,8 @@
         "line"
       ],
       "behaviour_tests": [
-        "overlay::arrow_keys_select_tabs_and_wrap"
+        "overlay::arrow_keys_select_tabs_and_wrap",
+        "line_tabs_crossfade_underlines_after_real_keyboard_selection"
       ],
       "visual_comparisons": [
         "visual/tabs/line-light-default",
@@ -12930,7 +12937,7 @@
       "status": "in_progress",
       "deviations": [
         "Default and line styles support native roving arrow/Home/End selection. Vertical orientation, per-item disabled slots and additional source compositions are outside this prototype API.",
-        "Default tab backgrounds/foregrounds animate. Line indicators change immediately; soft shadows and exact border alpha differ from the source."
+        "Tab backgrounds/foregrounds and line-underline opacity animate. Native selection follows arrow focus; the pinned browser example requires activation. Soft shadows and exact border alpha differ from the source."
       ],
       "example_coverage": [
         {
@@ -13252,12 +13259,14 @@
         "default"
       ],
       "behaviour_tests": [
-        "toast_removal_updates_business_state_immediately_and_keeps_exit_paint"
+        "toast_removal_updates_business_state_immediately_and_keeps_exit_paint",
+        "toast_stack_reflows_from_current_positions_on_insert_remove_and_interruption",
+        "toast_actions_follow_reflow_and_surviving_buttons_keep_their_identity"
       ],
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
-        "Manager expiry/actions and retained entry/exit work; pause-on-hover, animated stack reflow, drag physics and full Sonner examples remain pending."
+        "Manager expiry/actions and retained entry/exit/stack reflow work. Stable reusable row slots preserve button state through removal; layout, paint and keyboard order follow toast IDs. Pause-on-hover, collapsed hover stacks, drag physics and full Sonner examples remain outside this tween pass."
       ],
       "example_coverage": [
         {
@@ -13666,7 +13675,8 @@
       "behaviour_tests": [
         "pointer_tooltip_closing_does_not_focus_its_trigger_and_reopen_itself",
         "tooltip_places_natural_content_on_each_side_without_moving_focus",
-        "focused_tooltip_escape_suppresses_reopening_and_disabled_area_is_hover_only"
+        "focused_tooltip_escape_suppresses_reopening_and_disabled_area_is_hover_only",
+        "shorthand_tooltip_retains_exit_paint_after_pointer_leaves"
       ],
       "visual_comparisons": [
         "visual/tooltip/default-light-default",
@@ -13690,7 +13700,7 @@
       ],
       "status": "in_progress",
       "deviations": [
-        "Immediate hover/focus opening matches the site zero-delay provider. Composed tooltip entry/exit animates; soft shadows, rounded arrow rasterisation and pointer transit are deferred polish.",
+        "Zero-delay hover/focus opening matches the site provider; composed and shorthand tooltips retain animated entry/exit. Soft shadows, rounded arrow rasterisation and pointer transit remain deferred polish.",
         "Use tooltip_trigger with caller-owned TooltipState for Escape dismissal. The response-only tooltip shorthand has hover/focus display without trigger Escape interception.",
         "English-only compositions; translated RTL demonstration is excluded from the agreed prototype target."
       ],
@@ -14132,6 +14142,6 @@
   "motion": {
     "documentation": "ANIMATIONS.md",
     "verification": "reference/motion-verification.json",
-    "scope": "Shared native tweens, retained exits and common component motion; spring physics and exhaustive browser animation parity excluded."
+    "scope": "Continuous vsync game frames, native tweens, retained exits, periodic carousel wrap, toast reflow and Base-style tab underline fades. Idle hosts, non-vsync UIs, spring/drag physics and exhaustive browser parity excluded."
   }
 }

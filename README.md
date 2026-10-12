@@ -7,7 +7,8 @@ outside that target. The prototype common-use audit is complete. See PROGRESS.md
 and reference/components.json for verified coverage and limitations.
 
 The design reference is pinned shadcn Base UI / Nova / Neutral. The library depends
-on no windowing or rendering backend. The gallery uses official Yakui Winit/WGPU
+on no windowing or rendering backend. Games declare and paint UI every vsync
+frame; idle-host scheduling and non-vsync UIs are outside scope. The gallery uses Yakui Winit/WGPU
 and `yakui-to-image` integrations.
 
 ```sh

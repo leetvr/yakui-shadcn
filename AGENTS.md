@@ -27,8 +27,9 @@ response so dismissal can return focus. Text editing uses Yakui's Cosmic Text ed
 The public library depends on no renderer; games can paint it with Yakui/Vulkan.
 
 Use existing motion primitives before custom timers. Retain stable component call
-sites and keep overlay content data alive through its exit transition. For an idle
-host, check `ui::animation::animations_active(&yak)` after `yak.finish()`. Consume
+sites and keep overlay content data alive through its exit transition. Target games
+that declare and paint UI every vsync frame; do not add idle-host scheduling or
+non-vsync UI support. Consume
 the same pinned Yakui fork for every Yakui crate to avoid duplicate UI contexts.
 
 # Working on this repository

@@ -167,12 +167,12 @@ struct AnimationTime(Duration);
 #[derive(Debug, Clone, Copy)]
 struct MotionEnabled(bool);
 #[derive(Debug)]
-struct FrameClock {
+pub(crate) struct FrameClock {
     origin: Instant,
     frame: Instant,
-    active: bool,
+    pub(crate) active: bool,
 }
-fn frame_clock() -> Rc<RefCell<FrameClock>> {
+pub(crate) fn frame_clock() -> Rc<RefCell<FrameClock>> {
     clock_for(&context::dom())
 }
 fn clock_for(dom: &yakui_core::dom::Dom) -> Rc<RefCell<FrameClock>> {
@@ -200,8 +200,9 @@ pub fn now() -> Duration {
     let clock = clock.borrow();
     clock.frame.saturating_duration_since(clock.origin)
 }
-/// Whether another frame is needed to advance this frame's declared transitions.
-/// Call after `Yakui::finish`, so measured-height transitions are included.
+/// Whether this frame declared active motion, for diagnostics and capture checks.
+/// Games continue declaring and painting UI each vsync frame regardless. Call
+/// after `Yakui::finish`, so transitions resolved during layout are included.
 pub fn animations_active(yak: &yakui::Yakui) -> bool {
     clock_for(yak.dom()).borrow().active
 }

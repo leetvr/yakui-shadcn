@@ -38,4 +38,4 @@ ui::animation::with_motion_enabled(false, || ui::button("Apply"));
 ```
 
 Custom transitions accept ordinary `Motion` duration/easing values. See
-ANIMATIONS.md for concrete examples and host redraw requirements.
+ANIMATIONS.md for concrete examples and the vsync frame contract.

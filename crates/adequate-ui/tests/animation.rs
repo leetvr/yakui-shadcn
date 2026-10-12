@@ -309,3 +309,328 @@ fn sheet_hit_targets_move_with_the_panel_during_entry() {
     assert!(start > middle && middle > end);
     assert!((start - end - 384.).abs() < 0.01);
 }
+
+fn nodes(y: &Yakui, suffix: &str) -> Vec<WidgetId> {
+    fn visit(y: &Yakui, id: WidgetId, suffix: &str, out: &mut Vec<WidgetId>) {
+        let node = y.dom().get(id).unwrap();
+        if node.widget.type_name().ends_with(suffix) {
+            out.push(id);
+        }
+        for &child in &node.children {
+            visit(y, child, suffix, out);
+        }
+    }
+    let mut out = Vec::new();
+    visit(y, y.dom().root(), suffix, &mut out);
+    out
+}
+fn key(y: &mut Yakui, key: yakui::input::KeyCode) {
+    for down in [true, false] {
+        y.handle_event(Event::KeyChanged {
+            key,
+            down,
+            modifiers: None,
+        });
+    }
+}
+#[test]
+fn looping_carousel_wraps_one_slot_and_reverses_without_replacing_slides() {
+    use yakui::input::KeyCode::*;
+    let mut y = yak();
+    let mut state = ui::CarouselState::default();
+    state.looping = true;
+    state.index = 2;
+    let (start, _) = carousel_frame(&mut y, &mut state, 0);
+    let track = nodes(&y, "carousel::Track")[0];
+    let ids = y.dom().get(track).unwrap().children.clone();
+    y.request_focus(Some(nodes(&y, "carousel::Swipe")[0]));
+    key(&mut y, ArrowRight);
+    carousel_frame(&mut y, &mut state, 1000);
+    assert_eq!(state.index, 0);
+    let (middle, _) = carousel_frame(&mut y, &mut state, 1075);
+    assert!(middle[2] < start[2]);
+    assert!(middle[0] > start[2] && middle[0] < start[2] + 320.);
+    key(&mut y, ArrowLeft);
+    let (reversed, _) = carousel_frame(&mut y, &mut state, 1075);
+    assert_eq!(state.index, 2);
+    assert_eq!(middle, reversed);
+    let (end, active) = carousel_frame(&mut y, &mut state, 1375);
+    assert!(!active);
+    assert_eq!(end, start);
+    assert_eq!(y.dom().get(track).unwrap().children, ids);
+}
+#[test]
+fn looping_multislide_carousel_preserves_hit_targets_and_cyclic_keyboard_order() {
+    fn frame(
+        y: &mut Yakui,
+        state: &mut ui::CarouselState,
+        ms: u64,
+        visible: usize,
+        enabled: bool,
+    ) -> Vec<ui::ControlResponse> {
+        let mut buttons = Vec::new();
+        y.start();
+        animation::with_animation_time(time(ms), || {
+            animation::with_motion_enabled(enabled, || {
+                yakui::align(Alignment::TOP_LEFT, || {
+                    ui::carousel(
+                        state,
+                        3,
+                        ui::CarouselOptions {
+                            visible,
+                            ..Default::default()
+                        },
+                        |i| {
+                            buttons.push(ui::button(format!("Slide {i}")));
+                        },
+                    );
+                });
+            });
+        });
+        y.finish();
+        buttons
+    }
+    let mut y = yak();
+    let mut state = ui::CarouselState::default();
+    state.looping = true;
+    state.index = 2;
+    let buttons = frame(&mut y, &mut state, 0, 2, true);
+    assert_eq!(buttons.len(), 3);
+    let positions: Vec<_> = buttons
+        .iter()
+        .map(|b| y.layout_dom().get(b.id.unwrap()).unwrap().rect.pos().x)
+        .collect();
+    assert!((positions[0] - positions[2] - 160.).abs() < 0.01);
+    click(&mut y, buttons[0].id.unwrap());
+    assert!(frame(&mut y, &mut state, 0, 2, true)[0].clicked);
+    y.request_focus(buttons[2].id);
+    frame(&mut y, &mut state, 0, 2, true);
+    key(&mut y, yakui::input::KeyCode::Tab);
+    frame(&mut y, &mut state, 0, 2, true);
+    assert!(frame(&mut y, &mut state, 0, 2, true)[0].focused);
+    state.index = 0;
+    frame(&mut y, &mut state, 1000, 2, true);
+    let midway = frame(&mut y, &mut state, 1100, 2, true);
+    click(&mut y, midway[0].id.unwrap());
+    assert!(frame(&mut y, &mut state, 1100, 2, true)[0].clicked);
+    frame(&mut y, &mut state, 1100, 2, false);
+    assert!(!animation::animations_active(&y));
+    // When every slide fits there is no offscreen slot for periodic relocation.
+    // The entire catalogue remains visible and cyclic navigation stays at zero.
+    state.index = 2;
+    frame(&mut y, &mut state, 1200, 3, false);
+    assert_eq!(state.index, 0);
+}
+fn toast_positions(y: &Yakui) -> Vec<f32> {
+    let viewport = nodes(y, "toast::ToastViewport")[0];
+    y.dom()
+        .get(viewport)
+        .unwrap()
+        .children
+        .iter()
+        .filter(|&&id| !y.dom().get(id).unwrap().children.is_empty())
+        .map(|&id| y.layout_dom().get(id).unwrap().rect.pos().y)
+        .collect()
+}
+#[test]
+fn toast_stack_reflows_from_current_positions_on_insert_remove_and_interruption() {
+    let mut y = yak();
+    let mut manager = ui::ToastManager::default();
+    manager.add("First", "Saved", ui::ToastKind::Success);
+    toast_frame(&mut y, &mut manager, 0);
+    toast_frame(&mut y, &mut manager, 200);
+    let start = toast_positions(&y)[0];
+    let second = manager.add("Second", "Saved", ui::ToastKind::Success);
+    toast_frame(&mut y, &mut manager, 200);
+    assert_eq!(toast_positions(&y)[0], start);
+    toast_frame(&mut y, &mut manager, 275);
+    let middle = toast_positions(&y)[0];
+    assert!(middle < start);
+    manager.close(second);
+    toast_frame(&mut y, &mut manager, 275);
+    assert_eq!(toast_positions(&y)[0], middle);
+    toast_frame(&mut y, &mut manager, 350);
+    assert!(toast_positions(&y)[0] > middle);
+    toast_frame(&mut y, &mut manager, 475);
+    assert_eq!(toast_positions(&y), vec![start]);
+    assert!(!animation::animations_active(&y));
+    // Remove the older row after two are settled: the survivor must keep its
+    // position even though its declaration now occupies the first child slot.
+    manager.add("Third", "Saved", ui::ToastKind::Success);
+    toast_frame(&mut y, &mut manager, 500);
+    toast_frame(&mut y, &mut manager, 700);
+    manager.close(manager.toasts[0].id);
+    toast_frame(&mut y, &mut manager, 700);
+    toast_frame(&mut y, &mut manager, 900);
+    assert_eq!(toast_positions(&y), vec![start]);
+    assert!(!animation::animations_active(&y));
+}
+#[test]
+fn line_tabs_crossfade_underlines_after_real_keyboard_selection() {
+    fn frame(y: &mut Yakui, selected: &mut usize, ms: u64, enabled: bool) -> Vec<f32> {
+        y.start();
+        animation::with_animation_time(time(ms), || {
+            animation::with_motion_enabled(enabled, || {
+                yakui::align(Alignment::TOP_LEFT, || {
+                    ui::tabs(
+                        &["First", "Second"],
+                        selected,
+                        ui::TabsVariant::Line,
+                        |_| {},
+                    );
+                });
+            });
+        });
+        y.finish();
+        let rects: Vec<_> = nodes(y, "navigation::ChoiceWidget")
+            .iter()
+            .map(|&id| y.layout_dom().get(id).unwrap().rect)
+            .collect();
+        let paint = y.paint();
+        rects
+            .iter()
+            .map(|rect| {
+                paint
+                    .layers()
+                    .iter()
+                    .flat_map(|l| &l.calls)
+                    .flat_map(|c| &c.vertices)
+                    .filter(|v| {
+                        v.position.y * 400. > rect.max().y + 3.9
+                            && v.position.y * 400. < rect.max().y + 4.1
+                            && v.position.x * 600. >= rect.pos().x
+                            && v.position.x * 600. <= rect.max().x
+                    })
+                    .map(|v| v.color.w)
+                    .fold(0., f32::max)
+            })
+            .collect()
+    }
+    let mut y = yak();
+    let mut selected = 0;
+    assert_eq!(frame(&mut y, &mut selected, 0, true), vec![1., 0.]);
+    y.request_focus(Some(nodes(&y, "navigation::ChoiceWidget")[0]));
+    key(&mut y, yakui::input::KeyCode::ArrowRight);
+    assert_eq!(frame(&mut y, &mut selected, 1000, true), vec![1., 0.]);
+    assert_eq!(selected, 1);
+    let middle = frame(&mut y, &mut selected, 1075, true);
+    assert!(middle.iter().all(|&alpha| alpha > 0. && alpha < 1.));
+    key(&mut y, yakui::input::KeyCode::ArrowLeft);
+    assert_eq!(frame(&mut y, &mut selected, 1075, true), middle);
+    assert_eq!(frame(&mut y, &mut selected, 1075, false), vec![1., 0.]);
+}
+#[test]
+fn sidebar_keeps_label_nodes_and_control_focus_through_collapse_and_reversal() {
+    fn frame(y: &mut Yakui, state: &mut ui::SidebarState, ms: u64) -> Vec<WidgetId> {
+        y.start();
+        animation::with_animation_time(time(ms), || {
+            ui::sidebar(
+                Vec2::new(600., 400.),
+                state,
+                "Menu",
+                &[ui::SidebarLink::new("Settings", ui::Icon::Settings)],
+                |_| {},
+            );
+        });
+        y.finish();
+        nodes(y, "sidebar::Label")
+    }
+    let mut y = yak();
+    let mut state = ui::SidebarState::default();
+    let labels = frame(&mut y, &mut state, 0);
+    let toggle = nodes(&y, "interaction::ControlWidget")[0];
+    click(&mut y, toggle);
+    frame(&mut y, &mut state, 1000);
+    assert!(state.collapsed);
+    frame(&mut y, &mut state, 1000);
+    let middle = frame(&mut y, &mut state, 1150);
+    assert_eq!(middle, labels);
+    let width = y.layout_dom().get(toggle).unwrap().rect.size().x;
+    assert!(width > 32. && width < 224.);
+    key(&mut y, yakui::input::KeyCode::Space);
+    frame(&mut y, &mut state, 1150);
+    frame(&mut y, &mut state, 1150);
+    assert!(!state.collapsed);
+    assert_eq!(y.layout_dom().get(toggle).unwrap().rect.size().x, width);
+    assert_eq!(frame(&mut y, &mut state, 1350), labels);
+    assert_eq!(y.layout_dom().get(toggle).unwrap().rect.size().x, 224.);
+}
+
+#[test]
+fn toast_actions_follow_reflow_and_surviving_buttons_keep_their_identity() {
+    fn frame(y: &mut Yakui, manager: &mut ui::ToastManager, ms: u64) -> ui::ToastResponse {
+        let mut response = Default::default();
+        y.start();
+        animation::with_animation_time(time(ms), || {
+            response = ui::toast_viewport(manager);
+        });
+        y.finish();
+        response
+    }
+    let mut y = yak();
+    let mut manager = ui::ToastManager::default();
+    let first = manager.add("First", "Saved", ui::ToastKind::Success);
+    let second = manager.add("Second", "Saved", ui::ToastKind::Success);
+    for toast in &mut manager.toasts {
+        toast.action = Some("Undo".into());
+    }
+    frame(&mut y, &mut manager, 0);
+    frame(&mut y, &mut manager, 200);
+    let buttons = nodes(&y, "interaction::ControlWidget");
+    let second_action = buttons[2];
+    y.request_focus(Some(second_action));
+    manager.close(first);
+    frame(&mut y, &mut manager, 200);
+    frame(&mut y, &mut manager, 400);
+    assert_eq!(nodes(&y, "interaction::ControlWidget")[0], second_action);
+    key(&mut y, yakui::input::KeyCode::Enter);
+    assert_eq!(frame(&mut y, &mut manager, 400).action, Some(second));
+    let third = manager.add("Third", "Saved", ui::ToastKind::Success);
+    frame(&mut y, &mut manager, 400);
+    frame(&mut y, &mut manager, 475);
+    click(&mut y, second_action);
+    assert_eq!(frame(&mut y, &mut manager, 475).action, Some(second));
+    // The newest toast reused the first slot, but Tab still follows display order.
+    for _ in 0..2 {
+        key(&mut y, yakui::input::KeyCode::Tab);
+        frame(&mut y, &mut manager, 600);
+    }
+    key(&mut y, yakui::input::KeyCode::Enter);
+    assert_eq!(frame(&mut y, &mut manager, 600).dismissed, Some(third));
+}
+#[test]
+fn shorthand_tooltip_retains_exit_paint_after_pointer_leaves() {
+    fn frame(y: &mut Yakui, ms: u64) -> ui::ControlResponse {
+        let mut trigger = Default::default();
+        y.start();
+        animation::with_animation_time(time(ms), || {
+            yakui::center(|| {
+                trigger = ui::button("Hover");
+            });
+            ui::tooltip(trigger, "Helpful text");
+        });
+        y.finish();
+        trigger
+    }
+    let mut y = yak();
+    let trigger = frame(&mut y, 0);
+    let rect = y.layout_dom().get(trigger.id.unwrap()).unwrap().rect;
+    y.handle_event(Event::CursorMoved(Some(rect.center())));
+    frame(&mut y, 1000);
+    frame(&mut y, 1100);
+    assert!(!nodes(&y, "tooltip::Arrow").is_empty());
+    y.handle_event(Event::CursorMoved(None));
+    frame(&mut y, 1100);
+    frame(&mut y, 1150);
+    assert!(!nodes(&y, "tooltip::Arrow").is_empty());
+    assert!(
+        y.paint()
+            .layers()
+            .iter()
+            .flat_map(|l| &l.calls)
+            .flat_map(|c| &c.vertices)
+            .any(|v| v.opacity > 0. && v.opacity < 1.)
+    );
+    frame(&mut y, 1200);
+    assert!(nodes(&y, "tooltip::Arrow").is_empty());
+}
