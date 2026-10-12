@@ -8,12 +8,8 @@
 //!     ui::width(width, || ui::label("Navigation"));
 //! });
 //! ```
-use std::{
-    cell::RefCell,
-    fmt::Debug,
-    rc::Rc,
-    time::{Duration, Instant},
-};
+use std::{cell::RefCell, fmt::Debug, rc::Rc, time::Duration};
+use web_time::Instant;
 use yakui::{Color, Vec2, widgets::Scope};
 use yakui_core::{
     WidgetId, context,

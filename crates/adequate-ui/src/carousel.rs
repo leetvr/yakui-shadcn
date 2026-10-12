@@ -1,10 +1,7 @@
 //! Native carousel navigation and swipe state with explicit slide composition.
 use crate::{Button, ButtonSize, Icon, Orientation, Variant};
-use std::{
-    cell::Cell,
-    rc::Rc,
-    time::{Duration, Instant},
-};
+use std::{cell::Cell, rc::Rc, time::Duration};
+use web_time::Instant;
 use yakui::{
     Constraints, Vec2,
     event::{EventInterest, EventResponse, WidgetEvent},

@@ -1,11 +1,7 @@
 //! An explicit native toast queue; expiration and actions stay local to the application.
 use crate::{Button, ButtonSize, Variant, Vec2, column, row, surface, theme};
-use std::{
-    cell::RefCell,
-    collections::HashMap,
-    rc::Rc,
-    time::{Duration, Instant},
-};
+use std::{cell::RefCell, collections::HashMap, rc::Rc, time::Duration};
+use web_time::Instant;
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub enum ToastKind {
     #[default]

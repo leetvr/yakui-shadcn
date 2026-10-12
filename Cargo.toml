@@ -4,14 +4,15 @@ members = ["crates/adequate-ui", "crates/gallery"]
 default-members = ["crates/gallery"]
 
 [workspace.dependencies]
-yakui = { git = "https://github.com/leetvr/yakui", rev = "1ede37af9329d7a4ac89fc4e7105a1c905bdcc07" }
-yakui-core = { git = "https://github.com/leetvr/yakui", rev = "1ede37af9329d7a4ac89fc4e7105a1c905bdcc07" }
-yakui-app = { git = "https://github.com/leetvr/yakui", rev = "1ede37af9329d7a4ac89fc4e7105a1c905bdcc07" }
-yakui-to-image = { git = "https://github.com/leetvr/yakui", rev = "1ede37af9329d7a4ac89fc4e7105a1c905bdcc07" }
+yakui-wgpu = { git = "https://github.com/leetvr/yakui", rev = "810581c9fc6bbb86e5ee1a11aca25646c3f9cad8" }
+yakui = { git = "https://github.com/leetvr/yakui", rev = "810581c9fc6bbb86e5ee1a11aca25646c3f9cad8" }
+yakui-core = { git = "https://github.com/leetvr/yakui", rev = "810581c9fc6bbb86e5ee1a11aca25646c3f9cad8" }
+yakui-app = { git = "https://github.com/leetvr/yakui", rev = "810581c9fc6bbb86e5ee1a11aca25646c3f9cad8" }
+yakui-to-image = { git = "https://github.com/leetvr/yakui", rev = "810581c9fc6bbb86e5ee1a11aca25646c3f9cad8" }
 
 [workspace.dependencies.yakui-widgets]
 git = "https://github.com/leetvr/yakui"
-rev = "1ede37af9329d7a4ac89fc4e7105a1c905bdcc07"
+rev = "810581c9fc6bbb86e5ee1a11aca25646c3f9cad8"
 
 [profile.dev]
 debug = 1

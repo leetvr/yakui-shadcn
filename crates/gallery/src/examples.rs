@@ -176,9 +176,11 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             "@peduarte starred 3 repositories",
             &mut state.checked,
             || {
-                ui::text("@radix-ui/primitives");
-                ui::text("@radix-ui/colors");
-                ui::text("@stitches/react");
+                ui::column(8., || {
+                    ui::text("@radix-ui/primitives");
+                    ui::text("@radix-ui/colors");
+                    ui::text("@stitches/react");
+                });
             },
         ),
         "accordion" => ui::accordion_item("Is it accessible?", &mut state.checked, 400., || {
@@ -1134,6 +1136,7 @@ pub fn overlays(component: &str, variant: &str, state: &mut ExampleState) {
 }
 
 impl ExampleState {
+    #[cfg(not(target_arch = "wasm32"))]
     pub fn is_open(&self, component: &str) -> bool {
         match component {
             "select" | "native-select" | "combobox" => self.select.popup.open,

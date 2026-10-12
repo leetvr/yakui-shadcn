@@ -4,8 +4,9 @@ use crate::{Color, ControlResponse, OverlayState, theme};
 use std::{
     cell::{Cell, RefCell},
     rc::Rc,
-    time::{Duration, Instant},
+    time::Duration,
 };
+use web_time::Instant;
 use yakui::{
     WidgetId, context,
     event::{EventInterest, EventResponse, WidgetEvent},

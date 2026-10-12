@@ -6,6 +6,7 @@ license = "MIT"
 description = "Native shadcn components for Yakui"
 
 [dependencies]
+web-time = "1.1.0"
 yakui.workspace = true
 yakui-core.workspace = true
 yakui-widgets.workspace = true
