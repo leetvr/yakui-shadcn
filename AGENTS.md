@@ -1,7 +1,7 @@
 # Building interfaces with Adequate UI
 
 Use `yakui-adequate-ui as ui`. Prefer existing components before custom widgets.
-Read COMPONENTS.md, THEMING.md and ANIMATIONS.md. State belongs to your application: pass mutable
+Read README.md and the source API documentation. State belongs to your application: pass mutable
 values into controls and act on `ControlResponse.clicked`. Use scoped theme tokens. Put multiple sequential children in `ui::row` or
 `ui::column`; a generic Yakui container overlays its children.
 
@@ -36,7 +36,7 @@ the same pinned Yakui fork for every Yakui crate to avoid duplicate UI contexts.
 
 The target is English interfaces for internal work and prototypes. Prioritize
 useful component coverage and common interactions; avoid exhaustive edge-case
-work and browser-parity certification. Consult PROGRESS.md and reference/components.json;
+work and browser-parity certification. Consult reference/components.json;
 do not infer completion from a public function or a gallery screenshot. Study pinned
 Base UI source, Nova styles and actual examples before implementing a component.
 Use the gallery and real input cycles; do not substitute static imagery.

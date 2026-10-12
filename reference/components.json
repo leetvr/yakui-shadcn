@@ -14140,7 +14140,7 @@
     }
   ],
   "motion": {
-    "documentation": "ANIMATIONS.md",
+    "documentation": "README.md#using-the-library",
     "verification": "reference/motion-verification.json",
     "scope": "Continuous vsync game frames, native tweens, retained exits, periodic carousel wrap, toast reflow and Base-style tab underline fades. Idle hosts, non-vsync UIs, spring/drag physics and exhaustive browser parity excluded."
   }

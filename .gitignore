@@ -5,3 +5,5 @@
 /visual/local
 .DS_Store
 /tools/reference-app/.vite
+
+/web/pkg

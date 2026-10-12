@@ -3,13 +3,71 @@
 A native Rust port of shadcn/ui built directly on Yakui, targeting English internal
 interfaces and prototypes. The agreed scope is a usable full catalogue with common
 examples and documented gaps; exhaustive reproduction of all upstream demos is
-outside that target. The prototype common-use audit is complete. See PROGRESS.md
-and reference/components.json for verified coverage and limitations.
+outside that target. The prototype common-use audit is complete. See `reference/components.json` for verified coverage and limitations.
 
 The design reference is pinned shadcn Base UI / Nova / Neutral. The library depends
 on no windowing or rendering backend. Games declare and paint UI every vsync
-frame; idle-host scheduling and non-vsync UIs are outside scope. The gallery uses Yakui Winit/WGPU
-and `yakui-to-image` integrations.
+frame; idle-host scheduling and non-vsync UIs are outside scope. The gallery shares its component tree between native Winit/WGPU and browser WebGPU hosts.
+
+## WebGPU demo
+
+[Open the gallery](https://leetvr.github.io/yakui-shadcn/). It renders the same Rust
+components into a canvas using WebGPU and a continuous `requestAnimationFrame`
+loop, following OATG's web deployment. Use a desktop browser with WebGPU enabled.
+Query parameters select examples, for example
+`?component=dialog&theme=dark`, `?component=button&variant=outline&isolated`, or
+`?showcase=dashboard`. Browser text input supports ordinary keyboard editing;
+clipboard integration and IME are outside this demo.
+
+```sh
+rustup target add wasm32-unknown-unknown
+cargo install wasm-pack --version 0.15.0 --locked
+wasm-pack build crates/gallery --target web --release --out-dir ../../web/pkg --locked
+python3 -m http.server 8080 --directory web
+```
+
+Open `http://localhost:8080`. GitHub Actions builds and deploys `web/` to Pages on
+pushes to `main`; generated Wasm assets are ignored by Git.
+
+## Using the library
+
+Use `yakui_adequate_ui as ui` and call `ui::add_fonts(&mut yak)` before the first
+frame. Application state owns values and overlay state. Declare components at
+stable call sites between `yak.start()` and `yak.finish()` each vsync frame, then
+paint with your renderer. All Yakui crates must use the fork revision in `Cargo.toml`.
+
+```rust
+use yakui_adequate_ui as ui;
+ui::with_theme(ui::Theme::dark(), || {
+    ui::column(12., || {
+        ui::checkbox("VSync", &mut settings.vsync);
+        if ui::button("Apply").clicked { apply_settings(); }
+    });
+});
+```
+
+Prefer existing components. Use `row`/`column` for sequential children; generic
+Yakui containers overlay them. Themes are ordinary values scoped with `with_theme`;
+change semantic color, radius, spacing and typography fields on `Theme::light()`
+or `Theme::dark()`. Keep root overlays outside scroll areas and open them with the
+actual trigger response so dismissal returns focus.
+
+Motion uses a shared frame clock and interruptible tweens. Keep overlay content
+alive through exit transitions. Use `animation::animate` for interpolated values,
+`presence` for retained exits and `motion` for paint transforms; paint transforms
+do not move hit bounds. `with_motion_enabled(false, ...)` settles transitions and
+`with_animation_time(Duration, ...)` enables deterministic captures. Spring physics,
+drag inertia and non-vsync hosts are outside scope. Source-level API documentation
+and `reference/components.json` retain component details and known gaps.
+
+Capture a real motion sequence with:
+
+```sh
+python3 tools/motion_capture.py --component switch --state default \
+  --keys Tab,Space --theme dark --duration-ms 192
+```
+
+## Native demo and verification
 
 ```sh
 cargo run --bin gallery
@@ -84,9 +142,7 @@ retains source nodes, hashes and licences. Run the separate icon diagnostic with
 `python3 tools/visual.py --component typography --variants icons --reference-example
 lucide-catalogue --states default --width 1000 --height 800 --output visual/icons`.
 
-Read COMPONENTS.md for API selection, THEMING.md for overrides, ANIMATIONS.md for
-motion and deterministic sequence capture, and AGENTS.md for
-agent usage and development rules. `ui::add_fonts` loads bundled Geist under OFL;
+See `AGENTS.md` for development rules. `ui::add_fonts` loads bundled Geist under OFL;
 font and Lucide licence notices are retained. Shadcn's MIT notice is preserved in
 reference/SHADCN-LICENSE. Source pins are in reference/upstream.json.
 

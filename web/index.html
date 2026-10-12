@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fafafa">
+  <title>Adequate UI — WebGPU gallery</title>
+  <style>
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #fafafa; }
+    canvas { display: block; width: 100%; height: 100%; outline: none; touch-action: none; }
+    #status { position: absolute; inset: 0; display: grid; place-content: center; padding: 32px;
+      font: 16px/1.5 system-ui, sans-serif; color: #171717; }
+    #status[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <canvas id="gallery" tabindex="0" aria-label="Adequate UI component gallery"></canvas>
+  <div id="status" role="status">Loading Adequate UI…</div>
+  <script type="module">
+    const status = document.getElementById('status');
+    try {
+      if (!navigator.gpu) throw new Error('This demo requires a browser with WebGPU enabled.');
+      const { default: init, start } = await import('./pkg/adequate_gallery.js');
+      await init();
+      const canvas = document.getElementById('gallery');
+      await start(canvas);
+      status.hidden = true;
+      canvas.focus();
+    } catch (error) {
+      console.error(error);
+      status.textContent = `Unable to start the gallery. ${error.message ?? error}`;
+    }
+  </script>
+</body>
+</html>
