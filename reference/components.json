@@ -42,7 +42,9 @@
       "gallery_examples": [
         "default"
       ],
-      "behaviour_tests": [],
+      "behaviour_tests": [
+        "accordion_animates_measured_height_and_reports_layout_motion_after_finish"
+      ],
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
@@ -341,7 +343,7 @@
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
-        "Explicit action layout, small size, media and animated backdrop examples pending."
+        "Explicit action layout, small size and media examples pending; shared modal backdrop and content animate."
       ],
       "example_coverage": [
         {
@@ -2518,7 +2520,7 @@
       "status": "in_progress",
       "deviations": [
         "Native controls join borders/corners as intended by upstream selectors; those selectors do not join all buttons in the current pinned browser harness.",
-        "Split uses the pinned Lucide Plus instead of Tabler Plus. Motion/shadows and exact mixed-size focus stacking are deferred prototype polish.",
+        "Split uses the pinned Lucide Plus instead of Tabler Plus. Shadows and exact mixed-size focus stacking are deferred prototype polish.",
         "Currency choice labels use one foreground rather than a separate muted trailing currency name.",
         "Native voice-mode styling uses a scoped theme; source-specific wrapper radius/padding can differ slightly."
       ],
@@ -3435,12 +3437,13 @@
         "vertical"
       ],
       "behaviour_tests": [
-        "advanced::carousel_keyboard_advances_and_stops_at_the_last_slide"
+        "advanced::carousel_keyboard_advances_and_stops_at_the_last_slide",
+        "carousel_moves_retained_slide_layout_without_changing_application_selection"
       ],
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
-        "Native swipe/arrows/autoplay exist; motion interpolation, plugins and full documented visible-slide sizes pending."
+        "Native retained slide motion, swipe/arrows/autoplay exist. Loop wrap travels across the track; seamless periodic wrap, plugins and full documented visible-slide sizes remain pending."
       ],
       "example_coverage": [
         {
@@ -4288,7 +4291,7 @@
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
-        "Click/keyboard activation works; upstream repository row composition and animated height pending."
+        "Click/keyboard activation and measured-height entry/exit work; upstream repository row composition remains pending."
       ],
       "example_coverage": [
         {
@@ -5352,12 +5355,13 @@
         "overlay::dialog_autofocus_escape_and_restore_trigger",
         "overlay::dialog_backdrop_dismisses_but_content_does_not",
         "overlay::modal_tab_wraps_inside_and_editor_escape_dismisses",
-        "modal_pointer_controls_activate_before_the_backdrop_and_outside_dismisses"
+        "modal_pointer_controls_activate_before_the_backdrop_and_outside_dismisses",
+        "closing_dialog_retains_paint_returns_focus_and_disables_exit_content"
       ],
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
-        "Autofocus, trap, Escape, backdrop and return focus tested; complete slots/sizes/scrolling, close icon and motion pending."
+        "Autofocus, trap, Escape, backdrop and return focus tested; complete slots/sizes/scrolling, close icon pending. Entry/exit fade and zoom retain paint while closed content ignores input."
       ],
       "example_coverage": [
         {
@@ -5839,7 +5843,7 @@
       "status": "in_progress",
       "deviations": [
         "English directional preview remains unported; translated text is outside current scope.",
-        "Popup uses opaque native surfaces; backdrop blur, saturation, soft shadow, hover delay/transit and motion differ from upstream.",
+        "Popup uses opaque native surfaces; backdrop blur, saturation, soft shadow, hover delay/transit differ from upstream.",
         "Typography and single-sample icon edges differ; targeted comparisons are retained without exhaustive parity certification.",
         "Native keyboard scroll reveal and placement of large nested menus can differ from the source harness."
       ],
@@ -9649,7 +9653,7 @@
       "status": "in_progress",
       "deviations": [
         "The default English composition includes all three native flyouts and a direct route. App receives stable route/link IDs; the library does not own URLs.",
-        "Hover opens immediately and remains open until a trigger toggle, link activation, Escape or outside click. Browser hover delays/transit/automatic departure closing and motion/shadows are deferred.",
+        "Hover opens immediately and remains open until a trigger toggle, link activation, Escape or outside click. Browser hover delays/transit/automatic departure closing and shadows are deferred; flyouts and chevrons animate.",
         "Long descriptions clip to two lines without CSS ellipsis. The Components layout targets the 1000px comparison viewport (two columns, 500px content)."
       ],
       "example_coverage": [
@@ -9880,7 +9884,7 @@
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
-        "Anchor collision and dismissal exist; arrow offsets, full slots/shadows/motion and documented variants pending."
+        "Anchor collision and dismissal exist; arrow offsets, full slots/shadows and documented variants pending."
       ],
       "example_coverage": [
         {
@@ -11326,11 +11330,13 @@
         "top",
         "bottom"
       ],
-      "behaviour_tests": [],
+      "behaviour_tests": [
+        "sheet_hit_targets_move_with_the_panel_during_entry"
+      ],
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
-        "Four viewport edges work; close icon, exact slots/sizes and animated behaviour pending."
+        "Four viewport edges slide with their actual layout and hit targets; close icon and exact slots/sizes remain pending."
       ],
       "example_coverage": [
         {
@@ -11846,7 +11852,7 @@
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
-        "Application-supplied phase animates; exact documented Item/Button/size examples pending."
+        "Shared-clock spinner_auto and application-supplied phase animate; exact documented Item/Button/size examples pending."
       ],
       "example_coverage": [
         {
@@ -12022,7 +12028,8 @@
       ],
       "behaviour_tests": [
         "switch_trailing_helper_text_activates_the_caller_value_and_has_one_focus_stop",
-        "switch_tracks_have_documented_sizes_and_disabled_switches_skip_focus"
+        "switch_tracks_have_documented_sizes_and_disabled_switches_skip_focus",
+        "native_switch_updates_value_immediately_and_reverses_from_current_thumb_position"
       ],
       "visual_comparisons": [
         "visual/switch/default-light-default",
@@ -12062,7 +12069,7 @@
       "deviations": [
         "The documented multilingual RTL preview is not yet ported; native scopes mirror track and label placement, with thumb direction mirrored.",
         "Native glyph edge rendering differs from upstream; track/thumb dimensions and source field compositions are covered by paired screenshots.",
-        "CSS thumb motion and native platform accessibility semantics/touch target expansion remain outstanding."
+        "Track/thumb transitions are interruptible; native platform accessibility semantics and touch target expansion remain outstanding."
       ],
       "example_coverage": [
         {
@@ -12636,7 +12643,7 @@
       "status": "in_progress",
       "deviations": [
         "Default and line styles support native roving arrow/Home/End selection. Vertical orientation, per-item disabled slots and additional source compositions are outside this prototype API.",
-        "Soft shadows, exact border alpha and motion differ from the source."
+        "Default tab backgrounds/foregrounds animate. Line indicators change immediately; soft shadows and exact border alpha differ from the source."
       ],
       "example_coverage": [
         {
@@ -12957,11 +12964,13 @@
       "gallery_examples": [
         "default"
       ],
-      "behaviour_tests": [],
+      "behaviour_tests": [
+        "toast_removal_updates_business_state_immediately_and_keeps_exit_paint"
+      ],
       "visual_comparisons": [],
       "status": "in_progress",
       "deviations": [
-        "Manager expiry/actions work; pause-on-hover, stacking positions, animations and full Sonner examples pending."
+        "Manager expiry/actions and retained entry/exit work; pause-on-hover, animated stack reflow, drag physics and full Sonner examples remain pending."
       ],
       "example_coverage": [
         {
@@ -13394,7 +13403,7 @@
       ],
       "status": "in_progress",
       "deviations": [
-        "Immediate hover/focus opening matches the site zero-delay provider. Soft shadows, animated entry/exit, rounded arrow rasterisation and pointer transit are deferred polish.",
+        "Immediate hover/focus opening matches the site zero-delay provider. Composed tooltip entry/exit animates; soft shadows, rounded arrow rasterisation and pointer transit are deferred polish.",
         "Use tooltip_trigger with caller-owned TooltipState for Escape dismissal. The response-only tooltip shorthand has hover/focus display without trigger Escape interception.",
         "English-only compositions; translated RTL demonstration is excluded from the agreed prototype target."
       ],
@@ -13832,5 +13841,10 @@
         }
       ]
     }
-  ]
+  ],
+  "motion": {
+    "documentation": "ANIMATIONS.md",
+    "verification": "reference/motion-verification.json",
+    "scope": "Shared native tweens, retained exits and common component motion; spring physics and exhaustive browser animation parity excluded."
+  }
 }

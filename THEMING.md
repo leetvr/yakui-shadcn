@@ -30,3 +30,12 @@ Call `ui::add_fonts(&mut yak)` once to load Geist and the OFL Noto symbol fallba
 for shortcuts such as ⌘ and ⇧. Font assets and source hashes are bundled. To use another family, load its font bytes into
 Yakui's `font::Fonts` and set `font_family` to the font's internal family name.
 Applications choose the renderer and UI scale through Yakui itself.
+
+Motion can be disabled for a subtree without changing application state:
+
+```rust
+ui::animation::with_motion_enabled(false, || ui::button("Apply"));
+```
+
+Custom transitions accept ordinary `Motion` duration/easing values. See
+ANIMATIONS.md for concrete examples and host redraw requirements.

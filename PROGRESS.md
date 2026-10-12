@@ -17,7 +17,8 @@ been ported. No component is certified as having exhaustive upstream parity.
 
 - shadcn/ui `6ea090075cd537d3b792c6c1a625e2448b6ede26`
 - Primary reference: Base UI / Nova / Neutral / Geist
-- Yakui `7c2bd75cd00ee83a1d33b8af360788cb322a3df8`
+- Maintained Yakui fork `2924f065478cd86063fdafe25721bcb8363c74e3` (leetvr/yakui),
+  based on upstream `7c2bd75cd00ee83a1d33b8af360788cb322a3df8`
 - 65 navigation entries, 64 MDX pages, 461 documented previews
 - Form is listed without a Base MDX file. Some newer previews import Base Rhea;
   chart-demo imports new-york-v4. Per-preview imports/styles are in the inventory.
@@ -47,7 +48,7 @@ initial public APIs and native routes. Current behaviour includes:
 - CLI PNG capture, pinned upstream source harness, Playwright captures, Rust
   side-by-side/difference/content-region comparison tooling.
 
-## Verification checkpoint
+## Prototype completion verification checkpoint (before motion)
 
 - Formatting, workspace compilation, independent library compilation and rustdoc pass.
 - All four consuming examples compile.
@@ -352,3 +353,51 @@ the independent library compile. The final native suite has 396 captures without
 failures; the paired source suite has 352 comparisons across 82 genuine previews.
 The remaining 379 preview records stay documented and are outside the agreed
 completion requirement. No exhaustive parity certification is claimed.
+
+## Native motion and maintained Yakui fork (2026-10-13)
+
+The completed prototype port was merged and pushed to `main` as `f7614a5`.
+Current work is on `codex/animations`; the maintained Yakui branch is
+`codex/animations-vulkan` in leetvr/yakui. The ignored `.upstream/yakui-fork`
+checkout is clean and published. Kane's existing `../yakui` checkout and its
+uncommitted buffer-size change were left untouched.
+
+Kane approved a small native animation module and per-frame Vulkan resources.
+Shared frame time, CSS easing, interruption/reversal, retained exit presence,
+whole-subtree opacity/translation/scale/rotation and measured-height motion now
+drive controls, overlays, accordion/collapsible, sidebar, carousel and toasts.
+Closed content restores focus and rejects input while its last paint fades.
+Sheets and carousel tracks move actual layout/hit targets. See ANIMATIONS.md
+for public APIs, host redraw rules and practical limitations.
+
+The fork fixes renderer vertex packing (GPU vertices cannot inherit glam's SIMD
+padding), premultiplied fragment opacity and scissor state across multiple paints.
+Vulkan owns reusable geometry/staging buffers and retired textures per submitted
+frame. Historical transfers_submitted/transfers_finished APIs remain; completion
+must cover all transfers AND draws. Buffers use host-visible/coherent memory and
+retain their high-water capacity. Borrowed views preserve host image ownership.
+There is no general GPU allocator or device-local geometry migration.
+
+Verification: 83 actual-system/pure algorithm tests and eight doctests pass;
+all four consuming apps, the independent library and rustdoc compile. The final
+native catalogue run produced 396 captures with zero failures. Eighteen native
+motion sequences produced 256 frames in both themes; eight sampled switch frames
+are paired against Chromium's pinned CSS implementation at 0/50/100/150 ms.
+Contact sheets and paired images live under visual/motion. Full-rate PNG/video
+outputs remain reproducible in ignored visual/local. Browser metadata confirms
+the source 150 ms curve. This supplements the earlier 352 static pairs; it does
+not claim those were all rerun or certify every upstream animation.
+
+Real Vulkan/MoltenVK verification passed 336 frames with three gated frames in
+flight, 1,680 paints, 2,016 texture registrations, geometry beyond 10 MiB, pixel
+readbacks and zero synchronization/validation errors. Renderer checks include
+alpha conventions, color glyph opacity, clipping, upload alignment, descriptor
+reuse and borrowed image lifetime. Evidence and commands are recorded in
+reference/motion-verification.json.
+
+Remaining motion limits are explicit: carousel wrap is a track tween rather than
+a seamless periodic spring; toast stack reflow/hover/drag physics and sliding line
+tab indicators remain deferred; legacy response-only tooltip visibility is
+immediate. Paint effects do not change hit bounds; large movement uses layout.
+Sidebar labels change at a width threshold. Avoid turning these prototype gaps
+into an exhaustive animation-parity project without a new requirement.
