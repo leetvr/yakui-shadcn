@@ -17,7 +17,7 @@ been ported. No component is certified as having exhaustive upstream parity.
 
 - shadcn/ui `6ea090075cd537d3b792c6c1a625e2448b6ede26`
 - Primary reference: Base UI / Nova / Neutral / Geist
-- Maintained Yakui fork `2924f065478cd86063fdafe25721bcb8363c74e3` (leetvr/yakui),
+- Maintained Yakui fork `6afaed864554f9aaec2c1cac7403a151f6b06610` (leetvr/yakui),
   based on upstream `7c2bd75cd00ee83a1d33b8af360788cb322a3df8`
 - 65 navigation entries, 64 MDX pages, 461 documented previews
 - Form is listed without a Base MDX file. Some newer previews import Base Rhea;
@@ -401,3 +401,36 @@ tab indicators remain deferred; legacy response-only tooltip visibility is
 immediate. Paint effects do not change hit bounds; large movement uses layout.
 Sidebar labels change at a width threshold. Avoid turning these prototype gaps
 into an exhaustive animation-parity project without a new requirement.
+
+## lazy_vulkan allocator reuse (2026-10-13)
+
+Kane authorized using his lazy_vulkan code/allocator without further approval.
+Its complete renderer allocator depends on Arc<Context>, fixed global/staging
+slabs, device-address transfers and currently unimplemented frees. The smaller
+adaptation reuses its offset_allocator/aligned bind-offset mechanism directly
+inside yakui-vulkan, retaining the MIT notice and source pin
+33aec6209289d3dd8ee684276b9f15b6a904fc21. Neither ../lazy_vulkan nor ../yakui was
+modified. No full renderer/context dependency was introduced.
+
+Geometry/staging buffers and images share backing allocations per compatible
+Vulkan memory type; optimal images and buffers use separate pools. Blocks start
+at 16 MiB and grow for larger resources. Driver-required dedicated allocations
+are supported. Returning an image's range follows its existing frame retirement;
+growing an unused buffer returns its previous range after destroying its handle.
+Mapped coherent buffer memory and the host's submission API remain unchanged.
+Free block space is reused; backing blocks retain high-water capacity until cleanup.
+The public memory_stats() exposes reserved bytes, backing allocations and live
+bindings, excluding host-imported image memory.
+
+The real Vulkan stress run again passed 336 frames/1,680 paints/2,016 textures
+with three frames in flight and zero synchronization/validation errors. After
+warmup, 47 live bindings share five backing allocations reserving 80 MiB for this
+intentionally oversized workload. Counts/bytes stay stable throughout repeated
+texture churn, and cleanup returns all counts to zero. A pure allocator test
+checks aligned binding and reclamation, including an aligned full-block range.
+Independent Vulkan library compilation and rustdoc pass; explicit bytemuck derive
+features fix a dependency feature previously supplied only by dev dependencies.
+
+Existing motion captures remain evidence from their recorded fork revision. The
+allocator follow-up is recorded separately in reference/motion-verification.json.
+Both existing draft reviews are updated: leetvr/yakui#2 and yakui-shadcn#4.

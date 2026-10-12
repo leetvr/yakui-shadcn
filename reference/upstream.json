@@ -10,8 +10,14 @@
   },
   "yakui": {
     "repository": "https://github.com/leetvr/yakui",
-    "commit": "2924f065478cd86063fdafe25721bcb8363c74e3",
+    "commit": "6afaed864554f9aaec2c1cac7403a151f6b06610",
     "upstream_commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8",
     "upstream_repository": "https://github.com/SecondHalfGames/yakui"
+  },
+  "lazy_vulkan": {
+    "repository": "https://github.com/leetvr/lazy_vulkan",
+    "commit": "33aec6209289d3dd8ee684276b9f15b6a904fc21",
+    "use": "Allocator mechanism adapted into yakui-vulkan; no runtime renderer dependency.",
+    "license": "MIT"
   }
 }

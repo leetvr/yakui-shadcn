@@ -354,5 +354,44 @@
     "cargo doc -p yakui-adequate-ui --no-deps",
     "cargo check -p yakui-vulkan -p yakui-wgpu --all-targets --offline",
     "python3 tools/audit_inventory.py"
-  ]
+  ],
+  "allocator_followup": {
+    "yakui_commit": "6afaed864554f9aaec2c1cac7403a151f6b06610",
+    "source": {
+      "repository": "https://github.com/leetvr/lazy_vulkan",
+      "commit": "33aec6209289d3dd8ee684276b9f15b6a904fc21",
+      "use": "Allocator mechanism adapted into yakui-vulkan; no runtime renderer dependency.",
+      "license": "MIT"
+    },
+    "vulkan_stress": {
+      "frames": 336,
+      "max_in_flight": 3,
+      "paints": 1680,
+      "textures": 2016,
+      "validation_errors": 0,
+      "live_bindings_after_warmup": 47,
+      "backing_allocations_after_warmup": 5,
+      "reserved_bytes_after_warmup": 83886080,
+      "counts_and_bytes_stable_after_warmup": true,
+      "all_memory_released_after_cleanup": true,
+      "command": "cargo run -p yakui-vulkan --example frame_stress"
+    },
+    "allocator_tests": {
+      "count": 1,
+      "result": "passed",
+      "command": "cargo test -p yakui-vulkan --lib --offline"
+    },
+    "checks": [
+      "cargo check -p yakui-vulkan --lib --offline",
+      "cargo check -p yakui-vulkan --all-targets --offline",
+      "cargo doc -p yakui-vulkan --no-deps --offline",
+      "cargo fmt --all -- --check"
+    ],
+    "workspace_tests": {
+      "tests": 83,
+      "doctests": 8,
+      "result": "passed",
+      "note": "Implementation verified before the documentation-only cleanup diagnostics follow-up."
+    }
+  }
 }
