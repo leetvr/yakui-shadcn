@@ -24,6 +24,7 @@ name = "compare"
 path = "src/compare.rs"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+arboard = { version = "3", default-features = false }
 yakui-app.workspace = true
 yakui-to-image.workspace = true
 winit = "0.30.13"
@@ -39,8 +40,14 @@ console_error_panic_hook = "0.1"
 web-sys = { version = "0.3", features = [
     "Window", "Document", "Element", "HtmlElement", "HtmlCanvasElement", "DomRect",
     "Event", "EventTarget", "PointerEvent", "KeyboardEvent", "WheelEvent",
-    "UrlSearchParams", "Location", "console",
+    "UrlSearchParams", "Location", "console", "Navigator", "Clipboard",
 ] }
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = false
+
+[build-dependencies]
+syn = { version = "2", features = ["full", "fold", "visit"] }
+quote = "1"
+prettyplease = "0.2"
+proc-macro2 = "1"
