@@ -16,6 +16,7 @@ pub struct CarouselState {
     pub index: usize,
     pub looping: bool,
     last_transition: Instant,
+    last_step: Option<(usize, i32)>,
 }
 impl Default for CarouselState {
     fn default() -> Self {
@@ -23,6 +24,7 @@ impl Default for CarouselState {
             index: 0,
             looping: false,
             last_transition: Instant::now(),
+            last_step: None,
         }
     }
 }
@@ -149,12 +151,16 @@ struct TrackProps {
     index: usize,
     visible: usize,
     options: CarouselOptions,
+    count: usize,
+    looping: bool,
+    step: i32,
 }
 #[derive(Debug)]
 struct Track {
     props: TrackProps,
     transition: Option<crate::animation::Transition<f32>>,
     position: f32,
+    target: f32,
 }
 impl Widget for Track {
     type Props<'a> = TrackProps;
@@ -165,14 +171,43 @@ impl Widget for Track {
                 index: 0,
                 visible: 1,
                 options: Default::default(),
+                count: 0,
+                looping: false,
+                step: 0,
             },
             transition: None,
             position: 0.,
+            target: 0.,
         }
     }
     fn update(&mut self, props: TrackProps) {
+        if self.transition.is_none()
+            || self.props.count != props.count
+            || self.props.looping != props.looping
+        {
+            self.target = props.index as f32;
+            self.transition = None;
+        } else if self.props.index != props.index {
+            if props.looping {
+                // Keep an unwrapped coordinate across the seam. Slides are laid
+                // out periodically, once each, so their retained input/editor
+                // state never migrates to a duplicate copy during a wrap.
+                let count = props.count as f32;
+                let delta = props.index as f32 - self.props.index as f32;
+                let delta = if props.step > 0 {
+                    delta.rem_euclid(count)
+                } else if props.step < 0 {
+                    -(-delta).rem_euclid(count)
+                } else {
+                    (delta + count * 0.5).rem_euclid(count) - count * 0.5
+                };
+                self.target += delta;
+            } else {
+                self.target = props.index as f32;
+            }
+        }
         self.props = props;
-        let target = props.index as f32;
+        let target = self.target;
         let now = crate::animation::now();
         let transition = self
             .transition
@@ -204,7 +239,12 @@ impl Widget for Track {
         };
         for (index, &child) in ctx.dom.get_current().children.iter().enumerate() {
             ctx.calculate_layout(child, Constraints::tight(slot));
-            let offset = index as f32 - self.position;
+            let mut offset = index as f32 - self.position;
+            if self.props.looping {
+                // Relocate a slide only outside the clipped viewport. At least
+                // one spare slot is required to hide that relocation.
+                offset = (offset + 1.).rem_euclid(self.props.count as f32) - 1.;
+            }
             ctx.layout.set_pos(
                 child,
                 if horizontal {
@@ -213,7 +253,7 @@ impl Widget for Track {
                     Vec2::new(0., offset * slot.y)
                 },
             );
-            if index < self.props.index || index >= self.props.index + self.props.visible {
+            if !self.selected(index) {
                 // The viewport clips paint and pointer bounds. Logical selection
                 // also excludes outgoing/offscreen slides from keyboard input.
                 let mut focus = ctx.input.focus();
@@ -236,34 +276,35 @@ impl Widget for Track {
         direction: yakui_core::navigation::NavDirection,
     ) -> Option<yakui::WidgetId> {
         let children = &ctx.dom.get_current().children;
-        let start = self.props.index.min(children.len());
-        let end = (start + self.props.visible).min(children.len());
+        let selected =
+            (0..self.props.visible).map(|slot| (self.props.index + slot) % self.props.count);
         if matches!(direction, yakui_core::navigation::NavDirection::Previous) {
-            children[start..end]
-                .iter()
+            selected
                 .rev()
-                .find_map(|&child| ctx.try_navigate(child, direction))
+                .find_map(|index| ctx.try_navigate(children[index], direction))
         } else {
-            children[start..end]
-                .iter()
-                .find_map(|&child| ctx.try_navigate(child, direction))
+            selected
+                .into_iter()
+                .find_map(|index| ctx.try_navigate(children[index], direction))
         }
     }
 }
+impl Track {
+    fn selected(&self, index: usize) -> bool {
+        (index + self.props.count - self.props.index) % self.props.count < self.props.visible
+    }
+}
 fn advance(state: &mut CarouselState, count: usize, visible: usize, delta: i32) {
-    let previous = state.index;
     let max = count.saturating_sub(visible);
-    state.index = if state.looping {
+    state.index = if count == visible {
+        0
+    } else if state.looping {
         ((state.index as i64 + delta as i64).rem_euclid(count.max(1) as i64)) as usize
     } else {
         (state.index as i64 + delta as i64).clamp(0, max as i64) as usize
     };
     state.last_transition = Instant::now();
-    if state.index != previous {
-        // Arrow activation can happen after the track was declared this frame.
-        // An idle host still needs the next frame to observe the new target.
-        crate::animation::request_frame();
-    }
+    state.last_step = Some((state.index, delta));
 }
 /// Render a native slide track. Slides stay declared for smooth movement and
 /// retain their state; offscreen slides ignore input and keyboard navigation.
@@ -279,11 +320,10 @@ pub fn carousel(
         return;
     }
     let visible = options.visible.max(1).min(count);
-    state.index = state.index.min(if state.looping {
-        count - 1
-    } else {
-        count - visible
-    });
+    let looping = state.looping && visible < count;
+    state.index = state
+        .index
+        .min(if looping { count - 1 } else { count - visible });
     crate::layout::with_state(
         || Rc::new(Cell::new(0)),
         |hook| {
@@ -309,7 +349,7 @@ pub fn carousel(
                         .variant(Variant::Outline)
                         .size(ButtonSize::Icon)
                         .rounded(true)
-                        .disabled(!state.looping && state.index == 0)
+                        .disabled(count == visible || (!looping && state.index == 0))
                         .show()
                         .clicked
                     {
@@ -320,20 +360,24 @@ pub fn carousel(
                             || {
                                 yakui::util::widget_children::<Track, _>(
                                     || {
-                                        // Tail copies preserve cyclic multi-slide viewports.
-                                        let slots =
-                                            count + if state.looping { visible - 1 } else { 0 };
-                                        for index in 0..slots {
+                                        for index in 0..count {
                                             yakui::widgets::ConstrainedBox::new(
                                                 Constraints::none(),
                                             )
-                                            .show(|| slide(index % count));
+                                            .show(|| slide(index));
                                         }
                                     },
                                     TrackProps {
                                         index: state.index,
                                         visible,
                                         options,
+                                        count,
+                                        looping,
+                                        step: state
+                                            .last_step
+                                            .take()
+                                            .filter(|(index, _)| *index == state.index)
+                                            .map_or(0, |(_, step)| step),
                                     },
                                 );
                             },
@@ -345,7 +389,7 @@ pub fn carousel(
                         .variant(Variant::Outline)
                         .size(ButtonSize::Icon)
                         .rounded(true)
-                        .disabled(!state.looping && state.index >= count - visible)
+                        .disabled(count == visible || (!looping && state.index >= count - visible))
                         .show()
                         .clicked
                     {

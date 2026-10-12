@@ -465,3 +465,33 @@ keeps its visible thumb ring; distinct accessibility thumb nodes and the remaini
 optional demo compositions remain documented gaps.
 
 Reproduction commands and pins: `reference/rendering-verification.json`.
+
+## Animation gap closure for vsync games (2026-10-13)
+
+Closed the common tween gaps: carousel looping now crosses the first/last seam
+without sweeping across the track or duplicating slide state; toast stacks
+reflow from their current measured positions; sidebar labels retain their nodes
+and clip continuously through collapse; line-tab underlines crossfade as the
+pinned Base source specifies. The existing shorthand tooltip already animated;
+a real hover/exit test now verifies it and the stale limitation is corrected.
+
+Toast row removal exposed a control-ownership problem. Reusable declaration slots
+now preserve surviving button state, while toast ID order drives actual layout,
+painting and keyboard traversal. Carousel and toast hit targets move with their
+layout. Reversal starts at the current sample. Fully visible carousels do not loop.
+The gallery includes loop and multi-slide loop routes.
+
+The supported host declares and paints UI every vsync game frame. Removed idle-host
+scheduling advice; no non-game or non-vsync support was introduced. Existing
+activity reporting remains a diagnostic. Spring/inertial drag, drawer gestures
+and Sonner's collapsed hover stack remain outside the tween architecture.
+
+Verification: 92 actual-system/pure tests and eight doctests pass; workspace,
+independent library, all four consuming examples, rustdoc, formatting and inventory
+audit pass. The full native gallery run produced 402 captures without failures.
+Ten both-theme sequences contain 102 frames; persistent contact sheets are in
+visual/motion/gaps and commands are in reference/motion-verification.json.
+The final toast order refinement was rechecked with the whole test suite and
+both-theme toast sequences. Live desktop pointer/keyboard wrap was inspected.
+Source/native tab keyboard captures are not matched selection-timing evidence:
+Base's example activates manually while the native API selects on arrow focus.

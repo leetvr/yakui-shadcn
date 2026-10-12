@@ -30,6 +30,8 @@ struct ChoiceWidget {
     control: ControlWidget,
     context: Option<Rc<ChoiceContext>>,
     line_color: Color,
+    line_opacity: f32,
+    line_transition: Option<crate::animation::Transition<f32>>,
 }
 impl Widget for ChoiceWidget {
     type Props<'a> = ChoiceProps;
@@ -45,6 +47,8 @@ impl Widget for ChoiceWidget {
             control: ControlWidget::new(),
             context: None,
             line_color: Color::CLEAR,
+            line_opacity: 0.,
+            line_transition: None,
         }
     }
     fn update(&mut self, props: ChoiceProps) -> ControlResponse {
@@ -52,6 +56,15 @@ impl Widget for ChoiceWidget {
         self.context = yakui::util::read_scope::<ChoiceContext>();
         let t = theme();
         self.line_color = t.foreground;
+        self.line_opacity = crate::animation::update_transition(
+            &mut self.line_transition,
+            if props.line && props.index == props.selected {
+                1.
+            } else {
+                0.
+            },
+            Default::default(),
+        );
         self.control.update(Control {
             disabled: false,
             radius: if props.radio { 999. } else { t.radius },
@@ -69,14 +82,14 @@ impl Widget for ChoiceWidget {
             layout: ctx.layout,
             paint: ctx.paint,
         });
-        if self.props.line && self.props.index == self.props.selected {
+        if self.props.line && self.line_opacity > 0. {
             let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
             crate::icons::line(
                 &mut ctx,
                 crate::Vec2::new(rect.pos().x, rect.max().y + 3.),
                 crate::Vec2::new(rect.max().x, rect.max().y + 3.),
                 2.,
-                self.line_color,
+                self.line_color.with_alpha(self.line_opacity),
             );
         }
     }

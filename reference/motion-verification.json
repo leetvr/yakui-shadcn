@@ -393,5 +393,226 @@
       "result": "passed",
       "note": "Implementation verified before the documentation-only cleanup diagnostics follow-up."
     }
+  },
+  "gap_closure": {
+    "recorded_at": "2026-10-12T23:12:27.530121+00:00",
+    "yakui_commit": "1ede37af9329d7a4ac89fc4e7105a1c905bdcc07",
+    "scope": "Continuous vsync game rendering; periodic carousel wrap, stable toast reflow, sidebar label clipping and Base-style tab underline fades. No idle/non-vsync host integration or physics engine.",
+    "tests": {
+      "workspace": 92,
+      "doctests": 8,
+      "result": "passed",
+      "command": "cargo test --workspace"
+    },
+    "checks": [
+      "cargo check -p yakui-adequate-ui",
+      "cargo check --workspace --examples",
+      "cargo doc -p yakui-adequate-ui --no-deps",
+      "cargo fmt --all -- --check",
+      "python3 tools/audit_inventory.py"
+    ],
+    "native_smoke": {
+      "captures": 402,
+      "failures": 0,
+      "command": "python3 tools/verify_gallery.py --all-variants --showcases --open-overlays --output visual/local/animation-gaps-gallery",
+      "note": "The final toast slot-order refinement was followed by a full workspace test run and both-theme toast motion recaptures."
+    },
+    "motion_sequences": [
+      {
+        "component": "carousel",
+        "variant": "loop",
+        "theme": "dark",
+        "state": "default",
+        "keys": [
+          "Tab",
+          "ArrowLeft"
+        ],
+        "frames": 13,
+        "step_ms": 25,
+        "viewport": [
+          800,
+          600
+        ],
+        "contact": "visual/motion/gaps/carousel-loop-dark.png",
+        "reproduce": "python3 tools/motion_capture.py --component carousel --variant loop --theme dark --state default --keys Tab,ArrowLeft --duration-ms 300 --step-ms 25 --width 800 --height 600 --output visual/local/animation-gaps/carousel-loop-dark",
+        "pixels_changed": true
+      },
+      {
+        "component": "carousel",
+        "variant": "loop",
+        "theme": "light",
+        "state": "default",
+        "keys": [
+          "Tab",
+          "ArrowLeft"
+        ],
+        "frames": 13,
+        "step_ms": 25,
+        "viewport": [
+          800,
+          600
+        ],
+        "contact": "visual/motion/gaps/carousel-loop-light.png",
+        "reproduce": "python3 tools/motion_capture.py --component carousel --variant loop --theme light --state default --keys Tab,ArrowLeft --duration-ms 300 --step-ms 25 --width 800 --height 600 --output visual/local/animation-gaps/carousel-loop-light",
+        "pixels_changed": true
+      },
+      {
+        "component": "carousel",
+        "variant": "loop-multiple",
+        "theme": "dark",
+        "state": "default",
+        "keys": [
+          "Tab",
+          "ArrowLeft"
+        ],
+        "frames": 13,
+        "step_ms": 25,
+        "viewport": [
+          800,
+          600
+        ],
+        "contact": "visual/motion/gaps/carousel-loop-multiple-dark.png",
+        "reproduce": "python3 tools/motion_capture.py --component carousel --variant loop-multiple --theme dark --state default --keys Tab,ArrowLeft --duration-ms 300 --step-ms 25 --width 800 --height 600 --output visual/local/animation-gaps/carousel-loop-multiple-dark",
+        "pixels_changed": true
+      },
+      {
+        "component": "carousel",
+        "variant": "loop-multiple",
+        "theme": "light",
+        "state": "default",
+        "keys": [
+          "Tab",
+          "ArrowLeft"
+        ],
+        "frames": 13,
+        "step_ms": 25,
+        "viewport": [
+          800,
+          600
+        ],
+        "contact": "visual/motion/gaps/carousel-loop-multiple-light.png",
+        "reproduce": "python3 tools/motion_capture.py --component carousel --variant loop-multiple --theme light --state default --keys Tab,ArrowLeft --duration-ms 300 --step-ms 25 --width 800 --height 600 --output visual/local/animation-gaps/carousel-loop-multiple-light",
+        "pixels_changed": true
+      },
+      {
+        "component": "sidebar",
+        "variant": "default",
+        "theme": "dark",
+        "state": "default",
+        "keys": [
+          "Tab",
+          "Enter"
+        ],
+        "frames": 9,
+        "step_ms": 25,
+        "viewport": [
+          800,
+          600
+        ],
+        "contact": "visual/motion/gaps/sidebar-default-dark.png",
+        "reproduce": "python3 tools/motion_capture.py --component sidebar --variant default --theme dark --state default --keys Tab,Enter --duration-ms 200 --step-ms 25 --width 800 --height 600 --output visual/local/animation-gaps/sidebar-default-dark",
+        "pixels_changed": true
+      },
+      {
+        "component": "sidebar",
+        "variant": "default",
+        "theme": "light",
+        "state": "default",
+        "keys": [
+          "Tab",
+          "Enter"
+        ],
+        "frames": 9,
+        "step_ms": 25,
+        "viewport": [
+          800,
+          600
+        ],
+        "contact": "visual/motion/gaps/sidebar-default-light.png",
+        "reproduce": "python3 tools/motion_capture.py --component sidebar --variant default --theme light --state default --keys Tab,Enter --duration-ms 200 --step-ms 25 --width 800 --height 600 --output visual/local/animation-gaps/sidebar-default-light",
+        "pixels_changed": true
+      },
+      {
+        "component": "tabs",
+        "variant": "line",
+        "theme": "dark",
+        "state": "default",
+        "keys": [
+          "Tab",
+          "ArrowRight"
+        ],
+        "frames": 7,
+        "step_ms": 25,
+        "viewport": [
+          800,
+          600
+        ],
+        "contact": "visual/motion/gaps/tabs-line-dark.png",
+        "reproduce": "python3 tools/motion_capture.py --component tabs --variant line --theme dark --state default --keys Tab,ArrowRight --duration-ms 150 --step-ms 25 --width 800 --height 600 --output visual/local/animation-gaps/tabs-line-dark",
+        "pixels_changed": true
+      },
+      {
+        "component": "tabs",
+        "variant": "line",
+        "theme": "light",
+        "state": "default",
+        "keys": [
+          "Tab",
+          "ArrowRight"
+        ],
+        "frames": 7,
+        "step_ms": 25,
+        "viewport": [
+          800,
+          600
+        ],
+        "contact": "visual/motion/gaps/tabs-line-light.png",
+        "reproduce": "python3 tools/motion_capture.py --component tabs --variant line --theme light --state default --keys Tab,ArrowRight --duration-ms 150 --step-ms 25 --width 800 --height 600 --output visual/local/animation-gaps/tabs-line-light",
+        "pixels_changed": true
+      },
+      {
+        "component": "toast",
+        "variant": "default",
+        "theme": "dark",
+        "state": "default",
+        "keys": [
+          "Tab",
+          "Enter",
+          "Enter"
+        ],
+        "frames": 9,
+        "step_ms": 25,
+        "viewport": [
+          800,
+          600
+        ],
+        "contact": "visual/motion/gaps/toast-default-dark.png",
+        "reproduce": "python3 tools/motion_capture.py --component toast --variant default --theme dark --state default --keys Tab,Enter,Enter --duration-ms 200 --step-ms 25 --width 800 --height 600 --output visual/local/animation-gaps/toast-default-dark",
+        "pixels_changed": true
+      },
+      {
+        "component": "toast",
+        "variant": "default",
+        "theme": "light",
+        "state": "default",
+        "keys": [
+          "Tab",
+          "Enter",
+          "Enter"
+        ],
+        "frames": 9,
+        "step_ms": 25,
+        "viewport": [
+          800,
+          600
+        ],
+        "contact": "visual/motion/gaps/toast-default-light.png",
+        "reproduce": "python3 tools/motion_capture.py --component toast --variant default --theme light --state default --keys Tab,Enter,Enter --duration-ms 200 --step-ms 25 --width 800 --height 600 --output visual/local/animation-gaps/toast-default-light",
+        "pixels_changed": true
+      }
+    ],
+    "motion_frames": 102,
+    "review": "Inspected both-theme contact sheets for cyclic multi-slide layout, continuous sidebar clipping, toast entry/reflow and tab underline fades. Live macOS Retina gallery pointer/key navigation confirmed cyclic 1,2 to 5,1. Native actual-input tests cover interruption, cyclic keyboard order, moving hit targets, reduced motion, stable toast button state and shorthand tooltip exits.",
+    "source_check": "Pinned Base tabs use after:transition-opacity, not a shared sliding underline. Eight exploratory browser/native keyboard samples remain in visual/local/animation-gaps/tabs-line-paired-{light,dark}; these expose the existing manual browser activation versus native selection-on-focus difference and are not matched selection-timing comparisons."
   }
 }

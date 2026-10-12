@@ -346,25 +346,29 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
                 .show();
             });
         }
-        "carousel" => ui::carousel(
-            &mut state.carousel,
-            5,
-            ui::CarouselOptions {
-                orientation: if variant == "vertical" {
-                    ui::Orientation::Vertical
-                } else {
-                    ui::Orientation::Horizontal
+        "carousel" => {
+            state.carousel.looping = matches!(variant, "loop" | "loop-multiple");
+            ui::carousel(
+                &mut state.carousel,
+                5,
+                ui::CarouselOptions {
+                    visible: if variant == "loop-multiple" { 2 } else { 1 },
+                    orientation: if variant == "vertical" {
+                        ui::Orientation::Vertical
+                    } else {
+                        ui::Orientation::Horizontal
+                    },
+                    ..Default::default()
                 },
-                ..Default::default()
-            },
-            |i| {
-                ui::card(|| {
-                    ui::card_content(|| {
-                        yakui::center(|| ui::heading(1, (i + 1).to_string()));
+                |i| {
+                    ui::card(|| {
+                        ui::card_content(|| {
+                            yakui::center(|| ui::heading(1, (i + 1).to_string()));
+                        })
                     })
-                })
-            },
-        ),
+                },
+            );
+        }
         "direction" => ui::direction(ui::ReadingDirection::Rtl, || {
             ui::breadcrumb(&["Home", "Components", "Direction"])
                 .map(|_| ())
@@ -970,7 +974,7 @@ pub fn variants(component: &str) -> &'static [&'static str] {
             "default", "line", "area", "pie", "donut", "radar", "radial", "scatter",
         ],
         "slider" => &["default", "range", "vertical", "disabled"],
-        "carousel" => &["default", "vertical"],
+        "carousel" => &["default", "vertical", "loop", "loop-multiple"],
         "sheet" => &["default", "left", "top", "bottom"],
         "toggle" => &["default", "outline"],
         "field" => &["default", "invalid"],
