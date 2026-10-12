@@ -1,0 +1,71 @@
+{
+  "captures": [
+    {
+      "component": "typography",
+      "variant": "icons",
+      "theme": "light",
+      "state": "default",
+      "path": "icons-light-default",
+      "metrics": {
+        "changed_fraction": 0.01246375,
+        "content_bounds": [
+          69,
+          165,
+          931,
+          635
+        ],
+        "content_rgb_rmse": 9.993195344901574,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.7046025,
+        "native": "visual/icons/icons-light-default/native.png",
+        "pixels_differing_by_more_than_16": 9971,
+        "reference": "visual/icons/icons-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 7.111512145809779,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "typography",
+      "variant": "icons",
+      "theme": "dark",
+      "state": "default",
+      "path": "icons-dark-default",
+      "metrics": {
+        "changed_fraction": 0.0124575,
+        "content_bounds": [
+          69,
+          165,
+          931,
+          635
+        ],
+        "content_rgb_rmse": 9.84227066032019,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.696085,
+        "native": "visual/icons/icons-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 9966,
+        "reference": "visual/icons/icons-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 7.004108615662667,
+        "width": 1000
+      },
+      "review": "pending"
+    }
+  ],
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/SecondHalfGames/yakui",
+      "commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+    }
+  }
+}

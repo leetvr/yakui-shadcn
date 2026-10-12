@@ -1,0 +1,16 @@
+{
+  "example": "button-group-size",
+  "theme": "light",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 385.109375,
+    "y": 320,
+    "width": 55.765625,
+    "height": 28
+  }
+}

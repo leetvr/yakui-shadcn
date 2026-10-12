@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00101625,
+  "content_bounds": [
+    378,
+    384,
+    622,
+    416
+  ],
+  "content_rgb_rmse": 29.38546421569908,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.08267875,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/sides-light-default/native.png",
+  "pixels_differing_by_more_than_16": 813,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/sides-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 2.9030697115295045,
+  "width": 1000
+}

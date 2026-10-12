@@ -1,0 +1,16 @@
+{
+  "example": "select-align-item",
+  "theme": "light",
+  "state": "open",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 340,
+    "y": 412.5,
+    "width": 320,
+    "height": 32
+  }
+}

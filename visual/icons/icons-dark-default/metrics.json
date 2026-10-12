@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0124575,
+  "content_bounds": [
+    69,
+    165,
+    931,
+    635
+  ],
+  "content_rgb_rmse": 9.84227066032019,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.696085,
+  "native": "visual/icons/icons-dark-default/native.png",
+  "pixels_differing_by_more_than_16": 9966,
+  "reference": "visual/icons/icons-dark-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 7.004108615662667,
+  "width": 1000
+}

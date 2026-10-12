@@ -1,0 +1,14 @@
+{
+  "example": "button-destructive",
+  "theme": "dark",
+  "state": "disabled",
+  "width": 600,
+  "height": 400,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 250.8125,
+    "y": 184,
+    "width": 98.359375,
+    "height": 32
+  }
+}

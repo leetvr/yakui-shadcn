@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0027725,
+  "content_bounds": [
+    308,
+    368,
+    695,
+    424
+  ],
+  "content_rgb_rmse": 16.644707294376403,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.12290666666666666,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/switch/invalid-light-default/native.png",
+  "pixels_differing_by_more_than_16": 2218,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/switch/invalid-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 2.739562921343476,
+  "width": 1000
+}

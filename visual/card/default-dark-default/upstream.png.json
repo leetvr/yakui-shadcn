@@ -1,0 +1,14 @@
+{
+  "example": "card-demo",
+  "theme": "dark",
+  "state": "default",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 603.203125,
+    "y": 237.5,
+    "width": 72.796875,
+    "height": 32
+  }
+}

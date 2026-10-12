@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00287,
+  "content_bounds": [
+    470,
+    384,
+    632,
+    540
+  ],
+  "content_rgb_rmse": 15.067130655493848,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.13811958333333332,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/checkboxes-light-open+ArrowDown,Enter/native.png",
+  "pixels_differing_by_more_than_16": 2296,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/checkboxes-light-open+ArrowDown,Enter/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 2.6832884830620305,
+  "width": 1000
+}

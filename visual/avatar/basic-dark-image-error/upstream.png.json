@@ -1,0 +1,16 @@
+{
+  "example": "avatar-basic",
+  "theme": "dark",
+  "state": "image-error",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 0,
+    "y": 0,
+    "width": 1000,
+    "height": 800
+  }
+}

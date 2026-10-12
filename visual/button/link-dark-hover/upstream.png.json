@@ -1,0 +1,14 @@
+{
+  "example": "button-link",
+  "theme": "dark",
+  "state": "hover",
+  "width": 600,
+  "height": 400,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 275.03125,
+    "y": 184,
+    "width": 49.921875,
+    "height": 32
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0007083333333333334,
+  "content_bounds": [
+    265,
+    194,
+    335,
+    208
+  ],
+  "content_rgb_rmse": 16.137767845040038,
+  "height": 400,
+  "mean_absolute_rgb_error": 0.047154166666666664,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-light-disabled/native.png",
+  "pixels_differing_by_more_than_16": 170,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/button/secondary-light-disabled/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 1.0459505246425378,
+  "width": 600
+}

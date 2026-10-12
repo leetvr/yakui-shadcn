@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00139125,
+  "content_bounds": [
+    436,
+    350,
+    564,
+    414
+  ],
+  "content_rgb_rmse": 50.89846168296944,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.16354916666666666,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-dark-open/native.png",
+  "pixels_differing_by_more_than_16": 1113,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-dark-open/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 5.150562186143697,
+  "width": 1000
+}

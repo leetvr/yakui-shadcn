@@ -1,7 +1,17 @@
 [workspace]
-members = ["demo", "yakui-shadcn"]
+resolver = "2"
+members = ["crates/adequate-ui", "crates/gallery"]
+default-members = ["crates/gallery"]
 
 [workspace.dependencies]
-yakui = { git = "https://github.com/leetvr/yakui.git", branch = "main" }
-yakui-core = { git = "https://github.com/leetvr/yakui.git", branch = "main" }
-yakui-widgets = { git = "https://github.com/leetvr/yakui.git", branch = "main" }
+yakui = { git = "https://github.com/SecondHalfGames/yakui", rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8" }
+yakui-core = { git = "https://github.com/SecondHalfGames/yakui", rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8" }
+yakui-app = { git = "https://github.com/SecondHalfGames/yakui", rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8" }
+yakui-to-image = { git = "https://github.com/SecondHalfGames/yakui", rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8" }
+
+[workspace.dependencies.yakui-widgets]
+git = "https://github.com/SecondHalfGames/yakui"
+rev = "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+
+[profile.dev]
+debug = 1

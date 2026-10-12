@@ -1,0 +1,131 @@
+{
+  "captures": [
+    {
+      "component": "tabs",
+      "variant": "line",
+      "theme": "light",
+      "state": "default",
+      "keys": [],
+      "path": "line-light-default",
+      "metrics": {
+        "changed_fraction": 0.00165125,
+        "content_bounds": [
+          390,
+          394,
+          605,
+          417
+        ],
+        "content_rgb_rmse": 71.76106996687479,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.19250625,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-light-default/native.png",
+        "pixels_differing_by_more_than_16": 1321,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 5.64192176922013,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tabs",
+      "variant": "line",
+      "theme": "dark",
+      "state": "default",
+      "keys": [],
+      "path": "line-dark-default",
+      "metrics": {
+        "changed_fraction": 0.00167625,
+        "content_bounds": [
+          390,
+          394,
+          605,
+          417
+        ],
+        "content_rgb_rmse": 73.13991743740385,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.1989525,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 1341,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 5.750328034121184,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tabs",
+      "variant": "line",
+      "theme": "light",
+      "state": "focus+ArrowRight",
+      "keys": [
+        "ArrowRight"
+      ],
+      "path": "line-light-focus+ArrowRight",
+      "metrics": {
+        "changed_fraction": 0.00204875,
+        "content_bounds": [
+          395,
+          384,
+          605,
+          417
+        ],
+        "content_rgb_rmse": 58.68231048803007,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.2087525,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-light-focus+ArrowRight/native.png",
+        "pixels_differing_by_more_than_16": 1639,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-light-focus+ArrowRight/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 5.461712414618697,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "tabs",
+      "variant": "line",
+      "theme": "dark",
+      "state": "focus+ArrowRight",
+      "keys": [
+        "ArrowRight"
+      ],
+      "path": "line-dark-focus+ArrowRight",
+      "metrics": {
+        "changed_fraction": 0.002195,
+        "content_bounds": [
+          395,
+          384,
+          605,
+          417
+        ],
+        "content_rgb_rmse": 61.46150850261509,
+        "height": 800,
+        "mean_absolute_rgb_error": 0.23072125,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-dark-focus+ArrowRight/native.png",
+        "pixels_differing_by_more_than_16": 1756,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/tabs/line-dark-focus+ArrowRight/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 5.720379467308091,
+        "width": 1000
+      },
+      "review": "pending"
+    }
+  ],
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/SecondHalfGames/yakui",
+      "commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+    }
+  }
+}

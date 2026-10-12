@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00070375,
+  "content_bounds": [
+    385,
+    389,
+    600,
+    411
+  ],
+  "content_rgb_rmse": 14.654065956198838,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.032205,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/basic-dark-focus/native.png",
+  "pixels_differing_by_more_than_16": 563,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/basic-dark-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 1.1267919062542116,
+  "width": 1000
+}

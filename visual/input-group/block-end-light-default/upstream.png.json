@@ -1,0 +1,16 @@
+{
+  "example": "input-group-block-end",
+  "theme": "light",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 309,
+    "y": 271,
+    "width": 382,
+    "height": 34
+  }
+}

@@ -1,1 +1,7 @@
 /target
+/.upstream
+/tools/reference-app/node_modules
+/tools/reference-app/dist
+/visual/local
+.DS_Store
+/tools/reference-app/.vite

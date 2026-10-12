@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00084125,
+  "content_bounds": [
+    448,
+    384,
+    552,
+    416
+  ],
+  "content_rgb_rmse": 33.47027509453495,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.05659625,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-count-icon-light-default/native.png",
+  "pixels_differing_by_more_than_16": 673,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/group-count-icon-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 2.1587678777487866,
+  "width": 1000
+}

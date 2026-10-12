@@ -1,0 +1,16 @@
+{
+  "example": "input-group-inline-end",
+  "theme": "dark",
+  "state": "focus",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 309,
+    "y": 380.5,
+    "width": 358,
+    "height": 32
+  }
+}

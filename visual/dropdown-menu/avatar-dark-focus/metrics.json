@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00077875,
+  "content_bounds": [
+    481,
+    381,
+    519,
+    419
+  ],
+  "content_rgb_rmse": 37.08497641270563,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.0383975,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-dark-focus/native.png",
+  "pixels_differing_by_more_than_16": 623,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/avatar-dark-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 1.5755660358529353,
+  "width": 1000
+}

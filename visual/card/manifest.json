@@ -1,0 +1,71 @@
+{
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/SecondHalfGames/yakui",
+      "commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+    }
+  },
+  "captures": [
+    {
+      "component": "card",
+      "variant": "default",
+      "theme": "light",
+      "state": "default",
+      "path": "default-light-default",
+      "metrics": {
+        "changed_fraction": 0.02430125,
+        "content_bounds": [
+          307,
+          216,
+          693,
+          580
+        ],
+        "content_rgb_rmse": 49.124390458456936,
+        "height": 800,
+        "mean_absolute_rgb_error": 2.50215625,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/card/default-light-default/native.png",
+        "pixels_differing_by_more_than_16": 19441,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/card/default-light-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 20.588284259500597,
+        "width": 1000
+      },
+      "review": "pending"
+    },
+    {
+      "component": "card",
+      "variant": "default",
+      "theme": "dark",
+      "state": "default",
+      "path": "default-dark-default",
+      "metrics": {
+        "changed_fraction": 0.02548125,
+        "content_bounds": [
+          307,
+          216,
+          693,
+          584
+        ],
+        "content_rgb_rmse": 47.524577177592946,
+        "height": 800,
+        "mean_absolute_rgb_error": 2.81853,
+        "native": "/Users/kane/Development/yakui-shadcn/visual/card/default-dark-default/native.png",
+        "pixels_differing_by_more_than_16": 20385,
+        "reference": "/Users/kane/Development/yakui-shadcn/visual/card/default-dark-default/upstream.png",
+        "review_required": true,
+        "rgb_rmse": 20.025844052124246,
+        "width": 1000
+      },
+      "review": "pending"
+    }
+  ]
+}

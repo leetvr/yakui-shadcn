@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00008375,
+  "content_bounds": [
+    484,
+    384,
+    516,
+    416
+  ],
+  "content_rgb_rmse": 8.100524031402742,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.00437,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-dark-image-error/native.png",
+  "pixels_differing_by_more_than_16": 67,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-dark-image-error/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.28981315820139475,
+  "width": 1000
+}

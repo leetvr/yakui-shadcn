@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00029,
+  "content_bounds": [
+    451,
+    391,
+    548,
+    409
+  ],
+  "content_rgb_rmse": 16.180627762130623,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.01432375,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/switch/disabled-light-default/native.png",
+  "pixels_differing_by_more_than_16": 232,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/switch/disabled-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.7559141816370427,
+  "width": 1000
+}

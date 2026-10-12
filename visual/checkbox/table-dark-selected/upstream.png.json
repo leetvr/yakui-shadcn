@@ -1,0 +1,14 @@
+{
+  "example": "checkbox-table",
+  "theme": "dark",
+  "state": "selected",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 108,
+    "y": 318,
+    "width": 16,
+    "height": 16
+  }
+}

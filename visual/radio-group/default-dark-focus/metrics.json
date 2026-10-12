@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00094125,
+  "content_bounds": [
+    442,
+    368,
+    555,
+    432
+  ],
+  "content_rgb_rmse": 16.907077836617756,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.052055,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/radio-group/default-dark-focus/native.png",
+  "pixels_differing_by_more_than_16": 753,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/radio-group/default-dark-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 1.6075066096287132,
+  "width": 1000
+}

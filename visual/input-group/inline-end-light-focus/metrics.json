@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.005765,
+  "content_bounds": [
+    305,
+    356,
+    695,
+    443
+  ],
+  "content_rgb_rmse": 29.880799142306202,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.39548625,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/input-group/inline-end-light-focus/native.png",
+  "pixels_differing_by_more_than_16": 4612,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/input-group/inline-end-light-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 6.153740021320368,
+  "width": 1000
+}

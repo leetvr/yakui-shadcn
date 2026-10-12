@@ -1,0 +1,15 @@
+{
+  "example": "dropdown-menu-demo",
+  "theme": "light",
+  "state": "open",
+  "keys": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": -1,
+    "y": -1,
+    "width": 1,
+    "height": 1
+  }
+}

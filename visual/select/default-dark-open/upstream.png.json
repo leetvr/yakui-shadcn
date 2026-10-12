@@ -1,0 +1,16 @@
+{
+  "example": "select-demo",
+  "theme": "dark",
+  "state": "open",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 404,
+    "y": 384,
+    "width": 192,
+    "height": 32
+  }
+}

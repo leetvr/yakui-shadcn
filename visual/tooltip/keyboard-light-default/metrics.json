@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00013375,
+  "content_bounds": [
+    486,
+    386,
+    514,
+    414
+  ],
+  "content_rgb_rmse": 27.50415089266583,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.01020375,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-light-default/native.png",
+  "pixels_differing_by_more_than_16": 107,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/tooltip/keyboard-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.8610161148317724,
+  "width": 1000
+}

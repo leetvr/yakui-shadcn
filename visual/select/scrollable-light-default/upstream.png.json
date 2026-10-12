@@ -1,0 +1,16 @@
+{
+  "example": "select-scrollable",
+  "theme": "light",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 372,
+    "y": 384,
+    "width": 256,
+    "height": 32
+  }
+}

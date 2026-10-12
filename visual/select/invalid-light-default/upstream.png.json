@@ -1,0 +1,16 @@
+{
+  "example": "select-invalid",
+  "theme": "light",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 404,
+    "y": 381,
+    "width": 192,
+    "height": 32
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0158975,
+  "content_bounds": [
+    100,
+    315,
+    900,
+    484
+  ],
+  "content_rgb_rmse": 27.3539847329275,
+  "height": 800,
+  "mean_absolute_rgb_error": 1.13071125,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-focus/native.png",
+  "pixels_differing_by_more_than_16": 12718,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/table-light-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 11.24511632887806,
+  "width": 1000
+}

@@ -1,0 +1,16 @@
+{
+  "example": "input-group-icon",
+  "theme": "light",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 333,
+    "y": 300,
+    "width": 358,
+    "height": 32
+  }
+}

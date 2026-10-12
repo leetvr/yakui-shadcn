@@ -1,0 +1,15 @@
+{
+  "example": "dropdown-menu-radio-icons",
+  "theme": "light",
+  "state": "default",
+  "keys": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 433.390625,
+    "y": 384,
+    "width": 133.21875,
+    "height": 32
+  }
+}

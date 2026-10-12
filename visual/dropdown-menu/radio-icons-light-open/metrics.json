@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00459,
+  "content_bounds": [
+    432,
+    384,
+    568,
+    596
+  ],
+  "content_rgb_rmse": 23.547386713045004,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.26702583333333335,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/radio-icons-light-open/native.png",
+  "pixels_differing_by_more_than_16": 3672,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/radio-icons-light-open/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 4.473709404211826,
+  "width": 1000
+}

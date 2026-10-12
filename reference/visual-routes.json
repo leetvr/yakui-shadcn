@@ -1,0 +1,532 @@
+[
+  {
+    "component": "button",
+    "variants": [
+      "default",
+      "outline",
+      "secondary",
+      "ghost",
+      "destructive",
+      "link"
+    ],
+    "states": [
+      "default",
+      "hover",
+      "focus",
+      "disabled"
+    ]
+  },
+  {
+    "component": "badge",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "badge-demo",
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "input",
+    "variants": [
+      "basic"
+    ],
+    "reference_example": "input-basic",
+    "states": [
+      "default",
+      "focus"
+    ]
+  },
+  {
+    "component": "textarea",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "textarea-demo",
+    "states": [
+      "default",
+      "focus"
+    ]
+  },
+  {
+    "component": "radio-group",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "radio-group-demo",
+    "states": [
+      "default",
+      "focus"
+    ]
+  },
+  {
+    "component": "switch",
+    "variants": [
+      "default",
+      "description",
+      "choice-card",
+      "invalid",
+      "sizes"
+    ],
+    "states": [
+      "default",
+      "focus",
+      "selected"
+    ]
+  },
+  {
+    "component": "progress",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "progress-demo",
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "separator",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "separator-demo",
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "skeleton",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "skeleton-demo",
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "card",
+    "variants": [
+      "default"
+    ],
+    "reference_example": "card-demo",
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "checkbox",
+    "variants": [
+      "default",
+      "basic",
+      "description",
+      "invalid",
+      "group"
+    ],
+    "states": [
+      "default",
+      "focus",
+      "selected"
+    ]
+  },
+  {
+    "component": "checkbox",
+    "variants": [
+      "disabled"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "checkbox",
+    "variants": [
+      "table"
+    ],
+    "states": [
+      "default",
+      "focus",
+      "selected"
+    ]
+  },
+  {
+    "component": "table",
+    "variants": [
+      "default",
+      "footer"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "switch",
+    "variants": [
+      "disabled"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "table",
+    "variants": [
+      "actions"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "default",
+      "basic",
+      "icons",
+      "shortcuts",
+      "checkboxes",
+      "checkboxes-icons",
+      "radio-group",
+      "radio-icons",
+      "destructive",
+      "submenu",
+      "complex"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "submenu"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "submenu"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,Escape"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "checkboxes"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,Enter"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "radio-group"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,Enter"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "complex"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "complex"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "complex"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight,ArrowDown,Enter"
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "destructive"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,ArrowDown,ArrowDown"
+  },
+  {
+    "component": "avatar",
+    "variants": [
+      "default",
+      "basic",
+      "badge",
+      "badge-icon",
+      "group",
+      "group-count",
+      "group-count-icon",
+      "size"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "avatar",
+    "variants": [
+      "dropdown"
+    ],
+    "states": [
+      "default",
+      "open",
+      "focus"
+    ]
+  },
+  {
+    "component": "avatar",
+    "variants": [
+      "basic"
+    ],
+    "states": [
+      "image-error"
+    ]
+  },
+  {
+    "component": "dropdown-menu",
+    "variants": [
+      "avatar"
+    ],
+    "states": [
+      "default",
+      "open",
+      "focus"
+    ]
+  },
+  {
+    "component": "button-group",
+    "variants": [
+      "default",
+      "orientation",
+      "size",
+      "separator",
+      "split",
+      "input",
+      "dropdown",
+      "popover"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "button-group",
+    "variants": [
+      "default",
+      "dropdown",
+      "popover"
+    ],
+    "states": [
+      "open"
+    ]
+  },
+  {
+    "component": "input-group",
+    "variants": [
+      "default",
+      "icon",
+      "text",
+      "kbd",
+      "spinner",
+      "inline-start",
+      "inline-end",
+      "block-end"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "input-group",
+    "variants": [
+      "default",
+      "inline-end",
+      "text"
+    ],
+    "states": [
+      "focus"
+    ]
+  },
+  {
+    "component": "navigation-menu",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
+  },
+  {
+    "component": "navigation-menu",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "Escape,ArrowRight,ArrowDown"
+  },
+  {
+    "component": "navigation-menu",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "Escape,ArrowRight,ArrowRight,ArrowDown"
+  },
+  {
+    "component": "select",
+    "variants": [
+      "default",
+      "align-item",
+      "groups",
+      "scrollable",
+      "disabled",
+      "invalid"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "select",
+    "variants": [
+      "default",
+      "align-item",
+      "groups",
+      "scrollable",
+      "invalid"
+    ],
+    "states": [
+      "open"
+    ]
+  },
+  {
+    "component": "select",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "ArrowDown,Enter"
+  },
+  {
+    "component": "select",
+    "variants": [
+      "scrollable"
+    ],
+    "states": [
+      "open"
+    ],
+    "keys": "End"
+  },
+  {
+    "component": "button-group",
+    "variants": [
+      "select"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
+  },
+  {
+    "component": "tooltip",
+    "variants": [
+      "default",
+      "sides",
+      "keyboard",
+      "disabled"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
+  },
+  {
+    "component": "tooltip",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "focus"
+    ],
+    "keys": "Escape"
+  },
+  {
+    "component": "button-group",
+    "variants": [
+      "nested",
+      "input-group"
+    ],
+    "states": [
+      "default",
+      "open"
+    ]
+  },
+  {
+    "component": "tabs",
+    "variants": [
+      "line"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "tabs",
+    "variants": [
+      "line"
+    ],
+    "states": [
+      "focus"
+    ],
+    "keys": "ArrowRight"
+  }
+]

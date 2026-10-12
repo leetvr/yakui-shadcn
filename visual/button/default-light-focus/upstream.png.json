@@ -1,0 +1,14 @@
+{
+  "example": "button-default",
+  "theme": "light",
+  "state": "focus",
+  "width": 600,
+  "height": 400,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 267.140625,
+    "y": 184,
+    "width": 65.71875,
+    "height": 32
+  }
+}

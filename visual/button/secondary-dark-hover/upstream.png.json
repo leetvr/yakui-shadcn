@@ -1,0 +1,14 @@
+{
+  "example": "button-secondary",
+  "theme": "dark",
+  "state": "hover",
+  "width": 600,
+  "height": 400,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 253.8125,
+    "y": 184,
+    "width": 92.359375,
+    "height": 32
+  }
+}

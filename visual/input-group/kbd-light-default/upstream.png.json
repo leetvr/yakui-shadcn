@@ -1,0 +1,16 @@
+{
+  "example": "input-group-kbd",
+  "theme": "light",
+  "state": "default",
+  "keys": [],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 333,
+    "y": 384,
+    "width": 325.375,
+    "height": 32
+  }
+}

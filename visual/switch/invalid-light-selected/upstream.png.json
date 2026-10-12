@@ -1,0 +1,14 @@
+{
+  "example": "switch-invalid",
+  "theme": "light",
+  "state": "selected",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 660,
+    "y": 371,
+    "width": 32,
+    "height": 18.390625
+  }
+}

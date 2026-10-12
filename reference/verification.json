@@ -1,0 +1,146 @@
+{
+  "recorded_at": "2026-10-09T12:36:54.640488+00:00",
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/SecondHalfGames/yakui",
+      "commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8"
+    }
+  },
+  "complete_port": false,
+  "catalogue_entries": 65,
+  "upstream_previews": 461,
+  "certified_complete_components": 0,
+  "automated_tests": {
+    "count": 75,
+    "result": "passed",
+    "command": "cargo test --workspace",
+    "doctests": 7
+  },
+  "native_smoke": {
+    "captures": 396,
+    "failures": 0,
+    "includes_actual_trigger_opening": true,
+    "command": "python3 tools/verify_gallery.py --all-variants --showcases --open-overlays",
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "captured_components": [
+      "accordion",
+      "alert",
+      "alert-dialog",
+      "aspect-ratio",
+      "attachment",
+      "avatar",
+      "badge",
+      "breadcrumb",
+      "bubble",
+      "button",
+      "button-group",
+      "calendar",
+      "card",
+      "carousel",
+      "chart",
+      "checkbox",
+      "collapsible",
+      "combobox",
+      "command",
+      "context-menu",
+      "data-table",
+      "date-picker",
+      "dialog",
+      "direction",
+      "drawer",
+      "dropdown-menu",
+      "empty",
+      "field",
+      "form",
+      "hover-card",
+      "input",
+      "input-group",
+      "input-otp",
+      "item",
+      "kbd",
+      "label",
+      "marker",
+      "menubar",
+      "message",
+      "message-scroller",
+      "native-select",
+      "navigation-menu",
+      "pagination",
+      "popover",
+      "progress",
+      "questionnaire",
+      "radio-group",
+      "resizable",
+      "scroll-area",
+      "select",
+      "separator",
+      "sheet",
+      "sidebar",
+      "skeleton",
+      "slider",
+      "spinner",
+      "switch",
+      "table",
+      "tabs",
+      "textarea",
+      "toast",
+      "toggle",
+      "toggle-group",
+      "tooltip",
+      "typography"
+    ]
+  },
+  "upstream_comparisons": {
+    "pairs": 352,
+    "previews": 82,
+    "review": "targeted comparisons inspected; exhaustive parity not certified",
+    "command": "python3 tools/visual_catalogue.py"
+  },
+  "checks": [
+    "cargo fmt --all -- --check",
+    "cargo check -p yakui-adequate-ui",
+    "cargo check --workspace --examples",
+    "cargo doc -p yakui-adequate-ui --no-deps",
+    "python3 tools/audit_inventory.py"
+  ],
+  "library_normal_dependencies_exclude_windowing_and_rendering_backends": true,
+  "icon_diagnostic": {
+    "icons": 137,
+    "paired_themes": [
+      "light",
+      "dark"
+    ],
+    "path": "visual/icons",
+    "review": "geometry inspected; single-sample edge differences remain"
+  },
+  "target": "Usable full catalogue, common examples and documented gaps; English internal interfaces and prototypes.",
+  "targeted_native_smoke": {
+    "captures": 16,
+    "failures": 0,
+    "command": "python3 tools/verify_gallery.py --components chart --all-variants --output visual/local/chart-readability"
+  },
+  "consuming_examples": [
+    "settings",
+    "dashboard",
+    "checkout",
+    "avatars"
+  ],
+  "prototype_scope_complete": true,
+  "completion_scope": {
+    "approved_by_user": true,
+    "exhaustive_upstream_preview_parity_required": false,
+    "status": "ready"
+  }
+}

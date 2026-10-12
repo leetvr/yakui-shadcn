@@ -1,0 +1,27 @@
+{
+  "upstream_commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+  "license_notice": "../../../../reference/SHADCN-LICENSE",
+  "purpose": "Pinned gallery texture examples; replace mutable GitHub portrait URLs in reference captures with these same assets.",
+  "assets": [
+    {
+      "file": "shadcn.jpg",
+      "upstream_path": "apps/v4/public/avatars/shadcn.jpg",
+      "sha256": "c080d627acdedca5ba0b7d8e30ddf4ddcc15aa56c896f67037c273233cde18c3"
+    },
+    {
+      "file": "01.png",
+      "upstream_path": "apps/v4/public/avatars/01.png",
+      "sha256": "dcbf9043041b919ea03707a54aaf8bba2954d8ccbff2f9d3413d6a9d832c482c"
+    },
+    {
+      "file": "02.png",
+      "upstream_path": "apps/v4/public/avatars/02.png",
+      "sha256": "a81ec3c7852f7d20e541c0083ca6b7ace3e239e925613b6f1d918bf1ba572270"
+    },
+    {
+      "file": "03.png",
+      "upstream_path": "apps/v4/public/avatars/03.png",
+      "sha256": "3115d8bbf2c714425b466397181076633d28d2c4e3a4063708f5fabf070a4c33"
+    }
+  ]
+}

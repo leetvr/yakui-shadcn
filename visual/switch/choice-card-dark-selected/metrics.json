@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00714375,
+  "content_bounds": [
+    308,
+    304,
+    692,
+    496
+  ],
+  "content_rgb_rmse": 21.59443055236874,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.74882625,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/switch/choice-card-dark-selected/native.png",
+  "pixels_differing_by_more_than_16": 5715,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/switch/choice-card-dark-selected/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 6.555608190702065,
+  "width": 1000
+}

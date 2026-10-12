@@ -1,0 +1,14 @@
+{
+  "example": "checkbox-group",
+  "theme": "light",
+  "state": "default",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 338.125,
+    "y": 367.5,
+    "width": 16,
+    "height": 16
+  }
+}

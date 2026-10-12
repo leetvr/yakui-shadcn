@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00077,
+  "content_bounds": [
+    481,
+    381,
+    519,
+    419
+  ],
+  "content_rgb_rmse": 37.48719079477963,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.037485833333333336,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-light-focus/native.png",
+  "pixels_differing_by_more_than_16": 616,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/dropdown-light-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 1.5926542311500007,
+  "width": 1000
+}

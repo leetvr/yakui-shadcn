@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00065625,
+  "content_bounds": [
+    388,
+    392,
+    600,
+    408
+  ],
+  "content_rgb_rmse": 16.901080475118007,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.03073375,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/checkbox/basic-dark-default/native.png",
+  "pixels_differing_by_more_than_16": 525,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/checkbox/basic-dark-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 1.1005186277387584,
+  "width": 1000
+}

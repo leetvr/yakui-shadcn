@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0,
+  "content_bounds": [
+    343,
+    376,
+    657,
+    424
+  ],
+  "content_rgb_rmse": 1.7348449027270556,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.0059475,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/skeleton/default-light-default/native.png",
+  "pixels_differing_by_more_than_16": 0,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/skeleton/default-light-default/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.23812286744451908,
+  "width": 1000
+}

@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00315,
+  "content_bounds": [
+    470,
+    384,
+    600,
+    553
+  ],
+  "content_rgb_rmse": 22.578137893253036,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.18526708333333333,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/icons-light-open/native.png",
+  "pixels_differing_by_more_than_16": 2520,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/icons-light-open/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 3.7450359922614003,
+  "width": 1000
+}

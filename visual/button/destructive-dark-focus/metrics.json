@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.005508333333333333,
+  "content_bounds": [
+    248,
+    181,
+    352,
+    219
+  ],
+  "content_rgb_rmse": 17.060066938339393,
+  "height": 400,
+  "mean_absolute_rgb_error": 0.14497222222222222,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-dark-focus/native.png",
+  "pixels_differing_by_more_than_16": 1322,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/button/destructive-dark-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 2.189190616542003,
+  "width": 600
+}

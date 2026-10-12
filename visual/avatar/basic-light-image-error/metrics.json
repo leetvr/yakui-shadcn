@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0001025,
+  "content_bounds": [
+    484,
+    384,
+    516,
+    416
+  ],
+  "content_rgb_rmse": 10.364688022921866,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.00487625,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-light-image-error/native.png",
+  "pixels_differing_by_more_than_16": 82,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/avatar/basic-light-image-error/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.3708183517572991,
+  "width": 1000
+}

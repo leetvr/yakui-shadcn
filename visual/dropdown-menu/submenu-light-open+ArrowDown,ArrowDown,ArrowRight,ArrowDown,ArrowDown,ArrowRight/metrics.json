@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00798125,
+  "content_bounds": [
+    470,
+    384,
+    814,
+    617
+  ],
+  "content_rgb_rmse": 15.53482032765007,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.4220175,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/submenu-light-open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight/native.png",
+  "pixels_differing_by_more_than_16": 6385,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/dropdown-menu/submenu-light-open+ArrowDown,ArrowDown,ArrowRight,ArrowDown,ArrowDown,ArrowRight/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 4.921017509960042,
+  "width": 1000
+}

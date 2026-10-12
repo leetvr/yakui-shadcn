@@ -1,0 +1,14 @@
+{
+  "example": "switch-choice-card",
+  "theme": "light",
+  "state": "selected",
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "bounds": {
+    "x": 649,
+    "y": 315.75,
+    "width": 32,
+    "height": 18.390625
+  }
+}
