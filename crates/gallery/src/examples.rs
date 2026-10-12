@@ -103,7 +103,10 @@ pub struct ExampleState {
     pub tooltips: [ui::TooltipState; 4],
     pub voice_mode: bool,
     pub input_group_values: [String; 4],
-    pub values: [f64; 2],
+    pub slider_value: f64,
+    pub slider_range: [f64; 2],
+    pub slider_vertical: [f64; 2],
+    pub slider_disabled: f64,
     pub ratio: f32,
     pub carousel: ui::CarouselState,
     pub sidebar: ui::SidebarState,
@@ -482,21 +485,47 @@ pub fn render(component: &str, variant: &str, state: &mut ExampleState, disabled
             },
         ),
         "slider" => {
-            if variant == "range" {
-                ui::range_slider(&mut state.values, ui::SliderOptions::default());
-            } else {
-                ui::slider(
-                    &mut state.values[0],
-                    ui::SliderOptions {
-                        orientation: if variant == "vertical" {
-                            ui::Orientation::Vertical
-                        } else {
-                            ui::Orientation::Horizontal
+            let options = ui::SliderOptions {
+                length: 320.,
+                disabled,
+                ..Default::default()
+            };
+            match variant {
+                "range" => {
+                    ui::range_slider(
+                        &mut state.slider_range,
+                        ui::SliderOptions {
+                            step: 5.,
+                            ..options
                         },
-                        disabled,
-                        ..Default::default()
-                    },
-                );
+                    );
+                }
+                "vertical" => ui::row(8., || {
+                    // Each 20px input region includes the 4px track's hit padding.
+                    // Centers are 28px apart, as in the upstream gap-6 example.
+                    for value in &mut state.slider_vertical {
+                        ui::slider(
+                            value,
+                            ui::SliderOptions {
+                                length: 160.,
+                                orientation: ui::Orientation::Vertical,
+                                ..options
+                            },
+                        );
+                    }
+                }),
+                "disabled" => {
+                    ui::slider(
+                        &mut state.slider_disabled,
+                        ui::SliderOptions {
+                            disabled: true,
+                            ..options
+                        },
+                    );
+                }
+                _ => {
+                    ui::slider(&mut state.slider_value, options);
+                }
             }
         }
         "toast" => {
@@ -940,7 +969,7 @@ pub fn variants(component: &str) -> &'static [&'static str] {
         "chart" => &[
             "default", "line", "area", "pie", "donut", "radar", "radial", "scatter",
         ],
-        "slider" => &["default", "range", "vertical"],
+        "slider" => &["default", "range", "vertical", "disabled"],
         "carousel" => &["default", "vertical"],
         "sheet" => &["default", "left", "top", "bottom"],
         "toggle" => &["default", "outline"],
@@ -1151,7 +1180,7 @@ impl Default for ExampleState {
             last_table_action: None,
             menubar: Default::default(),
             navigation: Default::default(),
-            values:[75.,90.],ratio:0.5,carousel:Default::default(),sidebar:Default::default(),questionnaire:Default::default(),scroller:Default::default(),
+            slider_value:75.,slider_range:[25.,50.],slider_vertical:[50.,25.],slider_disabled:50.,ratio:0.5,carousel:Default::default(),sidebar:Default::default(),questionnaire:Default::default(),scroller:Default::default(),
             chat:vec!["I'm building a chat for our app and the scroll behavior is driving me nuts.".into(),"Wrap your message list in MessageScroller and turn on auto-follow. The viewport pins to the bottom as text arrives.".into(),"And if they've scrolled up to re-read an older answer?".into(),"Auto-follow stops when the reader scrolls up. Their position is preserved as new messages arrive.".into()],
             attachment:ui::Attachment::new("message-renderer.tsx","TypeScript · 12 KB"),toasts:Default::default(),chart:Default::default(),toggles:Default::default(),
             menu_items: vec![

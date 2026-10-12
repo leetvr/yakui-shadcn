@@ -1,0 +1,22 @@
+{
+  "example": "slider-range",
+  "theme": "light",
+  "state": "default",
+  "keys": [
+    "Tab",
+    "Tab",
+    "ArrowRight"
+  ],
+  "assetOverrides": [],
+  "width": 1000,
+  "height": 800,
+  "deviceScaleFactor": 1,
+  "animationSamples": [],
+  "motionTimeMs": null,
+  "bounds": {
+    "x": 417,
+    "y": 394,
+    "width": 12,
+    "height": 12
+  }
+}

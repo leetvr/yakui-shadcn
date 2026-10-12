@@ -24,6 +24,10 @@ cargo fmt --all -- --check
 cargo check -p yakui-adequate-ui
 ```
 
+The live WGPU gallery and PNG captures use 4× MSAA. `--width` and `--height`
+are logical dimensions; add `--scale-factor 2` to capture at Retina density.
+For matched upstream captures use `tools/visual.py --scale-factor 2`.
+
 Capture states: `default`, `hover`, `focus`, `disabled`, `selected`, `open`.
 `open` activates the actual isolated example trigger (hover for tooltips) and checks popup state; use
 `--isolated` for reproducible trigger captures. Unknown/unported
@@ -59,7 +63,7 @@ python3 tools/visual.py
 ```
 
 The local reference harness uses unmodified pinned component/example files, the
-upstream Nova stylesheet and semantic tokens, and the exact same Geist files as
+upstream Nova stylesheet, shadcn custom CSS variants, and semantic tokens, and the exact same Geist files as
 the native library. Its explicit reference routes are configured in `reference/visual-routes.json`;
 expand those routes and the harness loader list as each actual example is ported. It is a
 reproducible substitute for the upstream Next website's much larger registry/CLI
@@ -67,7 +71,7 @@ build, not a handwritten recreation of shadcn styles.
 
 `compare` writes `side-by-side.png`, `content-side-by-side.png`, `difference.png`
 and `metrics.json`. Captures
-are matched by dimensions, scale 1, theme and actual interaction state. Metrics
+are matched by logical dimensions, pixel density (1× by default), theme and actual interaction state. Metrics
 require visual review and do not automatically certify fidelity. `visual/` retains configured paired reference/native captures in both themes.
 Run `python3 tools/visual_catalogue.py` for all configured upstream pairs and
 `python3 tools/verify_gallery.py --all-variants --showcases --open-overlays` for native smoke captures.

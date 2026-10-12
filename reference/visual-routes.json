@@ -528,5 +528,47 @@
       "focus"
     ],
     "keys": "ArrowRight"
+  },
+  {
+    "component": "slider",
+    "variants": [
+      "default",
+      "range",
+      "vertical"
+    ],
+    "states": [
+      "default",
+      "hover",
+      "focus"
+    ]
+  },
+  {
+    "component": "slider",
+    "variants": [
+      "disabled"
+    ],
+    "states": [
+      "default"
+    ]
+  },
+  {
+    "component": "slider",
+    "variants": [
+      "default"
+    ],
+    "states": [
+      "default"
+    ],
+    "keys": "Tab,ArrowRight"
+  },
+  {
+    "component": "slider",
+    "variants": [
+      "range"
+    ],
+    "states": [
+      "default"
+    ],
+    "keys": "Tab,Tab,ArrowRight"
   }
 ]

@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0002275,
+  "content_bounds": [
+    340,
+    391,
+    660,
+    409
+  ],
+  "content_rgb_rmse": 10.6561634486547,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.0122225,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/slider/range-light-default+Tab,Tab,ArrowRight/native.png",
+  "pixels_differing_by_more_than_16": 182,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/slider/range-light-default+Tab,Tab,ArrowRight/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.9042054523171158,
+  "width": 1000
+}

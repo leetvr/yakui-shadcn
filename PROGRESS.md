@@ -434,3 +434,34 @@ features fix a dependency feature previously supplied only by dev dependencies.
 Existing motion captures remain evidence from their recorded fork revision. The
 allocator follow-up is recorded separately in reference/motion-verification.json.
 Both existing draft reviews are updated: leetvr/yakui#2 and yakui-shadcn#4.
+
+## Rendering quality and sliders (2026-10-13)
+
+Merged the motion/allocator PRs: leetvr/yakui#2 at `9f93ff9` and
+leetvr/yakui-shadcn#4 at `a45f6ae`. The follow-up fork pin is
+`1ede37af9329d7a4ac89fc4e7105a1c905bdcc07` (leetvr/yakui#3).
+
+The screenshot renderer now uses 4× MSAA, like the live gallery. Yakui circle and
+rounded-corner tessellation is finer; the live multisample target is reused until
+its configuration changes. `--scale-factor 2` renders captures at Retina density
+without changing logical layout; the browser comparison tool uses the same scale.
+
+Slider outlines are joined meshes, removing the gaps between independent stroke
+segments. Track length, thumb border, disabled opacity, and source example values
+now match Nova. Hover highlights the actual thumb, with the shared 150ms ring
+transition; dragged values paint immediately in the frame that updates caller
+state. The gallery includes the actual default/range/vertical/disabled compositions.
+
+Reference preparation now imports the pinned shadcn custom CSS variants, which
+were missing from the harness. Without these, the source slider track had zero
+height. Historical captures remain historical; see RESEARCH.md for the correction.
+
+85 tests and eight doctests pass, the independent library and four consuming
+examples build, and 398 native captures complete without failures. There are
+32 persistent slider comparison pairs across both themes and 1×/2× density,
+including pointer hover and real keyboard value changes. A live Retina gallery
+was inspected and dragged in light/dark themes. Native keyboard focus deliberately
+keeps its visible thumb ring; distinct accessibility thumb nodes and the remaining
+optional demo compositions remain documented gaps.
+
+Reproduction commands and pins: `reference/rendering-verification.json`.

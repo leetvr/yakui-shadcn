@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-13",
+  "upstream": {
+    "shadcn": {
+      "repository": "https://github.com/shadcn-ui/ui",
+      "commit": "6ea090075cd537d3b792c6c1a625e2448b6ede26",
+      "base": "base",
+      "style": "nova",
+      "colour": "neutral",
+      "docs": "apps/v4/content/docs/components/base",
+      "source": "apps/v4/registry/bases/base"
+    },
+    "yakui": {
+      "repository": "https://github.com/leetvr/yakui",
+      "commit": "1ede37af9329d7a4ac89fc4e7105a1c905bdcc07",
+      "upstream_commit": "7c2bd75cd00ee83a1d33b8af360788cb322a3df8",
+      "upstream_repository": "https://github.com/SecondHalfGames/yakui"
+    },
+    "lazy_vulkan": {
+      "repository": "https://github.com/leetvr/lazy_vulkan",
+      "commit": "33aec6209289d3dd8ee684276b9f15b6a904fc21",
+      "use": "Allocator mechanism adapted into yakui-vulkan; no runtime renderer dependency.",
+      "license": "MIT"
+    }
+  },
+  "scope": "Rendering quality and common slider examples; no expansion of prototype scope.",
+  "validation": {
+    "workspace_tests": 85,
+    "workspace_doctests": 8,
+    "yakui_core_widgets_tests": 34,
+    "yakui_core_widgets_doctests": 9,
+    "formatting": "passed",
+    "independent_library": "passed",
+    "consuming_examples": 4,
+    "native_captures": 398,
+    "native_capture_failures": 0,
+    "slider_comparison_pairs": 32
+  },
+  "live_check": "Retina WGPU window inspected in light/dark themes; pointer drag visibly moved the thumb and retained its value through theme switching.",
+  "capture_conditions": {
+    "antialiasing": "4x MSAA",
+    "logical_scale": 1,
+    "physical_pixel_densities": [
+      1,
+      2
+    ],
+    "browser_css": "Pinned Nova plus packages/shadcn/src/tailwind.css; actual unmodified upstream examples."
+  },
+  "comparison_manifests": [
+    "visual/slider/manifest.json",
+    "visual/slider/retina/manifest.json"
+  ],
+  "known_differences": [
+    "Thumbs share one retained widget with internal keyboard navigation; distinct platform accessibility nodes are not implemented.",
+    "Native keyboard focus deliberately keeps a visible thumb ring; the pinned browser example focuses its hidden input without styling the outer thumb.",
+    "The native input band is 20px across around the 4px visible track. Gallery vertical spacing compensates for this input padding.",
+    "Multiple/controlled values use the public range/value APIs; separate upstream multiple/controlled demos and RTL composition are not ported."
+  ],
+  "commands": [
+    "cargo test --workspace",
+    "cargo build --workspace --examples",
+    "cargo check -p yakui-adequate-ui",
+    "cargo fmt --all --check",
+    "python3 tools/verify_gallery.py --all-variants --showcases --open-overlays --output visual/local/rendering-smoke",
+    "python3 tools/visual_catalogue.py --components slider",
+    "python3 tools/visual.py --component slider --variants default range vertical disabled --states default --scale-factor 2 --output visual/slider/retina"
+  ],
+  "historical_evidence": "Earlier captures retain their original single-sample renderer and reference harness conditions. They have not been silently replaced or recertified."
+}

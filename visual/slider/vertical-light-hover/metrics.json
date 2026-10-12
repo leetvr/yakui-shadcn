@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00004125,
+  "content_bounds": [
+    477,
+    320,
+    520,
+    480
+  ],
+  "content_rgb_rmse": 5.448063449413673,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.004125,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/slider/vertical-light-hover/native.png",
+  "pixels_differing_by_more_than_16": 33,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/slider/vertical-light-hover/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.5052326196911676,
+  "width": 1000
+}

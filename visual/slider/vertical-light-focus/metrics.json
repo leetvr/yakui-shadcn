@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.00022,
+  "content_bounds": [
+    477,
+    320,
+    520,
+    480
+  ],
+  "content_rgb_rmse": 10.010619361458112,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.01218,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/slider/vertical-light-focus/native.png",
+  "pixels_differing_by_more_than_16": 176,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/slider/vertical-light-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.9283466486178533,
+  "width": 1000
+}

@@ -52,10 +52,15 @@ struct SliderWidget {
     dragging: bool,
     active: usize,
     focused: bool,
-    hovering: bool,
+    focus_visible: bool,
+    hovering: Option<usize>,
+    ring_transitions: Vec<Option<crate::animation::Transition<f32>>>,
+    ring_widths: Vec<f32>,
     track: Color,
     fill: Color,
     ring: Color,
+    border: Color,
+    thumb: Color,
     dismiss: Option<std::rc::Rc<crate::overlay::DismissContext>>,
 }
 impl SliderWidget {
@@ -77,6 +82,34 @@ impl SliderWidget {
         let value = (o.min + ((value - o.min) / o.step).round() * o.step).clamp(low, high);
         self.props.values[self.active] = value;
         self.pending = Some(self.props.values.clone());
+    }
+    fn thumb_center(&self, rect: Rect, value: f64) -> Vec2 {
+        let o = self.props.options;
+        let ratio = ((value - o.min) / (o.max - o.min).max(f64::EPSILON)) as f32;
+        if o.orientation == Orientation::Horizontal {
+            Vec2::new(
+                rect.pos().x + 6. + ratio * (rect.size().x - 12.).max(0.),
+                rect.center().y,
+            )
+        } else {
+            Vec2::new(
+                rect.center().x,
+                rect.max().y - 6. - ratio * (rect.size().y - 12.).max(0.),
+            )
+        }
+    }
+    fn hovered_thumb(&self, ctx: &EventContext<'_>, position: Vec2) -> Option<usize> {
+        let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
+        self.props
+            .values
+            .iter()
+            .enumerate()
+            .rev()
+            .find_map(|(i, &value)| {
+                // Upstream expands the 12px thumb's pointer target by 8px per side.
+                let delta = (position - self.thumb_center(rect, value)).abs();
+                (delta.max_element() <= 14.).then_some(i)
+            })
     }
     fn pointer_value(&self, ctx: &EventContext<'_>, position: Vec2) -> f64 {
         let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
@@ -103,10 +136,15 @@ impl Widget for SliderWidget {
             dragging: false,
             active: 0,
             focused: false,
-            hovering: false,
+            focus_visible: false,
+            hovering: None,
+            ring_transitions: Vec::new(),
+            ring_widths: Vec::new(),
             track: Color::GRAY,
             fill: Color::BLACK,
             ring: Color::GRAY,
+            border: Color::GRAY,
+            thumb: Color::WHITE,
             dismiss: None,
         }
     }
@@ -114,14 +152,47 @@ impl Widget for SliderWidget {
         self.dismiss = yakui::util::read_scope();
         let pending = self.pending.take();
         self.props = props;
+        // Events update the retained values before the application reads this
+        // response. Paint those same values now, avoiding a frame of drag latency.
+        if let Some(values) = &pending {
+            for (value, next) in self.props.values.iter_mut().zip(values) {
+                *value = *next;
+            }
+        }
         self.active = self.active.min(self.props.values.len().saturating_sub(1));
         let t = crate::theme();
-        self.track = t.muted;
-        self.fill = t.primary;
+        let color = |color: Color| {
+            crate::layout::resolve_color(if self.props.options.disabled {
+                color.with_alpha(0.5)
+            } else {
+                color
+            })
+        };
+        self.track = color(t.muted);
+        self.fill = color(t.primary);
+        self.border = color(t.ring);
+        self.thumb = color(Color::WHITE);
         self.ring = crate::layout::resolve_color(t.ring.with_alpha(0.5));
         if self.props.options.disabled {
             self.dragging = false;
+            self.hovering = None;
         }
+        self.ring_transitions.resize(self.props.values.len(), None);
+        self.ring_widths = self
+            .ring_transitions
+            .iter_mut()
+            .enumerate()
+            .map(|(i, transition)| {
+                let visible = !self.props.options.disabled
+                    && (self.hovering == Some(i)
+                        || (i == self.active && (self.focus_visible || self.dragging)));
+                crate::animation::update_transition(
+                    transition,
+                    if visible { 3. } else { 0. },
+                    Default::default(),
+                )
+            })
+            .collect();
         (pending, std::mem::take(&mut self.confirmed), self.focused)
     }
     fn layout(&self, _ctx: LayoutContext<'_>, constraints: Constraints) -> Vec2 {
@@ -137,40 +208,27 @@ impl Widget for SliderWidget {
         let rect = ctx.layout.get(ctx.dom.current()).unwrap().rect;
         let o = self.props.options;
         let horizontal = o.orientation == Orientation::Horizontal;
-        let point = |value: f64| {
-            let r = ((value - o.min) / (o.max - o.min).max(f64::EPSILON)) as f32;
-            if horizontal {
-                Vec2::new(
-                    rect.pos().x + 6. + r * (rect.size().x - 12.),
-                    rect.center().y,
-                )
-            } else {
-                Vec2::new(
-                    rect.center().x,
-                    rect.max().y - 6. - r * (rect.size().y - 12.),
-                )
-            }
-        };
+        let point = |value| self.thumb_center(rect, value);
         let track = if horizontal {
             Rect::from_pos_size(
-                Vec2::new(rect.pos().x + 6., rect.center().y - 2.),
-                Vec2::new((rect.size().x - 12.).max(0.), 4.),
+                Vec2::new(rect.pos().x, rect.center().y - 2.),
+                Vec2::new(rect.size().x, 4.),
             )
         } else {
             Rect::from_pos_size(
-                Vec2::new(rect.center().x - 2., rect.pos().y + 6.),
-                Vec2::new(4., (rect.size().y - 12.).max(0.)),
+                Vec2::new(rect.center().x - 2., rect.pos().y),
+                Vec2::new(4., rect.size().y),
             )
         };
         yakui::shapes::RoundedRectangle::new(track, 999.)
             .color(self.track)
             .add(ctx.paint);
         if let (Some(first), Some(last)) = (self.props.values.first(), self.props.values.last()) {
-            let start = point(if self.props.values.len() == 1 {
-                o.min
+            let start = if self.props.values.len() == 1 {
+                if horizontal { track.pos() } else { track.max() }
             } else {
-                *first
-            });
+                point(*first)
+            };
             let end = point(*last);
             let fill = if horizontal {
                 Rect::from_pos_size(
@@ -189,26 +247,27 @@ impl Widget for SliderWidget {
         }
         for (i, value) in self.props.values.iter().enumerate() {
             let center = point(*value);
-            if !o.disabled && (self.focused || self.hovering || self.dragging) && i == self.active {
+            let ring_width = self.ring_widths[i];
+            if ring_width > 0. {
                 crate::icons::circle(
                     &mut ctx,
                     center,
-                    8.,
-                    3.,
+                    6. + ring_width / 2.,
+                    ring_width,
                     self.ring,
                     0.,
                     std::f32::consts::TAU,
                 );
             }
             yakui::shapes::Circle::new(center, 6.)
-                .color(Color::WHITE)
+                .color(self.thumb)
                 .add(ctx.paint);
             crate::icons::circle(
                 &mut ctx,
                 center,
                 5.5,
                 1.,
-                self.ring,
+                self.border,
                 0.,
                 std::f32::consts::TAU,
             );
@@ -237,9 +296,12 @@ impl Widget for SliderWidget {
             return EventResponse::Sink;
         }
         match event {
-            WidgetEvent::MouseEnter => self.hovering = true,
-            WidgetEvent::MouseLeave => self.hovering = false,
-            WidgetEvent::FocusChanged { focused, .. } => {
+            WidgetEvent::MouseLeave => self.hovering = None,
+            WidgetEvent::FocusChanged {
+                focused,
+                navigation,
+            } => {
+                self.focus_visible = *focused && *navigation;
                 self.focused = *focused;
                 if !focused {
                     self.dragging = false;
@@ -265,9 +327,12 @@ impl Widget for SliderWidget {
                 self.set_value(value);
                 return EventResponse::Sink;
             }
-            WidgetEvent::MouseMoved(Some(position)) if self.dragging => {
-                self.set_value(self.pointer_value(&ctx, *position));
-                return EventResponse::Sink;
+            WidgetEvent::MouseMoved(position) => {
+                self.hovering = position.and_then(|position| self.hovered_thumb(&ctx, position));
+                if let Some(position) = position.filter(|_| self.dragging) {
+                    self.set_value(self.pointer_value(&ctx, position));
+                    return EventResponse::Sink;
+                }
             }
             WidgetEvent::MouseButtonChanged {
                 button: MouseButton::One,

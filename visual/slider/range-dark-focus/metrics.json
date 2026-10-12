@@ -1,0 +1,18 @@
+{
+  "changed_fraction": 0.0002325,
+  "content_bounds": [
+    340,
+    391,
+    660,
+    409
+  ],
+  "content_rgb_rmse": 10.858416474483437,
+  "height": 800,
+  "mean_absolute_rgb_error": 0.013005,
+  "native": "/Users/kane/Development/yakui-shadcn/visual/slider/range-dark-focus/native.png",
+  "pixels_differing_by_more_than_16": 186,
+  "reference": "/Users/kane/Development/yakui-shadcn/visual/slider/range-dark-focus/upstream.png",
+  "review_required": true,
+  "rgb_rmse": 0.9213671906465956,
+  "width": 1000
+}
