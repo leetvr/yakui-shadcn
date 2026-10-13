@@ -41,7 +41,7 @@ web-sys = { version = "0.3", features = [
     "Window", "Document", "Element", "HtmlElement", "HtmlCanvasElement", "DomRect",
     "Event", "EventTarget", "PointerEvent", "KeyboardEvent", "WheelEvent",
     "UrlSearchParams", "Location", "console", "Navigator", "Clipboard",
-    "HtmlTextAreaElement", "InputEvent", "FocusOptions",
+    "HtmlTextAreaElement", "InputEvent", "FocusOptions", "CssStyleDeclaration",
 ] }
 
 [package.metadata.wasm-pack.profile.release]

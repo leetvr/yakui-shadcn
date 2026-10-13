@@ -263,3 +263,47 @@ pub fn take_pointer_drag_request(yak: &yakui::Yakui) -> bool {
         .0
         .replace(false)
 }
+
+#[derive(Clone, Default)]
+struct PointerDragRegions(std::rc::Rc<std::cell::RefCell<DragLayout>>);
+#[derive(Default)]
+struct DragLayout {
+    frame: Option<web_time::Instant>,
+    widgets: Vec<WidgetId>,
+}
+
+pub(crate) fn register_pointer_drag(ctx: &yakui::widget::LayoutContext<'_>) {
+    let regions = ctx.dom.get_global_or_init(PointerDragRegions::default);
+    let mut layout = regions.0.borrow_mut();
+    let frame = ctx.dom.frame_time();
+    if layout.frame != Some(frame) {
+        layout.frame = Some(frame);
+        layout.widgets.clear();
+    }
+    layout.widgets.push(ctx.dom.current());
+}
+
+/// Consume the visible drag regions after layout. Browser hosts must declare
+/// touch-action before pointerdown; changing it during a gesture is too late.
+/// Call once after each Yakui::finish, including frames without pointer input.
+pub fn take_pointer_drag_regions(yak: &yakui::Yakui) -> Vec<Rect> {
+    let regions = yak.dom().get_global_or_init(PointerDragRegions::default);
+    let mut layout = regions.0.borrow_mut();
+    if layout.frame != Some(yak.dom().frame_time()) {
+        return Vec::new();
+    }
+    let ids = std::mem::take(&mut layout.widgets);
+    ids.into_iter()
+        .filter_map(|id| {
+            let node = yak.layout_dom().get(id)?;
+            let mut rect = node.rect.constrain(yak.layout_dom().viewport());
+            let mut clip = node.clipped_by;
+            while let Some(id) = clip {
+                let node = yak.layout_dom().get(id)?;
+                rect = rect.constrain(node.rect);
+                clip = node.clipped_by;
+            }
+            (rect.size().x > 0. && rect.size().y > 0.).then_some(rect)
+        })
+        .collect()
+}

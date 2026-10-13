@@ -10,6 +10,13 @@
     html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #fafafa; }
     #viewport { position: fixed; inset: 0; box-sizing: border-box;
       padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+    #page-scroll { position: absolute; overflow-y: auto; overflow-x: hidden;
+      touch-action: pan-y; overscroll-behavior-y: contain; overflow-anchor: none;
+      scrollbar-width: thin; outline: none; }
+    #page-content { width: 100%; pointer-events: none; }
+    .drag-input, #overlay-input { position: absolute; touch-action: none; }
+    .drag-input { z-index: 2; }
+    #overlay-input { inset: 0; z-index: 3; }
     #keyboard { position: absolute; left: 50%; top: 50%; width: 1px; height: 1px;
       padding: 0; border: 0; opacity: 0.01; font-size: 16px; pointer-events: none; }
     canvas { display: block; width: 100%; height: 100%; outline: none; touch-action: none; }
@@ -21,6 +28,8 @@
 <body>
   <div id="viewport">
   <canvas id="gallery" tabindex="0" aria-label="shadcn/ui component gallery — unofficial Yakui port"></canvas>
+  <div id="page-scroll" tabindex="-1" aria-label="Gallery page" hidden><div id="page-content"></div></div>
+  <div id="overlay-input" hidden></div>
   <textarea id="keyboard" tabindex="-1" aria-label="Gallery text input" autocapitalize="off"
     autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
   </div>
@@ -46,7 +55,8 @@
       const canvas = document.getElementById('gallery');
       await start(canvas);
       status.hidden = true;
-      canvas.focus({ preventScroll: true });
+      const page = document.getElementById('page-scroll');
+      (page.hidden ? canvas : page).focus({ preventScroll: true });
     } catch (error) {
       console.error(error);
       status.textContent = `Unable to start the gallery. ${error.message ?? error}`;

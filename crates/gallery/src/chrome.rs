@@ -185,27 +185,32 @@ pub fn render(gallery: &mut Gallery) {
                         },
                         || {
                             ui::width(width, || {
-                                page_scroll(&gallery.route.clone(), height, || {
-                                    let padding = if compact { 12. } else { 32. };
-                                    ui::surface(t.background, None, 0., padding, || {
-                                        let content_width = (width - padding * 2.).max(1.);
-                                        if let Some(name) = gallery.options.showcase.clone() {
-                                            showcases::render(
-                                                &name,
-                                                &mut gallery.showcase_state,
-                                                content_width,
-                                            );
-                                        } else {
-                                            ui::width(content_width.min(1040.), || {
-                                                component(
-                                                    gallery,
-                                                    content_width.min(1040.),
-                                                    navigation,
-                                                )
-                                            });
-                                        }
-                                    });
-                                });
+                                page_scroll(
+                                    &gallery.route.clone(),
+                                    height,
+                                    gallery.browser_scroll.clone(),
+                                    || {
+                                        let padding = if compact { 12. } else { 32. };
+                                        ui::surface(t.background, None, 0., padding, || {
+                                            let content_width = (width - padding * 2.).max(1.);
+                                            if let Some(name) = gallery.options.showcase.clone() {
+                                                showcases::render(
+                                                    &name,
+                                                    &mut gallery.showcase_state,
+                                                    content_width,
+                                                );
+                                            } else {
+                                                ui::width(content_width.min(1040.), || {
+                                                    component(
+                                                        gallery,
+                                                        content_width.min(1040.),
+                                                        navigation,
+                                                    )
+                                                });
+                                            }
+                                        });
+                                    },
+                                );
                             });
                         },
                     );
@@ -287,33 +292,51 @@ fn component(gallery: &mut Gallery, width: f32, navigation: bool) {
     });
 }
 
+/// Browser-owned page position and layout information shared with the web host.
+/// A requested position is an explicit navigation/focus operation, never a copy
+/// of the last rendered offset: writing that back would cancel browser momentum.
+#[derive(Debug, Default)]
+pub(crate) struct BrowserScroll {
+    pub offset: std::cell::Cell<f32>,
+    pub content_height: std::cell::Cell<f32>,
+    pub widget: std::cell::Cell<Option<yakui::WidgetId>>,
+    pub request: std::cell::Cell<Option<f32>>,
+    pub pointer_focus: std::cell::Cell<bool>,
+}
+
 /// Reset only the page's scroll offset when its route changes. The descendant
 /// widgets remain mounted, so a code disclosure does not reset a live control.
 #[derive(Debug)]
 struct PageScroll {
     route: String,
+    browser: Option<std::rc::Rc<BrowserScroll>>,
     offset: std::cell::Cell<f32>,
     overflow: std::cell::Cell<f32>,
     height: std::cell::Cell<f32>,
     focus: std::cell::Cell<Option<yakui::WidgetId>>,
 }
 impl yakui::widget::Widget for PageScroll {
-    type Props<'a> = &'a str;
+    type Props<'a> = (&'a str, Option<std::rc::Rc<BrowserScroll>>);
     type Response = ();
     fn new() -> Self {
         Self {
             route: String::new(),
+            browser: None,
             offset: 0.0.into(),
             overflow: 0.0.into(),
             height: 0.0.into(),
             focus: None.into(),
         }
     }
-    fn update(&mut self, route: &str) {
+    fn update(&mut self, (route, browser): Self::Props<'_>) {
+        self.browser = browser;
         if self.route != route {
             self.route = route.to_owned();
             self.offset.set(0.);
             self.focus.set(None);
+            if let Some(browser) = &self.browser {
+                browser.request.set(Some(0.));
+            }
         }
     }
     fn layout(
@@ -334,10 +357,26 @@ impl yakui::widget::Widget for PageScroll {
         }
         let size = constraints.constrain(content);
         self.overflow.set((content.y - size.y).max(0.));
+        if let Some(browser) = &self.browser {
+            browser.widget.set(Some(ctx.dom.current()));
+            browser.content_height.set(content.y);
+            self.offset.set(
+                browser
+                    .request
+                    .get()
+                    .unwrap_or(browser.offset.get())
+                    .clamp(0., self.overflow.get()),
+            );
+        }
+        let before_focus = self.offset.get();
         let focus = ctx.input.focus();
         let focus_changed = self.focus.replace(focus) != focus;
         let resized = self.height.replace(size.y) != size.y;
-        if focus_changed || resized {
+        let reveal_focus = !self
+            .browser
+            .as_ref()
+            .is_some_and(|browser| browser.pointer_focus.get());
+        if (focus_changed && reveal_focus) || resized {
             if let Some(rect) = focus.and_then(|id| ctx.rect_relative_to(id, ctx.dom.current())) {
                 // The software keyboard changes the viewport after focus has already
                 // moved. Reveal the field again on resize, without resetting scroll.
@@ -352,6 +391,11 @@ impl yakui::widget::Widget for PageScroll {
         }
         self.offset
             .set(self.offset.get().clamp(0., self.overflow.get()));
+        if self.offset.get() != before_focus {
+            if let Some(browser) = &self.browser {
+                browser.request.set(Some(self.offset.get()));
+            }
+        }
         for &child in &ctx.dom.get_current().children {
             ctx.layout
                 .set_pos(child, ui::Vec2::new(0., -self.offset.get()));
@@ -366,6 +410,9 @@ impl yakui::widget::Widget for PageScroll {
         _: yakui::widget::EventContext<'_>,
         event: &yakui::event::WidgetEvent,
     ) -> yakui::event::EventResponse {
+        if self.browser.is_some() {
+            return yakui::event::EventResponse::Bubble;
+        }
         if let yakui::event::WidgetEvent::MouseScroll { delta, .. } = event {
             let next = (self.offset.get() + delta.y).clamp(0., self.overflow.get());
             if next != self.offset.get() {
@@ -376,13 +423,18 @@ impl yakui::widget::Widget for PageScroll {
         yakui::event::EventResponse::Bubble
     }
 }
-fn page_scroll(route: &str, height: f32, children: impl FnOnce()) {
+fn page_scroll(
+    route: &str,
+    height: f32,
+    browser: Option<std::rc::Rc<BrowserScroll>>,
+    children: impl FnOnce(),
+) {
     yakui::widgets::ConstrainedBox::new(yakui::Constraints {
         min: ui::Vec2::ZERO,
         max: ui::Vec2::new(f32::INFINITY, height),
     })
     .show(|| {
-        yakui::util::widget_children::<PageScroll, _>(children, route);
+        yakui::util::widget_children::<PageScroll, _>(children, (route, browser));
     });
 }
 
@@ -546,6 +598,67 @@ mod tests {
                 modifiers: None,
             });
         }
+    }
+    #[test]
+    fn browser_offset_positions_content_without_consuming_page_wheels() {
+        let mut yak = crate::new_yak();
+        let mut gallery = Gallery::new(crate::Options::default());
+        let browser = std::rc::Rc::new(BrowserScroll::default());
+        gallery.browser_scroll = Some(browser.clone());
+        let size = Vec2::new(390., 700.);
+        frame(&mut yak, &mut gallery, size);
+        assert_eq!(browser.request.take(), Some(0.));
+        assert!(browser.content_height.get() > size.y);
+        let preview = widgets(&yak, "::HorizontalScroll")[1];
+        let initial = yak.layout_dom().get(preview).unwrap().rect.pos().y;
+        browser.offset.set(175.5);
+        frame(&mut yak, &mut gallery, size);
+        assert_eq!(
+            yak.layout_dom().get(preview).unwrap().rect.pos().y,
+            initial - 175.5
+        );
+        assert_eq!(
+            browser.request.take(),
+            None,
+            "rendering must not overwrite native momentum"
+        );
+        yak.handle_event(Event::CursorMoved(Some(Vec2::new(385., 500.))));
+        assert!(!yak.handle_event(Event::MouseScroll {
+            delta: Vec2::new(0., 100.)
+        }));
+        frame(&mut yak, &mut gallery, size);
+        assert_eq!(
+            yak.layout_dom().get(preview).unwrap().rect.pos().y,
+            initial - 175.5
+        );
+        gallery.options.component = "input".into();
+        frame(&mut yak, &mut gallery, size);
+        assert_eq!(browser.request.take(), Some(0.));
+    }
+    #[test]
+    fn browser_focus_reveal_is_an_explicit_one_time_scroll_request() {
+        let mut yak = crate::new_yak();
+        let mut gallery = Gallery::new(crate::Options {
+            showcase: Some("checkout".into()),
+            ..Default::default()
+        });
+        let browser = std::rc::Rc::new(BrowserScroll::default());
+        gallery.browser_scroll = Some(browser.clone());
+        frame(&mut yak, &mut gallery, Vec2::new(390., 800.));
+        browser.request.take();
+        let editor = widgets(&yak, "::Editor")[2];
+        yak.request_focus(Some(editor));
+        frame(&mut yak, &mut gallery, Vec2::new(390., 400.));
+        let request = browser
+            .request
+            .take()
+            .expect("reveal the field above the keyboard");
+        assert!(request > 0.);
+        browser.offset.set(request);
+        frame(&mut yak, &mut gallery, Vec2::new(390., 400.));
+        assert_eq!(browser.request.take(), None);
+        let rect = yak.layout_dom().get(editor).unwrap().rect;
+        assert!(rect.max().y <= 400.1);
     }
     #[test]
     fn catalogue_and_showcases_keep_the_page_inside_the_viewport() {

@@ -195,7 +195,10 @@ impl Widget for SliderWidget {
             .collect();
         (pending, std::mem::take(&mut self.confirmed), self.focused)
     }
-    fn layout(&self, _ctx: LayoutContext<'_>, constraints: Constraints) -> Vec2 {
+    fn layout(&self, ctx: LayoutContext<'_>, constraints: Constraints) -> Vec2 {
+        if !self.props.options.disabled {
+            crate::interaction::register_pointer_drag(&ctx);
+        }
         constraints.constrain(
             if self.props.options.orientation == Orientation::Horizontal {
                 Vec2::new(self.props.options.length, 20.)

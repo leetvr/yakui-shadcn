@@ -23,9 +23,12 @@ frame; idle-host scheduling and non-vsync UIs are outside scope. The gallery sha
 [Open the gallery](https://leetvr.github.io/yakui-shadcn/). It renders the same Rust
 components into a canvas using WebGPU and a continuous `requestAnimationFrame`
 loop, following OATG's web deployment. Use a browser with WebGPU enabled.
-Narrow screens use a compact header and component picker. Swipe to scroll the
-page, and pan wide previews horizontally; sliders and split handles retain their
-drag gestures. Text fields open the software keyboard, and the gallery resizes
+Narrow screens use a compact header and component picker. Page scrolling belongs
+to a native browser scroll container, including momentum and scrollbars. Yakui
+renders its visible content using the browser offset. Pan wide previews
+horizontally; sliders and split handles retain their drag gestures. Embedded
+component scroll areas and source panels keep their Yakui input handling.
+Text fields open the software keyboard, and the gallery resizes
 to the visible viewport while keeping the focused field in view. Safe-area insets
 are respected. Mobile visual validation remains a manual device check.
 Each preview has an animated Code panel with highlighted Rust, the state it uses,
@@ -38,8 +41,7 @@ Query parameters select examples, for example
 `?showcase=dashboard`. Browser text input supports hardware and software keyboards, including insertion,
 deletion and line breaks. Browser autocorrection is disabled because Cosmic owns
 the document and selection. Editor clipboard integration, full IME composition,
-touch selection handles and inertial scrolling remain outside this demo (code
-panels support Copy).
+and touch selection handles remain outside this demo (code panels support Copy).
 
 ```sh
 rustup target add wasm32-unknown-unknown
@@ -48,7 +50,12 @@ wasm-pack build crates/gallery --target web --release --out-dir ../../web/pkg --
 python3 -m http.server 8080 --directory web
 ```
 
-Open `http://localhost:8080`. GitHub Actions builds and deploys `web/` to Pages on
+Open `http://localhost:8080`. With the reference-app dependencies installed,
+`node tools/verify_web_scroll.mjs` checks real desktop WebGPU input, native touch
+momentum, keyboard scrolling, field focus and overlay/slider gesture ownership.
+Set `GALLERY_URL` to check a deployed gallery. Mobile visual validation stays manual.
+
+GitHub Actions builds and deploys `web/` to Pages on
 pushes to `main`; generated Wasm assets are ignored by Git.
 
 ## Using the library

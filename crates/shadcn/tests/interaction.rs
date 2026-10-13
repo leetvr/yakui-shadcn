@@ -258,3 +258,23 @@ fn touch_host_can_distinguish_a_slider_drag_from_a_button_press() {
     click(&mut y, b.id.unwrap());
     assert!(!ui::take_pointer_drag_request(&y));
 }
+
+#[test]
+fn browser_drag_regions_follow_layout_and_do_not_survive_a_removed_slider() {
+    let mut y = yak();
+    let mut value = 25.;
+    frame(&mut y, || {
+        ui::slider(&mut value, ui::SliderOptions::default());
+    });
+    let regions = ui::take_pointer_drag_regions(&y);
+    assert_eq!(regions.len(), 1);
+    assert_eq!(regions[0].size(), Vec2::new(240., 20.));
+    assert!(ui::take_pointer_drag_regions(&y).is_empty());
+    frame(&mut y, || {
+        ui::slider(&mut value, ui::SliderOptions::default());
+    });
+    // Native hosts may never consume this information. Old regions must still
+    // disappear when the next frame does not contain any drag controls.
+    frame(&mut y, apply);
+    assert!(ui::take_pointer_drag_regions(&y).is_empty());
+}

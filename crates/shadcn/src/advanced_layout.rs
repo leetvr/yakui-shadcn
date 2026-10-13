@@ -208,6 +208,10 @@ impl Widget for Handle {
         });
         self.pending.take()
     }
+    fn layout(&self, ctx: LayoutContext<'_>, constraints: Constraints) -> Vec2 {
+        crate::interaction::register_pointer_drag(&ctx);
+        self.default_layout(ctx, constraints)
+    }
     fn paint(&self, mut ctx: PaintContext<'_>) {
         self.control.paint(PaintContext {
             dom: ctx.dom,

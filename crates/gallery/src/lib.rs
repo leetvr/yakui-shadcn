@@ -66,6 +66,7 @@ struct Gallery {
     options: Options,
     catalogue: Catalogue,
     component_picker: ui::SelectState,
+    browser_scroll: Option<std::rc::Rc<chrome::BrowserScroll>>,
     state: examples::ExampleState,
     showcase_state: showcases::State,
     started: web_time::Instant,
@@ -108,6 +109,7 @@ impl Gallery {
         Self {
             options,
             component_picker: Default::default(),
+            browser_scroll: None,
             catalogue: serde_json::from_str(include_str!("../../../reference/components.json"))
                 .unwrap(),
             state,
