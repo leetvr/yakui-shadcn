@@ -17,6 +17,8 @@ loop, following OATG's web deployment. Use a desktop browser with WebGPU enabled
 Each preview has an animated Code panel with highlighted Rust, the state it uses,
 its helpers, and Copy. Snippets are extracted from the compiled examples at build
 time. Loading, progress, notification stacks and carousel autoplay have motion demos.
+The dashboard staggers its cards, counts up metrics and reveals its chart on entry;
+Replay animation repeats the sequence while preserving table selection.
 Query parameters select examples, for example
 `?component=dialog&theme=dark`, `?component=button&variant=outline&isolated`, or
 `?showcase=dashboard`. Browser text input supports ordinary keyboard editing;
