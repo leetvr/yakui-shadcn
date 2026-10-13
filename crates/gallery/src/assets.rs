@@ -1,5 +1,5 @@
 //! Gallery-owned texture decoding. Components receive public AvatarImage values.
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 #[derive(Clone, Default)]
 pub struct Assets {
     pub color: [Option<ui::AvatarImage>; 4],

@@ -1,6 +1,6 @@
 //! Pinned avatar compositions using public components and gallery-owned textures.
 use ui::{Avatar, AvatarSize as S, Icon as I, MenuItem as M};
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 pub const VARIANTS: &[&str] = &[
     "default",
     "basic",

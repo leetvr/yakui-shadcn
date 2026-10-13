@@ -13,7 +13,7 @@ mod source;
 mod tooltips;
 use serde::Deserialize;
 use std::path::PathBuf;
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 
 #[derive(Deserialize)]
 struct Catalogue {

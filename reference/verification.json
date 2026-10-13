@@ -110,9 +110,9 @@
   },
   "checks": [
     "cargo fmt --all -- --check",
-    "cargo check -p yakui-adequate-ui",
+    "cargo check -p yakui-shadcn",
     "cargo check --workspace --examples",
-    "cargo doc -p yakui-adequate-ui --no-deps",
+    "cargo doc -p yakui-shadcn --no-deps",
     "python3 tools/audit_inventory.py"
   ],
   "library_normal_dependencies_exclude_windowing_and_rendering_backends": true,

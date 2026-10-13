@@ -1,6 +1,6 @@
 //! Gallery-only source display and host clipboard access.
 use std::{cell::RefCell, rc::Rc};
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 
 pub struct Snippet {
     pub component: &'static str,

@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/adequate-ui", "crates/gallery"]
+members = ["crates/shadcn", "crates/gallery"]
 default-members = ["crates/gallery"]
 
 [workspace.dependencies]

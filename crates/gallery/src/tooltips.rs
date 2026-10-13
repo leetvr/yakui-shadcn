@@ -1,5 +1,5 @@
 //! Pinned informational compositions; all targets/surfaces come from the library.
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 pub const VARIANTS: &[&str] = &["default", "sides", "keyboard", "disabled"];
 pub fn render(variant: &str, state: &mut crate::examples::ExampleState, disabled: bool) {
     match variant {

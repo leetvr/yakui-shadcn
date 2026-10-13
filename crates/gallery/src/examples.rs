@@ -1,6 +1,6 @@
-//! Gallery compositions contain only public Adequate components and application state.
+//! Gallery compositions contain only public ported shadcn/ui components and application state.
 use ui::{Button, ButtonSize as S, Variant as V};
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 
 pub const AVAILABLE: &[&str] = &[
     "alert",

@@ -1,6 +1,6 @@
-//! Run: cargo run -p adequate-gallery --example checkout
+//! Run: cargo run -p shadcn-gallery --example checkout
 mod support;
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut email = String::new();
     let mut notes = String::new();

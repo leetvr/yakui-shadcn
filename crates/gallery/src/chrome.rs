@@ -1,7 +1,7 @@
 //! Presentation owned by the gallery, separate from the components under test.
 use crate::{Gallery, examples, showcases};
 use std::time::Duration;
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 
 #[track_caller]
 pub fn text(value: impl Into<String>, size: f32, color: ui::Color, weight: u16) {
@@ -29,8 +29,13 @@ fn header(gallery: &mut Gallery) {
                 .cross_axis_alignment(yakui::CrossAxisAlignment::Center)
                 .item_spacing(12.)
                 .show(|| {
-                    text("Adequate", 22., t.foreground, 600);
-                    text("UI", 22., t.muted_foreground, 400);
+                    text("shadcn/ui", 22., t.foreground, 600);
+                    text(
+                        "Unofficial Yakui port · Design by shadcn/ui",
+                        13.,
+                        t.muted_foreground,
+                        400,
+                    );
                     ui::spacer();
                     for (route, label) in [
                         (None, "Components"),

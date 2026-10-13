@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An unofficial Rust/Yakui port of shadcn/ui. Component design and examples by shadcn/ui and its contributors; interaction behavior based on Base UI.">
   <meta name="theme-color" content="#fafafa">
-  <title>Adequate UI — WebGPU gallery</title>
+  <title>shadcn/ui — Unofficial Yakui port</title>
   <style>
     html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #fafafa; }
     canvas { display: block; width: 100%; height: 100%; outline: none; touch-action: none; }
@@ -14,13 +15,13 @@
   </style>
 </head>
 <body>
-  <canvas id="gallery" tabindex="0" aria-label="Adequate UI component gallery"></canvas>
-  <div id="status" role="status">Loading Adequate UI…</div>
+  <canvas id="gallery" tabindex="0" aria-label="shadcn/ui component gallery — unofficial Yakui port"></canvas>
+  <div id="status" role="status">Loading the shadcn/ui Yakui port…</div>
   <script type="module">
     const status = document.getElementById('status');
     try {
       if (!navigator.gpu) throw new Error('This demo requires a browser with WebGPU enabled.');
-      const { default: init, start } = await import('./pkg/adequate_gallery.js');
+      const { default: init, start } = await import('./pkg/shadcn_gallery.js');
       await init();
       const canvas = document.getElementById('gallery');
       await start(canvas);

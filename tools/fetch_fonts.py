@@ -2,7 +2,7 @@
 """Restore pinned OFL fallback assets, verifying hashes before writing."""
 import hashlib,json,urllib.request
 from pathlib import Path
-root=Path(__file__).resolve().parent.parent/'crates/adequate-ui/fonts'
+root=Path(__file__).resolve().parent.parent/'crates/shadcn/fonts'
 manifest=json.loads((root/'noto-provenance.json').read_text())
 for asset in [*manifest['assets'],manifest['license']]:
     path=root/asset['file']

@@ -1,12 +1,17 @@
-# Building interfaces with Adequate UI
+# Building interfaces with yakui-shadcn
 
-Use `yakui-adequate-ui as ui`. Prefer existing components before custom widgets.
+This is an unofficial port of shadcn/ui to Yakui. Credit shadcn/ui and its
+contributors for the component design and examples, and Base UI for interaction
+behavior. Describe this project as a Rust/Yakui implementation, not an original
+UI design system. Preserve upstream attribution and license notices.
+
+Use `yakui-shadcn as ui`. Prefer existing components before custom widgets.
 Read README.md and the source API documentation. State belongs to your application: pass mutable
 values into controls and act on `ControlResponse.clicked`. Use scoped theme tokens. Put multiple sequential children in `ui::row` or
 `ui::column`; a generic Yakui container overlays its children.
 
 ```rust
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 ui::card(|| {
     ui::card_header(|| {
         ui::card_title("Graphics");

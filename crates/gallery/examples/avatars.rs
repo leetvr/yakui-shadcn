@@ -1,9 +1,9 @@
 //! A separate app owns image decoding/textures and uses the public avatar API.
-//! Run: cargo run -p adequate-gallery --example avatars
+//! Run: cargo run -p shadcn-gallery --example avatars
 // The shared helper is compiled separately for each example; this one uses setup.
 #[allow(dead_code)]
 mod support;
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     support::run_initialized(|yak| {
         let photo = image::load_from_memory(include_bytes!("../assets/avatars/shadcn.jpg"))

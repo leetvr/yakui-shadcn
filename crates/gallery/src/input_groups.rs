@@ -1,6 +1,6 @@
 //! Pinned source compositions built entirely from public library slots.
 use ui::{Icon as I, InputGroupAlign as A};
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 pub const VARIANTS: &[&str] = &[
     "default",
     "icon",

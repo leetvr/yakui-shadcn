@@ -18,9 +18,9 @@ for dest in ['styles/base-nova/ui','registry/bases/base/ui']:
 shutil.copytree(v4/'examples/base',src/'examples',dirs_exist_ok=True)
 shutil.copy(v4/'registry/styles/style-nova.css',src/'nova.css')
 shutil.copy(upstream/'packages/shadcn/src/tailwind.css',src/'shadcn.css')
-shutil.copy(root/'crates/adequate-ui/fonts/Geist-Regular.ttf',app/'public/Geist-Regular.ttf')
-shutil.copy(root/'crates/adequate-ui/fonts/Geist-Medium.ttf',app/'public/Geist-Medium.ttf')
-shutil.copy(root/'crates/adequate-ui/fonts/Geist-Bold.ttf',app/'public/Geist-Bold.ttf')
+shutil.copy(root/'crates/shadcn/fonts/Geist-Regular.ttf',app/'public/Geist-Regular.ttf')
+shutil.copy(root/'crates/shadcn/fonts/Geist-Medium.ttf',app/'public/Geist-Medium.ttf')
+shutil.copy(root/'crates/shadcn/fonts/Geist-Bold.ttf',app/'public/Geist-Bold.ttf')
 # The official build replaces IconPlaceholder with the chosen library. Match Lucide.
 icon=src/'app/(create)/components/icon-placeholder.tsx'
 icon.parent.mkdir(parents=True,exist_ok=True)

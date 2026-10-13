@@ -4,7 +4,7 @@
 use std::time::Duration;
 use ui::animation::{Easing, Motion, MotionStyle};
 use ui::{Button, Variant};
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 pub const NAMES: &[&str] = &["dashboard", "settings", "checkout"];
 #[derive(Default)]
 pub struct State {

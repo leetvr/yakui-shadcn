@@ -9,7 +9,7 @@ import * as icons from 'lucide-react'
 import svgpath from 'svgpath'
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'../..')
-const upstream=resolve(process.argv[2]||'/private/tmp/adequate-shadcn-upstream')
+const upstream=resolve(process.argv[2]||'/private/tmp/yakui-shadcn-upstream')
 const pin=JSON.parse(await readFile(resolve(root,'reference/upstream.json'),'utf8')).shadcn.commit
 if(execFileSync('git',['-C',upstream,'rev-parse','HEAD'],{encoding:'utf8'}).trim()!==pin)throw new Error('Unexpected shadcn revision')
 const version=JSON.parse(await readFile(new URL('./node_modules/lucide-react/package.json',import.meta.url),'utf8')).version
@@ -98,7 +98,7 @@ for(const asset of assets)rust+=`        Self::${asset.name} => "${asset.name}",
 rust+='    } }\n    pub(crate) fn paths(self) -> &\'static [&\'static [(f32, f32)]] { match self {\n'
 for(const asset of assets){rust+=`        Self::${asset.name} => &[\n`;for(const path of asset.paths)rust+=`            &[${path.map(point=>`(${float(point[0])}, ${float(point[1])})`).join(',')}],\n`;rust+='        ],\n'}
 rust+='    } }\n}\n'
-const crate=resolve(root,'crates/adequate-ui')
+const crate=resolve(root,'crates/shadcn')
 await mkdir(resolve(crate,'icons'),{recursive:true})
 await cp(new URL('./node_modules/lucide-react/LICENSE',import.meta.url),resolve(crate,'icons/LICENSE'))
 await writeFile(resolve(crate,'icons/provenance.json'),JSON.stringify({shadcn_commit:pin,lucide_version:version,maximum_control_polygon_step:0.35,icons:assets.map(({paths,...asset})=>asset)},null,2)+'\n')

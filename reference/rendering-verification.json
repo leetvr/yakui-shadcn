@@ -59,7 +59,7 @@
   "commands": [
     "cargo test --workspace",
     "cargo build --workspace --examples",
-    "cargo check -p yakui-adequate-ui",
+    "cargo check -p yakui-shadcn",
     "cargo fmt --all --check",
     "python3 tools/verify_gallery.py --all-variants --showcases --open-overlays --output visual/local/rendering-smoke",
     "python3 tools/visual_catalogue.py --components slider",

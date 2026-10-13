@@ -1,6 +1,6 @@
 //! The pinned default navigation composition with app-owned route selection.
 use ui::{NavigationMenuEntry as E, NavigationMenuLink as L};
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 pub fn render(state: &mut crate::examples::ExampleState, disabled: bool) {
     let entries = [
         E::trigger(1, "Getting started"),

@@ -1,5 +1,5 @@
 {
-  "name": "adequate-upstream-reference",
+  "name": "shadcn-upstream-reference",
   "private": true,
   "type": "module",
   "scripts": {
