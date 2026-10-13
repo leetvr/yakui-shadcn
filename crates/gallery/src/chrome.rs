@@ -111,6 +111,9 @@ pub fn render(gallery: &mut Gallery) {
                     .clone()
                     .unwrap_or_else(|| gallery.options.component.clone());
                 if gallery.route != route {
+                    if route == "dashboard" {
+                        gallery.showcase_state.enter_dashboard();
+                    }
                     gallery.route = route;
                     gallery.page.snap(0.);
                     gallery.page.set_target(
