@@ -65,6 +65,7 @@ impl Default for Options {
 struct Gallery {
     options: Options,
     catalogue: Catalogue,
+    component_picker: ui::SelectState,
     state: examples::ExampleState,
     showcase_state: showcases::State,
     started: web_time::Instant,
@@ -106,6 +107,7 @@ impl Gallery {
         }
         Self {
             options,
+            component_picker: Default::default(),
             catalogue: serde_json::from_str(include_str!("../../../reference/components.json"))
                 .unwrap(),
             state,
@@ -151,6 +153,7 @@ impl Gallery {
                     chrome::render(self);
                 })
             });
+            chrome::overlays(self);
             if let Some(name) = &self.options.showcase {
                 showcases::overlays(name, &mut self.showcase_state);
             } else if self.options.isolated {

@@ -235,3 +235,26 @@ fn buttons_keep_natural_width_and_center_when_explicitly_stretched() {
     let text = text_rect(&y, buttons[1].id.unwrap()).unwrap();
     assert!((text.center().x - rects[1].center().x).abs() < 0.01);
 }
+
+#[test]
+fn touch_host_can_distinguish_a_slider_drag_from_a_button_press() {
+    let mut y = yak();
+    let mut value = 25.;
+    frame(&mut y, || {
+        ui::slider(&mut value, ui::SliderOptions::default());
+    });
+    y.handle_event(Event::CursorMoved(Some(Vec2::new(120., 8.))));
+    y.handle_event(Event::MouseButtonChanged {
+        button: MouseButton::One,
+        down: true,
+    });
+    assert!(ui::take_pointer_drag_request(&y));
+    assert!(!ui::take_pointer_drag_request(&y));
+    y.handle_event(Event::MouseButtonChanged {
+        button: MouseButton::One,
+        down: false,
+    });
+    let b = frame(&mut y, apply);
+    click(&mut y, b.id.unwrap());
+    assert!(!ui::take_pointer_drag_request(&y));
+}

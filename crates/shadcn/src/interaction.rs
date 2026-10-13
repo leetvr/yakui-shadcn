@@ -245,3 +245,21 @@ pub(crate) fn control(props: Control, children: impl FnOnce(ControlResponse)) ->
     dom.end_widget::<ControlWidget>(id);
     output
 }
+
+#[derive(Clone, Default)]
+struct PointerDragRequest(std::rc::Rc<std::cell::Cell<bool>>);
+
+pub(crate) fn request_pointer_drag(dom: &yakui_core::dom::Dom) {
+    dom.get_global_or_init(PointerDragRequest::default)
+        .0
+        .set(true);
+}
+
+/// Consume a drag request after dispatching a pointer press. Touch hosts use this
+/// to leave slider/split-handle gestures with the control instead of scrolling.
+pub fn take_pointer_drag_request(yak: &yakui::Yakui) -> bool {
+    yak.dom()
+        .get_global_or_init(PointerDragRequest::default)
+        .0
+        .replace(false)
+}

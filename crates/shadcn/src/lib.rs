@@ -65,7 +65,7 @@ mod editor;
 mod password;
 pub use basic::*;
 pub use icons::*;
-pub use interaction::ControlResponse;
+pub use interaction::{ControlResponse, take_pointer_drag_request};
 pub use layout::*;
 pub use overlay::*;
 pub use theme::*;

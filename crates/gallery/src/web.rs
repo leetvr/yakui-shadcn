@@ -1,8 +1,10 @@
-//! Canvas-only WebGPU host, following OATG's continuous browser frame loop.
+//! WebGPU canvas and browser keyboard bridge, with a continuous vsync frame loop.
 use super::{Gallery, Options, examples, new_yak, showcases, ui};
 use std::{cell::RefCell, collections::HashSet, rc::Rc};
 use wasm_bindgen::{JsCast, closure::Closure, prelude::*};
-use web_sys::{HtmlCanvasElement, KeyboardEvent, PointerEvent, WheelEvent};
+use web_sys::{
+    HtmlCanvasElement, HtmlTextAreaElement, InputEvent, KeyboardEvent, PointerEvent, WheelEvent,
+};
 use yakui::{
     Rect, Vec2,
     event::Event,
@@ -152,9 +154,23 @@ struct App {
     yak: yakui::Yakui,
     gallery: Gallery,
     keys: HashSet<KeyCode>,
+    touch: Option<Touch>,
+    keyboard: HtmlTextAreaElement,
+}
+struct Touch {
+    id: i32,
+    origin: Vec2,
+    previous: Vec2,
+    scrolling: bool,
+    control_drag: bool,
 }
 impl App {
     fn frame(&mut self) {
+        self.layout();
+        self.renderer
+            .paint(&mut self.yak, self.gallery.options.dark);
+    }
+    fn layout(&mut self) {
         resize_canvas(&self.canvas);
         let scale = web_sys::window().unwrap().device_pixel_ratio() as f32;
         let size = Vec2::new(self.canvas.width() as f32, self.canvas.height() as f32);
@@ -168,8 +184,36 @@ impl App {
         self.yak.start();
         self.gallery.render();
         self.yak.finish();
-        self.renderer
-            .paint(&mut self.yak, self.gallery.options.dark);
+        if !self.yak.text_input_enabled() && self.keyboard_has_focus() {
+            focus(&self.canvas);
+        }
+    }
+    fn keyboard_has_focus(&self) -> bool {
+        web_sys::window()
+            .unwrap()
+            .document()
+            .unwrap()
+            .active_element()
+            .is_some_and(|element| element == **self.keyboard)
+    }
+    fn editing_key(&mut self, key: KeyCode) {
+        for down in [true, false] {
+            self.yak.handle_event(Event::KeyChanged {
+                key,
+                down,
+                modifiers: Some(Modifiers::empty()),
+            });
+        }
+    }
+    fn cancel_pointer(&mut self) {
+        self.touch = None;
+        self.yak.handle_event(Event::CursorMoved(None));
+        for button in [MouseButton::One, MouseButton::Two, MouseButton::Three] {
+            self.yak.handle_event(Event::MouseButtonChanged {
+                button,
+                down: false,
+            });
+        }
     }
     fn pointer_position(&self, event: &PointerEvent) -> Vec2 {
         let rect = self.canvas.get_bounding_client_rect();
@@ -219,6 +263,11 @@ impl App {
         }
     }
 }
+fn focus(element: &web_sys::HtmlElement) {
+    let options = web_sys::FocusOptions::new();
+    options.set_prevent_scroll(true);
+    let _ = element.focus_with_options(&options);
+}
 fn resize_canvas(canvas: &HtmlCanvasElement) {
     let scale = web_sys::window().unwrap().device_pixel_ratio();
     let width = (canvas.client_width().max(1) as f64 * scale).round() as u32;
@@ -239,7 +288,7 @@ fn button(button: i16) -> Option<MouseButton> {
     }
 }
 fn listen<E: JsCast + 'static>(
-    canvas: &HtmlCanvasElement,
+    canvas: &web_sys::EventTarget,
     name: &str,
     mut handler: impl FnMut(E) + 'static,
 ) -> Result<(), JsValue> {
@@ -256,53 +305,122 @@ fn install_input(app: &Rc<RefCell<App>>) -> Result<(), JsValue> {
     listen(&canvas, "pointermove", move |event: PointerEvent| {
         let mut app = state.borrow_mut();
         let position = app.pointer_position(&event);
+        if event.pointer_type() == "touch" {
+            let scale = app.yak.scale_factor();
+            let Some(touch) = app.touch.as_mut().filter(|t| t.id == event.pointer_id()) else {
+                return;
+            };
+            let begin_scroll = !touch.control_drag
+                && !touch.scrolling
+                && position.distance(touch.origin) > 8. * scale;
+            let delta = if begin_scroll {
+                touch.origin - position
+            } else {
+                touch.previous - position
+            };
+            touch.previous = position;
+            touch.scrolling |= begin_scroll;
+            let scrolling = touch.scrolling;
+            if begin_scroll {
+                // Release outside every control before scrolling. A swipe that began
+                // on a button must not activate it when the finger is lifted.
+                app.yak.handle_event(Event::CursorMoved(None));
+                app.yak.handle_event(Event::MouseButtonChanged {
+                    button: MouseButton::One,
+                    down: false,
+                });
+            }
+            if scrolling {
+                // Keep hit testing at the initial contact while the finger moves
+                // outside the canvas or over an unrelated control.
+                let origin = app.touch.as_ref().unwrap().origin;
+                app.yak.handle_event(Event::CursorMoved(Some(origin)));
+                app.yak.handle_event(Event::MouseScroll { delta });
+                event.prevent_default();
+                return;
+            }
+        }
         app.yak.handle_event(Event::CursorMoved(Some(position)));
     })?;
     let state = app.clone();
     listen(&canvas, "pointerdown", move |event: PointerEvent| {
+        if !event.is_primary() {
+            return;
+        }
         let mut app = state.borrow_mut();
-        let _ = app.canvas.focus();
         let _ = app.canvas.set_pointer_capture(event.pointer_id());
         let position = app.pointer_position(&event);
+        ui::take_pointer_drag_request(&app.yak);
         app.yak.handle_event(Event::CursorMoved(Some(position)));
         if let Some(button) = button(event.button()) {
             app.yak
                 .handle_event(Event::MouseButtonChanged { button, down: true });
         }
+        let control_drag = ui::take_pointer_drag_request(&app.yak);
+        if event.pointer_type() == "touch" {
+            app.touch = Some(Touch {
+                id: event.pointer_id(),
+                origin: position,
+                previous: position,
+                scrolling: false,
+                control_drag,
+            });
+        } else if !app.keyboard_has_focus() {
+            focus(&app.canvas);
+        }
         event.prevent_default();
     })?;
     let state = app.clone();
     listen(&canvas, "pointerup", move |event: PointerEvent| {
+        if !event.is_primary() {
+            return;
+        }
         let mut app = state.borrow_mut();
-        let position = app.pointer_position(&event);
-        app.yak.handle_event(Event::CursorMoved(Some(position)));
-        if let Some(button) = button(event.button()) {
-            app.yak.handle_event(Event::MouseButtonChanged {
-                button,
-                down: false,
-            });
+        let touch = app.touch.take();
+        if touch.as_ref().is_some_and(|t| t.scrolling) {
+            app.yak.handle_event(Event::CursorMoved(None));
+        } else {
+            let position = app.pointer_position(&event);
+            app.yak.handle_event(Event::CursorMoved(Some(position)));
+            if let Some(button) = button(event.button()) {
+                app.yak.handle_event(Event::MouseButtonChanged {
+                    button,
+                    down: false,
+                });
+            }
+            // Layout reports text-input ownership. Run it in the trusted input
+            // callback so browsers can open their software keyboard immediately.
+            app.layout();
+            if app.yak.text_input_enabled() {
+                focus(&app.keyboard);
+            } else {
+                focus(&app.canvas);
+            }
+            if touch.is_some() {
+                app.yak.handle_event(Event::CursorMoved(None));
+            }
         }
         let _ = app.canvas.release_pointer_capture(event.pointer_id());
+        event.prevent_default();
     })?;
     let state = app.clone();
     listen(&canvas, "pointerleave", move |_: PointerEvent| {
-        state
-            .borrow_mut()
-            .yak
-            .handle_event(Event::CursorMoved(None));
-    })?;
-    let state = app.clone();
-    listen(&canvas, "pointercancel", move |_: PointerEvent| {
         let mut app = state.borrow_mut();
-        // Cancel hover before releasing so an interrupted drag cannot click.
-        app.yak.handle_event(Event::CursorMoved(None));
-        for button in [MouseButton::One, MouseButton::Two, MouseButton::Three] {
-            app.yak.handle_event(Event::MouseButtonChanged {
-                button,
-                down: false,
-            });
+        if app.touch.is_none() {
+            app.yak.handle_event(Event::CursorMoved(None));
         }
     })?;
+    for name in ["pointercancel", "lostpointercapture"] {
+        let state = app.clone();
+        listen(&canvas, name, move |event: PointerEvent| {
+            if event.is_primary() {
+                let mut app = state.borrow_mut();
+                if name == "pointercancel" || app.touch.is_some() {
+                    app.cancel_pointer();
+                }
+            }
+        })?;
+    }
     let state = app.clone();
     listen(&canvas, "wheel", move |event: WheelEvent| {
         let mut app = state.borrow_mut();
@@ -330,25 +448,79 @@ fn install_input(app: &Rc<RefCell<App>>) -> Result<(), JsValue> {
         })?;
     }
     let state = app.clone();
-    listen(&canvas, "blur", move |_: web_sys::Event| {
-        let mut app = state.borrow_mut();
-        for key in std::mem::take(&mut app.keys) {
-            app.yak.handle_event(Event::KeyChanged {
-                key,
-                down: false,
-                modifiers: Some(Modifiers::empty()),
-            });
+    listen(
+        &web_sys::window().unwrap(),
+        "blur",
+        move |_: web_sys::Event| {
+            let mut app = state.borrow_mut();
+            for key in std::mem::take(&mut app.keys) {
+                app.yak.handle_event(Event::KeyChanged {
+                    key,
+                    down: false,
+                    modifiers: Some(Modifiers::empty()),
+                });
+            }
+            app.cancel_pointer();
+            app.yak
+                .handle_event(Event::ModifiersChanged(Modifiers::empty()));
+        },
+    )?;
+    let keyboard = app.borrow().keyboard.clone();
+    keyboard.set_value(" ");
+    let _ = keyboard.set_selection_range(1, 1);
+    let state = app.clone();
+    listen(&keyboard, "beforeinput", move |event: InputEvent| {
+        if event.is_composing() || !event.cancelable() {
+            return;
         }
-        app.yak.handle_event(Event::CursorMoved(None));
-        for button in [MouseButton::One, MouseButton::Two, MouseButton::Three] {
-            app.yak.handle_event(Event::MouseButtonChanged {
-                button,
-                down: false,
-            });
+        let key = match event.input_type().as_str() {
+            "deleteContentBackward" => Some(KeyCode::Backspace),
+            "deleteContentForward" => Some(KeyCode::Delete),
+            "insertLineBreak" | "insertParagraph" => Some(KeyCode::Enter),
+            _ => None,
+        };
+        if let Some(key) = key {
+            event.prevent_default();
+            state.borrow_mut().editing_key(key);
         }
-        app.yak
-            .handle_event(Event::ModifiersChanged(Modifiers::empty()));
     })?;
+    let state = app.clone();
+    listen(&keyboard, "input", move |event: InputEvent| {
+        if event.is_composing() {
+            return;
+        }
+        let mut app = state.borrow_mut();
+        let value = app.keyboard.value();
+        // A leading sentinel lets software keyboards emit Backspace even though
+        // Cosmic owns the actual document and selection. Disable browser word
+        // correction rather than maintaining a second, divergent document here.
+        match event.input_type().as_str() {
+            "deleteContentBackward" => app.editing_key(KeyCode::Backspace),
+            "deleteContentForward" => app.editing_key(KeyCode::Delete),
+            "insertLineBreak" | "insertParagraph" => app.editing_key(KeyCode::Enter),
+            _ => {
+                for c in value.strip_prefix(' ').unwrap_or(&value).chars() {
+                    app.yak.handle_event(Event::TextInput(c));
+                }
+            }
+        }
+        app.keyboard.set_value(" ");
+        let _ = app.keyboard.set_selection_range(1, 1);
+    })?;
+    for (name, down) in [("keydown", true), ("keyup", false)] {
+        let state = app.clone();
+        listen(&keyboard, name, move |event: KeyboardEvent| {
+            // Text, deletion and Enter arrive through beforeinput/input. Navigation
+            // remains a physical-key operation, including Tab and Escape.
+            if event.is_composing()
+                || matches!(event.key().as_str(), "Backspace" | "Delete" | "Enter")
+                || (event.key().chars().count() == 1 && !event.ctrl_key() && !event.meta_key())
+            {
+                return;
+            }
+            state.borrow_mut().key(event, down);
+        })?;
+    }
     Ok(())
 }
 
@@ -389,6 +561,14 @@ pub async fn start(canvas: HtmlCanvasElement) -> Result<(), JsValue> {
         yak: new_yak(),
         gallery: Gallery::new(options()?),
         keys: HashSet::new(),
+        touch: None,
+        keyboard: web_sys::window()
+            .unwrap()
+            .document()
+            .unwrap()
+            .get_element_by_id("keyboard")
+            .unwrap()
+            .dyn_into()?,
     }));
     install_input(&app)?;
     app.borrow_mut().frame();

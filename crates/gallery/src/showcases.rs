@@ -34,11 +34,11 @@ fn saved(state: &mut State) {
     );
 }
 pub fn render(name: &str, state: &mut State, available_width: f32) {
-    let width = available_width.clamp(280., 1100.);
+    let width = available_width.min(1100.);
     ui::width(width, || match name {
         "dashboard" => dashboard(state, width),
         "settings" => settings(state, width),
-        "checkout" => checkout(state),
+        "checkout" => checkout(state, width),
         _ => unreachable!(),
     });
 }
@@ -117,7 +117,7 @@ impl yakui::widget::Widget for ChartReveal {
 }
 fn dashboard_content(state: &mut State, width: f32, time: f32) {
     ui::column(24., || {
-        ui::row(16., || {
+        crate::chrome::responsive_row(width < 600., 12., || {
             ui::heading(2, "Dashboard");
             if Button::new("Replay animation")
                 .variant(Variant::Outline)
@@ -257,7 +257,11 @@ fn dashboard_content(state: &mut State, width: f32, time: f32) {
                     ui::TableRow::new(4, ["success", "abe45@example.com", "$874.00"]),
                     ui::TableRow::new(5, ["failed", "carmella@example.com", "$721.00"]),
                 ];
-                ui::data_table(&columns, &rows, &mut state.table);
+                crate::chrome::horizontal_scroll(|| {
+                    ui::width(width.max(600.), || {
+                        ui::data_table(&columns, &rows, &mut state.table)
+                    });
+                });
             });
         });
     });
@@ -320,8 +324,9 @@ fn settings(state: &mut State, width: f32) {
         }
     });
 }
-fn checkout(state: &mut State) {
-    ui::width(448., || {
+fn checkout(state: &mut State, width: f32) {
+    let width = width.min(448.);
+    ui::width(width, || {
         ui::form(|| {
             ui::heading(3, "Payment Method");
             ui::muted("All transactions are secure and encrypted");
@@ -356,24 +361,45 @@ fn checkout(state: &mut State) {
                     ui::input(&mut state.card_number, "1234 5678 9012 3456");
                 },
             );
-            ui::row(16., || {
-                ui::width(138., || {
-                    ui::field("Month", "", None, || {
-                        ui::select(&mut state.month, &MONTHS, "MM", false)
-                    })
-                });
-                ui::width(138., || {
-                    ui::field("Year", "", None, || {
-                        ui::select(&mut state.year, &YEARS, "YYYY", false)
-                    })
-                });
-                ui::width(138., || {
-                    ui::field("CVV", "", None, || {
-                        ui::input(&mut state.cvv, "123");
-                    })
-                });
+            crate::chrome::responsive_row(width < 400., 16., || {
+                ui::width(
+                    if width < 400. {
+                        width
+                    } else {
+                        (width - 32.) / 3.
+                    },
+                    || {
+                        ui::field("Month", "", None, || {
+                            ui::select(&mut state.month, &MONTHS, "MM", false)
+                        })
+                    },
+                );
+                ui::width(
+                    if width < 400. {
+                        width
+                    } else {
+                        (width - 32.) / 3.
+                    },
+                    || {
+                        ui::field("Year", "", None, || {
+                            ui::select(&mut state.year, &YEARS, "YYYY", false)
+                        })
+                    },
+                );
+                ui::width(
+                    if width < 400. {
+                        width
+                    } else {
+                        (width - 32.) / 3.
+                    },
+                    || {
+                        ui::field("CVV", "", None, || {
+                            ui::input(&mut state.cvv, "123");
+                        })
+                    },
+                );
             });
-            ui::separator(448.);
+            ui::separator(width);
             ui::heading(3, "Billing Address");
             ui::muted("The billing address associated with your payment method");
             ui::checkbox("Same as shipping address", &mut state.same_address);

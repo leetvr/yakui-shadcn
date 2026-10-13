@@ -323,6 +323,7 @@ impl Widget for SliderWidget {
                     .min_by(|(_, a), (_, b)| (**a - value).abs().total_cmp(&(**b - value).abs()))
                     .map_or(0, |(i, _)| i);
                 self.dragging = true;
+                crate::interaction::request_pointer_drag(ctx.dom);
                 ctx.input.set_focus(Some(ctx.dom.current()), false);
                 self.set_value(value);
                 return EventResponse::Sink;

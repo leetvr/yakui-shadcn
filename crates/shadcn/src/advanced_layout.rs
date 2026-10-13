@@ -251,6 +251,7 @@ impl Widget for Handle {
                 ..
             } => {
                 self.start = Some((axis(*position), self.props.ratio));
+                crate::interaction::request_pointer_drag(ctx.dom);
                 ctx.input.set_focus(Some(ctx.dom.current()), false);
                 return EventResponse::Sink;
             }

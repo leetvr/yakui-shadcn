@@ -22,7 +22,12 @@ frame; idle-host scheduling and non-vsync UIs are outside scope. The gallery sha
 
 [Open the gallery](https://leetvr.github.io/yakui-shadcn/). It renders the same Rust
 components into a canvas using WebGPU and a continuous `requestAnimationFrame`
-loop, following OATG's web deployment. Use a desktop browser with WebGPU enabled.
+loop, following OATG's web deployment. Use a browser with WebGPU enabled.
+Narrow screens use a compact header and component picker. Swipe to scroll the
+page, and pan wide previews horizontally; sliders and split handles retain their
+drag gestures. Text fields open the software keyboard, and the gallery resizes
+to the visible viewport while keeping the focused field in view. Safe-area insets
+are respected. Mobile visual validation remains a manual device check.
 Each preview has an animated Code panel with highlighted Rust, the state it uses,
 its helpers, and Copy. Snippets are extracted from the compiled examples at build
 time. Loading, progress, notification stacks and carousel autoplay have motion demos.
@@ -30,8 +35,11 @@ The dashboard staggers its cards, counts up metrics and reveals its chart on ent
 Replay animation repeats the sequence while preserving table selection.
 Query parameters select examples, for example
 `?component=dialog&theme=dark`, `?component=button&variant=outline&isolated`, or
-`?showcase=dashboard`. Browser text input supports ordinary keyboard editing;
-editor clipboard integration and IME are outside this demo (code panels support Copy).
+`?showcase=dashboard`. Browser text input supports hardware and software keyboards, including insertion,
+deletion and line breaks. Browser autocorrection is disabled because Cosmic owns
+the document and selection. Editor clipboard integration, full IME composition,
+touch selection handles and inertial scrolling remain outside this demo (code
+panels support Copy).
 
 ```sh
 rustup target add wasm32-unknown-unknown

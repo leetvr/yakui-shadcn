@@ -2,12 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
   <meta name="description" content="An unofficial Rust/Yakui port of shadcn/ui. Component design and examples by shadcn/ui and its contributors; interaction behavior based on Base UI.">
   <meta name="theme-color" content="#fafafa">
   <title>shadcn/ui — Unofficial Yakui port</title>
   <style>
     html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #fafafa; }
+    #viewport { position: fixed; inset: 0; box-sizing: border-box;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+    #keyboard { position: absolute; left: 50%; top: 50%; width: 1px; height: 1px;
+      padding: 0; border: 0; opacity: 0.01; font-size: 16px; pointer-events: none; }
     canvas { display: block; width: 100%; height: 100%; outline: none; touch-action: none; }
     #status { position: absolute; inset: 0; display: grid; place-content: center; padding: 32px;
       font: 16px/1.5 system-ui, sans-serif; color: #171717; }
@@ -15,10 +19,26 @@
   </style>
 </head>
 <body>
+  <div id="viewport">
   <canvas id="gallery" tabindex="0" aria-label="shadcn/ui component gallery — unofficial Yakui port"></canvas>
+  <textarea id="keyboard" tabindex="-1" aria-label="Gallery text input" autocapitalize="off"
+    autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+  </div>
   <div id="status" role="status">Loading the shadcn/ui Yakui port…</div>
   <script type="module">
     const status = document.getElementById('status');
+    const viewport = document.getElementById('viewport');
+    function resizeViewport() {
+      const visible = window.visualViewport;
+      viewport.style.width = `${visible?.width ?? window.innerWidth}px`;
+      viewport.style.height = `${visible?.height ?? window.innerHeight}px`;
+      viewport.style.left = `${visible?.offsetLeft ?? 0}px`;
+      viewport.style.top = `${visible?.offsetTop ?? 0}px`;
+    }
+    window.addEventListener('resize', resizeViewport);
+    window.visualViewport?.addEventListener('resize', resizeViewport);
+    window.visualViewport?.addEventListener('scroll', resizeViewport);
+    resizeViewport();
     try {
       if (!navigator.gpu) throw new Error('This demo requires a browser with WebGPU enabled.');
       const { default: init, start } = await import('./pkg/shadcn_gallery.js');
@@ -26,7 +46,7 @@
       const canvas = document.getElementById('gallery');
       await start(canvas);
       status.hidden = true;
-      canvas.focus();
+      canvas.focus({ preventScroll: true });
     } catch (error) {
       console.error(error);
       status.textContent = `Unable to start the gallery. ${error.message ?? error}`;
