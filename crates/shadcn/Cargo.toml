@@ -1,0 +1,13 @@
+[package]
+name = "yakui-shadcn"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "Unofficial Rust port of shadcn/ui components to Yakui"
+
+[dependencies]
+web-time = "1.1.0"
+yakui.workspace = true
+yakui-core.workspace = true
+yakui-widgets.workspace = true
+unicode-segmentation = "1.12"

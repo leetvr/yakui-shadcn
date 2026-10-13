@@ -1,6 +1,6 @@
 //! Actual pinned Base UI dropdown previews, composed entirely from public APIs.
 use ui::{Icon as I, MenuItem as M};
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 #[derive(Default)]
 pub struct DropdownExample {
     variant: String,

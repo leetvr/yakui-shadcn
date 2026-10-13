@@ -19,33 +19,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "366ffbaa4442f4684d91e2cd7c5ea7c4ed8add41959a31447066e279e432b618"
 
 [[package]]
-name = "adequate-gallery"
-version = "0.1.0"
-dependencies = [
- "arboard",
- "console_error_panic_hook",
- "image",
- "pollster",
- "prettyplease",
- "proc-macro2",
- "quote",
- "serde",
- "serde_json",
- "syn 2.0.106",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
- "web-time",
- "wgpu",
- "winit",
- "yakui",
- "yakui-adequate-ui",
- "yakui-app",
- "yakui-to-image",
- "yakui-wgpu",
-]
-
-[[package]]
 name = "adler2"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1876,6 +1849,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "shadcn-gallery"
+version = "0.1.0"
+dependencies = [
+ "arboard",
+ "console_error_panic_hook",
+ "image",
+ "pollster",
+ "prettyplease",
+ "proc-macro2",
+ "quote",
+ "serde",
+ "serde_json",
+ "syn 2.0.106",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+ "web-time",
+ "wgpu",
+ "winit",
+ "yakui",
+ "yakui-app",
+ "yakui-shadcn",
+ "yakui-to-image",
+ "yakui-wgpu",
+]
+
+[[package]]
 name = "shlex"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3122,17 +3122,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "yakui-adequate-ui"
-version = "0.1.0"
-dependencies = [
- "unicode-segmentation",
- "web-time",
- "yakui",
- "yakui-core",
- "yakui-widgets",
-]
-
-[[package]]
 name = "yakui-app"
 version = "0.3.0"
 source = "git+https://github.com/leetvr/yakui?rev=810581c9fc6bbb86e5ee1a11aca25646c3f9cad8#810581c9fc6bbb86e5ee1a11aca25646c3f9cad8"
@@ -3161,6 +3150,17 @@ dependencies = [
  "smallvec",
  "thunderdome",
  "web-time",
+]
+
+[[package]]
+name = "yakui-shadcn"
+version = "0.1.0"
+dependencies = [
+ "unicode-segmentation",
+ "web-time",
+ "yakui",
+ "yakui-core",
+ "yakui-widgets",
 ]
 
 [[package]]

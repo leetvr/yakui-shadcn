@@ -349,9 +349,9 @@
   },
   "checks": [
     "cargo fmt --all -- --check",
-    "cargo check -p yakui-adequate-ui",
-    "cargo check -p adequate-gallery --examples",
-    "cargo doc -p yakui-adequate-ui --no-deps",
+    "cargo check -p yakui-shadcn",
+    "cargo check -p shadcn-gallery --examples",
+    "cargo doc -p yakui-shadcn --no-deps",
     "cargo check -p yakui-vulkan -p yakui-wgpu --all-targets --offline",
     "python3 tools/audit_inventory.py"
   ],
@@ -405,9 +405,9 @@
       "command": "cargo test --workspace"
     },
     "checks": [
-      "cargo check -p yakui-adequate-ui",
+      "cargo check -p yakui-shadcn",
       "cargo check --workspace --examples",
-      "cargo doc -p yakui-adequate-ui --no-deps",
+      "cargo doc -p yakui-shadcn --no-deps",
       "cargo fmt --all -- --check",
       "python3 tools/audit_inventory.py"
     ],

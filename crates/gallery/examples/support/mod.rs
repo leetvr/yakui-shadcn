@@ -6,7 +6,7 @@ use winit::{
     event_loop::{ActiveEventLoop, EventLoop},
     window::{Window, WindowId},
 };
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 struct App<F> {
     build: F,
     yak: yakui::Yakui,
@@ -18,7 +18,7 @@ impl<F: FnMut()> ApplicationHandler for App<F> {
         let window = event_loop
             .create_window(
                 Window::default_attributes()
-                    .with_title("Adequate UI example")
+                    .with_title("shadcn/ui — Yakui port example")
                     .with_inner_size(winit::dpi::LogicalSize::new(900., 700.)),
             )
             .unwrap();

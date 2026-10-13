@@ -1,6 +1,6 @@
-//! Run: cargo run -p adequate-gallery --example settings
+//! Run: cargo run -p shadcn-gallery --example settings
 mod support;
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut name = String::from("Kane");
     let mut vsync = true;

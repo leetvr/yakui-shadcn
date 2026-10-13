@@ -1,6 +1,6 @@
 //! The pinned English select previews, with ordinary caller-owned values.
 use ui::SelectItem as O;
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 pub const VARIANTS: &[&str] = &[
     "default",
     "align-item",

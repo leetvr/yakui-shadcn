@@ -260,7 +260,7 @@ struct App {
 impl ApplicationHandler for App {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
         let attrs = Window::default_attributes()
-            .with_title("Adequate UI — shadcn for Yakui")
+            .with_title("shadcn/ui — Unofficial Yakui port")
             .with_inner_size(LogicalSize::new(
                 self.gallery.options.width,
                 self.gallery.options.height,

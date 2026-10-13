@@ -1,6 +1,6 @@
 //! Useful first-party toolbar and joined-input compositions from the pinned source.
 use ui::{Button as B, ButtonSize as S, Icon as I, MenuItem as M, Variant as V};
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 pub const VARIANTS: &[&str] = &[
     "default",
     "orientation",

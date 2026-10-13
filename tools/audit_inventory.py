@@ -5,7 +5,7 @@ from pathlib import Path
 root=Path(__file__).resolve().parent.parent
 inventory=json.loads((root/'reference/components.json').read_text())
 public=set();tests=set()
-for path in (root/'crates/adequate-ui').rglob('*.rs'):
+for path in (root/'crates/shadcn').rglob('*.rs'):
  text=path.read_text()
  if '/src/' in str(path):public.update(re.findall(r'\bpub\s+(?:fn|struct|enum|type)\s+(\w+)',text))
 for path in (root/'crates').rglob('*.rs'):

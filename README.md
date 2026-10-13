@@ -1,7 +1,16 @@
-# yakui-adequate-ui
+# yakui-shadcn
 
-A native Rust port of shadcn/ui built directly on Yakui, targeting English internal
-interfaces and prototypes. The agreed scope is a usable full catalogue with common
+An unofficial Rust port of [shadcn/ui](https://ui.shadcn.com/) to
+[Yakui](https://github.com/SecondHalfGames/yakui), targeting English internal
+interfaces and prototypes. The component designs, visual language and reference
+examples come from shadcn/ui and its contributors, with behavior based on
+[Base UI](https://base-ui.com/). This repository contributes the Rust/Yakui
+implementation; it is not an original UI design system or an official shadcn project.
+Upstream source and its MIT notice are retained in
+[reference/upstream.json](reference/upstream.json) and
+[reference/SHADCN-LICENSE](reference/SHADCN-LICENSE).
+
+The agreed scope is a usable full catalogue with common
 examples and documented gaps; exhaustive reproduction of all upstream demos is
 outside that target. The prototype common-use audit is complete. See `reference/components.json` for verified coverage and limitations.
 
@@ -36,13 +45,13 @@ pushes to `main`; generated Wasm assets are ignored by Git.
 
 ## Using the library
 
-Use `yakui_adequate_ui as ui` and call `ui::add_fonts(&mut yak)` before the first
+Use `yakui_shadcn as ui` and call `ui::add_fonts(&mut yak)` before the first
 frame. Application state owns values and overlay state. Declare components at
 stable call sites between `yak.start()` and `yak.finish()` each vsync frame, then
 paint with your renderer. All Yakui crates must use the fork revision in `Cargo.toml`.
 
 ```rust
-use yakui_adequate_ui as ui;
+use yakui_shadcn as ui;
 ui::with_theme(ui::Theme::dark(), || {
     ui::column(12., || {
         ui::checkbox("VSync", &mut settings.vsync);
@@ -82,10 +91,10 @@ cargo run --bin gallery -- --component button --variant outline --theme dark \
 cargo run --bin gallery -- --component dialog --theme dark --state open \
   --isolated --screenshot /tmp/dialog.png
 cargo run --bin gallery -- --showcase dashboard --theme dark
-cargo run -p adequate-gallery --example settings
+cargo run -p shadcn-gallery --example settings
 cargo test --workspace
 cargo fmt --all -- --check
-cargo check -p yakui-adequate-ui
+cargo check -p yakui-shadcn
 ```
 
 The live WGPU gallery and PNG captures use 4× MSAA. `--width` and `--height`
